@@ -1,4 +1,5 @@
-chemical-mechanism: test/inputs/reactions/sandbox_substituted.yaml
+# chemical-mechanism: test/inputs/reactions/sandbox_substituted.yaml
+chemical-mechanism: test/inputs/reactions/alzuetamechanism.yaml
 reactions:
 - equation: H + OH (+M) <=> H2O (+M)
   colliders:
