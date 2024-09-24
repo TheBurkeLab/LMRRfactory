@@ -249,7 +249,11 @@ class masterFitter:
             if rxn['equation'] in self.keyReactions.keys():
                 for rxn2 in self.shortMech['reactions']:
                     if rxn2['equation']==rxn['equation']:
-                        newMechanism['reactions'].append(rxn2)
+                        for j, col in enumerate(self.keyReactions[rxn['equation']].keys()):
+                            if len(list(rxn2['collider-list'][j]).keys())>2:
+                                newMechanism['reactions'].append(fit_fxn(rxn2,col))
+                            else:
+                                newMechanism['reactions'].append(rxn2)
             else:
                 newMechanism['reactions'].append(rxn)
 
