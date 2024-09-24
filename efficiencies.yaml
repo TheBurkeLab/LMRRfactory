@@ -1,176 +1,142 @@
 # Jasper/Oana/Miller http://dx.doi.org/10.1016/j.proci.2014.05.105
 reactions:
-- equation: CH4 (+M) <=> CH3 + H (+M)
+- equation: CH4 (+M) <=> CH3 + H (+M) #Ar reference collider
   temperatures: [300,2000]
   collider-list:
-  - collider: Ar #reference collider
-    epsLow: {A: 1.00, b: 0, Ea: 0}
-    epsHigh: {A: 1.00, b: 0, Ea: 0}
   - collider: He
-    epsLow: {A: 1.05, b: 0, Ea: 0}
-    epsHigh: {A: 2.53, b: 0, Ea: 0}
+    eps: [1.05,2.53]
   - collider: Ne
-    epsLow: {A: 0.72,  b: 0, Ea: 0}
-    epsHigh: {A: 1.13,  b: 0, Ea: 0}
+    eps: [0.72,1.13]
   - collider: Kr
-    epsLow: {A: 1.07, b: 0, Ea: 0}
-    epsHigh: {A: 0.96, b: 0, Ea: 0}
+    eps: [1.07,0.96]
   - collider: H2
-    epsLow: {A: 2.29, b: 0, Ea: 0}
-    epsHigh: {A: 4.08, b: 0, Ea: 0}
+    eps: [2.29,4.08]
   - collider: N2
-    epsLow: {A: 1.09, b: 0, Ea: 0}
-    epsHigh: {A: 1.39, b: 0, Ea: 0}
+    eps: [1.09,1.39]
   - collider: O2
-    epsLow: {A: 1.19, b: 0, Ea: 0}
-    epsHigh: {A: 1.41, b: 0, Ea: 0}
+    eps: [1.19,1.41]
 
-- equation: C2H6 (+M) <=> CH3 + CH3 (+M)
+- equation: C2H6 (+M) <=> CH3 + CH3 (+M) #Ar reference collider
   temperatures: [300,2000]
   collider-list:
-  - collider: Ar #reference collider
-    epsLow: {A: 1.00, b: 0, Ea: 0}
-    epsHigh: {A: 1.00, b: 0, Ea: 0}
   - collider: He
-    epsLow: {A: 1.36, b: 0, Ea: 0}
-    epsHigh: {A: 1.84, b: 0, Ea: 0}
+    eps: [1.36,1.84]
   - collider: Ne
-    epsLow: {A: 0.77,  b: 0, Ea: 0}
-    epsHigh: {A: 1.00,  b: 0, Ea: 0}
+    eps: [0.77,1.00]
   - collider: Kr
-    epsLow: {A: 0.99, b: 0, Ea: 0}
-    epsHigh: {A: 0.95, b: 0, Ea: 0}
+    eps: [0.99,0.95]
   - collider: H2
-    epsLow: {A: 3.19, b: 0, Ea: 0}
-    epsHigh: {A: 2.77, b: 0, Ea: 0}
+    eps: [3.19,2.77]
   - collider: N2
-    epsLow: {A: 1.19, b: 0, Ea: 0}
-    epsHigh: {A: 1.30, b: 0, Ea: 0}
+    eps: [1.19,1.30]
   - collider: O2
-    epsLow: {A: 1.25, b: 0, Ea: 0}
-    epsHigh: {A: 1.24, b: 0, Ea: 0}
+    eps: [1.25,1.24]
 
-- equation: C3H8 (+M) <=> CH3 + C2H5 (+M)
+- equation: C3H8 (+M) <=> CH3 + C2H5 (+M) #Ar reference collider
   temperatures: [300,2000]
   collider-list:
-  - collider: Ar #reference collider
-    epsLow: {A: 1.00, b: 0, Ea: 0}
-    epsHigh: {A: 1.00, b: 0, Ea: 0}
   - collider: He
-    epsLow: {A: 1.21, b: 0, Ea: 0}
-    epsHigh: {A: 1.28, b: 0, Ea: 0}
+    eps: [1.21,1.28]
   - collider: Ne
-    epsLow: {A: 0.77,  b: 0, Ea: 0}
-    epsHigh: {A: 0.93,  b: 0, Ea: 0}
+    eps: [0.77,0.93]
   - collider: Kr
-    epsLow: {A: 1.15, b: 0, Ea: 0}
-    epsHigh: {A: 0.91, b: 0, Ea: 0}
+    eps: [1.15,0.91]
   - collider: H2
-    epsLow: {A: 2.48, b: 0, Ea: 0}
-    epsHigh: {A: 1.85, b: 0, Ea: 0}
+    eps: [2.48,1.85]
   - collider: N2
-    epsLow: {A: 1.19, b: 0, Ea: 0}
-    epsHigh: {A: 1.18, b: 0, Ea: 0}
+    eps: [1.19,1.18]
   - collider: O2
-    epsLow: {A: 1.24, b: 0, Ea: 0}
-    epsHigh: {A: 1.14, b: 0, Ea: 0}
+    eps: [1.24,1.14]
     
-- equation: C4H10 (+M) <=> C2H5 + C2H5 (+M)
+- equation: C4H10 (+M) <=> C2H5 + C2H5 (+M) #Ar reference collider
   temperatures: [300,2000]
   collider-list:
-  - collider: Ar #reference collider
-    epsLow: {A: 1.00, b: 0, Ea: 0}
-    epsHigh: {A: 1.00, b: 0, Ea: 0}
   - collider: He
-    epsLow: {A: 1.13, b: 0, Ea: 0}
-    epsHigh: {A: 1.06, b: 0, Ea: 0}
+    eps: [1.13,1.06]
   - collider: Ne
-    epsLow: {A: 0.76,  b: 0, Ea: 0}
-    epsHigh: {A: 0.96,  b: 0, Ea: 0}
+    eps: [0.76,0.96]
   - collider: Kr
-    epsLow: {A: 0.95, b: 0, Ea: 0}
-    epsHigh: {A: 0.96, b: 0, Ea: 0}
+    eps: [0.95,0.96]
   - collider: H2
-    epsLow: {A: 2.34, b: 0, Ea: 0}
-    epsHigh: {A: 1.53, b: 0, Ea: 0}
+    eps: [2.34,1.53]
   - collider: N2
-    epsLow: {A: 1.09, b: 0, Ea: 0}
-    epsHigh: {A: 1.19, b: 0, Ea: 0}
+    eps: [1.09,1.19]
   - collider: O2
-    epsLow: {A: 1.20, b: 0, Ea: 0}
-    epsHigh: {A: 1.16, b: 0, Ea: 0}
+    eps: [1.20,1.16]
 
-# - equation: C6H14 (+M) <=> ??
+# - equation: C6H14 (+M) <=> ?? #Ar reference collider
 #   collider-list:
-#   - collider: Ar #reference collider
-#     epsLow: {A: 1.00, b: 0, Ea: 0}
-#     epsHigh: {A: 1.00, b: 0, Ea: 0}
 #   - collider: He
-#     epsLow: {A: 1.15, b: 0, Ea: 0}
-#     epsHigh: {A: 0.80, b: 0, Ea: 0}
+    # eps: [1.15,0.80]
 #   - collider: Ne
-#     epsLow: {A: 0.78,  b: 0, Ea: 0}
-#     epsHigh: {A: 0.83,  b: 0, Ea: 0}
+    # eps: [0.78,0.83]
 #   - collider: Kr
-#     epsLow: {A: 0.92, b: 0, Ea: 0}
-#     epsHigh: {A: 0.90, b: 0, Ea: 0}
+    # eps: [0.92,0.90]
 #   - collider: H2
-#     epsLow: {A: 2.17, b: 0, Ea: 0}
-#     epsHigh: {A: 0.97, b: 0, Ea: 0}
+    # eps: [2.17,0.97]
 #   - collider: N2
-#     epsLow: {A: 1.14, b: 0, Ea: 0}
-#     epsHigh: {A: 1.11, b: 0, Ea: 0}
+    # eps: [1.14,1.11]
 #   - collider: O2
-#     epsLow: {A: 1.20, b: 0, Ea: 0}
-#     epsHigh: {A: 1.08, b: 0, Ea: 0}
+    # eps: [1.20,1.08]
 
-# - equation: C8H18 (+M) <=> ??
+# - equation: C8H18 (+M) <=> ?? #Ar reference collider
 #   collider-list:
-#   - collider: Ar #reference collider
-#     epsLow: {A: 1.00, b: 0, Ea: 0}
-#     epsHigh: {A: 1.00, b: 0, Ea: 0}
 #   - collider: He
-#     epsLow: {A: 1.16, b: 0, Ea: 0}
-#     epsHigh: {A: 0.66, b: 0, Ea: 0}
+    # eps: [1.16,0.66]
 #   - collider: Ne
-#     epsLow: {A: 0.79,  b: 0, Ea: 0}
-#     epsHigh: {A: 0.81,  b: 0, Ea: 0}
+    # eps: [0.79,0.81]
 #   - collider: Kr
-#     epsLow: {A: 0.88, b: 0, Ea: 0}
-#     epsHigh: {A: 0.90, b: 0, Ea: 0}
+    # eps: [0.88,0.90]
 #   - collider: H2
-#     epsLow: {A: 2.16, b: 0, Ea: 0}
-#     epsHigh: {A: 0.85, b: 0, Ea: 0}
+    # eps: [2.16,0.85]
 #   - collider: N2
-#     epsLow: {A: 1.13, b: 0, Ea: 0}
-#     epsHigh: {A: 1.03, b: 0, Ea: 0}
+    # eps: [1.13,1.03]
 #   - collider: O2
-#     epsLow: {A: 1.19, b: 0, Ea: 0}
-#     epsHigh: {A: 0.98, b: 0, Ea: 0}
+    # eps: [1.19,0.98]
 
 
 # Akira Matsugi https://doi.org/10.1016/j.combustflame.2020.11.019
 - equation: H2O2 (+M) <=> OH + OH (+M)
   temperatures: [750,1500]
-  collider-list:
-  - collider: N2 #reference collider
-    epsLow: {A: 1, b: 0, Ea: 0}
-    epsHigh: {A: 1, b: 0, Ea: 0}
+  collider-list: # Ar reference collider (N2 is reference in source material)
   - collider: He
-    epsLow: {A: 0.43, b: 0, Ea: 0}
-    epsHigh: {A: 0.57, b: 0, Ea: 0}
-  - collider: Ar
-    epsLow: {A: 0.52, b: 0, Ea: 0}
-    epsHigh: {A: 0.59, b: 0, Ea: 0}
+    eps: [0.827,0.966] #0.43/0.52, 0.57/0.59
   - collider: H2
-    epsLow: {A: 1.14, b: 0, Ea: 0}
-    epsHigh: {A: 1.23, b: 0, Ea: 0}
+    eps: [2.192,2.085] #1.14/0.52, 1.23/0.59
   - collider: CO
-    epsLow: {A: 1.39, b: 0, Ea: 0}
-    epsHigh: {A: 1.62, b: 0, Ea: 0}
+    eps: [2.673,2.746] #1.39/0.52, 1.62/0.59
   - collider: CH4
-    epsLow: {A: 3.48, b: 0, Ea: 0}
-    epsHigh: {A: 2.83, b: 0, Ea: 0}
+    eps: [6.692,4.797] #3.48/0.52, 2.83/0.59
+
+# Jasper faraday 2022
+- equation: CH4 (+M) <=> ?? # Ar reference collider
+  temperatures: [300,1000,2000]
+  collider-list:
+  - collider: He
+    eps: [1.01,1.70,2.56]
+  - collider: N2
+    eps: [1.02,1.10,1.28]
+  - collider: O2
+    eps: [1.09,1.19,1.33]
+  - collider: H2
+    eps: [2.29,3.31,4.09]
+  - collider: CO2
+    eps: [1.64,1.65,1.77]
+  - collider: CH4
+    eps: [2.98,4.66,5.11]
   - collider: H2O
-    epsLow: {A: 9.98, b: 0, Ea: 0}
-    epsHigh: {A: 6.70, b: 0, Ea: 0}
+    eps: [4.17,6.19,6.96]
+
+- equation: HCN (+M) <=> ?? # Ar reference collider
+  temperatures: [300,1000,2000]
+  collider-list:
+  - collider: N2
+    eps: [1.05,1.26,1.47]
+  - collider: H2O
+    eps: [4.24,4.87,5.56]
+
+- equation: NH3 (+M) <=> H + NH2 (+M) # Ar reference collider
+  temperatures: [300,1000,2000]
+  collider-list:
+  - collider: CH4
+    eps: [9.94,13.3,14.3]
