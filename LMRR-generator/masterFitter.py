@@ -18,23 +18,14 @@ class masterFitter:
         self.T_min = T_ls[0]
         self.T_max = T_ls[-1]
         self.M_only=M_only
-    
-        
-        # self.shortMech = yaml.safe_dump(shortMechanism,default_flow_style=None,sort_keys=False, allow_unicode=True)
-        # self.chemical_input = chemical_input
-        # self.keyReactions = keyReactions
 
-        # 1. Load the collider inputs and default file
-        collider_input = self.openyaml(self.inputFile)
+        input = self.openyaml(self.inputFile)
+        mech = self.openyaml(input['chemical-mechanism'])
         defaults = self.openyaml("data/thirdbodydefaults.yaml")
-
-        # 2. Load the chemical mechanism
-        mech = self.openyaml(collider_input['chemical-mechanism'])
-
-        # 3. Search for all pressure-dependent reactions
-        if len(self.findPdepReactions(mech))==0:
+        if len(self.pDepReactionList(mech))==0:
             print("No pressure-dependent reactions found in mechanism. Please choose another mechanism.")
         else:
+            self.shortMech = self.zippedMech(self,mech,input,defaults)
 
 
     
@@ -52,89 +43,74 @@ class masterFitter:
             return data
         return fix_no(data)
     
-    def findPdepReactions(self, mech):
-        idxs = []
-        for idx, reaction in enumerate(mech['reactions']):
+    def pDepReactionList(self, mech):
+        pDep_reactions = []
+        for reaction in mech['reactions']:
             if reaction['type'] == 'falloff'  and 'Troe' in reaction:
-                idxs.append(idx)
+                pDep_reactions.append(reaction)
             elif reaction['type'] == 'pressure-dependent-Arrhenius':
-                idxs.append(idx)
+                pDep_reactions.append(reaction)
             elif reaction['type'] == 'Chebyshev':
-                idxs.append(idx)
+                pDep_reactions.append(reaction)
             elif reaction['type'] == 'three-body':
-                idxs.append(idx)
-        return idxs
-    
-    def matchedReactions(self, mech, collider_input):
-        mech_idxs = self.findPdepReactions(mech)
-        matched1 = []
-        matched2 = []
-        for mech_idx in mech_idxs:
-            for input_idx, collider_reaction in enumerate(collider_input['reactions']):
-                if collider_reaction['equation'] == mech['reactions'][mech_idx]['equation']:
-                    # matched[collider_reaction['equation']] = [mech_idx,input_idx]
-                    matched1.append(input_idx)
-                    matched2.append(mech_idx)
-        return matched1, matched2
-    
-    # def matchedColliders(self, mech, collider_input):
-    #     if len(mech['phases'])>1:
-    #         print("Error: multiphase kinetics are not supported.")
-    #         return
-    #     else:
-    #         matched1 = []
-    #         matched2 = []
-    #         mech_species = mech['phases'][0]['species']
-    #         for i, collider_reaction in enumerate(collider_input['reactions']):
-    #             colList = []
-    #             for j, collider in enumerate(collider_reaction['collider-list']):
-    #                 if collider['collider'] in mech_species:
-    #                     colList.append(j)
-    #             # matched[collider_reaction['equation']]=colList
-    #             # matched.append((i,colList))
-    #             matched1.append(i)
-    #             matched2.append(colList)
-    #         return matched1, matched2
+                pDep_reactions.append(reaction)
+        return pDep_reactions
         
-    def zippedMech(self,mech,collider_input,defaults):
-        matchedReactionDefaults = self.matchedReactions(mech,defaults) # indices of Pdep expressions in mech that the user has also specified in their input
-        matchedReactions = self.matchedReactions(mech,collider_input) # indices of Pdep expressions in mech that the user has also specified in their input
-        # matchedColliderDefaults = self.matchedColliders(mech,defaults) # indices of colliders in each user-specified input reaction that are defined species in mech
-        # matchedColliders = self.matchedColliders(mech,collider_input) # indices of colliders in each user-specified input reaction that are defined species in mech
+    def zippedMech(self,mech,input,defaults):
+        pDepReactions = self.pDepReactionList(mech)
         shortMechanism={
             'units': mech['units'],
             'phases': mech['phases'],
             'species': shortMechanism['species'],
             'reactions': []
             }
-        for i, mech_rxn in enumerate(mech['reactions']):
-            if i in matchedReactionDefaults[1]: # the default doc contains efficiencies for this eqn
-                colliderList = []
-                if mech_rxn['type'] == 'pressure-dependent-Arrhenius': 
-                    colliderList.append({
-                        'collider': 'M',
-                        'eps': {'A': 1, 'b': 0, 'Ea': 0},
-                        'rate-constants': mech_rxn['rate-constants'],
-                    })
-                elif mech_rxn['type'] == 'falloff' and 'Troe' in mech_rxn: #add more lines for chebyshev and third-body types
-                    colliderList.append({
-                        'collider': 'M',
-                        'eps': {'A': 1, 'b': 0, 'Ea': 0},
-                        'low-P-rate-constant': mech_rxn['low-P-rate-constant'],
-                        'high-P-rate-constant': mech_rxn['high-P-rate-constant'],
-                        'Troe': mech_rxn['Troe'],
-                    })
-                
-                for j, default_rxn in enumerate(defaults['reactions']): #find the rxn in defaults corresponding to the one we're looking at in the mech
-                    if default_rxn['equation'] == mech_rxn['equation']:
-                        for col in default_rxn['collider-list']:
-                            if col in mech['phases'][0]['species']: #only add colliders defined as species atop the chemical mechanism
-                                colliderList.append({
-                                    'collider': col['collider'],
-                                    'eps': col['eps'],
-                                })
-            else:   
-                shortMechanism['reactions'].append(mech_rxn)
+        for mech_rxn in mech['reactions']:
+            for pDepRxn in pDepReactions:
+                if mech_rxn['equation'] == pDepRxn['equation']: # the current iteration corresponds to a p-dep reaction
+                    # Now check if default data exists for this p-dep reaction
+                    flag = False
+                    for inputRxn in input['reactions']:
+                        if inputRxn['equation'] == pDepRxn['equation']:
+                            # ADD CUSTOM COLLIDER INFO FOR THIS REACTION, OVERRIDING DEFAULTS IF NEEDED
+                            colliderList = self.addColliderList(self,mech,mech_rxn, inputRxn)
+                            shortMechanism['reactions'].append(colliderList)
+                            flag=True
+                    for defaultRxn in defaults['reactions']:
+                        if defaultRxn['equation'] == pDepRxn['equation']:
+                            # remove the colliders in each rxn that are common to both 
+                            colliderList = self.addColliderList(self,mech,mech_rxn, defaultRxn)
+                            shortMechanism['reactions'].append(colliderList)
+                            flag=True
+                    
+                    if flag == False:
+                        shortMechanism['reactions'].append(mech_rxn)
+                else:
+                    shortMechanism['reactions'].append(mech_rxn)
+        return shortMechanism
+    
+    def addColliderList(self,mech,rxn1, rxn2):
+        colliderList = []
+        if rxn1['type'] == 'pressure-dependent-Arrhenius': 
+            colliderList.append({
+                'collider': 'M',
+                'eps': {'A': 1, 'b': 0, 'Ea': 0},
+                'rate-constants': rxn1['rate-constants'],
+            })
+        elif rxn1['type'] == 'falloff' and 'Troe' in rxn1: #add more lines for chebyshev and third-body types
+            colliderList.append({
+                'collider': 'M',
+                'eps': {'A': 1, 'b': 0, 'Ea': 0},
+                'low-P-rate-constant': rxn1['low-P-rate-constant'],
+                'high-P-rate-constant': rxn1['high-P-rate-constant'],
+                'Troe': rxn1['Troe'],
+            })
+        for col in rxn2['collider-list']:
+            if col['collider'] in mech['phases'][0]['species']: #only add colliders defined as species atop the chemical mechanism
+                colliderList.append({
+                    'collider': col['collider'],
+                    'eps': col['eps'],
+                })
+        return colliderList
 
     def get_Xvec(self,reaction):
         Prange = self.P_ls
@@ -333,13 +309,13 @@ class masterFitter:
     
     def final_yaml(self,foutName,fit_fxn): # returns PLOG in LMRR YAML format
         newMechanism={
-                'units': self.chemical_input['units'],
-                'phases': self.chemical_input['phases'],
-                'species': self.chemical_input['species'],
+                'units': self.mech['units'],
+                'phases': self.mech['phases'],
+                'species': self.mech['species'],
                 'reactions': []
                 }
         sM = yaml.safe_load(self.shortMech)
-        for rxn in self.chemical_input['reactions']:
+        for rxn in self.mech['reactions']:
             if rxn['equation'] in self.keyReactions.keys():
                 colliderList=[]
                 for rxn2 in sM['reactions']:
