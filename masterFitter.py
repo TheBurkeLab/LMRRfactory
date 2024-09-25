@@ -1,8 +1,8 @@
 """
 Class that allows for fitting of rate constants at various temperatures and pressures (k(T,P))
 """
-# import sys, os
-# sys.path.append("C:/Users/pjsin/Documents/cantera/build/python")
+import sys, os
+sys.path.append("C:/Users/pjsin/Documents/cantera/build/python")
 import cantera as ct
 import numpy as np
 import pandas as pd
@@ -73,9 +73,6 @@ class masterFitter:
         self.shortMech = yaml.safe_dump(shortMechanism,default_flow_style=None,sort_keys=False, allow_unicode=True)
         self.chemical_input = chemical_input
         self.keyReactions = keyReactions
-
-        # with open("shortMech.yaml", 'w') as outfile:
-        #     yaml.dump(shortMechanism, outfile, default_flow_style=None,sort_keys=False)
     
     def openyaml(self,fname):
         with open(fname) as f:
@@ -189,7 +186,6 @@ class masterFitter:
             }
             def arrhenius(T, A, n, Ea):
                 return np.log(A) + n*np.log(T)+ (-Ea/(1.987*T))
-            # gas = ct.Solution("shortMech.yaml")
             gas = ct.Solution(yaml=self.shortMech)
             Xdict = self.get_Xdict(reaction)
             for i,P in enumerate(Xdict.keys()):
@@ -233,7 +229,6 @@ class masterFitter:
             logk_fit = np.log10(k0) + np.log10(M) + np.log10(ki) + logF - np.log10(ki + k0 * M)
             return logk_fit
         Xdict=self.get_Xdict(reaction)
-        # gas = ct.Solution("shortMech.yaml")
         gas = ct.Solution(yaml=self.shortMech)
         logk_list=[]
         for i,P in enumerate(Xdict.keys()):
@@ -268,15 +263,14 @@ class masterFitter:
         Xvec=self.get_Xvec(reaction)
         popt, pcov = curve_fit(f,Xvec,logk_list,p0=guess,maxfev=1000000,bounds=bounds)
         a0,n0,ea0,ai,ni,eai=popt[0],popt[1],popt[2],popt[3],popt[4],popt[5]
-        def sci(val):
-            # return f"{float(val):.3e}"
+        def numFmt(val):
             return round(float(val),3)
         if kTP=='on':
             colDict = {
                 'collider': label,
                 'eps': epsilon,
-                'low-P-rate-constant': {'A':sci(a0), 'b': sci(n0), 'Ea': sci(ea0)},
-                'high-P-rate-constant': {'A': sci(ai), 'b': sci(ni), 'Ea': sci(eai)},
+                'low-P-rate-constant': {'A':numFmt(a0), 'b': numFmt(n0), 'Ea': numFmt(ea0)},
+                'high-P-rate-constant': {'A': numFmt(ai), 'b': numFmt(ni), 'Ea': numFmt(eai)},
                 'Troe': {'A': round(float(popt[6]),3), 'T3': 1.0e-30, 'T1': 1.0e+30}
             }
         else:
@@ -295,7 +289,6 @@ class masterFitter:
                 'species': self.chemical_input['species'],
                 'reactions': []
                 }
-        # sM = self.openyaml("shortMech.yaml")
         sM = yaml.safe_load(self.shortMech)
         for rxn in self.chemical_input['reactions']:
             if rxn['equation'] in self.keyReactions.keys():
@@ -319,107 +312,28 @@ class masterFitter:
                 })
             else:
                 newMechanism['reactions'].append(rxn)
-
-        # shortMechanism={
-        #     'units': chemical_input['units'],
-        #     'phases': chemical_input['phases'],
-        #     'species': chemical_input['species'],
-        #     'reactions': []
-        #     }
-        # for i, rxn in enumerate(chemical_input['reactions']):
-        #     if rxn['equation'] in keyReactions.keys():
-        #         colliderList = []
-        #         if rxn['type'] == 'pressure-dependent-Arrhenius': 
-        #             colliderList.append({
-        #                 'collider': 'M',
-        #                 'eps': {'A': 1, 'b': 0, 'Ea': 0},
-        #                 'rate-constants': rxn['rate-constants'],
-        #             })
-        #         elif rxn['type'] == 'falloff' and 'Troe' in rxn:
-        #             colliderList.append({
-        #                 'collider': 'M',
-        #                 'eps': {'A': 1, 'b': 0, 'Ea': 0},
-        #                 'low-P-rate-constant': rxn['low-P-rate-constant'],
-        #                 'high-P-rate-constant': rxn['high-P-rate-constant'],
-        #                 'Troe': rxn['Troe'],
-        #             })
-        #         for j, col in enumerate(keyReactions[rxn['equation']].keys()):
-        #             colliderList.append({
-        #                 'collider': col,
-        #                 'eps': keyReactions[rxn['equation']][col]
-        #             })
-        #         shortMechanism['reactions'].append({
-        #             'equation': rxn['equation'],
-        #             'type': 'linear-burke',
-        #             'collider-list': colliderList
-        #         })
-
-
-
-
-
-
         with open(foutName, 'w') as outfile:
             yaml.dump(newMechanism, outfile, default_flow_style=None,sort_keys=False)
-
-
-
-
-
-        # # output = StringIO()
-        # # idx=0
-        # # preambles=["preamble.txt","preamble_2.txt","preamble_3.txt","preamble_4.txt","preamble_5.txt","preamble_6.txt","preamble_7.txt"]
-        # # output.write(open('burkelab_SimScripts\\ChemicalMechanismCalculationScripts\\'+preambles[idx]).read())
-        # # output.write("\n")
-        # for reaction in self.reactions.keys():
-        #     # print(self.reactions.keys())
-        #     rxn=reaction.replace(" (+M)","")
-        #     output.write(f"- equation: {rxn}\n")
-        #     # output.write("  type: pressure-dependent-Arrhenius\n")
-        #     output.write("  type: LMR_R\n")
-        #     # if reaction == "2 NH2 (+M) <=> N2H4 (+M)" or reaction == "H + OH (+M) <=> H2O (+M)":
-        #     #     output.write("  units: {length: m, quantity: kmol, activation-energy: cal/mol}\n")
-        #     # output.write("  units: {length: m, quantity: kmol, activation-energy: cal/mol}\n")
-        #     output.write("  collider-list:\n")
-        #     # print(reaction)
-        #     for i, collider in enumerate(self.reactions[reaction].keys()):
-        #         # print(self.reactions[reaction].keys())
-        #         # print(collider)
-        #         if self.M_only == True:
-        #             if i == 0:
-        #                 output.write(f"  - collider: 'M' # {collider} is reference collider\n")
-        #                 output.write(f"    eps: "+self.reactions[reaction][collider]+"\n")
-        #                 # output.write(self.get_PLOG_table(reaction,collider).getvalue())
-        #                 output.write(fit_fxn(reaction,collider).getvalue())
-        #             else:
-        #                 output.write(f"  - collider: '{collider}'\n")
-        #                 output.write(f"    eps: "+self.reactions[reaction][collider]+"\n")
-        #         else:
-        #             if i == 0:
-        #                 output.write(f"  - collider: 'M' # {collider} is reference collider\n")
-        #             else:
-        #                 output.write(f"  - collider: '{collider}'\n")
-        #             output.write(f"    eps: "+self.reactions[reaction][collider]+"\n")
-        #             output.write(fit_fxn(reaction,collider).getvalue())  
-        #     # output.write("\n")
-        #     # idx+=1
-        #     # output.write(open('burkelab_SimScripts\\ChemicalMechanismCalculationScripts\\'+preambles[idx]).read())
-        #     # output.write("\n")
-        # fout = open(f"C:\\Users\\pjsin\\Documents\\cantera\\test\\data\\LMRtests\\{foutName}.yaml", "w")
-        # fout.write(output.getvalue())
-        # fout.close()
-
-
     def Troe(self,foutName): # returns PLOG in LMRR YAML format
         self.final_yaml(foutName,self.get_Troe_table)
-    
     def PLOG(self,foutName): # returns PLOG in LMRR YAML format
         self.final_yaml(foutName,self.get_PLOG_table)
-
     def cheb2D(self,foutName): # returns Chebyshev in LMRR YAML format
         self.final_yaml(foutName,self.get_cheb_table)
 
-    
+
+######################################################################
+
+# # INPUTS
+T_list=np.linspace(200,2000,100)
+# P_list=np.logspace(-12,12,num=120)
+P_list=np.logspace(-1,2,num=25)
+
+mF = masterFitter(T_list,P_list,"test\\inputs\\testinput.yaml",n_P=7,n_T=7,M_only=True)
+
+mF.Troe("LMRtest_Troe_M")
+mF.PLOG("LMRtest_PLOG_M")
+mF.cheb2D("LMRtest_cheb_M")
 
 # ###################################################
 # def makeplot(nom_liste,nom_fig):
@@ -492,26 +406,6 @@ class masterFitter:
 #         ax[idx].set_title(f"{title}: {reaction} (T=1000K)")
 #         ax[idx].legend()
 #     plt.savefig('burkelab_SimScripts/rate_constant_plots/'+nom_fig, dpi=1000, bbox_inches='tight')
-
-
-######################################################################3333
-
-
-# Note: some of the original rxns already have a PLOG table, which have more limited pressure ranges than the range being explored here (a limitation)
-# Note: not all of the Troe entries in yaml sandbox must have efficiencies specified for all colliders (a limitation)
-
-# # INPUTS
-T_list=np.linspace(200,2000,50)
-# P_list=np.logspace(-12,12,num=120)
-P_list=np.logspace(-1,2,num=12)
-
-# mF = masterFitter(T_list,P_list,"test\\inputs\\testinput.yaml",n_P=4,n_T=4,M_only=True)
-mF = masterFitter(T_list,P_list,"test//inputs//testinput.yaml",n_P=4,n_T=4,M_only=True)
-# mF = masterFitter(T_list,P_list,'//Users//pjsingal//Documents\\LMRR-generator\\test\\inputs\\testinput.yaml',n_P=4,n_T=4,M_only=True)
-
-mF.Troe("LMRtest_Troe_M")
-# mF.PLOG("LMRtest_PLOG_M")
-# mF.cheb2D("LMRtest_cheb_M")
 
 # makeplot(["LMRtest_PLOG_M","LMRtest_Troe_M","LMRtest_cheb_M"],f'Plog_Troe_Cheb_fixedT.png')
 # makeplot(["LMRtest_PLOG_M","LMRtest_Troe_M","LMRtest_cheb_M"],f'Plog_Troe_Cheb_fixedT.svg')
