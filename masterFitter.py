@@ -1,8 +1,8 @@
 """
 Class that allows for fitting of rate constants at various temperatures and pressures (k(T,P))
 """
-import sys, os
-sys.path.append("C:/Users/pjsin/Documents/cantera/build/python")
+# import sys, os
+# sys.path.append("C:/Users/pjsin/Documents/cantera/build/python")
 import cantera as ct
 import numpy as np
 import pandas as pd
@@ -70,12 +70,12 @@ class masterFitter:
                     'type': 'linear-burke',
                     'collider-list': colliderList
                 })
-        # self.shortMech = yaml.safe_dump(shortMechanism,default_flow_style=None,sort_keys=False, allow_unicode=True)
+        self.shortMech = yaml.safe_dump(shortMechanism,default_flow_style=None,sort_keys=False, allow_unicode=True)
         self.chemical_input = chemical_input
         self.keyReactions = keyReactions
 
-        with open("shortMech.yaml", 'w') as outfile:
-            yaml.dump(shortMechanism, outfile, default_flow_style=None,sort_keys=False)
+        # with open("shortMech.yaml", 'w') as outfile:
+        #     yaml.dump(shortMechanism, outfile, default_flow_style=None,sort_keys=False)
     
     def openyaml(self,fname):
         with open(fname) as f:
@@ -107,7 +107,8 @@ class masterFitter:
         return Xdict
 
     def get_YAML_kTP(self,reaction,collider):
-        gas = ct.Solution("shortMech.yaml")
+        # gas = ct.Solution("shortMech.yaml")
+        gas = ct.Solution(yaml=self.shortMech)
         k_TP = []
         for T in self.T_ls:
             temp = []
@@ -188,7 +189,8 @@ class masterFitter:
             }
             def arrhenius(T, A, n, Ea):
                 return np.log(A) + n*np.log(T)+ (-Ea/(1.987*T))
-            gas = ct.Solution("shortMech.yaml")
+            # gas = ct.Solution("shortMech.yaml")
+            gas = ct.Solution(yaml=self.shortMech)
             Xdict = self.get_Xdict(reaction)
             for i,P in enumerate(Xdict.keys()):
                 k_list = []
@@ -231,7 +233,8 @@ class masterFitter:
             logk_fit = np.log10(k0) + np.log10(M) + np.log10(ki) + logF - np.log10(ki + k0 * M)
             return logk_fit
         Xdict=self.get_Xdict(reaction)
-        gas = ct.Solution("shortMech.yaml")
+        # gas = ct.Solution("shortMech.yaml")
+        gas = ct.Solution(yaml=self.shortMech)
         logk_list=[]
         for i,P in enumerate(Xdict.keys()):
             for j,T in enumerate(Xdict[P]):
@@ -292,8 +295,8 @@ class masterFitter:
                 'species': self.chemical_input['species'],
                 'reactions': []
                 }
-        sM = self.openyaml("shortMech.yaml")
-        # sM = yaml.safe_load(self.shortMech)
+        # sM = self.openyaml("shortMech.yaml")
+        sM = yaml.safe_load(self.shortMech)
         for rxn in self.chemical_input['reactions']:
             if rxn['equation'] in self.keyReactions.keys():
                 colliderList=[]
@@ -502,10 +505,13 @@ T_list=np.linspace(200,2000,50)
 # P_list=np.logspace(-12,12,num=120)
 P_list=np.logspace(-1,2,num=12)
 
-mF = masterFitter(T_list,P_list,"test\\inputs\\testinput.yaml",n_P=4,n_T=4,M_only=True)
+# mF = masterFitter(T_list,P_list,"test\\inputs\\testinput.yaml",n_P=4,n_T=4,M_only=True)
+mF = masterFitter(T_list,P_list,"test//inputs//testinput.yaml",n_P=4,n_T=4,M_only=True)
+# mF = masterFitter(T_list,P_list,'//Users//pjsingal//Documents\\LMRR-generator\\test\\inputs\\testinput.yaml',n_P=4,n_T=4,M_only=True)
+
 mF.Troe("LMRtest_Troe_M")
-mF.PLOG("LMRtest_PLOG_M")
-mF.cheb2D("LMRtest_cheb_M")
+# mF.PLOG("LMRtest_PLOG_M")
+# mF.cheb2D("LMRtest_cheb_M")
 
 # makeplot(["LMRtest_PLOG_M","LMRtest_Troe_M","LMRtest_cheb_M"],f'Plog_Troe_Cheb_fixedT.png')
 # makeplot(["LMRtest_PLOG_M","LMRtest_Troe_M","LMRtest_cheb_M"],f'Plog_Troe_Cheb_fixedT.svg')
