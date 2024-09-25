@@ -1,126 +1,90 @@
-# import tools.yamlParser as parse
-# import sys, os
-# sys.path.append("C:\\Users\\pjsin\\Documents\\ext")
-import ext.pyyaml.yaml as yaml
-# from io import StringIO
+import masterFitter
+import numpy as np
 
-#collider_input = "test\\inputs\\testinput.yaml"
+######################################################################
 
-class masterFitter:
-    def __init__(self, T_ls, P_ls, reactions, collider_input,n_P=7, n_T=7, M_only=False):
-        self.T_ls = T_ls
-        self.P_ls = P_ls
-        self.n_P=n_P
-        self.n_T=n_T
-        # self.collider = collider
-        # self.reaction=reaction
-        self.reactions=reactions
-        self.collider_input = collider_input
-        self.P_min = P_ls[0]
-        self.P_max = P_ls[-1]
-        self.T_min = T_ls[0]
-        self.T_max = T_ls[-1]
-        # self.colours = colours
-        self.M_only=M_only
-        # self.P_ls_Troe=np.logspace(-1,3,num=60)
-        # self.P_ls_Troe=P_ls
+# # INPUTS
+T_list=np.linspace(200,2000,100)
+# P_list=np.logspace(-12,12,num=120)
+P_list=np.logspace(-1,2,num=25)
 
-    def short_mech(self): # creates a version of Alzueta that only has the rxns for which we have eps_i vals
-        def openyaml(fname):
-            with open(fname) as f:
-                return yaml.safe_load(f)
-        keyReactions = {}
-        collider_input = openyaml(self.collider_input)
-        for rxn in collider_input['reactions']:
-            newdict={}
-            for collider in rxn['colliders']:
-                newdict[list(collider.keys())[0]]=collider[list(collider.keys())[0]]
-                # val = str(list(collider.values())[0])
-                # val2=val.replace("'","")
-                # newdict[list(collider.keys())[0]]=val2
-            keyReactions[rxn['equation']]=newdict
+mF = masterFitter(T_list,P_list,"test\\inputs\\testinput.yaml",n_P=7,n_T=7,M_only=True)
 
+mF.Troe("LMRtest_Troe_M")
+mF.PLOG("LMRtest_PLOG_M")
+mF.cheb2D("LMRtest_cheb_M")
 
-        chemical_input = openyaml(collider_input['chemical-mechanism'])
-        if len(chemical_input['phases'])>1:
-            print("Error: multiphase kinetics are not supported.")
+# ###################################################
+# def makeplot(nom_liste,nom_fig):
+#     colours=[(np.random.rand(), np.random.rand(), np.random.rand()) for _ in range(30)]
+#     # PLOTTING ACROSS P AT FIXED T 
+#     titles=["Reaction_13","Reaction_16","Reaction_25","Reaction_72","Reaction_90","Reaction_167"]
+#     indices=[(0,0),(0,1),(1,0),(1,1),(2,0),(2,1)]
+#     f, ax = plt.subplots(3, 2, figsize=(10, 10)) 
+#     # titles=["Reaction_13","Reaction_16","Reaction_25","Reaction_90"]
+#     # indices=[(0,0),(0,1),(1,0),(1,1)]
+#     # f, ax = plt.subplots(2, 2, figsize=(10, 10)) 
+#     plt.subplots_adjust(wspace=0.2)
+#     mpl.rc('font',family='Times New Roman')
+#     mpl.rcParams['mathtext.fontset'] = 'stix'
+#     mpl.rcParams['font.size'] = 5
+#     mpl.rcParams['xtick.labelsize'] = 5
+#     mpl.rcParams['ytick.labelsize'] = 5
+#     from matplotlib.legend_handler import HandlerTuple
+#     plt.rcParams['axes.labelsize'] = 5
+#     def get_kTP(fname,P_ls,T_ls,X,reaction,type,linestyle,marker,j,zorder,idx,mkrsz=1.5,reverse=False):
+#         gas = ct.Solution(fname)
+#         k_TP = []
+#         for i,P in enumerate(P_ls):
+#             # temp = []
+#             # for P in P_ls:
+#             gas.TPX = T_ls[0], P*ct.one_atm, {X:1.0}
+#             if reverse==True:
+#                 k_TP.append(gas.reverse_rate_constants[gas.reaction_equations().index(reaction)])
+#             else:
+#                 k_TP.append(gas.forward_rate_constants[gas.reaction_equations().index(reaction)])
+#         ax[idx].loglog(P_ls,k_TP, linestyle=linestyle,linewidth=1,markersize=mkrsz,markeredgewidth=0.6,marker=marker,fillstyle="none",label=f'{X}: {type}',color=colours[j],zorder=zorder)
 
-        shortMechanism={
-            'units': chemical_input['units'],
-            'phases': chemical_input['phases'],
-            'species': chemical_input['species'],
-            'reactions': []
-            }
+#     def get_kTPoriginal(fname,P_ls,T_ls,reaction,type,linestyle,marker,j,zorder,idx,mkrsz=1.5,reverse=False):
+#         gas = ct.Solution(fname)
+#         k_TP = []
+#         for i,P in enumerate(P_ls):
+#             # temp = []
+#             # for P in P_ls:
+#             gas.TPX = T_ls[0], P*ct.one_atm, {"AR":1.0}
+#             if reverse==True:
+#                 k_TP.append(gas.reverse_rate_constants[gas.reaction_equations().index(reaction)])
+#             else:
+#                 k_TP.append(gas.forward_rate_constants[gas.reaction_equations().index(reaction)])
+#         ax[idx].loglog(P_ls,k_TP, linestyle=linestyle,linewidth=1,markersize=mkrsz,markeredgewidth=0.6,marker=marker,fillstyle="none",label=f'{type}',color="k",zorder=zorder)
 
-        for i, rxn in enumerate(chemical_input['reactions']):
-            if rxn['equation'] in keyReactions.keys():
-                colliderList = []
-                if rxn['type'] == 'pressure-dependent-Arrhenius': 
-                    colliderList.append({
-                        'collider': 'M',
-                        'eps': {'A': 1, 'b': 0, 'Ea': 0},
-                        'rate-constants': rxn['rate-constants'],
-                    })
-                elif rxn['type'] == 'falloff' and 'Troe' in rxn:
-                    colliderList.append({
-                        'collider': 'M',
-                        'eps': {'A': 1, 'b': 0, 'Ea': 0},
-                        'low-P-rate-constant': rxn['low-P-rate-constant'],
-                        'high-P-rate-constant': rxn['high-P-rate-constant'],
-                        'Troe': rxn['Troe'],
-                    })
-                for j, col in enumerate(keyReactions[rxn['equation']].keys()):
-                    colliderList.append({
-                        'collider': col,
-                        'eps': keyReactions[rxn['equation']][col]
-                    })
-                shortMechanism['reactions'].append({
-                    'equation': rxn['equation'],
-                    'type': 'linear-burke',
-                    'collider-list': colliderList
-                })
-        return shortMechanism
-    
+#     T_ls=[1000]
 
+#     nom_PLOG=nom_liste[0]
+#     nom_troe=nom_liste[1]
+#     nom_cheb=nom_liste[2]
+#     # nom_cheb="LMRtest_cheb_M"
+#     for j,reaction in enumerate(reactions.keys()):
+#         title=titles[j]
+#         colliders = reactions[reaction].keys()
+#         idx=indices[j]
+#         lwr=-1
+#         hgr=2
+#         fname=f'C:\\Users\\pjsin\\Documents\\cantera\\test\\data\\sandbox_substituted.yaml'
+#         get_kTPoriginal(fname,np.logspace(lwr,hgr,num=10),T_ls,reaction,"Original","none","o","k",100,idx,mkrsz=4)
+#         fname=f'C:\\Users\\pjsin\\Documents\\cantera\\test\\data\\alzuetamechanism_LMRR.yaml'
+#         get_kTPoriginal(fname,np.logspace(lwr,hgr,num=10),T_ls,reaction,"Singal","none","x","k",75,idx,mkrsz=4)
+#         for j, X in enumerate(colliders):
+#             fname=f'C:\\Users\\pjsin\\Documents\\cantera\\test\\data\\LMRtests\\{nom_PLOG}.yaml'
+#             get_kTP(fname,np.logspace(lwr,hgr,num=60),T_ls,X,reaction.replace(" (+M)",""),"PLOG","-","none",j,1,idx)
+#             fname=f'C:\\Users\\pjsin\\Documents\\cantera\\test\\data\\LMRtests\\{nom_troe}.yaml'
+#             get_kTP(fname,np.logspace(lwr,hgr,num=60),T_ls,X,reaction.replace(" (+M)",""),"Troe",":","none",j,50,idx)
+#             fname=f'C:\\Users\\pjsin\\Documents\\cantera\\test\\data\\LMRtests\\{nom_cheb}.yaml'
+#             get_kTP(fname,np.logspace(lwr,hgr,num=30),T_ls,X,reaction.replace(" (+M)",""),"Cheb","none","s",j,75,idx)
 
-        with open('shortdata.yml', 'w') as outfile:
-            yaml.dump(shortMechanism, outfile, default_flow_style=None,sort_keys=False)
+#         ax[idx].set_title(f"{title}: {reaction} (T=1000K)")
+#         ax[idx].legend()
+#     plt.savefig('burkelab_SimScripts/rate_constant_plots/'+nom_fig, dpi=1000, bbox_inches='tight')
 
-
-    def 
-
-
-    
-
-    for i, rxn in enumerate(chemical_input['reactions']):
-        if rxn['equation'] in keyReactions.keys():
-            colliderList = []
-            if rxn['type'] == 'pressure-dependent-Arrhenius': 
-                colliderList.append({
-                    'collider': 'M',
-                    'eps': {'A': 1, 'b': 0, 'Ea': 0},
-                    'rate-constants': rxn['rate-constants'],
-                })
-            elif rxn['type'] == 'falloff' and 'Troe' in rxn:
-                colliderList.append({
-                    'collider': 'M',
-                    'eps': {'A': 1, 'b': 0, 'Ea': 0},
-                    'low-P-rate-constant': rxn['low-P-rate-constant'],
-                    'high-P-rate-constant': rxn['high-P-rate-constant'],
-                    'Troe': rxn['Troe'],
-                })
-            for j, col in enumerate(keyReactions[rxn['equation']].keys()):
-                colliderList.append({
-                    'collider': col,
-                    'eps': keyReactions[rxn['equation']][col]
-                })
-            newMechanism['reactions'].append({
-                'equation': rxn['equation'],
-                'type': 'linear-burke',
-                'collider-list': colliderList
-            })
-        else:
-            newMechanism['reactions'].append(rxn)
-
-    with open('data.yml', 'w') as outfile:
-        yaml.dump(newMechanism, outfile, default_flow_style=None,sort_keys=False)
+# makeplot(["LMRtest_PLOG_M","LMRtest_Troe_M","LMRtest_cheb_M"],f'Plog_Troe_Cheb_fixedT.png')
+# makeplot(["LMRtest_PLOG_M","LMRtest_Troe_M","LMRtest_cheb_M"],f'Plog_Troe_Cheb_fixedT.svg')
