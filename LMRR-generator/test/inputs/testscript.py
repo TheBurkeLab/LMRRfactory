@@ -1,4 +1,4 @@
-import masterFitter
+import masterFitter as masterFitter
 import numpy as np
 
 ######################################################################
