@@ -19,9 +19,9 @@ class masterFitter:
         self.T_max = T_ls[-1]
         self.M_only=M_only
 
-        input = self.openyaml(self.inputFile)
+        input = self.openyaml(inputFile)
         mech = self.openyaml(input['chemical-mechanism'])
-        defaults = self.openyaml("data/thirdbodydefaults.yaml")
+        defaults = self.openyaml("LMRR-generator/data/thirdbodydefaults.yaml")
         if len(self.pDepReactionList(mech))==0:
             print("No pressure-dependent reactions found in mechanism. Please choose another mechanism.")
         else:
@@ -360,3 +360,16 @@ class masterFitter:
         self.final_yaml(foutName,self.get_PLOG_table)
     def cheb2D(self,foutName): # returns Chebyshev in LMRR YAML format
         self.final_yaml(foutName,self.get_cheb_table)
+
+
+
+# # INPUTS
+T_list=np.linspace(200,2000,100)
+# P_list=np.logspace(-12,12,num=120)
+P_list=np.logspace(-1,2,num=25)
+
+mF = masterFitter(T_list,P_list,"LMRR-generator\\test\\inputs\\testinput.yaml",n_P=7,n_T=7,M_only=True)
+
+mF.Troe("LMRtest_Troe_M")
+mF.PLOG("LMRtest_PLOG_M")
+mF.cheb2D("LMRtest_cheb_M")
