@@ -1,19 +1,19 @@
 """
 Class that allows for fitting of rate constants at various temperatures and pressures (k(T,P))
 """
-import sys, os
-sys.path.append("C:/Users/pjsin/Documents/cantera/build/python")
-import cantera as ct
-import numpy as np
-import pandas as pd
-import matplotlib.pyplot as plt
-from numpy.polynomial.chebyshev import chebval
-import scipy.optimize
-from scipy.optimize import curve_fit
-from io import StringIO
-import matplotlib as mpl
+# import sys, os
+# sys.path.append("C:/Users/pjsin/Documents/cantera/build/python")
+import ext.cantera.cantera as ct
+import ext.numpy.numpy as np
+# import pandas as pd
+# import matplotlib.pyplot as plt
+# from numpy.polynomial.chebyshev import chebval
+# import scipy.optimize
+from ext.scipy.scipy.optimize import curve_fit
+# from io import StringIO
+# import matplotlib as mpl
 import ext.pyyaml.yaml as yaml
-import re
+# import re
 
 class masterFitter:
     def __init__(self, T_ls, P_ls, inputFile,n_P=7, n_T=7, M_only=False):
