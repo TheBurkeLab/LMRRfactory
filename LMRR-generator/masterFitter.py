@@ -19,45 +19,62 @@ class masterFitter:
         self.T_max = T_ls[-1]
         self.M_only=M_only
 
-        input = self.openyaml(inputFile)
-        mech = self.openyaml(input['chemical-mechanism'])
-        defaults = self.openyaml("LMRR-generator/data/thirdbodydefaults.yaml")
-        if len(self.pDepReactionList(mech))==0:
+        self.input = self.openyaml(inputFile)
+        self.mech = self.openyaml(self.input['chemical-mechanism'])
+        self.defaults = self.openyaml("LMRR-generator/data/thirdbodydefaults.yaml")
+
+        self.pDepReactions = []
+        for reaction in self.mech['reactions']:
+            if reaction.get('type') == 'falloff'  and 'Troe' in reaction:
+                self.pDepReactions.append(reaction)
+            elif reaction.get('type') == 'pressure-dependent-Arrhenius':
+                self.pDepReactions.append(reaction)
+            elif reaction.get('type') == 'Chebyshev':
+                self.pDepReactions.append(reaction)
+            elif reaction.get('type') == 'three-body':
+                self.pDepReactions.append(reaction)
+
+        if len(self.pDepReactions)==0:
             print("No pressure-dependent reactions found in mechanism. Please choose another mechanism.")
         else:
-            self.shortMech = self.zippedMech(self,mech,input,defaults)
+            self.shortMech = self.zippedMech()
 
-    def zippedMech(self,mech,input,defaults):
-        pDepReactions = self.pDepReactionList(mech)
-        defaults2 = self.deleteDuplicates(input,defaults)
+    def zippedMech(self):
+        defaults2 = yaml.safe_load(self.deleteDuplicates())
+        with open("defaults2.yaml", 'w') as outfile:
+            yaml.safe_dump(defaults2, outfile, default_flow_style=None,sort_keys=False)
         shortMechanism={
-            'units': mech['units'],
-            'phases': mech['phases'],
-            'species': shortMechanism['species'],
+            'units': self.mech['units'],
+            'phases': self.mech['phases'],
+            'species': self.mech['species'],
             'reactions': []
             }
-        for mech_rxn in mech['reactions']:
-            for pDepRxn in pDepReactions:
+        for mech_rxn in self.mech['reactions']:
+            for pDepRxn in self.pDepReactions:
                 if mech_rxn['equation'] == pDepRxn['equation']: # the current iteration corresponds to a p-dep reaction
                     # Now check if default data exists for this p-dep reaction
                     counter = 0
-                    for inputRxn in input['reactions']:
+                    for inputRxn in self.input['reactions']:
                         if inputRxn['equation'] == pDepRxn['equation']:
                             # ADD CUSTOM COLLIDER INFO FOR THIS REACTION, OVERRIDING DEFAULTS IF NEEDED
-                            colliderList = self.addColliderList(self,mech,mech_rxn, inputRxn)
-                            shortMechanism['reactions'].append(colliderList)
+                            colliderList = self.addColliderList(mech_rxn, inputRxn)
                             counter+=1
                     for defaultRxn in defaults2['reactions']:
                         if defaultRxn['equation'] == pDepRxn['equation']:
                             # remove the colliders in each rxn that are common to both 
-                            colliderList = self.addColliderList(self,mech,mech_rxn, defaultRxn)
-                            shortMechanism['reactions'].append(colliderList)
+                            colliderList = self.addColliderList(mech_rxn, defaultRxn)
                             counter+=1
-                    if counter==0:
+                    if counter!=0:
+                        shortMechanism['reactions'].append({
+                            'equation': mech_rxn['equation'],
+                            'type': 'linear-burke',
+                            'collider-list': colliderList
+                            })
+                    else:
                         shortMechanism['reactions'].append(mech_rxn)
                 else:
                     shortMechanism['reactions'].append(mech_rxn)
-        return shortMechanism
+        return yaml.safe_dump(shortMechanism,default_flow_style=None,sort_keys=False, allow_unicode=True)
     
     def openyaml(self,fname):
         with open(fname) as f:
@@ -72,38 +89,30 @@ class masterFitter:
             return data
         return fix_no(data)
     
-    def pDepReactionList(self, mech):
-        pDep_reactions = []
-        for reaction in mech['reactions']:
-            if reaction['type'] == 'falloff'  and 'Troe' in reaction:
-                pDep_reactions.append(reaction)
-            elif reaction['type'] == 'pressure-dependent-Arrhenius':
-                pDep_reactions.append(reaction)
-            elif reaction['type'] == 'Chebyshev':
-                pDep_reactions.append(reaction)
-            elif reaction['type'] == 'three-body':
-                pDep_reactions.append(reaction)
-        return pDep_reactions
-    
-    def deleteDuplicates(self,input,defaults):
+    def deleteDuplicates(self):
         defaults2 = {'reactions': []}
-        for defaultRxn in defaults['reactions']:
-            for inputRxn in input['reactions']:
+        for defaultRxn in self.defaults['reactions']:
+            # flag = False
+            for inputRxn in self.input['reactions']:
                 if inputRxn['equation']==defaultRxn['equation']:
-                    newColliderList = defaultRxn['collider-list']
-                    for i, defaultCol in enumerate(defaultRxn['collider-list']):
-                        for inputCol in inputRxn['collider-list']:
-                            if inputCol['collider']==defaultCol['collider']:
-                                newColliderList.pop(i)
-                    defaults2['reactions'].append({
-                        'equation': defaultRxn['equation'],
-                        'collider-list': newColliderList
-                    })
+                    # newColliderList = defaultRxn['collider-list']
+                    newColliderList = []
+                    for defaultCol in defaultRxn['collider-list']:
+                        if not any(inputCol['collider'] == defaultCol['collider'] for inputCol in inputRxn['collider-list']):
+                            newColliderList.append(defaultCol)
+                    if newColliderList:
+                        # flag=True
+                        defaults2['reactions'].append({
+                            'equation': defaultRxn['equation'],
+                            'collider-list': newColliderList
+                        })
+                # if flag ==False:
                 else:
                     defaults2['reactions'].append(defaultRxn)
-        return defaults2
+        return yaml.safe_dump(defaults2,default_flow_style=None,sort_keys=False, allow_unicode=True)
+        # return defaults2
     
-    def addColliderList(self,mech,rxn1, rxn2):
+    def addColliderList(self,rxn1, rxn2):
         colliderList = []
         if rxn1['type'] == 'pressure-dependent-Arrhenius': 
             colliderList.append({
@@ -120,7 +129,7 @@ class masterFitter:
                 'Troe': rxn1['Troe'],
             })
         for col in rxn2['collider-list']:
-            if col['collider'] in mech['phases'][0]['species']: #only add colliders defined as species atop the chemical mechanism
+            if col['collider'] in self.mech['phases'][0]['species']: #only add colliders defined as species atop the chemical mechanism
                 colliderList.append({
                     'collider': col['collider'],
                     'eps': col['eps'],
@@ -321,7 +330,6 @@ class masterFitter:
         return colDict
     
     
-    
     def final_yaml(self,foutName,fit_fxn): # returns PLOG in LMRR YAML format
         newMechanism={
                 'units': self.mech['units'],
@@ -329,31 +337,29 @@ class masterFitter:
                 'species': self.mech['species'],
                 'reactions': []
                 }
-        sM = yaml.safe_load(self.shortMech)
-        for rxn in self.mech['reactions']:
-            if rxn['equation'] in self.keyReactions.keys():
-                colliderList=[]
-                for rxn2 in sM['reactions']:
-                    if rxn2['equation']==rxn['equation']:
-                        for j, col in enumerate(self.keyReactions[rxn['equation']].keys()):
-                            if j == 0:
-                                eps = self.keyReactions[rxn['equation']][col]
-                                colliderList.append(fit_fxn(rxn2,col,"M",eps,kTP='on'))
-                            elif len(list(rxn2['collider-list'][j].keys()))>2:
-                                eps = self.keyReactions[rxn['equation']][col]
-                                colliderList.append(fit_fxn(rxn2,col,col,eps,kTP='on'))
-                            else:
-                                eps = self.keyReactions[rxn['equation']][col]
-                                colliderList.append(fit_fxn(rxn2,col,col,eps,kTP='off'))
-                newMechanism['reactions'].append({
-                    'equation': rxn['equation'],
-                    'type': 'linear-burke',
-                    'collider-list': colliderList
-                })
-            else:
-                newMechanism['reactions'].append(rxn)
-        with open(foutName, 'w') as outfile:
-            yaml.dump(newMechanism, outfile, default_flow_style=None,sort_keys=False)
+        # sM = yaml.safe_load(self.shortMech)
+        sM = self.shortMech
+        for mechRxn in self.mech['reactions']:
+            for shortMechRxn in self.shortMech['reactions']:
+                if mechRxn['equation']==shortMechRxn['equation']:
+                    colliderList=[]
+                    for j, col in enumerate(shortMechRxn['collider-list']):
+                        if j == 0:
+                            colliderList.append(fit_fxn(shortMechRxn,col['collider'],"M",col['eps'],kTP='on'))
+                        elif len(list(shortMechRxn['collider-list'][j].keys()))>2:
+                            colliderList.append(fit_fxn(shortMechRxn,col['collider'],col['collider'],col['eps'],kTP='on'))
+                        else:
+                            colliderList.append(fit_fxn(shortMechRxn,col['collider'],col['collider'],col['eps'],kTP='off'))
+                    newMechanism['reactions'].append({
+                        'equation': mechRxn['equation'],
+                        'type': 'linear-burke',
+                        'collider-list': colliderList
+                    })
+                else:
+                    newMechanism['reactions'].append(mechRxn)
+            with open(foutName, 'w') as outfile:
+                yaml.dump(newMechanism, outfile, default_flow_style=None,sort_keys=False)
+
     def Troe(self,foutName): # returns PLOG in LMRR YAML format
         self.final_yaml(foutName,self.get_Troe_table)
     def PLOG(self,foutName): # returns PLOG in LMRR YAML format
@@ -371,5 +377,5 @@ P_list=np.logspace(-1,2,num=25)
 mF = masterFitter(T_list,P_list,"LMRR-generator\\test\\inputs\\testinput.yaml",n_P=7,n_T=7,M_only=True)
 
 mF.Troe("LMRtest_Troe_M")
-mF.PLOG("LMRtest_PLOG_M")
-mF.cheb2D("LMRtest_cheb_M")
+# mF.PLOG("LMRtest_PLOG_M")
+# mF.cheb2D("LMRtest_cheb_M")
