@@ -27,8 +27,37 @@ class masterFitter:
         else:
             self.shortMech = self.zippedMech(self,mech,input,defaults)
 
-
-    
+    def zippedMech(self,mech,input,defaults):
+        pDepReactions = self.pDepReactionList(mech)
+        defaults2 = self.deleteDuplicates(input,defaults)
+        shortMechanism={
+            'units': mech['units'],
+            'phases': mech['phases'],
+            'species': shortMechanism['species'],
+            'reactions': []
+            }
+        for mech_rxn in mech['reactions']:
+            for pDepRxn in pDepReactions:
+                if mech_rxn['equation'] == pDepRxn['equation']: # the current iteration corresponds to a p-dep reaction
+                    # Now check if default data exists for this p-dep reaction
+                    counter = 0
+                    for inputRxn in input['reactions']:
+                        if inputRxn['equation'] == pDepRxn['equation']:
+                            # ADD CUSTOM COLLIDER INFO FOR THIS REACTION, OVERRIDING DEFAULTS IF NEEDED
+                            colliderList = self.addColliderList(self,mech,mech_rxn, inputRxn)
+                            shortMechanism['reactions'].append(colliderList)
+                            counter+=1
+                    for defaultRxn in defaults2['reactions']:
+                        if defaultRxn['equation'] == pDepRxn['equation']:
+                            # remove the colliders in each rxn that are common to both 
+                            colliderList = self.addColliderList(self,mech,mech_rxn, defaultRxn)
+                            shortMechanism['reactions'].append(colliderList)
+                            counter+=1
+                    if counter==0:
+                        shortMechanism['reactions'].append(mech_rxn)
+                else:
+                    shortMechanism['reactions'].append(mech_rxn)
+        return shortMechanism
     
     def openyaml(self,fname):
         with open(fname) as f:
@@ -55,38 +84,24 @@ class masterFitter:
             elif reaction['type'] == 'three-body':
                 pDep_reactions.append(reaction)
         return pDep_reactions
-        
-    def zippedMech(self,mech,input,defaults):
-        pDepReactions = self.pDepReactionList(mech)
-        shortMechanism={
-            'units': mech['units'],
-            'phases': mech['phases'],
-            'species': shortMechanism['species'],
-            'reactions': []
-            }
-        for mech_rxn in mech['reactions']:
-            for pDepRxn in pDepReactions:
-                if mech_rxn['equation'] == pDepRxn['equation']: # the current iteration corresponds to a p-dep reaction
-                    # Now check if default data exists for this p-dep reaction
-                    flag = False
-                    for inputRxn in input['reactions']:
-                        if inputRxn['equation'] == pDepRxn['equation']:
-                            # ADD CUSTOM COLLIDER INFO FOR THIS REACTION, OVERRIDING DEFAULTS IF NEEDED
-                            colliderList = self.addColliderList(self,mech,mech_rxn, inputRxn)
-                            shortMechanism['reactions'].append(colliderList)
-                            flag=True
-                    for defaultRxn in defaults['reactions']:
-                        if defaultRxn['equation'] == pDepRxn['equation']:
-                            # remove the colliders in each rxn that are common to both 
-                            colliderList = self.addColliderList(self,mech,mech_rxn, defaultRxn)
-                            shortMechanism['reactions'].append(colliderList)
-                            flag=True
-                    
-                    if flag == False:
-                        shortMechanism['reactions'].append(mech_rxn)
+    
+    def deleteDuplicates(self,input,defaults):
+        defaults2 = {'reactions': []}
+        for defaultRxn in defaults['reactions']:
+            for inputRxn in input['reactions']:
+                if inputRxn['equation']==defaultRxn['equation']:
+                    newColliderList = defaultRxn['collider-list']
+                    for i, defaultCol in enumerate(defaultRxn['collider-list']):
+                        for inputCol in inputRxn['collider-list']:
+                            if inputCol['collider']==defaultCol['collider']:
+                                newColliderList.pop(i)
+                    defaults2['reactions'].append({
+                        'equation': defaultRxn['equation'],
+                        'collider-list': newColliderList
+                    })
                 else:
-                    shortMechanism['reactions'].append(mech_rxn)
-        return shortMechanism
+                    defaults2['reactions'].append(defaultRxn)
+        return defaults2
     
     def addColliderList(self,mech,rxn1, rxn2):
         colliderList = []
