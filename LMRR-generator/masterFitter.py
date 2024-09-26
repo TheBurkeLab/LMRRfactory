@@ -23,16 +23,21 @@ class masterFitter:
         self.mech = self.openyaml(self.input['chemical-mechanism'])
         self.defaults = self.openyaml("LMRR-generator/data/thirdbodydefaults.yaml")
 
+        self.pDepReactionNames=[]
         self.pDepReactions = []
         for reaction in self.mech['reactions']:
             if reaction.get('type') == 'falloff'  and 'Troe' in reaction:
                 self.pDepReactions.append(reaction)
+                self.pDepReactionNames.append(reaction['equation'])
             elif reaction.get('type') == 'pressure-dependent-Arrhenius':
                 self.pDepReactions.append(reaction)
+                self.pDepReactionNames.append(reaction['equation'])
             elif reaction.get('type') == 'Chebyshev':
                 self.pDepReactions.append(reaction)
+                self.pDepReactionNames.append(reaction['equation'])
             elif reaction.get('type') == 'three-body':
                 self.pDepReactions.append(reaction)
+                self.pDepReactionNames.append(reaction['equation'])
 
         if len(self.pDepReactions)==0:
             print("No pressure-dependent reactions found in mechanism. Please choose another mechanism.")
@@ -43,41 +48,60 @@ class masterFitter:
 
 
     def zippedMech(self):
-        defaults2 = yaml.safe_load(self.deleteDuplicates())
+        # defaults2 = yaml.safe_load(self.deleteDuplicates())
+        defaults2=self.deleteDuplicates()
         with open("defaults2.yaml", 'w') as outfile:
             yaml.safe_dump(defaults2, outfile, default_flow_style=None,sort_keys=False)
+        blend=self.blendedInput()
+        with open("blend.yaml", 'w') as outfile:
+            yaml.safe_dump(blend, outfile, default_flow_style=None,sort_keys=False)
         shortMechanism={
             'units': self.mech['units'],
             'phases': self.mech['phases'],
             'species': self.mech['species'],
             'reactions': []
             }
+        
+        for defaultRxn in self.defaults['reactions']:
+            if defaultRxn['equation'] in inputRxnNames:
+                idx = inputRxnNames.index(defaultRxn['equation'])
+                defaultColliderNames=[]
+                for defaultCol in defaultRxn['collider-list']:
+                    defaultColliderNames.append(defaultCol['collider'])
+                # print(defaultRxn['equation'])
+                for defaultCol in defaultRxn['collider-list']:
+                    if defaultCol['collider'] in inputColliderNames[idx]:
+                        defaultColliderNames.remove(defaultCol['collider'])
+
+
+
         for mech_rxn in self.mech['reactions']:
-            for pDepRxn in self.pDepReactions:
-                if mech_rxn['equation'] == pDepRxn['equation']: # the current iteration corresponds to a p-dep reaction
-                    # Now check if default data exists for this p-dep reaction
-                    counter = 0
-                    for inputRxn in self.input['reactions']:
-                        if inputRxn['equation'] == pDepRxn['equation']:
-                            # ADD CUSTOM COLLIDER INFO FOR THIS REACTION, OVERRIDING DEFAULTS IF NEEDED
-                            colliderList = self.addColliderList(mech_rxn, inputRxn)
-                            counter+=1
-                    for defaultRxn in defaults2['reactions']:
-                        if defaultRxn['equation'] == pDepRxn['equation']:
-                            # remove the colliders in each rxn that are common to both 
-                            colliderList = self.addColliderList(mech_rxn, defaultRxn)
-                            counter+=1
-                    if counter!=0:
-                        shortMechanism['reactions'].append({
-                            'equation': mech_rxn['equation'],
-                            'type': 'linear-burke',
-                            'collider-list': colliderList
-                            })
-                    else:
-                        shortMechanism['reactions'].append(mech_rxn)
+            # for pDepRxn in self.pDepReactions:
+            if mech_rxn['equation'] in self.pDepReactionNames:
+                # Now check if default data exists for this p-dep reaction
+                counter = 0
+                for inputRxn in self.input['reactions']:
+                    if inputRxn['equation'] == pDepRxn['equation']:
+                        # ADD CUSTOM COLLIDER INFO FOR THIS REACTION, OVERRIDING DEFAULTS IF NEEDED
+                        colliderList = self.addColliderList(mech_rxn, inputRxn)
+                        counter+=1
+                for defaultRxn in defaults2['reactions']:
+                    if defaultRxn['equation'] == pDepRxn['equation']:
+                        # remove the colliders in each rxn that are common to both 
+                        colliderList = self.addColliderList(mech_rxn, defaultRxn)
+                        counter+=1
+                if counter!=0:
+                    shortMechanism['reactions'].append({
+                        'equation': mech_rxn['equation'],
+                        'type': 'linear-burke',
+                        'collider-list': colliderList
+                        })
                 else:
                     shortMechanism['reactions'].append(mech_rxn)
-        return yaml.safe_dump(shortMechanism,default_flow_style=None,sort_keys=False, allow_unicode=True)
+            else:
+                shortMechanism['reactions'].append(mech_rxn)
+        # return yaml.safe_dump(shortMechanism,default_flow_style=None,sort_keys=False, allow_unicode=True)
+        return shortMechanism
     
     def openyaml(self,fname):
         with open(fname) as f:
@@ -113,44 +137,56 @@ class masterFitter:
             for inputCol in inputRxn['collider-list']:
                 inputRxnColliderNames.append(inputCol['collider'])
             inputColliderNames.append(inputRxnColliderNames)
-        
-        
-
         for defaultRxn in self.defaults['reactions']:
             if defaultRxn['equation'] in inputRxnNames:
                 idx = inputRxnNames.index(defaultRxn['equation'])
                 defaultColliderNames=[]
                 for defaultCol in defaultRxn['collider-list']:
                     defaultColliderNames.append(defaultCol['collider'])
-                # print(inputRxn['equation'])
-                print(defaultRxn['equation'])
+                # print(defaultRxn['equation'])
                 for defaultCol in defaultRxn['collider-list']:
                     if defaultCol['collider'] in inputColliderNames[idx]:
-                        # print("oui")
                         defaultColliderNames.remove(defaultCol['collider'])
-                        # print(defaultColliderNames)
-                        # break
-                print(inputColliderNames[idx])
-                print(defaultColliderNames)
+                # print(inputColliderNames[idx])
+                # print(defaultColliderNames)
                 newColliderList=[] #only contains colliders that aren't already in the input
                 for defaultCol in defaultRxn['collider-list']:
                     if defaultCol['collider'] in defaultColliderNames:
                         newColliderList.append(defaultCol)
-                # print(len(newColliderList))
-                # print(newColliderList)
-                # print(defaultColliderNames)
-                # print(defaultColliderNames)
                 if len(newColliderList)>0:
                     defaults2['reactions'].append({
                         'equation': defaultRxn['equation'],
                         'collider-list': newColliderList
                     })
             else: # reaction isn't in input, so keep the entire default rxn
-                # print(defaultRxn['equation'])
-                # print('non')
                 defaults2['reactions'].append(defaultRxn)
-        return yaml.safe_dump(defaults2,default_flow_style=None,sort_keys=False, allow_unicode=True)
-        # return defaults2
+        # return yaml.safe_dump(defaults2,default_flow_style=None,sort_keys=False, allow_unicode=True)
+        return defaults2
+    
+    def blendedInput(self):
+        defaults2=self.deleteDuplicates()
+        blend = {'reactions': []}
+
+        defaultRxnNames = []
+        defaultColliderNames = []
+        for defaultRxn in defaults2['reactions']:
+            defaultRxnNames.append(defaultRxn['equation'])
+            for defaultCol in defaultRxn['collider-list']:
+                defaultColliderNames.append(defaultCol['collider'])
+        
+        for defaultRxn in defaults2['reactions']:
+            blend['reactions'].append(defaultRxn)
+        
+        for inputRxn in self.input['reactions']:
+            if inputRxn['equation'] in defaultRxnNames:
+                idx = defaultRxnNames.index(inputRxn['equation'])
+                for inputCol in inputRxn['collider-list']:
+                    blend['reactions'][idx]['collider-list'].append(inputCol)
+            else:
+                blend['reactions'].append(inputRxn)
+        return blend
+        
+
     
     def addColliderList(self,rxn1, rxn2):
         colliderList = []
@@ -381,6 +417,7 @@ class masterFitter:
         sM = self.shortMech
         for mechRxn in self.mech['reactions']:
             for shortMechRxn in self.shortMech['reactions']:
+                print(shortMechRxn['equation'])
                 if mechRxn['equation']==shortMechRxn['equation']:
                     colliderList=[]
                     for j, col in enumerate(shortMechRxn['collider-list']):
