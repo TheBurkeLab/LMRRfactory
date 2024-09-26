@@ -6,6 +6,7 @@ sys.path.append("/users/pjsingal/Documents/cantera/build/python")
 import cantera as ct
 import numpy as np
 from scipy.optimize import curve_fit
+from scipy.optimize import least_squares
 import yaml
 
 class masterFitter:
@@ -53,8 +54,11 @@ class masterFitter:
         defaults2=self.deleteDuplicates()
         with open("defaults2.yaml", 'w') as outfile:
             yaml.safe_dump(defaults2, outfile, default_flow_style=None,sort_keys=False)
-        blend=self.blendedInput()
-        with open("blend.yaml", 'w') as outfile:
+        # blend=self.blendedInput()
+        # with open("blend.yaml", 'w') as outfile:
+        #     yaml.safe_dump(blend, outfile, default_flow_style=None,sort_keys=False)
+        blend=self.epsTransform()
+        with open("transformed.yaml", 'w') as outfile:
             yaml.safe_dump(blend, outfile, default_flow_style=None,sort_keys=False)
         shortMechanism={
             'units': self.mech['units'],
@@ -77,6 +81,29 @@ class masterFitter:
                 shortMechanism['reactions'].append(mech_rxn)
         # return yaml.safe_dump(shortMechanism,default_flow_style=None,sort_keys=False, allow_unicode=True)
         return shortMechanism
+    
+    def epsTransform(self):
+        transformedMech = self.blendedInput()
+        for reaction in transformedMech['reactions']:
+            for col in reaction['collider-list']:
+                temperatures=np.array(col['temperatures'])
+                eps = np.array(col['eps'])
+                # epsLow=effs['epsLow']['A']
+                # epsHigh=effs['epsHigh']['A']
+                # rate_constants=np.array([epsLow,epsHigh])
+                def arrhenius_rate(T, A, beta, Ea):
+                    # R = 8.314  # Gas constant in J/(mol K)
+                    R = 1.987 # cal/molK
+                    return A * T**beta * np.exp(-Ea / (R * T))
+                def fit_function(params, T, ln_rate_constants):
+                    A, beta, Ea = params
+                    return np.log(arrhenius_rate(T, A, beta, Ea)) - ln_rate_constants
+                initial_guess = [3, 0.5, 50.0]  
+                result = least_squares(fit_function, initial_guess, args=(temperatures, np.log(eps)))
+                A_fit, beta_fit, Ea_fit = result.x
+                col['eps'] = {'A': round(float(A_fit),5),'b': round(float(beta_fit),5),'Ea': round(float(Ea_fit),5)}
+                del col['temperatures']
+        return transformedMech
     
     def openyaml(self,fname):
         with open(fname) as f:
