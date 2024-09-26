@@ -69,10 +69,35 @@ class masterFitter:
         for mech_rxn in self.mech['reactions']:
             if mech_rxn['equation'] in blendRxnNames:
                 idx = blendRxnNames.index(mech_rxn['equation'])
+                colliderList=[]
+                if mech_rxn['type'] == 'falloff' and 'Troe' in mech_rxn:
+                    colliderList.append({
+                        'collider': 'M',
+                        'eps': {'A': 1, 'b': 0, 'Ea': 0},
+                        'low-P-rate-constant': mech_rxn['low-P-rate-constant'],
+                        'high-P-rate-constant': mech_rxn['high-P-rate-constant'],
+                        'Troe': mech_rxn['Troe'],
+                    })
+                elif mech_rxn['type'] == 'pressure-dependent-Arrhenius':
+                    colliderList.append({
+                        'collider': 'M',
+                        'eps': {'A': 1, 'b': 0, 'Ea': 0},
+                        'rate-constants': mech_rxn['rate-constants'],
+                    })
+                elif mech_rxn['type'] == 'Chebyshev':
+                    colliderList.append({
+                        'collider': 'M',
+                        'eps': {'A': 1, 'b': 0, 'Ea': 0},
+                        'temperature-range': mech_rxn['temperature-range'],
+                        'pressure-range': mech_rxn['pressure-range'],
+                        'data': mech_rxn['data'],
+                    })
+
+                colliderList.append(blend['reactions'][idx]['collider-list'])
                 shortMechanism['reactions'].append({
                             'equation': mech_rxn['equation'],
                             'type': 'linear-burke',
-                            'collider-list': blend['reactions'][idx]['collider-list']
+                            'collider-list': colliderList
                             })
             else:
                 shortMechanism['reactions'].append(mech_rxn)
@@ -195,32 +220,6 @@ class masterFitter:
                 col['eps'] = {'A': round(float(A_fit),5),'b': round(float(beta_fit),5),'Ea': round(float(Ea_fit),5)}
                 del col['temperatures']
         return blend
-        
-
-    
-    def addColliderList(self,rxn1, rxn2):
-        colliderList = []
-        if rxn1['type'] == 'pressure-dependent-Arrhenius': 
-            colliderList.append({
-                'collider': 'M',
-                'eps': {'A': 1, 'b': 0, 'Ea': 0},
-                'rate-constants': rxn1['rate-constants'],
-            })
-        elif rxn1['type'] == 'falloff' and 'Troe' in rxn1: #add more lines for chebyshev and third-body types
-            colliderList.append({
-                'collider': 'M',
-                'eps': {'A': 1, 'b': 0, 'Ea': 0},
-                'low-P-rate-constant': rxn1['low-P-rate-constant'],
-                'high-P-rate-constant': rxn1['high-P-rate-constant'],
-                'Troe': rxn1['Troe'],
-            })
-        for col in rxn2['collider-list']:
-            if col['collider'] in self.mech['phases'][0]['species']: #only add colliders defined as species atop the chemical mechanism
-                colliderList.append({
-                    'collider': col['collider'],
-                    'eps': col['eps'],
-                })
-        return colliderList
 
     def get_Xvec(self,reaction):
         Prange = self.P_ls
