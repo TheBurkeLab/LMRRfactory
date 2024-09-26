@@ -465,14 +465,15 @@ class masterFitter:
                 colliderList=[]
                 for i, col in enumerate(reaction['collider-list']):
                     if i == 0:
-                        colliderList.append(fit_fxn(reaction,col['collider'],"M",col['eps'],kTP='on'))
-                    elif len(list(reaction['collider-list'][j].keys()))>2:
+                        colliderList.append(fit_fxn(reaction,reaction['reference-collider'],"M",col['eps'],kTP='on'))
+                    elif len(list(reaction['collider-list'][i].keys()))>3:
                         colliderList.append(fit_fxn(reaction,col['collider'],col['collider'],col['eps'],kTP='on'))
                     else:
                         colliderList.append(fit_fxn(reaction,col['collider'],col['collider'],col['eps'],kTP='off'))
                 newMechanism['reactions'].append({
                     'equation': reaction['equation'],
                     'type': 'linear-burke',
+                    'reference-collider': reaction['reference-collider'],
                     'collider-list': colliderList
                 })
             else:
@@ -492,7 +493,7 @@ class masterFitter:
 # # INPUTS
 T_list=np.linspace(200,2000,100)
 # P_list=np.logspace(-12,12,num=120)
-P_list=np.logspace(-1,2,num=25)
+P_list=np.logspace(-1,2,num=5)
 
 # mF = masterFitter(T_list,P_list,"LMRR-generator\\test\\inputs\\testinput.yaml",n_P=7,n_T=7,M_only=True)
 mF = masterFitter(T_list,P_list,"LMRR-generator//test//inputs//testinput.yaml",n_P=7,n_T=7,M_only=True)
