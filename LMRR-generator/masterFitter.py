@@ -40,22 +40,15 @@ class masterFitter:
             elif reaction.get('type') == 'Chebyshev':
                 self.pDepReactions.append(reaction)
                 self.pDepReactionNames.append(reaction['equation'])
-            # elif reaction.get('type') == 'three-body':
-            #     self.pDepReactions.append(reaction)
-            #     self.pDepReactionNames.append(reaction['equation'])
 
         if len(self.pDepReactions)==0:
             print("No pressure-dependent reactions found in mechanism. Please choose another mechanism.")
         else:
             self.shortMech = self.zippedMech()
-            # with open("shortMech.yaml", 'w') as outfile:
-            #     yaml.dump(self.shortMech, outfile, default_flow_style=None,sort_keys=False)
 
     def yaml_custom_load(self,fname):
         with open(fname) as f:
             data = yaml.safe_load(f)
-        # print(data['phases'][0]['species'])
-        #manually replace 'false' with 'NO'
         newMolecList = []
         for molec in data['phases'][0]['species']:
             if str(molec).lower()=="false":
@@ -78,13 +71,7 @@ class masterFitter:
 
 
     def zippedMech(self):
-        # defaults2 = yaml.safe_load(self.deleteDuplicates())
-        defaults2=self.deleteDuplicates()
-        with open("defaults2.yaml", 'w') as outfile:
-            yaml.safe_dump(defaults2, outfile, default_flow_style=None,sort_keys=False)
         blend=self.blendedInput()
-        with open("transformed.yaml", 'w') as outfile:
-            yaml.safe_dump(blend, outfile, default_flow_style=None,sort_keys=False)
         shortMechanism={
             'units': self.mech['units'],
             'phases': self.mech['phases'],
@@ -131,7 +118,6 @@ class masterFitter:
                             })
             else:
                 shortMechanism['reactions'].append(mech_rxn)
-        # return yaml.safe_dump(shortMechanism,default_flow_style=None,sort_keys=False, allow_unicode=True)
         return shortMechanism
     
     def blendedInput(self):
@@ -160,7 +146,7 @@ class masterFitter:
         for inputRxn in self.input['reactions']:
             if inputRxn['equation'] in blendRxnNames: #input reaction also exists in defaults file
                 idx = blendRxnNames.index(inputRxn['equation'])
-                print(inputRxn['reference-collider'])
+                # print(inputRxn['reference-collider'])
                 if inputRxn['reference-collider'] == blend['reactions'][idx]['reference-collider']: #no blending conflicts bc colliders have same ref
                     for inputCol in inputRxn['collider-list']:
                         if inputCol['collider'] in speciesList:
@@ -176,12 +162,6 @@ class masterFitter:
                         flag = False
                 if flag == True:
                     blend['reactions'].append(inputRxn)
-
-                    
-
-        with open("blend.yaml", 'w') as outfile:
-            yaml.safe_dump(blend, outfile, default_flow_style=None,sort_keys=False)
-
         for reaction in blend['reactions']:
             for col in reaction['collider-list']:
                 temperatures=np.array(col['temperatures'])
@@ -250,7 +230,6 @@ class masterFitter:
                     })
             else: # reaction isn't in input, so keep the entire default rxn
                 defaults2['reactions'].append(defaultRxn)
-        # return yaml.safe_dump(defaults2,default_flow_style=None,sort_keys=False, allow_unicode=True)
         return defaults2
     
     
@@ -273,7 +252,6 @@ class masterFitter:
 
     def get_YAML_kTP(self,reaction,collider):
         gas = ct.Solution("shortMech.yaml")
-        # gas = ct.Solution(yaml=yaml.safe_dump(self.shortMech))
         k_TP = []
         for T in self.T_ls:
             temp = []
@@ -355,7 +333,6 @@ class masterFitter:
             def arrhenius(T, A, n, Ea):
                 return np.log(A) + n*np.log(T)+ (-Ea/(1.987*T))
             gas = ct.Solution('shortMech.yaml')
-            # gas = ct.Solution(yaml=yaml.safe_dump(self.shortMech))
             Xdict = self.get_Xdict(reaction)
             for i,P in enumerate(Xdict.keys()):
                 k_list = []
@@ -399,7 +376,6 @@ class masterFitter:
             return logk_fit
         Xdict=self.get_Xdict(reaction)
         gas = ct.Solution('shortMech.yaml')
-        # gas = ct.Solution(yaml=yaml.safe_dump(self.shortMech))
         logk_list=[]
         for i,P in enumerate(Xdict.keys()):
             for j,T in enumerate(Xdict[P]):
@@ -458,8 +434,6 @@ class masterFitter:
                 'species': self.mech['species'],
                 'reactions': []
                 }
-        # sM = yaml.safe_load(self.shortMech)
-
         for reaction in self.shortMech['reactions']:
             if reaction.get('type')=='linear-burke':
                 colliderList=[]
@@ -487,3 +461,14 @@ class masterFitter:
         self.final_yaml(foutName,self.get_PLOG_table)
     def cheb2D(self,foutName): # returns Chebyshev in LMRR YAML format
         self.final_yaml(foutName,self.get_cheb_table)
+
+# # INPUTS
+T_list=np.linspace(200,2000,100)
+# P_list=np.logspace(-12,12,num=120)
+P_list=np.logspace(-1,2,num=5)
+
+mF = masterFitter(T_list,P_list,"LMRR-generator//test//inputs//testinput.yaml",n_P=7,n_T=7,M_only=True)
+
+mF.Troe("LMRtest_Troe_M")
+mF.PLOG("LMRtest_PLOG_M")
+mF.cheb2D("LMRtest_cheb_M")
