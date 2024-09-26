@@ -219,7 +219,7 @@ class masterFitter:
 
     def get_YAML_kTP(self,reaction,collider):
         # gas = ct.Solution("shortMech.yaml")
-        gas = ct.Solution(yaml=self.shortMech)
+        gas = ct.Solution(yaml=yaml.safe_dump(self.shortMech))
         k_TP = []
         for T in self.T_ls:
             temp = []
@@ -300,7 +300,7 @@ class masterFitter:
             }
             def arrhenius(T, A, n, Ea):
                 return np.log(A) + n*np.log(T)+ (-Ea/(1.987*T))
-            gas = ct.Solution(yaml=self.shortMech)
+            gas = ct.Solution(yaml=yaml.safe_dump(self.shortMech))
             Xdict = self.get_Xdict(reaction)
             for i,P in enumerate(Xdict.keys()):
                 k_list = []
@@ -343,7 +343,7 @@ class masterFitter:
             logk_fit = np.log10(k0) + np.log10(M) + np.log10(ki) + logF - np.log10(ki + k0 * M)
             return logk_fit
         Xdict=self.get_Xdict(reaction)
-        gas = ct.Solution(yaml=self.shortMech)
+        gas = ct.Solution(yaml=yaml.safe_dump(self.shortMech))
         logk_list=[]
         for i,P in enumerate(Xdict.keys()):
             for j,T in enumerate(Xdict[P]):
@@ -403,28 +403,26 @@ class masterFitter:
                 'reactions': []
                 }
         # sM = yaml.safe_load(self.shortMech)
-        sM = self.shortMech
-        for mechRxn in self.mech['reactions']:
-            for shortMechRxn in self.shortMech['reactions']:
-                print(shortMechRxn['equation'])
-                if mechRxn['equation']==shortMechRxn['equation']:
-                    colliderList=[]
-                    for j, col in enumerate(shortMechRxn['collider-list']):
-                        if j == 0:
-                            colliderList.append(fit_fxn(shortMechRxn,col['collider'],"M",col['eps'],kTP='on'))
-                        elif len(list(shortMechRxn['collider-list'][j].keys()))>2:
-                            colliderList.append(fit_fxn(shortMechRxn,col['collider'],col['collider'],col['eps'],kTP='on'))
-                        else:
-                            colliderList.append(fit_fxn(shortMechRxn,col['collider'],col['collider'],col['eps'],kTP='off'))
-                    newMechanism['reactions'].append({
-                        'equation': mechRxn['equation'],
-                        'type': 'linear-burke',
-                        'collider-list': colliderList
-                    })
-                else:
-                    newMechanism['reactions'].append(mechRxn)
-            with open(foutName, 'w') as outfile:
-                yaml.dump(newMechanism, outfile, default_flow_style=None,sort_keys=False)
+
+        for reaction in self.shortMech['reactions']:
+            if reaction.get('type')=='linear-burke':
+                colliderList=[]
+                for i, col in enumerate(reaction['collider-list']):
+                    if i == 0:
+                        colliderList.append(fit_fxn(reaction,col['collider'],"M",col['eps'],kTP='on'))
+                    elif len(list(reaction['collider-list'][j].keys()))>2:
+                        colliderList.append(fit_fxn(reaction,col['collider'],col['collider'],col['eps'],kTP='on'))
+                    else:
+                        colliderList.append(fit_fxn(reaction,col['collider'],col['collider'],col['eps'],kTP='off'))
+                newMechanism['reactions'].append({
+                    'equation': reaction['equation'],
+                    'type': 'linear-burke',
+                    'collider-list': colliderList
+                })
+            else:
+                newMechanism['reactions'].append(reaction)
+        with open(foutName, 'w') as outfile:
+            yaml.dump(newMechanism, outfile, default_flow_style=None,sort_keys=False)
 
     def Troe(self,foutName): # returns PLOG in LMRR YAML format
         self.final_yaml(foutName,self.get_Troe_table)

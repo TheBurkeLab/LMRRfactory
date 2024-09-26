@@ -739,26 +739,6 @@ reactions:
 - equation: H2O2 (+M) <=> 2 OH (+M)
   type: linear-burke
   collider-list:
-  - collider: H2O
-    eps: [5.51, 10.2, 13.3]
-    temperatures: [300, 1000, 2000]
-    note: Jasper-2022
-  - collider: HE
-    eps: [0.827, 0.966]
-    temperatures: [750, 1500]
-    note: Matsugi-2021
-  - collider: H2
-    eps: [2.192, 2.085]
-    temperatures: [750, 1500]
-    note: Matsugi-2021
-  - collider: CO
-    eps: [2.673, 2.746]
-    temperatures: [750, 1500]
-    note: Matsugi-2021
-  - collider: CH4
-    eps: [6.692, 4.797]
-    temperatures: [750, 1500]
-    note: Matsugi-2021
   - collider: N2
     eps: [1.5, 1.58, 1.63]
     temperatures: [300, 1000, 2000]
@@ -916,32 +896,12 @@ reactions:
 - equation: HCO + HCO <=> CO + CH2O
   rate-constant: {A: 27000000000000.0, b: 0.0, Ea: 0.0}
 - equation: NH3 (+M) <=> H + NH2 (+M)
-  type: linear-burke
-  collider-list:
-  - collider: N2
-    eps: [3.15, 2.47, 2.25]
-    temperatures: [300, 1000, 2000]
-    note: Jasper-2022
-  - collider: O2
-    eps: [1.55, 1.48, 1.7]
-    temperatures: [300, 1000, 2000]
-    note: Jasper-2022
-  - collider: CO2
-    eps: [11.2, 13.4, 14.3]
-    temperatures: [300, 1000, 2000]
-    note: Jasper-2022
-  - collider: NH3
-    eps: [13.9, 20.0, 22.2]
-    temperatures: [300, 1000, 2000]
-    note: Jasper-2022
-  - collider: H2O
-    eps: [14.0, 23.6, 27.9]
-    temperatures: [300, 1000, 2000]
-    note: Jasper-2022
-  - collider: CH4
-    eps: [9.94, 13.3, 14.3]
-    temperatures: [300, 1000, 2000]
-    note: Jasper-2022
+  type: pressure-dependent-Arrhenius
+  rate-constants:
+  - {P: 0.1 atm, A: 7.23e+29, b: -5.316, Ea: 110862.4}
+  - {P: 1 atm, A: 3.497e+30, b: -5.224, Ea: 111163.3}
+  - {P: 10 atm, A: 1.975e+31, b: -5.155, Ea: 111887.8}
+  - {P: 100 atm, A: 2.689e+31, b: -4.92, Ea: 112778.7}
 - equation: NH3 + H <=> NH2 + H2
   rate-constant: {A: 540000.0, b: 2.4, Ea: 9916.0}
 - equation: NH3 + O <=> NH2 + OH
