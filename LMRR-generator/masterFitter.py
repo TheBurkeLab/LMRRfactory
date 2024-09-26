@@ -79,9 +79,9 @@ class masterFitter:
 
     def zippedMech(self):
         # defaults2 = yaml.safe_load(self.deleteDuplicates())
-        # defaults2=self.deleteDuplicates()
-        # with open("defaults2.yaml", 'w') as outfile:
-        #     yaml.safe_dump(defaults2, outfile, default_flow_style=None,sort_keys=False)
+        defaults2=self.deleteDuplicates()
+        with open("defaults2.yaml", 'w') as outfile:
+            yaml.safe_dump(defaults2, outfile, default_flow_style=None,sort_keys=False)
         blend=self.blendedInput()
         with open("transformed.yaml", 'w') as outfile:
             yaml.safe_dump(blend, outfile, default_flow_style=None,sort_keys=False)
@@ -133,6 +133,75 @@ class masterFitter:
         # return yaml.safe_dump(shortMechanism,default_flow_style=None,sort_keys=False, allow_unicode=True)
         return shortMechanism
     
+    def blendedInput(self):
+        defaults2=self.deleteDuplicates()
+        blend = {'reactions': []}
+        speciesList = self.mech['phases'][0]['species']
+        defaultRxnNames = []
+        defaultColliderNames = []
+        for defaultRxn in defaults2['reactions']:
+            defaultRxnNames.append(defaultRxn['equation'])
+            for defaultCol in defaultRxn['collider-list']:
+                defaultColliderNames.append(defaultCol['collider'])
+        # first fill it with all of the default reactions and colliders (which have valid species)
+        for defaultRxn in defaults2['reactions']:
+            flag = True
+            for defaultCol in defaultRxn['collider-list']:
+                if defaultCol['collider'] not in speciesList:
+                    flag = False
+            if flag == True:
+                blend['reactions'].append(defaultRxn)
+
+        blendRxnNames = []
+        for blendRxn in blend['reactions']:
+            blendRxnNames.append(blendRxn['equation'])
+        
+        for inputRxn in self.input['reactions']:
+            if inputRxn['equation'] in blendRxnNames: #input reaction also exists in defaults file
+                idx = blendRxnNames.index(inputRxn['equation'])
+                print(inputRxn['reference-collider'])
+                if inputRxn['reference-collider'] == blend['reactions'][idx]['reference-collider']: #no blending conflicts bc colliders have same ref
+                    for inputCol in inputRxn['collider-list']:
+                        if inputCol['collider'] in speciesList:
+                            blend['reactions'][idx]['collider-list'].append(inputCol)
+                else: #blending conflict -> delete all default colliders and override with the user inputs
+                    print(f"The user-provided reference collider for {inputRxn['equation']}, ({inputRxn['reference-collider']}) does not match the program default ({blend['reactions'][idx]['reference-collider']}).")
+                    print(f"The default colliders have thus been deleted and the reaction has been completely overrided by (rather than blended with) the user's custom input values.")
+                    blend['reactions'][idx]['collider-list'] = inputRxn['collider-list']
+            else:
+                flag = True
+                for inputCol in inputRxn['collider-list']:
+                    if inputCol['collider'] not in speciesList:
+                        flag = False
+                if flag == True:
+                    blend['reactions'].append(inputRxn)
+
+                    
+
+        with open("blend.yaml", 'w') as outfile:
+            yaml.safe_dump(blend, outfile, default_flow_style=None,sort_keys=False)
+
+        for reaction in blend['reactions']:
+            for col in reaction['collider-list']:
+                temperatures=np.array(col['temperatures'])
+                eps = np.array(col['eps'])
+                # epsLow=effs['epsLow']['A']
+                # epsHigh=effs['epsHigh']['A']
+                # rate_constants=np.array([epsLow,epsHigh])
+                def arrhenius_rate(T, A, beta, Ea):
+                    # R = 8.314  # Gas constant in J/(mol K)
+                    R = 1.987 # cal/molK
+                    return A * T**beta * np.exp(-Ea / (R * T))
+                def fit_function(params, T, ln_rate_constants):
+                    A, beta, Ea = params
+                    return np.log(arrhenius_rate(T, A, beta, Ea)) - ln_rate_constants
+                initial_guess = [3, 0.5, 50.0]  
+                result = least_squares(fit_function, initial_guess, args=(temperatures, np.log(eps)))
+                A_fit, beta_fit, Ea_fit = result.x
+                col['eps'] = {'A': round(float(A_fit),5),'b': round(float(beta_fit),5),'Ea': round(float(Ea_fit),5)}
+                del col['temperatures']
+        return blend
+    
     
     
     def deleteDuplicates(self):
@@ -175,6 +244,7 @@ class masterFitter:
                 if len(newColliderList)>0:
                     defaults2['reactions'].append({
                         'equation': defaultRxn['equation'],
+                        'reference-collider': defaultRxn['reference-collider'],
                         'collider-list': newColliderList
                     })
             else: # reaction isn't in input, so keep the entire default rxn
@@ -182,62 +252,7 @@ class masterFitter:
         # return yaml.safe_dump(defaults2,default_flow_style=None,sort_keys=False, allow_unicode=True)
         return defaults2
     
-    def blendedInput(self):
-        defaults2=self.deleteDuplicates()
-        blend = {'reactions': []}
-        speciesList = self.mech['phases'][0]['species']
-        defaultRxnNames = []
-        defaultColliderNames = []
-        for defaultRxn in defaults2['reactions']:
-            defaultRxnNames.append(defaultRxn['equation'])
-            for defaultCol in defaultRxn['collider-list']:
-                defaultColliderNames.append(defaultCol['collider'])
-        
-        for defaultRxn in defaults2['reactions']:
-            flag = True
-            for defaultCol in defaultRxn['collider-list']:
-                if defaultCol['collider'] not in speciesList:
-                    flag = False
-            if flag == True:
-                blend['reactions'].append(defaultRxn)
-
-        blendRxnNames = []
-        for blendRxn in blend['reactions']:
-            blendRxnNames.append(blendRxn['equation'])
-        
-        for inputRxn in self.input['reactions']:
-            if inputRxn['equation'] in blendRxnNames:
-                idx = blendRxnNames.index(inputRxn['equation'])
-                for inputCol in inputRxn['collider-list']:
-                    if inputCol['collider'] in speciesList:
-                        blend['reactions'][idx]['collider-list'].append(inputCol)
-            else:
-                flag = True
-                for inputCol in inputRxn['collider-list']:
-                    if inputCol['collider'] not in speciesList:
-                        flag = False
-                if flag == True:
-                    blend['reactions'].append(inputRxn)
-        for reaction in blend['reactions']:
-            for col in reaction['collider-list']:
-                temperatures=np.array(col['temperatures'])
-                eps = np.array(col['eps'])
-                # epsLow=effs['epsLow']['A']
-                # epsHigh=effs['epsHigh']['A']
-                # rate_constants=np.array([epsLow,epsHigh])
-                def arrhenius_rate(T, A, beta, Ea):
-                    # R = 8.314  # Gas constant in J/(mol K)
-                    R = 1.987 # cal/molK
-                    return A * T**beta * np.exp(-Ea / (R * T))
-                def fit_function(params, T, ln_rate_constants):
-                    A, beta, Ea = params
-                    return np.log(arrhenius_rate(T, A, beta, Ea)) - ln_rate_constants
-                initial_guess = [3, 0.5, 50.0]  
-                result = least_squares(fit_function, initial_guess, args=(temperatures, np.log(eps)))
-                A_fit, beta_fit, Ea_fit = result.x
-                col['eps'] = {'A': round(float(A_fit),5),'b': round(float(beta_fit),5),'Ea': round(float(Ea_fit),5)}
-                del col['temperatures']
-        return blend
+    
 
     def get_Xvec(self,reaction):
         Prange = self.P_ls

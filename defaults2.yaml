@@ -1,11 +1,13 @@
 reactions:
 - equation: H + OH (+M) <=> H2O (+M)
+  reference-collider: N2
   collider-list:
   - collider: H2O
     eps: [3.57, 5.28, 7.29]
     temperatures: [300, 1000, 2000]
     note: Jasper-2022
 - equation: H + O2 (+M) <=> HO2 (+M)
+  reference-collider: AR
   collider-list:
   - collider: N2
     eps: [1.71, 1.58, 1.2]
@@ -28,6 +30,7 @@ reactions:
     temperatures: [300, 1000, 2000]
     note: Jasper-2022
 - equation: H2O2 (+M) <=> 2 OH (+M)
+  reference-collider: AR
   collider-list:
   - collider: H2O
     eps: [5.51, 10.2, 13.3]

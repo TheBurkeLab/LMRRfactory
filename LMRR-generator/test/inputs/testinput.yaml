@@ -127,6 +127,7 @@ reactions:
     eps: [5.60,7.98,8.19]
     temperatures: [300,1000,2000]
     note: Jasper-2022
+
 - equation: HNO (+M) <=> H + NO (+M)
   reference-collider: AR
   collider-list:
@@ -138,6 +139,7 @@ reactions:
     eps: [6.42,8.15,9.09]
     temperatures: [300,1000,2000]
     note: Jasper-2022
+
 - equation: CH4 (+M) <=> ?? # Ar reference collider
   reference-collider: AR
   collider-list:
@@ -169,6 +171,7 @@ reactions:
     eps: [4.17,6.19,6.96]
     temperatures: [300,1000,2000]
     note: Jasper-2022
+
 - equation: HCN (+M) <=> ?? # Ar reference collider
   reference-collider: AR
   collider-list:
@@ -180,6 +183,7 @@ reactions:
     eps: [4.24,4.87,5.56]
     temperatures: [300,1000,2000]
     note: Jasper-2022
+
 - equation: CH4 (+M) <=> CH3 + H (+M) #Ar reference collider
   reference-collider: AR
   collider-list:
@@ -207,6 +211,7 @@ reactions:
     eps: [1.19,1.41]
     temperatures: [300,2000]
     note: JOM-2015
+
 - equation: C2H6 (+M) <=> CH3 + CH3 (+M) #Ar reference collider
   reference-collider: AR
   collider-list:
@@ -234,6 +239,7 @@ reactions:
     eps: [1.25,1.24]
     temperatures: [300,2000]
     note: JOM-2015
+
 - equation: C3H8 (+M) <=> CH3 + C2H5 (+M) #Ar reference collider
   reference-collider: AR
   collider-list:
@@ -261,6 +267,7 @@ reactions:
     eps: [1.24,1.14]
     temperatures: [300,2000]
     note: JOM-2015
+
 - equation: C4H10 (+M) <=> C2H5 + C2H5 (+M) #Ar reference collider
   reference-collider: AR
   collider-list:
@@ -288,6 +295,7 @@ reactions:
     eps: [1.20,1.16]
     temperatures: [300,2000]
     note: JOM-2015
+
 - equation: C6H14 (+M) <=> ?? #Ar reference collider
   reference-collider: AR
   collider-list:
@@ -315,6 +323,7 @@ reactions:
     eps: [1.20,1.08]
     temperatures: [300,2000]
     note: JOM-2015
+
 - equation: C8H18 (+M) <=> ?? #Ar reference collider
   reference-collider: AR
   collider-list:
