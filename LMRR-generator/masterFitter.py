@@ -61,43 +61,17 @@ class masterFitter:
             'species': self.mech['species'],
             'reactions': []
             }
-        
-        for defaultRxn in self.defaults['reactions']:
-            if defaultRxn['equation'] in inputRxnNames:
-                idx = inputRxnNames.index(defaultRxn['equation'])
-                defaultColliderNames=[]
-                for defaultCol in defaultRxn['collider-list']:
-                    defaultColliderNames.append(defaultCol['collider'])
-                # print(defaultRxn['equation'])
-                for defaultCol in defaultRxn['collider-list']:
-                    if defaultCol['collider'] in inputColliderNames[idx]:
-                        defaultColliderNames.remove(defaultCol['collider'])
-
-
-
+        blendRxnNames = []
+        for rxn in blend['reactions']:
+            blendRxnNames.append(rxn['equation'])
         for mech_rxn in self.mech['reactions']:
-            # for pDepRxn in self.pDepReactions:
-            if mech_rxn['equation'] in self.pDepReactionNames:
-                # Now check if default data exists for this p-dep reaction
-                counter = 0
-                for inputRxn in self.input['reactions']:
-                    if inputRxn['equation'] == pDepRxn['equation']:
-                        # ADD CUSTOM COLLIDER INFO FOR THIS REACTION, OVERRIDING DEFAULTS IF NEEDED
-                        colliderList = self.addColliderList(mech_rxn, inputRxn)
-                        counter+=1
-                for defaultRxn in defaults2['reactions']:
-                    if defaultRxn['equation'] == pDepRxn['equation']:
-                        # remove the colliders in each rxn that are common to both 
-                        colliderList = self.addColliderList(mech_rxn, defaultRxn)
-                        counter+=1
-                if counter!=0:
-                    shortMechanism['reactions'].append({
-                        'equation': mech_rxn['equation'],
-                        'type': 'linear-burke',
-                        'collider-list': colliderList
-                        })
-                else:
-                    shortMechanism['reactions'].append(mech_rxn)
+            if mech_rxn['equation'] in blendRxnNames:
+                idx = blendRxnNames.index(mech_rxn['equation'])
+                shortMechanism['reactions'].append({
+                            'equation': mech_rxn['equation'],
+                            'type': 'linear-burke',
+                            'collider-list': blend['reactions'][idx]['collider-list']
+                            })
             else:
                 shortMechanism['reactions'].append(mech_rxn)
         # return yaml.safe_dump(shortMechanism,default_flow_style=None,sort_keys=False, allow_unicode=True)
