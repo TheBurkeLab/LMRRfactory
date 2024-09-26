@@ -1,6 +1,7 @@
 # DATABASE OF DEFAULT THIRD-BODY EFFICIENCIES FOR SELECT REACTIONS
 reactions:
 - equation: H + OH (+M) <=> H2O (+M)
+  reference-collider: N2
   collider-list:
   - collider: AR
     eps: [0.398, 0.617, 0.833]
@@ -11,6 +12,7 @@ reactions:
     temperatures: [300,1000,2000]
     note: Jasper-2022
 - equation: H + O2 (+M) <=> HO2 (+M)
+  reference-collider: AR
   collider-list:
   - collider: HE
     eps: [0.90,1.17,1.34]
@@ -37,6 +39,7 @@ reactions:
     temperatures: [300,1000,2000]
     note: Jasper-2022
 - equation: H2O2 (+M) <=> 2 OH (+M)
+  reference-collider: AR
   collider-list:
   - collider: N2
     eps: [1.50,1.58,1.63]
@@ -72,6 +75,7 @@ reactions:
     note: Matsugi-2021
 # - equation: NH3 (+M) <=> H + NH2 (+M)
 - equation: NH3 <=> H + NH2
+  reference-collider: AR
   collider-list:
   - collider: N2
     eps: [3.15,2.47,2.25]
@@ -98,6 +102,7 @@ reactions:
     temperatures: [300,1000,2000]
     note: Jasper-2022
 - equation: 2 NH2 (+M) <=> N2H4 (+M)
+  reference-collider: AR
   collider-list:
   - collider: N2
     eps: [2.00,1.69,1.43]
@@ -116,6 +121,7 @@ reactions:
     temperatures: [300,1000,2000]
     note: Jasper-2022
 - equation: HNO (+M) <=> H + NO (+M)
+  reference-collider: AR
   collider-list:
   - collider: N2
     eps: [1.61,1.71,1.59]
@@ -126,6 +132,7 @@ reactions:
     temperatures: [300,1000,2000]
     note: Jasper-2022
 - equation: CH4 (+M) <=> ?? # Ar reference collider
+  reference-collider: AR
   collider-list:
   - collider: HE
     eps: [1.01,1.70,2.56]
@@ -156,6 +163,7 @@ reactions:
     temperatures: [300,1000,2000]
     note: Jasper-2022
 - equation: HCN (+M) <=> ?? # Ar reference collider
+  reference-collider: AR
   collider-list:
   - collider: N2
     eps: [1.05,1.26,1.47]
@@ -166,6 +174,7 @@ reactions:
     temperatures: [300,1000,2000]
     note: Jasper-2022
 - equation: CH4 (+M) <=> CH3 + H (+M) #Ar reference collider
+  reference-collider: AR
   collider-list:
   - collider: HE
     eps: [1.05,2.53]
@@ -192,6 +201,7 @@ reactions:
     temperatures: [300,2000]
     note: JOM-2015
 - equation: C2H6 (+M) <=> CH3 + CH3 (+M) #Ar reference collider
+  reference-collider: AR
   collider-list:
   - collider: HE
     eps: [1.36,1.84]
@@ -218,6 +228,7 @@ reactions:
     temperatures: [300,2000]
     note: JOM-2015
 - equation: C3H8 (+M) <=> CH3 + C2H5 (+M) #Ar reference collider
+  reference-collider: AR
   collider-list:
   - collider: HE
     eps: [1.21,1.28]
@@ -244,6 +255,7 @@ reactions:
     temperatures: [300,2000]
     note: JOM-2015
 - equation: C4H10 (+M) <=> C2H5 + C2H5 (+M) #Ar reference collider
+  reference-collider: AR
   collider-list:
   - collider: HE
     eps: [1.13,1.06]
@@ -270,6 +282,7 @@ reactions:
     temperatures: [300,2000]
     note: JOM-2015
 # - equation: C6H14 (+M) <=> ?? #Ar reference collider
+#   reference-collider: AR
 #   collider-list:
 #   - collider: HE
 #     eps: [1.15,0.80]
@@ -296,6 +309,7 @@ reactions:
 #     temperatures: [300,2000]
 #     note: JOM-2015
 # - equation: C8H18 (+M) <=> ?? #Ar reference collider
+#   reference-collider: AR
 #   collider-list:
 #   - collider: HE
 #     eps: [1.16,0.66]
