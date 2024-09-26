@@ -678,6 +678,11 @@ reactions:
 - equation: H + OH (+M) <=> H2O (+M)
   type: linear-burke
   collider-list:
+  - collider: M
+    eps: {A: 1, b: 0, Ea: 0}
+    low-P-rate-constant: {A: 4.53e+21, b: -1.81, Ea: 498.7}
+    high-P-rate-constant: {A: 25100000000000.0, b: 0.234, Ea: -114.2}
+    Troe: {A: 0.73, T3: 1.0e-30, T1: 1.0e+30, T2: 1.0e+30}
   - collider: H2O
     eps: {A: 0.10637, b: 0.54858, Ea: -229.16643}
     note: Jasper-2022
@@ -692,6 +697,11 @@ reactions:
 - equation: H + O2 (+M) <=> HO2 (+M)
   type: linear-burke
   collider-list:
+  - collider: M
+    eps: {A: 1, b: 0, Ea: 0}
+    low-P-rate-constant: {A: 6.366e+20, b: -1.72, Ea: 524.8}
+    high-P-rate-constant: {A: 4700000000000.0, b: 0.44, Ea: 0.0}
+    Troe: {A: 0.5, T3: 1.0e-30, T1: 1.0e+30}
   - collider: N2
     eps: {A: 124.93184, b: -0.59326, Ea: 540.92123}
     note: Jasper-2022
@@ -731,6 +741,11 @@ reactions:
 - equation: H2O2 (+M) <=> 2 OH (+M)
   type: linear-burke
   collider-list:
+  - collider: M
+    eps: {A: 1, b: 0, Ea: 0}
+    low-P-rate-constant: {A: 2.5e+24, b: -2.3, Ea: 48749.0}
+    high-P-rate-constant: {A: 2000000000000.0, b: 0.9, Ea: 48749.0}
+    Troe: {A: 0.43, T3: 1.0e-30, T1: 1.0e+30}
   - collider: N2
     eps: {A: 1.14813, b: 0.04601, Ea: -2.92413}
     note: Jasper-2022
@@ -933,6 +948,11 @@ reactions:
 - equation: 2 NH2 (+M) <=> N2H4 (+M)
   type: linear-burke
   collider-list:
+  - collider: M
+    eps: {A: 1, b: 0, Ea: 0}
+    low-P-rate-constant: {A: 1.6e+34, b: -5.49, Ea: 1987.0}
+    high-P-rate-constant: {A: 560000000000000.0, b: -0.414, Ea: 66.0}
+    Troe: {A: 0.31, T3: 1.0e-30, T1: 1.0e+30, T2: 1.0e+30}
   - collider: N2
     eps: {A: 14.68478, b: -0.30096, Ea: 165.14611}
     note: Jasper-2022
@@ -1065,6 +1085,14 @@ reactions:
 - equation: HNO (+M) <=> H + NO (+M)
   type: linear-burke
   collider-list:
+  - collider: M
+    eps: {A: 1, b: 0, Ea: 0}
+    rate-constants:
+    - {P: 0.1 atm, A: 2.0121e+19, b: -3.021, Ea: 47792.0}
+    - {P: 1 atm, A: 1.8259e+20, b: -3.008, Ea: 47880.0}
+    - {P: 10 atm, A: 1.2762e+21, b: -2.959, Ea: 48100.0}
+    - {P: 100 atm, A: 5.6445e+21, b: -2.855, Ea: 48459.0}
+    - {P: 1000 atm, A: 9.7111e+21, b: -2.642, Ea: 48940.0}
   - collider: N2
     eps: {A: 7.56771, b: -0.19688, Ea: 253.16785}
     note: Jasper-2022

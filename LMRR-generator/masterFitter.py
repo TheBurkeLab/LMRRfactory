@@ -69,9 +69,9 @@ class masterFitter:
         for mech_rxn in self.mech['reactions']:
             if mech_rxn['equation'] in blendRxnNames:
                 idx = blendRxnNames.index(mech_rxn['equation'])
-                colliderList=[]
+                colliderM=[]
                 if mech_rxn['type'] == 'falloff' and 'Troe' in mech_rxn:
-                    colliderList.append({
+                    colliderM.append({
                         'collider': 'M',
                         'eps': {'A': 1, 'b': 0, 'Ea': 0},
                         'low-P-rate-constant': mech_rxn['low-P-rate-constant'],
@@ -79,13 +79,13 @@ class masterFitter:
                         'Troe': mech_rxn['Troe'],
                     })
                 elif mech_rxn['type'] == 'pressure-dependent-Arrhenius':
-                    colliderList.append({
+                    colliderM.append({
                         'collider': 'M',
                         'eps': {'A': 1, 'b': 0, 'Ea': 0},
                         'rate-constants': mech_rxn['rate-constants'],
                     })
                 elif mech_rxn['type'] == 'Chebyshev':
-                    colliderList.append({
+                    colliderM.append({
                         'collider': 'M',
                         'eps': {'A': 1, 'b': 0, 'Ea': 0},
                         'temperature-range': mech_rxn['temperature-range'],
@@ -93,11 +93,11 @@ class masterFitter:
                         'data': mech_rxn['data'],
                     })
 
-                colliderList.append(blend['reactions'][idx]['collider-list'])
+                # colliderList.append(blend['reactions'][idx]['collider-list'])
                 shortMechanism['reactions'].append({
                             'equation': mech_rxn['equation'],
                             'type': 'linear-burke',
-                            'collider-list': colliderList
+                            'collider-list': colliderM + blend['reactions'][idx]['collider-list']
                             })
             else:
                 shortMechanism['reactions'].append(mech_rxn)
