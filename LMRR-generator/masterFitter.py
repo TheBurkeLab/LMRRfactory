@@ -1,7 +1,8 @@
 """
 Class that allows for fitting of rate constants at various temperatures and pressures (k(T,P))
 """
-
+import sys, os
+sys.path.append("/users/pjsingal/Documents/cantera/build/python")
 import cantera as ct
 import numpy as np
 from scipy.optimize import curve_fit
@@ -86,7 +87,7 @@ class masterFitter:
             elif isinstance(data, list):
                 return [fix_no(item) for item in data]
             elif data is False and isinstance(data, bool):
-                return 'NO'
+                return "NO"
             return data
         return fix_no(data)
     
@@ -218,8 +219,8 @@ class masterFitter:
         return Xdict
 
     def get_YAML_kTP(self,reaction,collider):
-        # gas = ct.Solution("shortMech.yaml")
-        gas = ct.Solution(yaml=yaml.safe_dump(self.shortMech))
+        gas = ct.Solution("shortMech.yaml")
+        # gas = ct.Solution(yaml=yaml.safe_dump(self.shortMech))
         k_TP = []
         for T in self.T_ls:
             temp = []
@@ -300,7 +301,8 @@ class masterFitter:
             }
             def arrhenius(T, A, n, Ea):
                 return np.log(A) + n*np.log(T)+ (-Ea/(1.987*T))
-            gas = ct.Solution(yaml=yaml.safe_dump(self.shortMech))
+            gas = ct.Solution('shortMech.yaml')
+            # gas = ct.Solution(yaml=yaml.safe_dump(self.shortMech))
             Xdict = self.get_Xdict(reaction)
             for i,P in enumerate(Xdict.keys()):
                 k_list = []
@@ -343,7 +345,8 @@ class masterFitter:
             logk_fit = np.log10(k0) + np.log10(M) + np.log10(ki) + logF - np.log10(ki + k0 * M)
             return logk_fit
         Xdict=self.get_Xdict(reaction)
-        gas = ct.Solution(yaml=yaml.safe_dump(self.shortMech))
+        gas = ct.Solution('shortMech.yaml')
+        # gas = ct.Solution(yaml=yaml.safe_dump(self.shortMech))
         logk_list=[]
         for i,P in enumerate(Xdict.keys()):
             for j,T in enumerate(Xdict[P]):

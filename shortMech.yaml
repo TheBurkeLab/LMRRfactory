@@ -52,7 +52,7 @@ species:
       9840.61267, 2.83578236]
     - [3.25487317, 0.00119869941, -4.330285e-07, 7.02943336e-11, -4.09788575e-15,
       9906.99836, 6.4039514]
-    note: "ATcT3E\n NO <g> ATcT ver. 1.122, DHf298 = 91.121 ?? 0.065 kJ/mol - fit\
+    note: "ATcT3E\n no <g> ATcT ver. 1.122, DHf298 = 91.121 ?? 0.065 kJ/mol - fit\
       \ JAN17"
   transport: {model: gas, geometry: linear, well-depth: 139.32, diameter: 3.339, dipole: 0.2,
     polarizability: 1.76, rotational-relaxation: 4.0, note: CJP}
@@ -424,7 +424,7 @@ species:
       -6860.18419, 3.79156136]
     note: "ATcT/A\n Klippenstein et al, 2011 paper\n ********************************************************************************\n\
       \ ********************************************************************************\n\
-      \ ***** NH2OH H2NO HNOH HNO HON NO HONO HNO2 NO2 HONO2 NO3 N2O\n ********************************************************************************\n\
+      \ ***** NH2OH H2NO HNOH HNO HON no HONO HNO2 NO2 HONO2 NO3 N2O\n ********************************************************************************\n\
       \ ********************************************************************************"
   transport: {model: gas, geometry: nonlinear, well-depth: 116.7, diameter: 3.492,
     rotational-relaxation: 1.0, note: = NHOH}
@@ -972,22 +972,22 @@ reactions:
   rate-constant: {A: 9600.0, b: 2.46, Ea: 107.0}
 - equation: NH2 + N <=> N2 + H + H
   rate-constant: {A: 70000000000000.0, b: 0.0, Ea: 0.0}
-- equation: NH2 + HNO <=> NH3 + NO
+- equation: NH2 + HNO <=> NH3 + no
   rate-constant: {A: 590.0, b: 2.95, Ea: -3469.0}
-- equation: NH2 + NO <=> N2 + H2O
+- equation: NH2 + no <=> N2 + H2O
   rate-constant: {A: 2.6e+19, b: -2.369, Ea: 870.0}
-- equation: NH2 + NO <=> NNH + OH
+- equation: NH2 + no <=> NNH + OH
   rate-constant: {A: 43000000000.0, b: 0.294, Ea: -866.0}
 - equation: NH2 + HONO <=> NH3 + NO2
   rate-constant: {A: 6400.0, b: 2.34, Ea: -3200.0}
-- equation: NH2 + HONO <=> NH2OH + NO
+- equation: NH2 + HONO <=> NH2OH + no
   rate-constant: {A: 5300.0, b: 2.28, Ea: 7983.0}
 - equation: NH2 + HNO2 <=> NH3 + NO2
   rate-constant: {A: 28000000000.0, b: 0.0, Ea: -5760.0}
-- equation: NH2 + NO2 <=> H2NO + NO
+- equation: NH2 + NO2 <=> H2NO + no
   duplicate: true
   rate-constant: {A: 1100000000000.0, b: 0.11, Ea: -1186.0}
-- equation: NH2 + NO2 <=> H2NO + NO
+- equation: NH2 + NO2 <=> H2NO + no
   duplicate: true
   rate-constant: {A: -4.3e+17, b: -1.874, Ea: 588.0}
   negative-A: true
@@ -998,7 +998,7 @@ reactions:
   rate-constant: {A: 180000000000000.0, b: 0.0, Ea: 74800.0}
 - equation: NH + H <=> N + H2
   rate-constant: {A: 35000000000000.0, b: 0.0, Ea: 0.0}
-- equation: NH + O <=> NO + H
+- equation: NH + O <=> no + H
   rate-constant: {A: 92000000000000.0, b: 0.0, Ea: 0.0}
 - equation: NH + OH <=> HNO + H
   rate-constant: {A: 320000000000000.0, b: -0.376, Ea: -46.0}
@@ -1006,7 +1006,7 @@ reactions:
   rate-constant: {A: 16000000.0, b: 1.733, Ea: -576.0}
 - equation: NH + O2 <=> HNO + O
   rate-constant: {A: 24000000000000.0, b: 0.0, Ea: 13850.0}
-- equation: NH + O2 <=> NO + OH
+- equation: NH + O2 <=> no + OH
   rate-constant: {A: 99000000000.0, b: 0.0, Ea: 1530.0}
 - equation: NH + NH <=> NNH + H
   rate-constant: {A: 62000000000000.0, b: -0.036, Ea: -161.0}
@@ -1014,19 +1014,19 @@ reactions:
   rate-constant: {A: 0.57, b: 3.88, Ea: 342.0}
 - equation: NH + N <=> N2 + H
   rate-constant: {A: 30000000000000.0, b: 0.0, Ea: 0.0}
-- equation: NH + NO <=> N2O + H
+- equation: NH + no <=> N2O + H
   rate-constant: {A: 2700000000000000.0, b: -0.78, Ea: 20.0}
-- equation: NH + NO <=> N2 + OH
+- equation: NH + no <=> N2 + OH
   rate-constant: {A: 680000000000000.0, b: -0.78, Ea: 20.0}
 - equation: NH + NO2 <=> N2O + OH
   rate-constant: {A: 4100000000000.0, b: 0.0, Ea: 0.0}
-- equation: NH + NO2 <=> HNO + NO
+- equation: NH + NO2 <=> HNO + no
   rate-constant: {A: 5900000000000.0, b: 0.0, Ea: 0.0}
-- equation: N + OH <=> NO + H
+- equation: N + OH <=> no + H
   rate-constant: {A: 38000000000000.0, b: 0.0, Ea: 0.0}
-- equation: N + O2 <=> NO + O
+- equation: N + O2 <=> no + O
   rate-constant: {A: 5900000000.0, b: 1.0, Ea: 6280.0}
-- equation: N + NO <=> N2 + O
+- equation: N + no <=> N2 + O
   rate-constant: {A: 9400000000000.0, b: 0.14, Ea: 0.0}
 - equation: NNH <=> N2 + H
   rate-constant: {A: 1000000000.0, b: 0.0, Ea: 0.0}
@@ -1036,7 +1036,7 @@ reactions:
   rate-constant: {A: 190000000000000.0, b: -0.274, Ea: -22.0}
 - equation: NNH + O <=> N2 + OH
   rate-constant: {A: 12000000000000.0, b: 0.145, Ea: -217.0}
-- equation: NNH + O <=> NH + NO
+- equation: NNH + O <=> NH + no
   rate-constant: {A: 520000000000.0, b: 0.381, Ea: -409.0}
 - equation: NNH + OH <=> N2 + H2O
   rate-constant: {A: 50000000000000.0, b: 0.0, Ea: 0.0}
@@ -1046,7 +1046,7 @@ reactions:
   rate-constant: {A: 50000000000000.0, b: 0.0, Ea: 0.0}
 - equation: NNH + NH2 <=> N2 + NH3
   rate-constant: {A: 50000000000000.0, b: 0.0, Ea: 0.0}
-- equation: NNH + NO <=> N2 + HNO
+- equation: NNH + no <=> N2 + HNO
   rate-constant: {A: 50000000000000.0, b: 0.0, Ea: 0.0}
 - equation: NH2OH (+M) <=> NH2 + OH (+M)
   type: falloff
@@ -1077,17 +1077,14 @@ reactions:
   rate-constant: {A: 29000.0, b: 2.69, Ea: 9557.0}
 - equation: NH2OH + HO2 <=> H2NO + H2O2
   rate-constant: {A: 14000.0, b: 2.69, Ea: 6418.0}
-- equation: HNO (+M) <=> H + NO (+M)
-  type: linear-burke
-  collider-list:
-  - collider: N2
-    eps: [1.61, 1.71, 1.59]
-    temperatures: [300, 1000, 2000]
-    note: Jasper-2022
-  - collider: H2O
-    eps: [6.42, 8.15, 9.09]
-    temperatures: [300, 1000, 2000]
-    note: Jasper-2022
+- equation: HNO (+M) <=> H + no (+M)
+  type: pressure-dependent-Arrhenius
+  rate-constants:
+  - {P: 0.1 atm, A: 2.0121e+19, b: -3.021, Ea: 47792.0}
+  - {P: 1 atm, A: 1.8259e+20, b: -3.008, Ea: 47880.0}
+  - {P: 10 atm, A: 1.2762e+21, b: -2.959, Ea: 48100.0}
+  - {P: 100 atm, A: 5.6445e+21, b: -2.855, Ea: 48459.0}
+  - {P: 1000 atm, A: 9.7111e+21, b: -2.642, Ea: 48940.0}
 - equation: H2NO <=> HNOH
   type: pressure-dependent-Arrhenius
   rate-constants:
@@ -1136,15 +1133,15 @@ reactions:
   rate-constant: {A: 1800000.0, b: 1.94, Ea: -1152.0}
 - equation: HNOH + NO2 <=> HONO + HNO
   rate-constant: {A: 800000000000.0, b: 0.0, Ea: 6000.0}
-- equation: NO + H (+M) <=> HNO (+M)
+- equation: no + H (+M) <=> HNO (+M)
   type: falloff
   low-P-rate-constant: {A: 240000000000000.0, b: 0.206, Ea: -1550.0}
   high-P-rate-constant: {A: 1500000000000000.0, b: -0.41, Ea: 0.0}
   Troe: {A: 0.82, T3: 1.0e-30, T1: 1.0e+30, T2: 1.0e+30}
   efficiencies: {N2: 1.6}
-- equation: HNO + H <=> NO + H2
+- equation: HNO + H <=> no + H2
   rate-constant: {A: 66000000000.0, b: 0.94, Ea: 495.0}
-- equation: HNO + O <=> NO + OH
+- equation: HNO + O <=> no + OH
   rate-constant: {A: 23000000000000.0, b: 0.0, Ea: 0.0}
 - equation: HNO + OH <=> H + HONO
   type: pressure-dependent-Arrhenius
@@ -1157,7 +1154,7 @@ reactions:
   - {P: 10.0 atm, A: 9700.0, b: 2.49, Ea: 5253.0}
   - {P: 31.6 atm, A: 53000.0, b: 2.29, Ea: 6063.0}
   - {P: 100.0 atm, A: 100000.0, b: 2.24, Ea: 6951.0}
-- equation: HNO + OH <=> NO + H2O
+- equation: HNO + OH <=> no + H2O
   type: pressure-dependent-Arrhenius
   rate-constants:
   - {P: 0.01 atm, A: 58000000000.0, b: 0.4, Ea: 3762.0}
@@ -1170,32 +1167,32 @@ reactions:
   - {P: 100.0 atm, A: 42000000000.0, b: 0.51, Ea: 5532.0}
 - equation: HNO + HO2 <=> HNO2 + OH
   rate-constant: {A: 2000.0, b: 2.36, Ea: 8980.0}
-- equation: HNO + O2 <=> HO2 + NO
+- equation: HNO + O2 <=> HO2 + no
   rate-constant: {A: 400000.0, b: 2.3, Ea: 14605.0}
 - equation: HNO + HNO <=> N2O + H2O
   rate-constant: {A: 900000000.0, b: 0.0, Ea: 3100.0}
-- equation: HNO + NO2 <=> HONO + NO
+- equation: HNO + NO2 <=> HONO + no
   rate-constant: {A: 790.0, b: 3.06, Ea: 3882.0}
-- equation: NO + HO2 <=> NO2 + OH
+- equation: no + HO2 <=> NO2 + OH
   rate-constant: {A: 2100000000000.0, b: 0.0, Ea: -497.0}
-- equation: NO + O (+M) <=> NO2 (+M)
+- equation: no + O (+M) <=> NO2 (+M)
   type: falloff
   low-P-rate-constant: {A: 4.72e+24, b: -2.87, Ea: 1550.0}
   high-P-rate-constant: {A: 1300000000000000.0, b: -0.75, Ea: 0.0}
   Troe: {A: 0.75, T3: 1000.0, T1: 100000.0, T2: 1.0e+30}
-- equation: NO2 + H <=> NO + OH
+- equation: NO2 + H <=> no + OH
   rate-constant: {A: 14000000000000.0, b: 0.29, Ea: 25.0}
-- equation: NO2 + O <=> NO + O2
+- equation: NO2 + O <=> no + O2
   rate-constant: {A: 110000000000000.0, b: -0.52, Ea: 0.0}
 - equation: NO2 + HO2 <=> HONO + O2
   rate-constant: {A: 1.9, b: 3.32, Ea: 3044.0}
 - equation: NO2 + HO2 <=> HNO2 + O2
   rate-constant: {A: 19.0, b: 3.26, Ea: 4983.0}
-- equation: NO2 + NO2 <=> NO + NO + O2
+- equation: NO2 + NO2 <=> no + no + O2
   rate-constant: {A: 4500000000000.0, b: 0.0, Ea: 27599.0}
-- equation: NO2 + NO2 <=> NO3 + NO
+- equation: NO2 + NO2 <=> NO3 + no
   rate-constant: {A: 9600000000.0, b: 0.73, Ea: 20900.0}
-- equation: NO + OH (+M) <=> HONO (+M)
+- equation: no + OH (+M) <=> HONO (+M)
   type: falloff
   low-P-rate-constant: {A: 3.392e+23, b: -2.5, Ea: 0.0}
   high-P-rate-constant: {A: 110000000000000.0, b: -0.3, Ea: 0.0}
@@ -1203,15 +1200,15 @@ reactions:
   efficiencies: {N2: 2.0, AR: 1.1, NH3: 6.0, NO2: 4.0, false: 2.0}
 - equation: HONO + H <=> H2 + NO2
   rate-constant: {A: 1900.0, b: 2.83, Ea: 1423.0}
-- equation: HONO + H <=> NO + H2O
+- equation: HONO + H <=> no + H2O
   rate-constant: {A: 4300000000.0, b: 0.98, Ea: 4070.0}
 - equation: HONO + O <=> NO2 + OH
   rate-constant: {A: 12000000000000.0, b: 0.0, Ea: 5960.0}
 - equation: HONO + OH <=> NO2 + H2O
   rate-constant: {A: 1700000000000.0, b: 0.0, Ea: -520.0}
-- equation: HONO + NO2 <=> HONO2 + NO
+- equation: HONO + NO2 <=> HONO2 + no
   rate-constant: {A: 200000000000.0, b: 0.0, Ea: 32700.0}
-- equation: HONO + HONO <=> NO + NO2 + H2O
+- equation: HONO + HONO <=> no + NO2 + H2O
   rate-constant: {A: 0.35, b: 3.64, Ea: 12140.0}
 - equation: HNO2 <=> HONO
   type: pressure-dependent-Arrhenius
@@ -1226,9 +1223,9 @@ reactions:
   - {P: 21.54 atm, A: 8.5e+24, b: -4.44, Ea: 43880.0}
   - {P: 46.41 atm, A: 2.7e+22, b: -3.55, Ea: 43380.0}
   - {P: 100.0 atm, A: 2.7e+20, b: -2.8, Ea: 43120.0}
-- equation: NO + OH <=> HNO2
+- equation: no + OH <=> HNO2
   rate-constant: {A: 3100000000000000.0, b: -2.17, Ea: 2775.0}
-- equation: HNO2 + H <=> NO + H2O
+- equation: HNO2 + H <=> no + H2O
   type: pressure-dependent-Arrhenius
   rate-constants:
   - {P: 0.01 atm, A: 3400000000.0, b: 1.07, Ea: 5568.0}
@@ -1269,7 +1266,7 @@ reactions:
   rate-constant: {A: 14000000000000.0, b: 0.0, Ea: 0.0}
 - equation: NO3 + HO2 <=> NO2 + O2 + OH
   rate-constant: {A: 1500000000000.0, b: 0.0, Ea: 0.0}
-- equation: NO3 + NO2 <=> NO + NO2 + O2
+- equation: NO3 + NO2 <=> no + NO2 + O2
   rate-constant: {A: 50000000000.0, b: 0.0, Ea: 2940.0}
 - equation: NO2 + OH (+M) <=> HONO2 (+M)
   type: falloff
@@ -1291,15 +1288,15 @@ reactions:
   efficiencies: {N2: 1.7, O2: 1.4, H2O: 12.0}
 - equation: N2O + H <=> N2 + OH
   rate-constant: {A: 64000000.0, b: 1.835, Ea: 13492.0}
-- equation: N2O + O <=> NO + NO
+- equation: N2O + O <=> no + no
   rate-constant: {A: 92000000000000.0, b: 0.0, Ea: 27679.0}
 - equation: N2O + O <=> N2 + O2
   rate-constant: {A: 92000000000000.0, b: 0.0, Ea: 27679.0}
 - equation: N2O + OH <=> N2 + HO2
   rate-constant: {A: 0.013, b: 4.72, Ea: 36560.0}
-- equation: N2O + OH <=> HNO + NO
+- equation: N2O + OH <=> HNO + no
   rate-constant: {A: 0.00012, b: 4.33, Ea: 25080.0}
-- equation: N2O + NO <=> NO2 + N2
+- equation: N2O + no <=> NO2 + N2
   rate-constant: {A: 530000.0, b: 2.23, Ea: 46280.0}
 - equation: HNOH + NH2 <=> N2H3 + OH
   rate-constant: {A: 10.0, b: 3.46, Ea: -467.0}
@@ -1317,7 +1314,7 @@ reactions:
   rate-constant: {A: 13000000000000.0, b: 0.0, Ea: -318.0}
 - equation: N2H4 + NH2 <=> N2H3 + NH3
   rate-constant: {A: 20.0, b: 3.62, Ea: -397.0}
-- equation: N2H4 + NO <=> N2H3 + HNO
+- equation: N2H4 + no <=> N2H3 + HNO
   rate-constant: {A: 60.0, b: 3.16, Ea: 30845.0}
 - equation: N2H4 + NO2 <=> N2H3 + HONO
   rate-constant: {A: 82.0, b: 3.13, Ea: 8860.0}
@@ -1341,7 +1338,7 @@ reactions:
   rate-constant: {A: 170000000.0, b: 1.5, Ea: -646.0}
 - equation: N2H3 + O <=> NH2 + HNO
   rate-constant: {A: 30000000000000.0, b: 0.0, Ea: 0.0}
-- equation: N2H3 + O => NH2 + NO + H
+- equation: N2H3 + O => NH2 + no + H
   rate-constant: {A: 30000000000000.0, b: 0.0, Ea: 0.0}
 - equation: N2H3 + OH <=> tHNNH + H2O
   rate-constant: {A: 1200000.0, b: 2.0, Ea: -1192.0}
@@ -1380,7 +1377,7 @@ reactions:
   rate-constant: {A: 96000000.0, b: 1.8, Ea: 900.0}
 - equation: tHNNH + O <=> NNH + OH
   rate-constant: {A: 330000000.0, b: 1.5, Ea: 497.0}
-- equation: tHNNH + O <=> NH2 + NO
+- equation: tHNNH + O <=> NH2 + no
   rate-constant: {A: 10000000000000.0, b: 0.0, Ea: 0.0}
 - equation: tHNNH + OH <=> NNH + H2O
   rate-constant: {A: 59.0, b: 3.4, Ea: 1360.0}
@@ -1409,13 +1406,13 @@ reactions:
   rate-constant: {A: 70000000000000.0, b: 0.0, Ea: 0.0}
 - equation: H2NN + O <=> NNH + OH
   rate-constant: {A: 330000000.0, b: 1.5, Ea: -894.0}
-- equation: H2NN + O <=> NH2 + NO
+- equation: H2NN + O <=> NH2 + no
   rate-constant: {A: 70000000000000.0, b: 0.0, Ea: 0.0}
 - equation: H2NN + OH <=> NNH + H2O
   rate-constant: {A: 2400000.0, b: 2.0, Ea: -1192.0}
-- equation: H2NN + OH => NH2 + NO + H
+- equation: H2NN + OH => NH2 + no + H
   rate-constant: {A: 2000000000000.0, b: 0.0, Ea: 0.0}
-- equation: H2NN + HO2 => NH2 + NO + OH
+- equation: H2NN + HO2 => NH2 + no + OH
   rate-constant: {A: 9000000000000.0, b: 0.0, Ea: 0.0}
 - equation: H2NN + HO2 <=> NNH + H2O2
   rate-constant: {A: 29000.0, b: 2.69, Ea: -1600.0}
@@ -1423,7 +1420,7 @@ reactions:
   rate-constant: {A: 1500000000000.0, b: 0.0, Ea: 5961.0}
 - equation: H2NN + NH2 <=> NNH + NH3
   rate-constant: {A: 1800000.0, b: 1.94, Ea: -1152.0}
-- equation: HOCO + NO <=> CO2 + HNO
+- equation: HOCO + no <=> CO2 + HNO
   rate-constant: {A: 5000000000.0, b: 1.0, Ea: 0.0}
 - equation: HOCO + NH2 <=> CO2 + NH3
   rate-constant: {A: 20000000000000.0, b: 0.0, Ea: 0.0}
