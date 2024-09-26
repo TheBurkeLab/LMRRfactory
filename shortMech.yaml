@@ -677,6 +677,7 @@ reactions:
   efficiencies: {H2: 2.5, H2O: 12.0, AR: 0.0, CO: 1.9, CO2: 3.8}
 - equation: H + OH (+M) <=> H2O (+M)
   type: linear-burke
+  reference-collider: N2
   collider-list:
   - collider: M
     eps: {A: 1, b: 0, Ea: 0}
@@ -696,6 +697,7 @@ reactions:
   rate-constant: {A: 1.0e+26, b: -2.44, Ea: 120180.0}
 - equation: H + O2 (+M) <=> HO2 (+M)
   type: linear-burke
+  reference-collider: AR
   collider-list:
   - collider: M
     eps: {A: 1, b: 0, Ea: 0}
@@ -740,6 +742,7 @@ reactions:
   rate-constant: {A: 6.4e+17, b: -1.54, Ea: 8540.0}
 - equation: H2O2 (+M) <=> 2 OH (+M)
   type: linear-burke
+  reference-collider: AR
   collider-list:
   - collider: M
     eps: {A: 1, b: 0, Ea: 0}
@@ -947,6 +950,7 @@ reactions:
   rate-constant: {A: 5.6, b: 3.53, Ea: 552.0}
 - equation: 2 NH2 (+M) <=> N2H4 (+M)
   type: linear-burke
+  reference-collider: AR
   collider-list:
   - collider: M
     eps: {A: 1, b: 0, Ea: 0}
@@ -1084,6 +1088,7 @@ reactions:
   rate-constant: {A: 14000.0, b: 2.69, Ea: 6418.0}
 - equation: HNO (+M) <=> H + NO (+M)
   type: linear-burke
+  reference-collider: AR
   collider-list:
   - collider: M
     eps: {A: 1, b: 0, Ea: 0}

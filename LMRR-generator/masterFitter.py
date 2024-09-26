@@ -126,6 +126,7 @@ class masterFitter:
                 shortMechanism['reactions'].append({
                             'equation': mech_rxn['equation'],
                             'type': 'linear-burke',
+                            'reference-collider': blend['reactions'][idx]['reference-collider'],
                             'collider-list': colliderMlist + blend['reactions'][idx]['collider-list']
                             })
             else:
