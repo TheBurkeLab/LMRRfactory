@@ -109,8 +109,10 @@ class masterFitter:
         inputColliderNames=[]
         for inputRxn in self.input['reactions']:
             inputRxnNames.append(inputRxn['equation'])
+            inputRxnColliderNames=[]
             for inputCol in inputRxn['collider-list']:
-                inputColliderNames.append(inputCol['collider'])
+                inputRxnColliderNames.append(inputCol['collider'])
+            inputColliderNames.append(inputRxnColliderNames)
         
         
 

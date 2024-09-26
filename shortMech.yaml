@@ -531,14 +531,13 @@
   - *id031\n- *id031\n- *id031\n- *id031\n- equation: H2O2 (+M) <=> 2 OH (+M)\n  type:\
   \ linear-burke\n  collider-list:\n  - collider: M\n    eps: {A: 1, b: 0, Ea: 0}\n\
   \    low-P-rate-constant: *id032\n    high-P-rate-constant: *id033\n    Troe: *id034\n\
-  \  - collider: CO2\n    eps: [5.22, 4.14, 3.27]\n  - collider: H2O2\n    eps: [6.83,\
-  \ 12.0, 16.3]\n  - collider: H2O\n    eps: [5.51, 10.2, 13.3]\n  - collider: HE\n\
-  \    eps: [0.827, 0.966]\n  - collider: H2\n    eps: [2.192, 2.085]\n  - collider:\
-  \ CO\n    eps: [2.673, 2.746]\n- *id031\n- *id031\n- *id031\n- *id031\n- *id031\n\
+  \  - collider: H2O\n    eps: [5.51, 10.2, 13.3]\n  - collider: HE\n    eps: [0.827,\
+  \ 0.966]\n  - collider: H2\n    eps: [2.192, 2.085]\n  - collider: CO\n    eps:\
+  \ [2.673, 2.746]\n- *id031\n- *id031\n- *id031\n- *id031\n- *id031\n- *id031\n-\
+  \ *id031\n- *id031\n- *id031\n- *id031\n- *id031\n- *id031\n- *id031\n- *id031\n\
   - *id031\n- *id031\n- *id031\n- *id031\n- *id031\n- *id031\n- *id031\n- *id031\n\
   - *id031\n- *id031\n- *id031\n- *id031\n- *id031\n- *id031\n- *id031\n- *id031\n\
-  - *id031\n- *id031\n- *id031\n- *id031\n- *id031\n- *id031\n- *id031\n- *id031\n\
-  - *id031\n- *id031\n- *id031\n- &id035\n  equation: H2O2 + H <=> H2O + OH\n  rate-constant:\
+  - *id031\n- *id031\n- &id035\n  equation: H2O2 + H <=> H2O + OH\n  rate-constant:\
   \ {A: 24000000000000.0, b: 0.0, Ea: 3970.0}\n- *id035\n- *id035\n- *id035\n- *id035\n\
   - *id035\n- *id035\n- *id035\n- *id035\n- *id035\n- *id035\n- *id035\n- *id035\n\
   - *id035\n- *id035\n- *id035\n- *id035\n- *id035\n- *id035\n- *id035\n- *id035\n\
@@ -840,72 +839,73 @@
   - *id081\n- *id081\n- *id081\n- *id081\n- *id081\n- *id081\n- *id081\n- *id081\n\
   - *id081\n- *id081\n- equation: NH3 (+M) <=> H + NH2 (+M)\n  type: linear-burke\n\
   \  collider-list:\n  - collider: M\n    eps: {A: 1, b: 0, Ea: 0}\n    rate-constants:\
-  \ *id082\n  - collider: N2\n    eps: [3.15, 2.47, 2.25]\n  - collider: NH3\n   \
-  \ eps: [13.9, 20.0, 22.2]\n  - collider: H2O\n    eps: [14.0, 23.6, 27.9]\n- *id081\n\
+  \ *id082\n  - collider: N2\n    eps: [3.15, 2.47, 2.25]\n  - collider: O2\n    eps:\
+  \ [1.55, 1.48, 1.7]\n  - collider: CO2\n    eps: [11.2, 13.4, 14.3]\n  - collider:\
+  \ NH3\n    eps: [13.9, 20.0, 22.2]\n  - collider: H2O\n    eps: [14.0, 23.6, 27.9]\n\
   - *id081\n- *id081\n- *id081\n- *id081\n- *id081\n- *id081\n- *id081\n- *id081\n\
   - *id081\n- *id081\n- *id081\n- *id081\n- *id081\n- *id081\n- *id081\n- *id081\n\
-  - *id081\n- *id081\n- *id081\n- *id081\n- *id081\n- *id081\n- &id083\n  equation:\
-  \ NH3 + H <=> NH2 + H2\n  rate-constant: {A: 540000.0, b: 2.4, Ea: 9916.0}\n- *id083\n\
+  - *id081\n- *id081\n- *id081\n- *id081\n- *id081\n- *id081\n- *id081\n- &id083\n\
+  \  equation: NH3 + H <=> NH2 + H2\n  rate-constant: {A: 540000.0, b: 2.4, Ea: 9916.0}\n\
   - *id083\n- *id083\n- *id083\n- *id083\n- *id083\n- *id083\n- *id083\n- *id083\n\
   - *id083\n- *id083\n- *id083\n- *id083\n- *id083\n- *id083\n- *id083\n- *id083\n\
   - *id083\n- *id083\n- *id083\n- *id083\n- *id083\n- *id083\n- *id083\n- *id083\n\
   - *id083\n- *id083\n- *id083\n- *id083\n- *id083\n- *id083\n- *id083\n- *id083\n\
-  - *id083\n- *id083\n- *id083\n- *id083\n- &id084\n  equation: NH3 + O <=> NH2 +\
-  \ OH\n  rate-constant: {A: 9400000.0, b: 1.94, Ea: 6460.0}\n- *id084\n- *id084\n\
+  - *id083\n- *id083\n- *id083\n- *id083\n- *id083\n- &id084\n  equation: NH3 + O\
+  \ <=> NH2 + OH\n  rate-constant: {A: 9400000.0, b: 1.94, Ea: 6460.0}\n- *id084\n\
   - *id084\n- *id084\n- *id084\n- *id084\n- *id084\n- *id084\n- *id084\n- *id084\n\
   - *id084\n- *id084\n- *id084\n- *id084\n- *id084\n- *id084\n- *id084\n- *id084\n\
   - *id084\n- *id084\n- *id084\n- *id084\n- *id084\n- *id084\n- *id084\n- *id084\n\
   - *id084\n- *id084\n- *id084\n- *id084\n- *id084\n- *id084\n- *id084\n- *id084\n\
-  - *id084\n- *id084\n- *id084\n- &id085\n  equation: NH3 + OH <=> NH2 + H2O\n  rate-constant:\
-  \ {A: 2000000.0, b: 2.04, Ea: 566.0}\n- *id085\n- *id085\n- *id085\n- *id085\n-\
-  \ *id085\n- *id085\n- *id085\n- *id085\n- *id085\n- *id085\n- *id085\n- *id085\n\
+  - *id084\n- *id084\n- *id084\n- *id084\n- &id085\n  equation: NH3 + OH <=> NH2 +\
+  \ H2O\n  rate-constant: {A: 2000000.0, b: 2.04, Ea: 566.0}\n- *id085\n- *id085\n\
   - *id085\n- *id085\n- *id085\n- *id085\n- *id085\n- *id085\n- *id085\n- *id085\n\
   - *id085\n- *id085\n- *id085\n- *id085\n- *id085\n- *id085\n- *id085\n- *id085\n\
   - *id085\n- *id085\n- *id085\n- *id085\n- *id085\n- *id085\n- *id085\n- *id085\n\
-  - *id085\n- &id086\n  equation: NH3 + HO2 <=> NH2 + H2O2\n  rate-constant: {A: 1.2,\
-  \ b: 3.839, Ea: 17260.0}\n- *id086\n- *id086\n- *id086\n- *id086\n- *id086\n- *id086\n\
+  - *id085\n- *id085\n- *id085\n- *id085\n- *id085\n- *id085\n- *id085\n- *id085\n\
+  - *id085\n- *id085\n- *id085\n- &id086\n  equation: NH3 + HO2 <=> NH2 + H2O2\n \
+  \ rate-constant: {A: 1.2, b: 3.839, Ea: 17260.0}\n- *id086\n- *id086\n- *id086\n\
   - *id086\n- *id086\n- *id086\n- *id086\n- *id086\n- *id086\n- *id086\n- *id086\n\
   - *id086\n- *id086\n- *id086\n- *id086\n- *id086\n- *id086\n- *id086\n- *id086\n\
   - *id086\n- *id086\n- *id086\n- *id086\n- *id086\n- *id086\n- *id086\n- *id086\n\
-  - *id086\n- *id086\n- *id086\n- *id086\n- *id086\n- *id086\n- *id086\n- &id087\n\
-  \  equation: NH + H + M <=> NH2 + M\n  type: three-body\n  rate-constant: {A: 1.2e+25,\
-  \ b: -2.71, Ea: 0.0}\n- *id087\n- *id087\n- *id087\n- *id087\n- *id087\n- *id087\n\
+  - *id086\n- *id086\n- *id086\n- *id086\n- *id086\n- *id086\n- *id086\n- *id086\n\
+  - *id086\n- *id086\n- &id087\n  equation: NH + H + M <=> NH2 + M\n  type: three-body\n\
+  \  rate-constant: {A: 1.2e+25, b: -2.71, Ea: 0.0}\n- *id087\n- *id087\n- *id087\n\
   - *id087\n- *id087\n- *id087\n- *id087\n- *id087\n- *id087\n- *id087\n- *id087\n\
   - *id087\n- *id087\n- *id087\n- *id087\n- *id087\n- *id087\n- *id087\n- *id087\n\
   - *id087\n- *id087\n- *id087\n- *id087\n- *id087\n- *id087\n- *id087\n- *id087\n\
-  - *id087\n- *id087\n- *id087\n- *id087\n- *id087\n- *id087\n- *id087\n- &id088\n\
-  \  equation: NH2 + H <=> NH + H2\n  rate-constant: {A: 510000000.0, b: 1.5, Ea:\
-  \ 3700.0}\n- *id088\n- *id088\n- *id088\n- *id088\n- *id088\n- *id088\n- *id088\n\
+  - *id087\n- *id087\n- *id087\n- *id087\n- *id087\n- *id087\n- *id087\n- *id087\n\
+  - *id087\n- *id087\n- &id088\n  equation: NH2 + H <=> NH + H2\n  rate-constant:\
+  \ {A: 510000000.0, b: 1.5, Ea: 3700.0}\n- *id088\n- *id088\n- *id088\n- *id088\n\
   - *id088\n- *id088\n- *id088\n- *id088\n- *id088\n- *id088\n- *id088\n- *id088\n\
   - *id088\n- *id088\n- *id088\n- *id088\n- *id088\n- *id088\n- *id088\n- *id088\n\
   - *id088\n- *id088\n- *id088\n- *id088\n- *id088\n- *id088\n- *id088\n- *id088\n\
-  - *id088\n- *id088\n- *id088\n- *id088\n- *id088\n- *id088\n- &id089\n  equation:\
-  \ NH2 + O <=> HNO + H\n  rate-constant: {A: 660000000000000.0, b: -0.5, Ea: 0.0}\n\
+  - *id088\n- *id088\n- *id088\n- *id088\n- *id088\n- *id088\n- *id088\n- *id088\n\
+  - *id088\n- &id089\n  equation: NH2 + O <=> HNO + H\n  rate-constant: {A: 660000000000000.0,\
+  \ b: -0.5, Ea: 0.0}\n- *id089\n- *id089\n- *id089\n- *id089\n- *id089\n- *id089\n\
   - *id089\n- *id089\n- *id089\n- *id089\n- *id089\n- *id089\n- *id089\n- *id089\n\
   - *id089\n- *id089\n- *id089\n- *id089\n- *id089\n- *id089\n- *id089\n- *id089\n\
   - *id089\n- *id089\n- *id089\n- *id089\n- *id089\n- *id089\n- *id089\n- *id089\n\
-  - *id089\n- *id089\n- *id089\n- *id089\n- *id089\n- *id089\n- *id089\n- *id089\n\
-  - *id089\n- *id089\n- *id089\n- *id089\n- *id089\n- &id090\n  equation: NH2 + O\
-  \ <=> NH + OH\n  duplicate: true\n  rate-constant: {A: 7000000000000.0, b: 0.0,\
-  \ Ea: 0.0}\n- *id090\n- *id090\n- *id090\n- *id090\n- *id090\n- *id090\n- *id090\n\
+  - *id089\n- *id089\n- *id089\n- *id089\n- *id089\n- *id089\n- *id089\n- &id090\n\
+  \  equation: NH2 + O <=> NH + OH\n  duplicate: true\n  rate-constant: {A: 7000000000000.0,\
+  \ b: 0.0, Ea: 0.0}\n- *id090\n- *id090\n- *id090\n- *id090\n- *id090\n- *id090\n\
   - *id090\n- *id090\n- *id090\n- *id090\n- *id090\n- *id090\n- *id090\n- *id090\n\
   - *id090\n- *id090\n- *id090\n- *id090\n- *id090\n- *id090\n- *id090\n- *id090\n\
   - *id090\n- *id090\n- *id090\n- *id090\n- *id090\n- *id090\n- *id090\n- *id090\n\
-  - *id090\n- *id090\n- *id090\n- *id090\n- *id090\n- *id090\n- &id091\n  equation:\
-  \ NH2 + O <=> NH + OH\n  duplicate: true\n  rate-constant: {A: 0.86, b: 4.01, Ea:\
-  \ 1673.0}\n- *id091\n- *id091\n- *id091\n- *id091\n- *id091\n- *id091\n- *id091\n\
+  - *id090\n- *id090\n- *id090\n- *id090\n- *id090\n- *id090\n- *id090\n- &id091\n\
+  \  equation: NH2 + O <=> NH + OH\n  duplicate: true\n  rate-constant: {A: 0.86,\
+  \ b: 4.01, Ea: 1673.0}\n- *id091\n- *id091\n- *id091\n- *id091\n- *id091\n- *id091\n\
   - *id091\n- *id091\n- *id091\n- *id091\n- *id091\n- *id091\n- *id091\n- *id091\n\
   - *id091\n- *id091\n- *id091\n- *id091\n- *id091\n- *id091\n- *id091\n- *id091\n\
   - *id091\n- *id091\n- *id091\n- *id091\n- *id091\n- *id091\n- *id091\n- *id091\n\
-  - *id091\n- *id091\n- *id091\n- *id091\n- *id091\n- *id091\n- &id092\n  equation:\
-  \ NH2 + OH <=> NH + H2O\n  rate-constant: {A: 3300000.0, b: 1.949, Ea: -217.0}\n\
+  - *id091\n- *id091\n- *id091\n- *id091\n- *id091\n- *id091\n- *id091\n- &id092\n\
+  \  equation: NH2 + OH <=> NH + H2O\n  rate-constant: {A: 3300000.0, b: 1.949, Ea:\
+  \ -217.0}\n- *id092\n- *id092\n- *id092\n- *id092\n- *id092\n- *id092\n- *id092\n\
   - *id092\n- *id092\n- *id092\n- *id092\n- *id092\n- *id092\n- *id092\n- *id092\n\
   - *id092\n- *id092\n- *id092\n- *id092\n- *id092\n- *id092\n- *id092\n- *id092\n\
   - *id092\n- *id092\n- *id092\n- *id092\n- *id092\n- *id092\n- *id092\n- *id092\n\
-  - *id092\n- *id092\n- *id092\n- *id092\n- *id092\n- *id092\n- *id092\n- *id092\n\
-  - *id092\n- *id092\n- *id092\n- *id092\n- *id092\n- &id093\n  equation: NH2 + HO2\
-  \ <=> NH3 + O2\n  duplicate: true\n  rate-constant: {A: 6.0e+18, b: -1.9135, Ea:\
-  \ 306.0}\n- *id093\n- *id093\n- *id093\n- *id093\n- *id093\n- *id093\n- *id093\n\
+  - *id092\n- *id092\n- *id092\n- *id092\n- *id092\n- *id092\n- &id093\n  equation:\
+  \ NH2 + HO2 <=> NH3 + O2\n  duplicate: true\n  rate-constant: {A: 6.0e+18, b: -1.9135,\
+  \ Ea: 306.0}\n- *id093\n- *id093\n- *id093\n- *id093\n- *id093\n- *id093\n- *id093\n\
   - *id093\n- *id093\n- *id093\n- *id093\n- *id093\n- *id093\n- *id093\n- *id093\n\
   - *id093\n- *id093\n- *id093\n- *id093\n- *id093\n- *id093\n- *id093\n- *id093\n\
   - *id093\n- *id093\n- *id093\n- *id093\n- *id093\n- *id093\n- *id093\n- *id093\n\
@@ -953,94 +953,95 @@
   - *id100\n- *id100\n- *id100\n- equation: 2 NH2 (+M) <=> N2H4 (+M)\n  type: linear-burke\n\
   \  collider-list:\n  - collider: M\n    eps: {A: 1, b: 0, Ea: 0}\n    low-P-rate-constant:\
   \ *id101\n    high-P-rate-constant: *id102\n    Troe: *id103\n  - collider: N2\n\
-  \    eps: [2.0, 1.69, 1.43]\n  - collider: NH3\n    eps: [5.86, 8.25, 8.6]\n- *id100\n\
+  \    eps: [2.0, 1.69, 1.43]\n  - collider: O2\n    eps: [1.22, 1.17, 1.14]\n  -\
+  \ collider: NH3\n    eps: [5.86, 8.25, 8.6]\n  - collider: H2O\n    eps: [5.6, 7.98,\
+  \ 8.19]\n- *id100\n- *id100\n- *id100\n- *id100\n- *id100\n- *id100\n- *id100\n\
   - *id100\n- *id100\n- *id100\n- *id100\n- *id100\n- *id100\n- *id100\n- *id100\n\
-  - *id100\n- *id100\n- *id100\n- *id100\n- *id100\n- *id100\n- *id100\n- *id100\n\
-  - *id100\n- *id100\n- *id100\n- *id100\n- &id104\n  equation: NH2 + NH2 <=> tHNNH\
-  \ + H2\n  rate-constant: {A: 170000000.0, b: 1.02, Ea: 11783.0}\n- *id104\n- *id104\n\
+  - *id100\n- *id100\n- *id100\n- *id100\n- *id100\n- *id100\n- &id104\n  equation:\
+  \ NH2 + NH2 <=> tHNNH + H2\n  rate-constant: {A: 170000000.0, b: 1.02, Ea: 11783.0}\n\
   - *id104\n- *id104\n- *id104\n- *id104\n- *id104\n- *id104\n- *id104\n- *id104\n\
   - *id104\n- *id104\n- *id104\n- *id104\n- *id104\n- *id104\n- *id104\n- *id104\n\
   - *id104\n- *id104\n- *id104\n- *id104\n- *id104\n- *id104\n- *id104\n- *id104\n\
   - *id104\n- *id104\n- *id104\n- *id104\n- *id104\n- *id104\n- *id104\n- *id104\n\
-  - *id104\n- *id104\n- *id104\n- &id105\n  equation: NH2 + NH2 <=> H2NN + H2\n  rate-constant:\
-  \ {A: 72000.0, b: 1.88, Ea: 8802.0}\n- *id105\n- *id105\n- *id105\n- *id105\n- *id105\n\
+  - *id104\n- *id104\n- *id104\n- *id104\n- *id104\n- &id105\n  equation: NH2 + NH2\
+  \ <=> H2NN + H2\n  rate-constant: {A: 72000.0, b: 1.88, Ea: 8802.0}\n- *id105\n\
   - *id105\n- *id105\n- *id105\n- *id105\n- *id105\n- *id105\n- *id105\n- *id105\n\
   - *id105\n- *id105\n- *id105\n- *id105\n- *id105\n- *id105\n- *id105\n- *id105\n\
   - *id105\n- *id105\n- *id105\n- *id105\n- *id105\n- *id105\n- *id105\n- *id105\n\
   - *id105\n- *id105\n- *id105\n- *id105\n- *id105\n- *id105\n- *id105\n- *id105\n\
-  - &id106\n  equation: NH2 + NH <=> tHNNH + H\n  rate-constant: {A: 1200000000000000.0,\
-  \ b: -0.5, Ea: 0.0}\n- *id106\n- *id106\n- *id106\n- *id106\n- *id106\n- *id106\n\
+  - *id105\n- *id105\n- *id105\n- *id105\n- &id106\n  equation: NH2 + NH <=> tHNNH\
+  \ + H\n  rate-constant: {A: 1200000000000000.0, b: -0.5, Ea: 0.0}\n- *id106\n- *id106\n\
   - *id106\n- *id106\n- *id106\n- *id106\n- *id106\n- *id106\n- *id106\n- *id106\n\
   - *id106\n- *id106\n- *id106\n- *id106\n- *id106\n- *id106\n- *id106\n- *id106\n\
   - *id106\n- *id106\n- *id106\n- *id106\n- *id106\n- *id106\n- *id106\n- *id106\n\
-  - *id106\n- *id106\n- *id106\n- *id106\n- *id106\n- *id106\n- *id106\n- &id107\n\
-  \  equation: NH2 + NH <=> cHNNH + H\n  rate-constant: {A: 300000000000000.0, b:\
-  \ -0.5, Ea: 0.0}\n- *id107\n- *id107\n- *id107\n- *id107\n- *id107\n- *id107\n-\
-  \ *id107\n- *id107\n- *id107\n- *id107\n- *id107\n- *id107\n- *id107\n- *id107\n\
+  - *id106\n- *id106\n- *id106\n- *id106\n- *id106\n- *id106\n- *id106\n- *id106\n\
+  - *id106\n- *id106\n- *id106\n- &id107\n  equation: NH2 + NH <=> cHNNH + H\n  rate-constant:\
+  \ {A: 300000000000000.0, b: -0.5, Ea: 0.0}\n- *id107\n- *id107\n- *id107\n- *id107\n\
   - *id107\n- *id107\n- *id107\n- *id107\n- *id107\n- *id107\n- *id107\n- *id107\n\
   - *id107\n- *id107\n- *id107\n- *id107\n- *id107\n- *id107\n- *id107\n- *id107\n\
-  - *id107\n- *id107\n- *id107\n- *id107\n- *id107\n- *id107\n- *id107\n- &id108\n\
-  \  equation: NH2 + NH <=> NH3 + N\n  rate-constant: {A: 9600.0, b: 2.46, Ea: 107.0}\n\
+  - *id107\n- *id107\n- *id107\n- *id107\n- *id107\n- *id107\n- *id107\n- *id107\n\
+  - *id107\n- *id107\n- *id107\n- *id107\n- *id107\n- *id107\n- *id107\n- *id107\n\
+  - *id107\n- &id108\n  equation: NH2 + NH <=> NH3 + N\n  rate-constant: {A: 9600.0,\
+  \ b: 2.46, Ea: 107.0}\n- *id108\n- *id108\n- *id108\n- *id108\n- *id108\n- *id108\n\
   - *id108\n- *id108\n- *id108\n- *id108\n- *id108\n- *id108\n- *id108\n- *id108\n\
   - *id108\n- *id108\n- *id108\n- *id108\n- *id108\n- *id108\n- *id108\n- *id108\n\
   - *id108\n- *id108\n- *id108\n- *id108\n- *id108\n- *id108\n- *id108\n- *id108\n\
-  - *id108\n- *id108\n- *id108\n- *id108\n- *id108\n- *id108\n- *id108\n- *id108\n\
-  - *id108\n- *id108\n- *id108\n- *id108\n- *id108\n- &id109\n  equation: NH2 + N\
-  \ <=> N2 + H + H\n  rate-constant: {A: 70000000000000.0, b: 0.0, Ea: 0.0}\n- *id109\n\
+  - *id108\n- *id108\n- *id108\n- *id108\n- *id108\n- *id108\n- *id108\n- &id109\n\
+  \  equation: NH2 + N <=> N2 + H + H\n  rate-constant: {A: 70000000000000.0, b: 0.0,\
+  \ Ea: 0.0}\n- *id109\n- *id109\n- *id109\n- *id109\n- *id109\n- *id109\n- *id109\n\
   - *id109\n- *id109\n- *id109\n- *id109\n- *id109\n- *id109\n- *id109\n- *id109\n\
   - *id109\n- *id109\n- *id109\n- *id109\n- *id109\n- *id109\n- *id109\n- *id109\n\
   - *id109\n- *id109\n- *id109\n- *id109\n- *id109\n- *id109\n- *id109\n- *id109\n\
-  - *id109\n- *id109\n- *id109\n- *id109\n- *id109\n- *id109\n- *id109\n- *id109\n\
-  - *id109\n- *id109\n- *id109\n- *id109\n- &id110\n  equation: NH2 + HNO <=> NH3\
-  \ + NO\n  rate-constant: {A: 590.0, b: 2.95, Ea: -3469.0}\n- *id110\n- *id110\n\
+  - *id109\n- *id109\n- *id109\n- *id109\n- *id109\n- *id109\n- &id110\n  equation:\
+  \ NH2 + HNO <=> NH3 + NO\n  rate-constant: {A: 590.0, b: 2.95, Ea: -3469.0}\n- *id110\n\
   - *id110\n- *id110\n- *id110\n- *id110\n- *id110\n- *id110\n- *id110\n- *id110\n\
   - *id110\n- *id110\n- *id110\n- *id110\n- *id110\n- *id110\n- *id110\n- *id110\n\
   - *id110\n- *id110\n- *id110\n- *id110\n- *id110\n- *id110\n- *id110\n- *id110\n\
   - *id110\n- *id110\n- *id110\n- *id110\n- *id110\n- *id110\n- *id110\n- *id110\n\
-  - *id110\n- *id110\n- *id110\n- &id111\n  equation: NH2 + NO <=> N2 + H2O\n  rate-constant:\
-  \ {A: 2.6e+19, b: -2.369, Ea: 870.0}\n- *id111\n- *id111\n- *id111\n- *id111\n-\
-  \ *id111\n- *id111\n- *id111\n- *id111\n- *id111\n- *id111\n- *id111\n- *id111\n\
+  - *id110\n- *id110\n- *id110\n- *id110\n- &id111\n  equation: NH2 + NO <=> N2 +\
+  \ H2O\n  rate-constant: {A: 2.6e+19, b: -2.369, Ea: 870.0}\n- *id111\n- *id111\n\
   - *id111\n- *id111\n- *id111\n- *id111\n- *id111\n- *id111\n- *id111\n- *id111\n\
   - *id111\n- *id111\n- *id111\n- *id111\n- *id111\n- *id111\n- *id111\n- *id111\n\
   - *id111\n- *id111\n- *id111\n- *id111\n- *id111\n- *id111\n- *id111\n- *id111\n\
-  - *id111\n- &id112\n  equation: NH2 + NO <=> NNH + OH\n  rate-constant: {A: 43000000000.0,\
-  \ b: 0.294, Ea: -866.0}\n- *id112\n- *id112\n- *id112\n- *id112\n- *id112\n- *id112\n\
+  - *id111\n- *id111\n- *id111\n- *id111\n- *id111\n- *id111\n- *id111\n- *id111\n\
+  - *id111\n- *id111\n- *id111\n- &id112\n  equation: NH2 + NO <=> NNH + OH\n  rate-constant:\
+  \ {A: 43000000000.0, b: 0.294, Ea: -866.0}\n- *id112\n- *id112\n- *id112\n- *id112\n\
   - *id112\n- *id112\n- *id112\n- *id112\n- *id112\n- *id112\n- *id112\n- *id112\n\
   - *id112\n- *id112\n- *id112\n- *id112\n- *id112\n- *id112\n- *id112\n- *id112\n\
   - *id112\n- *id112\n- *id112\n- *id112\n- *id112\n- *id112\n- *id112\n- *id112\n\
-  - *id112\n- *id112\n- *id112\n- *id112\n- *id112\n- *id112\n- *id112\n- &id113\n\
-  \  equation: NH2 + HONO <=> NH3 + NO2\n  rate-constant: {A: 6400.0, b: 2.34, Ea:\
-  \ -3200.0}\n- *id113\n- *id113\n- *id113\n- *id113\n- *id113\n- *id113\n- *id113\n\
+  - *id112\n- *id112\n- *id112\n- *id112\n- *id112\n- *id112\n- *id112\n- *id112\n\
+  - *id112\n- &id113\n  equation: NH2 + HONO <=> NH3 + NO2\n  rate-constant: {A: 6400.0,\
+  \ b: 2.34, Ea: -3200.0}\n- *id113\n- *id113\n- *id113\n- *id113\n- *id113\n- *id113\n\
   - *id113\n- *id113\n- *id113\n- *id113\n- *id113\n- *id113\n- *id113\n- *id113\n\
   - *id113\n- *id113\n- *id113\n- *id113\n- *id113\n- *id113\n- *id113\n- *id113\n\
   - *id113\n- *id113\n- *id113\n- *id113\n- *id113\n- *id113\n- *id113\n- *id113\n\
-  - *id113\n- *id113\n- *id113\n- *id113\n- *id113\n- *id113\n- &id114\n  equation:\
-  \ NH2 + HONO <=> NH2OH + NO\n  rate-constant: {A: 5300.0, b: 2.28, Ea: 7983.0}\n\
+  - *id113\n- *id113\n- *id113\n- *id113\n- *id113\n- *id113\n- *id113\n- &id114\n\
+  \  equation: NH2 + HONO <=> NH2OH + NO\n  rate-constant: {A: 5300.0, b: 2.28, Ea:\
+  \ 7983.0}\n- *id114\n- *id114\n- *id114\n- *id114\n- *id114\n- *id114\n- *id114\n\
   - *id114\n- *id114\n- *id114\n- *id114\n- *id114\n- *id114\n- *id114\n- *id114\n\
   - *id114\n- *id114\n- *id114\n- *id114\n- *id114\n- *id114\n- *id114\n- *id114\n\
   - *id114\n- *id114\n- *id114\n- *id114\n- *id114\n- *id114\n- *id114\n- *id114\n\
-  - *id114\n- *id114\n- *id114\n- *id114\n- *id114\n- *id114\n- *id114\n- *id114\n\
-  - *id114\n- *id114\n- *id114\n- *id114\n- *id114\n- &id115\n  equation: NH2 + HNO2\
-  \ <=> NH3 + NO2\n  rate-constant: {A: 28000000000.0, b: 0.0, Ea: -5760.0}\n- *id115\n\
+  - *id114\n- *id114\n- *id114\n- *id114\n- *id114\n- *id114\n- &id115\n  equation:\
+  \ NH2 + HNO2 <=> NH3 + NO2\n  rate-constant: {A: 28000000000.0, b: 0.0, Ea: -5760.0}\n\
   - *id115\n- *id115\n- *id115\n- *id115\n- *id115\n- *id115\n- *id115\n- *id115\n\
   - *id115\n- *id115\n- *id115\n- *id115\n- *id115\n- *id115\n- *id115\n- *id115\n\
   - *id115\n- *id115\n- *id115\n- *id115\n- *id115\n- *id115\n- *id115\n- *id115\n\
   - *id115\n- *id115\n- *id115\n- *id115\n- *id115\n- *id115\n- *id115\n- *id115\n\
-  - *id115\n- *id115\n- *id115\n- *id115\n- &id116\n  equation: NH2 + NO2 <=> H2NO\
-  \ + NO\n  duplicate: true\n  rate-constant: {A: 1100000000000.0, b: 0.11, Ea: -1186.0}\n\
+  - *id115\n- *id115\n- *id115\n- *id115\n- *id115\n- &id116\n  equation: NH2 + NO2\
+  \ <=> H2NO + NO\n  duplicate: true\n  rate-constant: {A: 1100000000000.0, b: 0.11,\
+  \ Ea: -1186.0}\n- *id116\n- *id116\n- *id116\n- *id116\n- *id116\n- *id116\n- *id116\n\
   - *id116\n- *id116\n- *id116\n- *id116\n- *id116\n- *id116\n- *id116\n- *id116\n\
   - *id116\n- *id116\n- *id116\n- *id116\n- *id116\n- *id116\n- *id116\n- *id116\n\
   - *id116\n- *id116\n- *id116\n- *id116\n- *id116\n- *id116\n- *id116\n- *id116\n\
-  - *id116\n- *id116\n- *id116\n- *id116\n- *id116\n- *id116\n- *id116\n- *id116\n\
-  - *id116\n- *id116\n- *id116\n- *id116\n- *id116\n- &id117\n  equation: NH2 + NO2\
-  \ <=> H2NO + NO\n  duplicate: true\n  rate-constant: {A: -4.3e+17, b: -1.874, Ea:\
-  \ 588.0}\n  negative-A: true\n- *id117\n- *id117\n- *id117\n- *id117\n- *id117\n\
+  - *id116\n- *id116\n- *id116\n- *id116\n- *id116\n- *id116\n- &id117\n  equation:\
+  \ NH2 + NO2 <=> H2NO + NO\n  duplicate: true\n  rate-constant: {A: -4.3e+17, b:\
+  \ -1.874, Ea: 588.0}\n  negative-A: true\n- *id117\n- *id117\n- *id117\n- *id117\n\
   - *id117\n- *id117\n- *id117\n- *id117\n- *id117\n- *id117\n- *id117\n- *id117\n\
   - *id117\n- *id117\n- *id117\n- *id117\n- *id117\n- *id117\n- *id117\n- *id117\n\
   - *id117\n- *id117\n- *id117\n- *id117\n- *id117\n- *id117\n- *id117\n- *id117\n\
   - *id117\n- *id117\n- *id117\n- *id117\n- *id117\n- *id117\n- *id117\n- *id117\n\
-  - &id118\n  equation: NH2 + NO2 <=> N2O + H2O\n  rate-constant: {A: 4.3e+17, b:\
-  \ -1.874, Ea: 588.0}\n- *id118\n- *id118\n- *id118\n- *id118\n- *id118\n- *id118\n\
+  - *id117\n- &id118\n  equation: NH2 + NO2 <=> N2O + H2O\n  rate-constant: {A: 4.3e+17,\
+  \ b: -1.874, Ea: 588.0}\n- *id118\n- *id118\n- *id118\n- *id118\n- *id118\n- *id118\n\
   - *id118\n- *id118\n- *id118\n- *id118\n- *id118\n- *id118\n- *id118\n- *id118\n\
   - *id118\n- *id118\n- *id118\n- *id118\n- *id118\n- *id118\n- *id118\n- *id118\n\
   - *id118\n- *id118\n- *id118\n- *id118\n- *id118\n- *id118\n- *id118\n- *id118\n\
@@ -1289,156 +1290,156 @@
   - *id159\n- *id159\n- *id159\n- *id159\n- *id159\n- *id159\n- *id159\n- *id159\n\
   - equation: HNO (+M) <=> H + NO (+M)\n  type: linear-burke\n  collider-list:\n \
   \ - collider: M\n    eps: {A: 1, b: 0, Ea: 0}\n    rate-constants: *id160\n  - collider:\
-  \ H2O\n    eps: [6.42, 8.15, 9.09]\n- *id159\n- *id159\n- *id159\n- *id159\n- *id159\n\
+  \ N2\n    eps: [1.61, 1.71, 1.59]\n  - collider: H2O\n    eps: [6.42, 8.15, 9.09]\n\
   - *id159\n- *id159\n- *id159\n- *id159\n- *id159\n- *id159\n- *id159\n- *id159\n\
-  - *id159\n- *id159\n- *id159\n- *id159\n- *id159\n- &id161\n  equation: H2NO <=>\
-  \ HNOH\n  type: pressure-dependent-Arrhenius\n  rate-constants:\n  - {P: 0.1 atm,\
-  \ A: 8.2e+25, b: -4.94, Ea: 43794.0}\n  - {P: 1.0 atm, A: 1.3e+27, b: -4.99, Ea:\
-  \ 43982.0}\n  - {P: 10.0 atm, A: 2.6e+28, b: -5.06, Ea: 44767.0}\n- *id161\n- *id161\n\
+  - *id159\n- *id159\n- *id159\n- *id159\n- *id159\n- *id159\n- *id159\n- *id159\n\
+  - *id159\n- *id159\n- &id161\n  equation: H2NO <=> HNOH\n  type: pressure-dependent-Arrhenius\n\
+  \  rate-constants:\n  - {P: 0.1 atm, A: 8.2e+25, b: -4.94, Ea: 43794.0}\n  - {P:\
+  \ 1.0 atm, A: 1.3e+27, b: -4.99, Ea: 43982.0}\n  - {P: 10.0 atm, A: 2.6e+28, b:\
+  \ -5.06, Ea: 44767.0}\n- *id161\n- *id161\n- *id161\n- *id161\n- *id161\n- *id161\n\
   - *id161\n- *id161\n- *id161\n- *id161\n- *id161\n- *id161\n- *id161\n- *id161\n\
   - *id161\n- *id161\n- *id161\n- *id161\n- *id161\n- *id161\n- *id161\n- *id161\n\
   - *id161\n- *id161\n- *id161\n- *id161\n- *id161\n- *id161\n- *id161\n- *id161\n\
-  - *id161\n- *id161\n- *id161\n- *id161\n- *id161\n- *id161\n- *id161\n- *id161\n\
-  - *id161\n- *id161\n- *id161\n- &id162\n  equation: H2NO + H <=> HNO + H2\n  rate-constant:\
-  \ {A: 30000000.0, b: 2.0, Ea: 2000.0}\n- *id162\n- *id162\n- *id162\n- *id162\n\
+  - *id161\n- *id161\n- *id161\n- *id161\n- *id161\n- *id161\n- *id161\n- &id162\n\
+  \  equation: H2NO + H <=> HNO + H2\n  rate-constant: {A: 30000000.0, b: 2.0, Ea:\
+  \ 2000.0}\n- *id162\n- *id162\n- *id162\n- *id162\n- *id162\n- *id162\n- *id162\n\
   - *id162\n- *id162\n- *id162\n- *id162\n- *id162\n- *id162\n- *id162\n- *id162\n\
   - *id162\n- *id162\n- *id162\n- *id162\n- *id162\n- *id162\n- *id162\n- *id162\n\
   - *id162\n- *id162\n- *id162\n- *id162\n- *id162\n- *id162\n- *id162\n- *id162\n\
-  - *id162\n- *id162\n- *id162\n- *id162\n- *id162\n- *id162\n- *id162\n- *id162\n\
-  - *id162\n- &id163\n  equation: H2NO + H <=> NH2 + OH\n  rate-constant: {A: 50000000000000.0,\
-  \ b: 0.0, Ea: 0.0}\n- *id163\n- *id163\n- *id163\n- *id163\n- *id163\n- *id163\n\
+  - *id162\n- *id162\n- *id162\n- *id162\n- *id162\n- *id162\n- &id163\n  equation:\
+  \ H2NO + H <=> NH2 + OH\n  rate-constant: {A: 50000000000000.0, b: 0.0, Ea: 0.0}\n\
   - *id163\n- *id163\n- *id163\n- *id163\n- *id163\n- *id163\n- *id163\n- *id163\n\
   - *id163\n- *id163\n- *id163\n- *id163\n- *id163\n- *id163\n- *id163\n- *id163\n\
   - *id163\n- *id163\n- *id163\n- *id163\n- *id163\n- *id163\n- *id163\n- *id163\n\
-  - *id163\n- *id163\n- *id163\n- *id163\n- *id163\n- *id163\n- *id163\n- &id164\n\
-  \  equation: H2NO + O <=> HNO + OH\n  rate-constant: {A: 30000000.0, b: 2.0, Ea:\
-  \ 2000.0}\n- *id164\n- *id164\n- *id164\n- *id164\n- *id164\n- *id164\n- *id164\n\
+  - *id163\n- *id163\n- *id163\n- *id163\n- *id163\n- *id163\n- *id163\n- *id163\n\
+  - *id163\n- *id163\n- *id163\n- *id163\n- *id163\n- &id164\n  equation: H2NO + O\
+  \ <=> HNO + OH\n  rate-constant: {A: 30000000.0, b: 2.0, Ea: 2000.0}\n- *id164\n\
   - *id164\n- *id164\n- *id164\n- *id164\n- *id164\n- *id164\n- *id164\n- *id164\n\
   - *id164\n- *id164\n- *id164\n- *id164\n- *id164\n- *id164\n- *id164\n- *id164\n\
   - *id164\n- *id164\n- *id164\n- *id164\n- *id164\n- *id164\n- *id164\n- *id164\n\
-  - *id164\n- *id164\n- *id164\n- *id164\n- *id164\n- *id164\n- &id165\n  equation:\
-  \ H2NO + OH <=> HNO + H2O\n  rate-constant: {A: 2100000000000000.0, b: -0.751, Ea:\
-  \ -464.0}\n- *id165\n- *id165\n- *id165\n- *id165\n- *id165\n- *id165\n- *id165\n\
+  - *id164\n- *id164\n- *id164\n- *id164\n- *id164\n- *id164\n- *id164\n- *id164\n\
+  - *id164\n- *id164\n- *id164\n- *id164\n- &id165\n  equation: H2NO + OH <=> HNO\
+  \ + H2O\n  rate-constant: {A: 2100000000000000.0, b: -0.751, Ea: -464.0}\n- *id165\n\
   - *id165\n- *id165\n- *id165\n- *id165\n- *id165\n- *id165\n- *id165\n- *id165\n\
   - *id165\n- *id165\n- *id165\n- *id165\n- *id165\n- *id165\n- *id165\n- *id165\n\
   - *id165\n- *id165\n- *id165\n- *id165\n- *id165\n- *id165\n- *id165\n- *id165\n\
-  - *id165\n- *id165\n- *id165\n- *id165\n- *id165\n- *id165\n- &id166\n  equation:\
-  \ H2NO + HO2 <=> HNO + H2O2\n  rate-constant: {A: 340000.0, b: 2.0, Ea: -1434.0}\n\
+  - *id165\n- *id165\n- *id165\n- *id165\n- *id165\n- *id165\n- *id165\n- *id165\n\
+  - *id165\n- *id165\n- *id165\n- *id165\n- &id166\n  equation: H2NO + HO2 <=> HNO\
+  \ + H2O2\n  rate-constant: {A: 340000.0, b: 2.0, Ea: -1434.0}\n- *id166\n- *id166\n\
   - *id166\n- *id166\n- *id166\n- *id166\n- *id166\n- *id166\n- *id166\n- *id166\n\
   - *id166\n- *id166\n- *id166\n- *id166\n- *id166\n- *id166\n- *id166\n- *id166\n\
   - *id166\n- *id166\n- *id166\n- *id166\n- *id166\n- *id166\n- *id166\n- *id166\n\
   - *id166\n- *id166\n- *id166\n- *id166\n- *id166\n- *id166\n- *id166\n- *id166\n\
-  - *id166\n- *id166\n- *id166\n- *id166\n- *id166\n- &id167\n  equation: H2NO + O2\
-  \ <=> HNO + HO2\n  rate-constant: {A: 230.0, b: 2.994, Ea: 18900.0}\n- *id167\n\
+  - *id166\n- *id166\n- *id166\n- &id167\n  equation: H2NO + O2 <=> HNO + HO2\n  rate-constant:\
+  \ {A: 230.0, b: 2.994, Ea: 18900.0}\n- *id167\n- *id167\n- *id167\n- *id167\n- *id167\n\
   - *id167\n- *id167\n- *id167\n- *id167\n- *id167\n- *id167\n- *id167\n- *id167\n\
   - *id167\n- *id167\n- *id167\n- *id167\n- *id167\n- *id167\n- *id167\n- *id167\n\
   - *id167\n- *id167\n- *id167\n- *id167\n- *id167\n- *id167\n- *id167\n- *id167\n\
   - *id167\n- *id167\n- *id167\n- *id167\n- *id167\n- *id167\n- *id167\n- *id167\n\
-  - *id167\n- *id167\n- *id167\n- *id167\n- &id168\n  equation: H2NO + NH2 <=> HNO\
-  \ + NH3\n  rate-constant: {A: 1800000.0, b: 1.94, Ea: -580.0}\n- *id168\n- *id168\n\
+  - &id168\n  equation: H2NO + NH2 <=> HNO + NH3\n  rate-constant: {A: 1800000.0,\
+  \ b: 1.94, Ea: -580.0}\n- *id168\n- *id168\n- *id168\n- *id168\n- *id168\n- *id168\n\
   - *id168\n- *id168\n- *id168\n- *id168\n- *id168\n- *id168\n- *id168\n- *id168\n\
   - *id168\n- *id168\n- *id168\n- *id168\n- *id168\n- *id168\n- *id168\n- *id168\n\
   - *id168\n- *id168\n- *id168\n- *id168\n- *id168\n- *id168\n- *id168\n- *id168\n\
-  - *id168\n- *id168\n- *id168\n- *id168\n- *id168\n- *id168\n- *id168\n- *id168\n\
-  - *id168\n- *id168\n- *id168\n- &id169\n  equation: H2NO + NO2 <=> HONO + HNO\n\
-  \  rate-constant: {A: 800000000000.0, b: 0.0, Ea: 6000.0}\n- *id169\n- *id169\n\
+  - *id168\n- *id168\n- *id168\n- *id168\n- *id168\n- *id168\n- *id168\n- &id169\n\
+  \  equation: H2NO + NO2 <=> HONO + HNO\n  rate-constant: {A: 800000000000.0, b:\
+  \ 0.0, Ea: 6000.0}\n- *id169\n- *id169\n- *id169\n- *id169\n- *id169\n- *id169\n\
   - *id169\n- *id169\n- *id169\n- *id169\n- *id169\n- *id169\n- *id169\n- *id169\n\
   - *id169\n- *id169\n- *id169\n- *id169\n- *id169\n- *id169\n- *id169\n- *id169\n\
   - *id169\n- *id169\n- *id169\n- *id169\n- *id169\n- *id169\n- *id169\n- *id169\n\
-  - *id169\n- *id169\n- *id169\n- *id169\n- *id169\n- *id169\n- *id169\n- *id169\n\
-  - *id169\n- *id169\n- *id169\n- &id170\n  equation: HNOH + M <=> HNO + H + M\n \
-  \ type: three-body\n  rate-constant: {A: 2.0e+24, b: -2.84, Ea: 58934.0}\n  efficiencies:\
-  \ {H2O: 10.0}\n- *id170\n- *id170\n- *id170\n- *id170\n- *id170\n- *id170\n- *id170\n\
+  - *id169\n- *id169\n- *id169\n- *id169\n- *id169\n- *id169\n- *id169\n- &id170\n\
+  \  equation: HNOH + M <=> HNO + H + M\n  type: three-body\n  rate-constant: {A:\
+  \ 2.0e+24, b: -2.84, Ea: 58934.0}\n  efficiencies: {H2O: 10.0}\n- *id170\n- *id170\n\
   - *id170\n- *id170\n- *id170\n- *id170\n- *id170\n- *id170\n- *id170\n- *id170\n\
   - *id170\n- *id170\n- *id170\n- *id170\n- *id170\n- *id170\n- *id170\n- *id170\n\
   - *id170\n- *id170\n- *id170\n- *id170\n- *id170\n- *id170\n- *id170\n- *id170\n\
-  - *id170\n- *id170\n- *id170\n- *id170\n- *id170\n- *id170\n- &id171\n  equation:\
-  \ HNOH + H <=> NH2 + OH\n  rate-constant: {A: 40000000000000.0, b: 0.0, Ea: 0.0}\n\
+  - *id170\n- *id170\n- *id170\n- *id170\n- *id170\n- *id170\n- *id170\n- *id170\n\
+  - *id170\n- *id170\n- *id170\n- &id171\n  equation: HNOH + H <=> NH2 + OH\n  rate-constant:\
+  \ {A: 40000000000000.0, b: 0.0, Ea: 0.0}\n- *id171\n- *id171\n- *id171\n- *id171\n\
   - *id171\n- *id171\n- *id171\n- *id171\n- *id171\n- *id171\n- *id171\n- *id171\n\
   - *id171\n- *id171\n- *id171\n- *id171\n- *id171\n- *id171\n- *id171\n- *id171\n\
   - *id171\n- *id171\n- *id171\n- *id171\n- *id171\n- *id171\n- *id171\n- *id171\n\
   - *id171\n- *id171\n- *id171\n- *id171\n- *id171\n- *id171\n- *id171\n- *id171\n\
-  - *id171\n- *id171\n- *id171\n- *id171\n- *id171\n- &id172\n  equation: HNOH + H\
-  \ <=> HNO + H2\n  rate-constant: {A: 480000000.0, b: 1.5, Ea: 378.0}\n- *id172\n\
+  - *id171\n- &id172\n  equation: HNOH + H <=> HNO + H2\n  rate-constant: {A: 480000000.0,\
+  \ b: 1.5, Ea: 378.0}\n- *id172\n- *id172\n- *id172\n- *id172\n- *id172\n- *id172\n\
   - *id172\n- *id172\n- *id172\n- *id172\n- *id172\n- *id172\n- *id172\n- *id172\n\
   - *id172\n- *id172\n- *id172\n- *id172\n- *id172\n- *id172\n- *id172\n- *id172\n\
   - *id172\n- *id172\n- *id172\n- *id172\n- *id172\n- *id172\n- *id172\n- *id172\n\
-  - *id172\n- *id172\n- *id172\n- *id172\n- *id172\n- *id172\n- *id172\n- *id172\n\
-  - *id172\n- *id172\n- *id172\n- *id172\n- &id173\n  equation: HNOH + O <=> HNO +\
-  \ OH\n  duplicate: true\n  rate-constant: {A: 70000000000000.0, b: 0.0, Ea: 0.0}\n\
+  - *id172\n- *id172\n- *id172\n- *id172\n- *id172\n- *id172\n- *id172\n- &id173\n\
+  \  equation: HNOH + O <=> HNO + OH\n  duplicate: true\n  rate-constant: {A: 70000000000000.0,\
+  \ b: 0.0, Ea: 0.0}\n- *id173\n- *id173\n- *id173\n- *id173\n- *id173\n- *id173\n\
   - *id173\n- *id173\n- *id173\n- *id173\n- *id173\n- *id173\n- *id173\n- *id173\n\
   - *id173\n- *id173\n- *id173\n- *id173\n- *id173\n- *id173\n- *id173\n- *id173\n\
   - *id173\n- *id173\n- *id173\n- *id173\n- *id173\n- *id173\n- *id173\n- *id173\n\
-  - *id173\n- *id173\n- *id173\n- *id173\n- *id173\n- *id173\n- *id173\n- *id173\n\
-  - *id173\n- *id173\n- *id173\n- *id173\n- *id173\n- &id174\n  equation: HNOH + O\
-  \ <=> HNO + OH\n  duplicate: true\n  rate-constant: {A: 330000000.0, b: 1.5, Ea:\
-  \ -358.0}\n- *id174\n- *id174\n- *id174\n- *id174\n- *id174\n- *id174\n- *id174\n\
+  - *id173\n- *id173\n- *id173\n- *id173\n- *id173\n- *id173\n- *id173\n- &id174\n\
+  \  equation: HNOH + O <=> HNO + OH\n  duplicate: true\n  rate-constant: {A: 330000000.0,\
+  \ b: 1.5, Ea: -358.0}\n- *id174\n- *id174\n- *id174\n- *id174\n- *id174\n- *id174\n\
   - *id174\n- *id174\n- *id174\n- *id174\n- *id174\n- *id174\n- *id174\n- *id174\n\
   - *id174\n- *id174\n- *id174\n- *id174\n- *id174\n- *id174\n- *id174\n- *id174\n\
   - *id174\n- *id174\n- *id174\n- *id174\n- *id174\n- *id174\n- *id174\n- *id174\n\
-  - *id174\n- *id174\n- *id174\n- *id174\n- *id174\n- *id174\n- &id175\n  equation:\
-  \ HNOH + OH <=> HNO + H2O\n  rate-constant: {A: 2400000.0, b: 2.0, Ea: -1192.0}\n\
+  - *id174\n- *id174\n- *id174\n- *id174\n- *id174\n- *id174\n- *id174\n- &id175\n\
+  \  equation: HNOH + OH <=> HNO + H2O\n  rate-constant: {A: 2400000.0, b: 2.0, Ea:\
+  \ -1192.0}\n- *id175\n- *id175\n- *id175\n- *id175\n- *id175\n- *id175\n- *id175\n\
   - *id175\n- *id175\n- *id175\n- *id175\n- *id175\n- *id175\n- *id175\n- *id175\n\
   - *id175\n- *id175\n- *id175\n- *id175\n- *id175\n- *id175\n- *id175\n- *id175\n\
   - *id175\n- *id175\n- *id175\n- *id175\n- *id175\n- *id175\n- *id175\n- *id175\n\
-  - *id175\n- *id175\n- *id175\n- *id175\n- *id175\n- *id175\n- *id175\n- *id175\n\
-  - *id175\n- *id175\n- *id175\n- *id175\n- *id175\n- &id176\n  equation: HNOH + HO2\
-  \ <=> HNO + H2O2\n  rate-constant: {A: 29000.0, b: 2.69, Ea: -1600.0}\n- *id176\n\
+  - *id175\n- *id175\n- *id175\n- *id175\n- *id175\n- *id175\n- &id176\n  equation:\
+  \ HNOH + HO2 <=> HNO + H2O2\n  rate-constant: {A: 29000.0, b: 2.69, Ea: -1600.0}\n\
   - *id176\n- *id176\n- *id176\n- *id176\n- *id176\n- *id176\n- *id176\n- *id176\n\
   - *id176\n- *id176\n- *id176\n- *id176\n- *id176\n- *id176\n- *id176\n- *id176\n\
   - *id176\n- *id176\n- *id176\n- *id176\n- *id176\n- *id176\n- *id176\n- *id176\n\
   - *id176\n- *id176\n- *id176\n- *id176\n- *id176\n- *id176\n- *id176\n- *id176\n\
-  - *id176\n- *id176\n- *id176\n- *id176\n- &id177\n  equation: HNOH + HO2 <=> NH2OH\
-  \ + O2\n  rate-constant: {A: 29000.0, b: 2.69, Ea: -1600.0}\n- *id177\n- *id177\n\
+  - *id176\n- *id176\n- *id176\n- *id176\n- *id176\n- &id177\n  equation: HNOH + HO2\
+  \ <=> NH2OH + O2\n  rate-constant: {A: 29000.0, b: 2.69, Ea: -1600.0}\n- *id177\n\
   - *id177\n- *id177\n- *id177\n- *id177\n- *id177\n- *id177\n- *id177\n- *id177\n\
   - *id177\n- *id177\n- *id177\n- *id177\n- *id177\n- *id177\n- *id177\n- *id177\n\
   - *id177\n- *id177\n- *id177\n- *id177\n- *id177\n- *id177\n- *id177\n- *id177\n\
   - *id177\n- *id177\n- *id177\n- *id177\n- *id177\n- *id177\n- *id177\n- *id177\n\
-  - *id177\n- *id177\n- *id177\n- &id178\n  equation: HNOH + O2 <=> HNO + HO2\n  rate-constant:\
-  \ {A: 3000000000000.0, b: 0.0, Ea: 25000.0}\n- *id178\n- *id178\n- *id178\n- *id178\n\
+  - *id177\n- *id177\n- *id177\n- *id177\n- &id178\n  equation: HNOH + O2 <=> HNO\
+  \ + HO2\n  rate-constant: {A: 3000000000000.0, b: 0.0, Ea: 25000.0}\n- *id178\n\
   - *id178\n- *id178\n- *id178\n- *id178\n- *id178\n- *id178\n- *id178\n- *id178\n\
   - *id178\n- *id178\n- *id178\n- *id178\n- *id178\n- *id178\n- *id178\n- *id178\n\
   - *id178\n- *id178\n- *id178\n- *id178\n- *id178\n- *id178\n- *id178\n- *id178\n\
   - *id178\n- *id178\n- *id178\n- *id178\n- *id178\n- *id178\n- *id178\n- *id178\n\
-  - *id178\n- &id179\n  equation: HNOH + NH2 <=> NH3 + HNO\n  rate-constant: {A: 1800000.0,\
-  \ b: 1.94, Ea: -1152.0}\n- *id179\n- *id179\n- *id179\n- *id179\n- *id179\n- *id179\n\
+  - *id178\n- *id178\n- *id178\n- *id178\n- &id179\n  equation: HNOH + NH2 <=> NH3\
+  \ + HNO\n  rate-constant: {A: 1800000.0, b: 1.94, Ea: -1152.0}\n- *id179\n- *id179\n\
   - *id179\n- *id179\n- *id179\n- *id179\n- *id179\n- *id179\n- *id179\n- *id179\n\
   - *id179\n- *id179\n- *id179\n- *id179\n- *id179\n- *id179\n- *id179\n- *id179\n\
   - *id179\n- *id179\n- *id179\n- *id179\n- *id179\n- *id179\n- *id179\n- *id179\n\
-  - *id179\n- *id179\n- *id179\n- *id179\n- *id179\n- *id179\n- *id179\n- &id180\n\
-  \  equation: HNOH + NO2 <=> HONO + HNO\n  rate-constant: {A: 800000000000.0, b:\
-  \ 0.0, Ea: 6000.0}\n- *id180\n- *id180\n- *id180\n- *id180\n- *id180\n- *id180\n\
+  - *id179\n- *id179\n- *id179\n- *id179\n- *id179\n- *id179\n- *id179\n- *id179\n\
+  - *id179\n- *id179\n- *id179\n- &id180\n  equation: HNOH + NO2 <=> HONO + HNO\n\
+  \  rate-constant: {A: 800000000000.0, b: 0.0, Ea: 6000.0}\n- *id180\n- *id180\n\
   - *id180\n- *id180\n- *id180\n- *id180\n- *id180\n- *id180\n- *id180\n- *id180\n\
   - *id180\n- *id180\n- *id180\n- *id180\n- *id180\n- *id180\n- *id180\n- *id180\n\
   - *id180\n- *id180\n- *id180\n- *id180\n- *id180\n- *id180\n- *id180\n- *id180\n\
-  - *id180\n- *id180\n- *id180\n- *id180\n- *id180\n- *id180\n- *id180\n- &id181\n\
-  \  equation: NO + H (+M) <=> HNO (+M)\n  type: falloff\n  low-P-rate-constant: {A:\
-  \ 240000000000000.0, b: 0.206, Ea: -1550.0}\n  high-P-rate-constant: {A: 1500000000000000.0,\
-  \ b: -0.41, Ea: 0.0}\n  Troe: {A: 0.82, T3: 1.0e-30, T1: 1.0e+30, T2: 1.0e+30}\n\
-  \  efficiencies: {N2: 1.6}\n- *id181\n- *id181\n- *id181\n- *id181\n- *id181\n-\
-  \ *id181\n- *id181\n- *id181\n- *id181\n- *id181\n- *id181\n- *id181\n- *id181\n\
+  - *id180\n- *id180\n- *id180\n- *id180\n- *id180\n- *id180\n- *id180\n- *id180\n\
+  - *id180\n- *id180\n- *id180\n- &id181\n  equation: NO + H (+M) <=> HNO (+M)\n \
+  \ type: falloff\n  low-P-rate-constant: {A: 240000000000000.0, b: 0.206, Ea: -1550.0}\n\
+  \  high-P-rate-constant: {A: 1500000000000000.0, b: -0.41, Ea: 0.0}\n  Troe: {A:\
+  \ 0.82, T3: 1.0e-30, T1: 1.0e+30, T2: 1.0e+30}\n  efficiencies: {N2: 1.6}\n- *id181\n\
   - *id181\n- *id181\n- *id181\n- *id181\n- *id181\n- *id181\n- *id181\n- *id181\n\
   - *id181\n- *id181\n- *id181\n- *id181\n- *id181\n- *id181\n- *id181\n- *id181\n\
   - *id181\n- *id181\n- *id181\n- *id181\n- *id181\n- *id181\n- *id181\n- *id181\n\
-  - &id182\n  equation: HNO + H <=> NO + H2\n  rate-constant: {A: 66000000000.0, b:\
-  \ 0.94, Ea: 495.0}\n- *id182\n- *id182\n- *id182\n- *id182\n- *id182\n- *id182\n\
+  - *id181\n- *id181\n- *id181\n- *id181\n- *id181\n- *id181\n- *id181\n- *id181\n\
+  - *id181\n- *id181\n- *id181\n- *id181\n- &id182\n  equation: HNO + H <=> NO + H2\n\
+  \  rate-constant: {A: 66000000000.0, b: 0.94, Ea: 495.0}\n- *id182\n- *id182\n-\
+  \ *id182\n- *id182\n- *id182\n- *id182\n- *id182\n- *id182\n- *id182\n- *id182\n\
   - *id182\n- *id182\n- *id182\n- *id182\n- *id182\n- *id182\n- *id182\n- *id182\n\
   - *id182\n- *id182\n- *id182\n- *id182\n- *id182\n- *id182\n- *id182\n- *id182\n\
   - *id182\n- *id182\n- *id182\n- *id182\n- *id182\n- *id182\n- *id182\n- *id182\n\
-  - *id182\n- *id182\n- *id182\n- *id182\n- *id182\n- *id182\n- *id182\n- &id183\n\
-  \  equation: HNO + O <=> NO + OH\n  rate-constant: {A: 23000000000000.0, b: 0.0,\
-  \ Ea: 0.0}\n- *id183\n- *id183\n- *id183\n- *id183\n- *id183\n- *id183\n- *id183\n\
+  - *id182\n- *id182\n- *id182\n- &id183\n  equation: HNO + O <=> NO + OH\n  rate-constant:\
+  \ {A: 23000000000000.0, b: 0.0, Ea: 0.0}\n- *id183\n- *id183\n- *id183\n- *id183\n\
   - *id183\n- *id183\n- *id183\n- *id183\n- *id183\n- *id183\n- *id183\n- *id183\n\
   - *id183\n- *id183\n- *id183\n- *id183\n- *id183\n- *id183\n- *id183\n- *id183\n\
   - *id183\n- *id183\n- *id183\n- *id183\n- *id183\n- *id183\n- *id183\n- *id183\n\
-  - *id183\n- *id183\n- *id183\n- *id183\n- *id183\n- *id183\n- &id184\n  equation:\
-  \ HNO + OH <=> H + HONO\n  type: pressure-dependent-Arrhenius\n  rate-constants:\n\
-  \  - {P: 0.01 atm, A: 1100.0, b: 2.76, Ea: 4439.0}\n  - {P: 0.1 atm, A: 1100.0,\
-  \ b: 2.75, Ea: 4450.0}\n  - {P: 0.316 atm, A: 1200.0, b: 2.74, Ea: 4476.0}\n  -\
-  \ {P: 1.0 atm, A: 1500.0, b: 2.72, Ea: 4554.0}\n  - {P: 3.16 atm, A: 2700.0, b:\
-  \ 2.64, Ea: 4768.0}\n  - {P: 10.0 atm, A: 9700.0, b: 2.49, Ea: 5253.0}\n  - {P:\
-  \ 31.6 atm, A: 53000.0, b: 2.29, Ea: 6063.0}\n  - {P: 100.0 atm, A: 100000.0, b:\
-  \ 2.24, Ea: 6951.0}\n- *id184\n- *id184\n- *id184\n- *id184\n- *id184\n- *id184\n\
+  - *id183\n- *id183\n- *id183\n- *id183\n- *id183\n- *id183\n- *id183\n- *id183\n\
+  - *id183\n- &id184\n  equation: HNO + OH <=> H + HONO\n  type: pressure-dependent-Arrhenius\n\
+  \  rate-constants:\n  - {P: 0.01 atm, A: 1100.0, b: 2.76, Ea: 4439.0}\n  - {P: 0.1\
+  \ atm, A: 1100.0, b: 2.75, Ea: 4450.0}\n  - {P: 0.316 atm, A: 1200.0, b: 2.74, Ea:\
+  \ 4476.0}\n  - {P: 1.0 atm, A: 1500.0, b: 2.72, Ea: 4554.0}\n  - {P: 3.16 atm, A:\
+  \ 2700.0, b: 2.64, Ea: 4768.0}\n  - {P: 10.0 atm, A: 9700.0, b: 2.49, Ea: 5253.0}\n\
+  \  - {P: 31.6 atm, A: 53000.0, b: 2.29, Ea: 6063.0}\n  - {P: 100.0 atm, A: 100000.0,\
+  \ b: 2.24, Ea: 6951.0}\n- *id184\n- *id184\n- *id184\n- *id184\n- *id184\n- *id184\n\
   - *id184\n- *id184\n- *id184\n- *id184\n- *id184\n- *id184\n- *id184\n- *id184\n\
   - *id184\n- *id184\n- *id184\n- *id184\n- *id184\n- *id184\n- *id184\n- *id184\n\
   - *id184\n- *id184\n- *id184\n- *id184\n- *id184\n- *id184\n- *id184\n- *id184\n\
