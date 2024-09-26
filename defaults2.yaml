@@ -1,32 +1,12 @@
 reactions:
-- &id001
-  equation: H + OH (+M) <=> H2O (+M)
+- equation: H + OH (+M) <=> H2O (+M)
   collider-list:
-  - collider: AR
-    eps: [0.398, 0.617, 0.833]
-    temperatures: [300, 1000, 2000]
-    note: Jasper-2022
   - collider: H2O
     eps: [3.57, 5.28, 7.29]
     temperatures: [300, 1000, 2000]
     note: Jasper-2022
-- *id001
-- *id001
-- *id001
-- *id001
-- *id001
-- *id001
-- *id001
-- *id001
-- *id001
-- *id001
-- &id002
-  equation: H + O2 (+M) <=> HO2 (+M)
+- equation: H + O2 (+M) <=> HO2 (+M)
   collider-list:
-  - collider: HE
-    eps: [0.9, 1.17, 1.34]
-    temperatures: [300, 1000, 2000]
-    note: Jasper-2022
   - collider: N2
     eps: [1.71, 1.58, 1.2]
     temperatures: [300, 1000, 2000]
@@ -47,23 +27,8 @@ reactions:
     eps: [23.3, 22.2, 21.3]
     temperatures: [300, 1000, 2000]
     note: Jasper-2022
-- *id002
-- *id002
-- *id002
-- *id002
-- *id002
-- *id002
-- *id002
-- *id002
-- *id002
-- *id002
-- &id003
-  equation: H2O2 (+M) <=> 2 OH (+M)
+- equation: H2O2 (+M) <=> 2 OH (+M)
   collider-list:
-  - collider: N2
-    eps: [1.5, 1.58, 1.63]
-    temperatures: [300, 1000, 2000]
-    note: Jasper-2022
   - collider: CO2
     eps: [5.22, 4.14, 3.27]
     temperatures: [300, 1000, 2000]
@@ -92,29 +57,10 @@ reactions:
     eps: [6.692, 4.797]
     temperatures: [750, 1500]
     note: Matsugi-2021
-- *id003
-- *id003
-- *id003
-- *id003
-- *id003
-- *id003
-- *id003
-- *id003
-- *id003
-- *id003
-- &id004
-  equation: NH3 (+M) <=> H + NH2 (+M)
+- equation: NH3 (+M) <=> H + NH2 (+M)
   collider-list:
   - collider: N2
     eps: [3.15, 2.47, 2.25]
-    temperatures: [300, 1000, 2000]
-    note: Jasper-2022
-  - collider: O2
-    eps: [1.55, 1.48, 1.7]
-    temperatures: [300, 1000, 2000]
-    note: Jasper-2022
-  - collider: CO2
-    eps: [11.2, 13.4, 14.3]
     temperatures: [300, 1000, 2000]
     note: Jasper-2022
   - collider: NH3
@@ -129,65 +75,23 @@ reactions:
     eps: [9.94, 13.3, 14.3]
     temperatures: [300, 1000, 2000]
     note: Jasper-2022
-- *id004
-- *id004
-- *id004
-- *id004
-- *id004
-- *id004
-- *id004
-- *id004
-- *id004
-- &id005
-  equation: 2 NH2 (+M) <=> N2H4 (+M)
+- equation: 2 NH2 (+M) <=> N2H4 (+M)
   collider-list:
   - collider: N2
     eps: [2.0, 1.69, 1.43]
-    temperatures: [300, 1000, 2000]
-    note: Jasper-2022
-  - collider: O2
-    eps: [1.22, 1.17, 1.14]
     temperatures: [300, 1000, 2000]
     note: Jasper-2022
   - collider: NH3
     eps: [5.86, 8.25, 8.6]
     temperatures: [300, 1000, 2000]
     note: Jasper-2022
-  - collider: H2O
-    eps: [5.6, 7.98, 8.19]
-    temperatures: [300, 1000, 2000]
-    note: Jasper-2022
-- *id005
-- *id005
-- *id005
-- *id005
-- *id005
-- *id005
-- *id005
-- *id005
-- *id005
-- &id006
-  equation: HNO (+M) <=> H + NO (+M)
+- equation: HNO (+M) <=> H + NO (+M)
   collider-list:
-  - collider: N2
-    eps: [1.61, 1.71, 1.59]
-    temperatures: [300, 1000, 2000]
-    note: Jasper-2022
   - collider: H2O
     eps: [6.42, 8.15, 9.09]
     temperatures: [300, 1000, 2000]
     note: Jasper-2022
-- *id006
-- *id006
-- *id006
-- *id006
-- *id006
-- *id006
-- *id006
-- *id006
-- *id006
-- &id007
-  equation: CH4 (+M) <=> ??
+- equation: CH4 (+M) <=> ??
   collider-list:
   - collider: HE
     eps: [1.01, 1.7, 2.56]
@@ -195,10 +99,6 @@ reactions:
     note: Jasper-2022
   - collider: N2
     eps: [1.02, 1.1, 1.28]
-    temperatures: [300, 1000, 2000]
-    note: Jasper-2022
-  - collider: O2
-    eps: [1.09, 1.19, 1.33]
     temperatures: [300, 1000, 2000]
     note: Jasper-2022
   - collider: H2
@@ -217,17 +117,7 @@ reactions:
     eps: [4.17, 6.19, 6.96]
     temperatures: [300, 1000, 2000]
     note: Jasper-2022
-- *id007
-- *id007
-- *id007
-- *id007
-- *id007
-- *id007
-- *id007
-- *id007
-- *id007
-- &id008
-  equation: HCN (+M) <=> ??
+- equation: HCN (+M) <=> ??
   collider-list:
   - collider: N2
     eps: [1.05, 1.26, 1.47]
@@ -237,17 +127,7 @@ reactions:
     eps: [4.24, 4.87, 5.56]
     temperatures: [300, 1000, 2000]
     note: Jasper-2022
-- *id008
-- *id008
-- *id008
-- *id008
-- *id008
-- *id008
-- *id008
-- *id008
-- *id008
-- &id009
-  equation: CH4 (+M) <=> CH3 + H (+M)
+- equation: CH4 (+M) <=> CH3 + H (+M)
   collider-list:
   - collider: HE
     eps: [1.05, 2.53]
@@ -273,17 +153,7 @@ reactions:
     eps: [1.19, 1.41]
     temperatures: [300, 2000]
     note: JOM-2015
-- *id009
-- *id009
-- *id009
-- *id009
-- *id009
-- *id009
-- *id009
-- *id009
-- *id009
-- &id010
-  equation: C2H6 (+M) <=> CH3 + CH3 (+M)
+- equation: C2H6 (+M) <=> CH3 + CH3 (+M)
   collider-list:
   - collider: HE
     eps: [1.36, 1.84]
@@ -297,10 +167,6 @@ reactions:
     eps: [0.99, 0.95]
     temperatures: [300, 2000]
     note: JOM-2015
-  - collider: H2
-    eps: [3.19, 2.77]
-    temperatures: [300, 2000]
-    note: JOM-2015
   - collider: N2
     eps: [1.19, 1.3]
     temperatures: [300, 2000]
@@ -309,17 +175,7 @@ reactions:
     eps: [1.25, 1.24]
     temperatures: [300, 2000]
     note: JOM-2015
-- *id010
-- *id010
-- *id010
-- *id010
-- *id010
-- *id010
-- *id010
-- *id010
-- *id010
-- &id011
-  equation: C3H8 (+M) <=> CH3 + C2H5 (+M)
+- equation: C3H8 (+M) <=> CH3 + C2H5 (+M)
   collider-list:
   - collider: HE
     eps: [1.21, 1.28]
@@ -345,17 +201,7 @@ reactions:
     eps: [1.24, 1.14]
     temperatures: [300, 2000]
     note: JOM-2015
-- *id011
-- *id011
-- *id011
-- *id011
-- *id011
-- *id011
-- *id011
-- *id011
-- *id011
-- &id012
-  equation: C4H10 (+M) <=> C2H5 + C2H5 (+M)
+- equation: C4H10 (+M) <=> C2H5 + C2H5 (+M)
   collider-list:
   - collider: HE
     eps: [1.13, 1.06]
@@ -373,92 +219,7 @@ reactions:
     eps: [2.34, 1.53]
     temperatures: [300, 2000]
     note: JOM-2015
-  - collider: N2
-    eps: [1.09, 1.19]
-    temperatures: [300, 2000]
-    note: JOM-2015
   - collider: O2
     eps: [1.2, 1.16]
     temperatures: [300, 2000]
     note: JOM-2015
-- *id012
-- *id012
-- *id012
-- *id012
-- *id012
-- *id012
-- *id012
-- *id012
-- *id012
-- &id013
-  equation: C6H14 (+M) <=> ??
-  collider-list:
-  - collider: HE
-    eps: [1.15, 0.8]
-    temperatures: [300, 2000]
-    note: JOM-2015
-  - collider: NE
-    eps: [0.78, 0.83]
-    temperatures: [300, 2000]
-    note: JOM-2015
-  - collider: KR
-    eps: [0.92, 0.9]
-    temperatures: [300, 2000]
-    note: JOM-2015
-  - collider: H2
-    eps: [2.17, 0.97]
-    temperatures: [300, 2000]
-    note: JOM-2015
-  - collider: N2
-    eps: [1.14, 1.11]
-    temperatures: [300, 2000]
-    note: JOM-2015
-  - collider: O2
-    eps: [1.2, 1.08]
-    temperatures: [300, 2000]
-    note: JOM-2015
-- *id013
-- *id013
-- *id013
-- *id013
-- *id013
-- *id013
-- *id013
-- *id013
-- *id013
-- &id014
-  equation: C8H18 (+M) <=> ??
-  collider-list:
-  - collider: HE
-    eps: [1.16, 0.66]
-    temperatures: [300, 2000]
-    note: JOM-2015
-  - collider: NE
-    eps: [0.79, 0.81]
-    temperatures: [300, 2000]
-    note: JOM-2015
-  - collider: KR
-    eps: [0.88, 0.9]
-    temperatures: [300, 2000]
-    note: JOM-2015
-  - collider: H2
-    eps: [2.16, 0.85]
-    temperatures: [300, 2000]
-    note: JOM-2015
-  - collider: N2
-    eps: [1.13, 1.03]
-    temperatures: [300, 2000]
-    note: JOM-2015
-  - collider: O2
-    eps: [1.19, 0.98]
-    temperatures: [300, 2000]
-    note: JOM-2015
-- *id014
-- *id014
-- *id014
-- *id014
-- *id014
-- *id014
-- *id014
-- *id014
-- *id014

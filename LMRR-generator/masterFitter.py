@@ -38,6 +38,9 @@ class masterFitter:
             print("No pressure-dependent reactions found in mechanism. Please choose another mechanism.")
         else:
             self.shortMech = self.zippedMech()
+            with open("shortMech.yaml", 'w') as outfile:
+                yaml.dump(self.shortMech, outfile, default_flow_style=None,sort_keys=False)
+
 
     def zippedMech(self):
         defaults2 = yaml.safe_load(self.deleteDuplicates())
@@ -90,25 +93,60 @@ class masterFitter:
         return fix_no(data)
     
     def deleteDuplicates(self):
+        # defaults2 = {'reactions': []}
+        # defaultRxnNames=[]
+        # for defaultRxn in self.defaults['reactions']:
+        #     defaultRxnNames.append(defaultRxn['equation'])
+        # for inputRxn in self.input['reactions']:
+        #     if inputRxn['equation'] in defaultRxnNames:
+        #         defaultRxnNames.remove(inputRxn['equation'])
+        # newReactionList = []
+        # for defaultRxn in self.defaults['reactions']:
+        #     if defaultRxn['equation'] in defaultRxnNames:
+        #         newReactionList.append(defaultRxn)
         defaults2 = {'reactions': []}
+        inputRxnNames=[]
+        inputColliderNames=[]
+        for inputRxn in self.input['reactions']:
+            inputRxnNames.append(inputRxn['equation'])
+            for inputCol in inputRxn['collider-list']:
+                inputColliderNames.append(inputCol['collider'])
+        
+        
+
         for defaultRxn in self.defaults['reactions']:
-            # flag = False
-            for inputRxn in self.input['reactions']:
-                if inputRxn['equation']==defaultRxn['equation']:
-                    # newColliderList = defaultRxn['collider-list']
-                    newColliderList = []
-                    for defaultCol in defaultRxn['collider-list']:
-                        if not any(inputCol['collider'] == defaultCol['collider'] for inputCol in inputRxn['collider-list']):
-                            newColliderList.append(defaultCol)
-                    if newColliderList:
-                        # flag=True
-                        defaults2['reactions'].append({
-                            'equation': defaultRxn['equation'],
-                            'collider-list': newColliderList
-                        })
-                # if flag ==False:
-                else:
-                    defaults2['reactions'].append(defaultRxn)
+            if defaultRxn['equation'] in inputRxnNames:
+                idx = inputRxnNames.index(defaultRxn['equation'])
+                defaultColliderNames=[]
+                for defaultCol in defaultRxn['collider-list']:
+                    defaultColliderNames.append(defaultCol['collider'])
+                # print(inputRxn['equation'])
+                print(defaultRxn['equation'])
+                for defaultCol in defaultRxn['collider-list']:
+                    if defaultCol['collider'] in inputColliderNames[idx]:
+                        # print("oui")
+                        defaultColliderNames.remove(defaultCol['collider'])
+                        # print(defaultColliderNames)
+                        # break
+                print(inputColliderNames[idx])
+                print(defaultColliderNames)
+                newColliderList=[] #only contains colliders that aren't already in the input
+                for defaultCol in defaultRxn['collider-list']:
+                    if defaultCol['collider'] in defaultColliderNames:
+                        newColliderList.append(defaultCol)
+                # print(len(newColliderList))
+                # print(newColliderList)
+                # print(defaultColliderNames)
+                # print(defaultColliderNames)
+                if len(newColliderList)>0:
+                    defaults2['reactions'].append({
+                        'equation': defaultRxn['equation'],
+                        'collider-list': newColliderList
+                    })
+            else: # reaction isn't in input, so keep the entire default rxn
+                # print(defaultRxn['equation'])
+                # print('non')
+                defaults2['reactions'].append(defaultRxn)
         return yaml.safe_dump(defaults2,default_flow_style=None,sort_keys=False, allow_unicode=True)
         # return defaults2
     
@@ -374,7 +412,8 @@ T_list=np.linspace(200,2000,100)
 # P_list=np.logspace(-12,12,num=120)
 P_list=np.logspace(-1,2,num=25)
 
-mF = masterFitter(T_list,P_list,"LMRR-generator\\test\\inputs\\testinput.yaml",n_P=7,n_T=7,M_only=True)
+# mF = masterFitter(T_list,P_list,"LMRR-generator\\test\\inputs\\testinput.yaml",n_P=7,n_T=7,M_only=True)
+mF = masterFitter(T_list,P_list,"LMRR-generator//test//inputs//testinput.yaml",n_P=7,n_T=7,M_only=True)
 
 mF.Troe("LMRtest_Troe_M")
 # mF.PLOG("LMRtest_PLOG_M")

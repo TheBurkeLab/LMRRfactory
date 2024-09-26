@@ -268,55 +268,55 @@ reactions:
     eps: [1.20,1.16]
     temperatures: [300,2000]
     note: JOM-2015
-- equation: C6H14 (+M) <=> ?? #Ar reference collider
-  collider-list:
-  - collider: HE
-    eps: [1.15,0.80]
-    temperatures: [300,2000]
-    note: JOM-2015
-  - collider: NE
-    eps: [0.78,0.83]
-    temperatures: [300,2000]
-    note: JOM-2015
-  - collider: KR
-    eps: [0.92,0.90]
-    temperatures: [300,2000]
-    note: JOM-2015
-  - collider: H2
-    eps: [2.17,0.97]
-    temperatures: [300,2000]
-    note: JOM-2015
-  - collider: N2
-    eps: [1.14,1.11]
-    temperatures: [300,2000]
-    note: JOM-2015
-  - collider: O2
-    eps: [1.20,1.08]
-    temperatures: [300,2000]
-    note: JOM-2015
-- equation: C8H18 (+M) <=> ?? #Ar reference collider
-  collider-list:
-  - collider: HE
-    eps: [1.16,0.66]
-    temperatures: [300,2000]
-    note: JOM-2015
-  - collider: NE
-    eps: [0.79,0.81]
-    temperatures: [300,2000]
-    note: JOM-2015
-  - collider: KR
-    eps: [0.88,0.90]
-    temperatures: [300,2000]
-    note: JOM-2015
-  - collider: H2
-    eps: [2.16,0.85]
-    temperatures: [300,2000]
-    note: JOM-2015
-  - collider: N2
-    eps: [1.13,1.03]
-    temperatures: [300,2000]
-    note: JOM-2015
-  - collider: O2
-    eps: [1.19,0.98]
-    temperatures: [300,2000]
-    note: JOM-2015
+# - equation: C6H14 (+M) <=> ?? #Ar reference collider
+#   collider-list:
+#   - collider: HE
+#     eps: [1.15,0.80]
+#     temperatures: [300,2000]
+#     note: JOM-2015
+#   - collider: NE
+#     eps: [0.78,0.83]
+#     temperatures: [300,2000]
+#     note: JOM-2015
+#   - collider: KR
+#     eps: [0.92,0.90]
+#     temperatures: [300,2000]
+#     note: JOM-2015
+#   - collider: H2
+#     eps: [2.17,0.97]
+#     temperatures: [300,2000]
+#     note: JOM-2015
+#   - collider: N2
+#     eps: [1.14,1.11]
+#     temperatures: [300,2000]
+#     note: JOM-2015
+#   - collider: O2
+#     eps: [1.20,1.08]
+#     temperatures: [300,2000]
+#     note: JOM-2015
+# - equation: C8H18 (+M) <=> ?? #Ar reference collider
+#   collider-list:
+#   - collider: HE
+#     eps: [1.16,0.66]
+#     temperatures: [300,2000]
+#     note: JOM-2015
+#   - collider: NE
+#     eps: [0.79,0.81]
+#     temperatures: [300,2000]
+#     note: JOM-2015
+#   - collider: KR
+#     eps: [0.88,0.90]
+#     temperatures: [300,2000]
+#     note: JOM-2015
+#   - collider: H2
+#     eps: [2.16,0.85]
+#     temperatures: [300,2000]
+#     note: JOM-2015
+#   - collider: N2
+#     eps: [1.13,1.03]
+#     temperatures: [300,2000]
+#     note: JOM-2015
+#   - collider: O2
+#     eps: [1.19,0.98]
+#     temperatures: [300,2000]
+#     note: JOM-2015
