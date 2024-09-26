@@ -70,7 +70,8 @@ reactions:
     eps: [6.692,4.797]            #3.48/0.52, 2.83/0.59
     temperatures: [750,1500]
     note: Matsugi-2021
-- equation: NH3 (+M) <=> H + NH2 (+M)
+# - equation: NH3 (+M) <=> H + NH2 (+M)
+- equation: NH3 <=> H + NH2
   collider-list:
   - collider: N2
     eps: [3.15,2.47,2.25]
