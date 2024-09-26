@@ -21,9 +21,12 @@ class masterFitter:
         self.T_max = T_ls[-1]
         self.M_only=M_only
 
-        self.input = self.openyaml(inputFile)
-        self.mech = self.openyaml(self.input['chemical-mechanism'])
-        self.defaults = self.openyaml("LMRR-generator/data/thirdbodydefaults.yaml")
+        # self.input = self.openyaml(inputFile)
+        with open(inputFile) as f:
+            self.input = yaml.safe_load(f)
+        with open("LMRR-generator/data/thirdbodydefaults.yaml") as f:
+            self.defaults = yaml.safe_load(f)
+        self.mech = self.yaml_custom_load(self.input['chemical-mechanism'])
 
         self.pDepReactionNames=[]
         self.pDepReactions = []
@@ -48,12 +51,37 @@ class masterFitter:
             with open("shortMech.yaml", 'w') as outfile:
                 yaml.dump(self.shortMech, outfile, default_flow_style=None,sort_keys=False)
 
+    def yaml_custom_load(self,fname):
+        with open(fname) as f:
+            data = yaml.safe_load(f)
+        # print(data['phases'][0]['species'])
+        #manually replace 'false' with 'NO'
+        newMolecList = []
+        for molec in data['phases'][0]['species']:
+            if str(molec).lower()=="false":
+                newMolecList.append("NO")
+            else:
+                newMolecList.append(molec)
+        data['phases'][0]['species'] = newMolecList
+        for species in data['species']:
+            name = str(species['name']).lower()
+            if name == "false":
+                species['name']="NO"
+        for reaction in data['reactions']:
+            effs = reaction.get('efficiencies')
+            if effs is not None:
+                for key in list(effs.keys()):
+                    keyStr = str(key).lower()
+                    if keyStr == "false":
+                        reaction['efficiencies']["NO"] = reaction['efficiencies'].pop(key)
+        return data
+
 
     def zippedMech(self):
         # defaults2 = yaml.safe_load(self.deleteDuplicates())
-        defaults2=self.deleteDuplicates()
-        with open("defaults2.yaml", 'w') as outfile:
-            yaml.safe_dump(defaults2, outfile, default_flow_style=None,sort_keys=False)
+        # defaults2=self.deleteDuplicates()
+        # with open("defaults2.yaml", 'w') as outfile:
+        #     yaml.safe_dump(defaults2, outfile, default_flow_style=None,sort_keys=False)
         blend=self.blendedInput()
         with open("transformed.yaml", 'w') as outfile:
             yaml.safe_dump(blend, outfile, default_flow_style=None,sort_keys=False)
@@ -69,9 +97,10 @@ class masterFitter:
         for mech_rxn in self.mech['reactions']:
             if mech_rxn['equation'] in blendRxnNames:
                 idx = blendRxnNames.index(mech_rxn['equation'])
-                colliderM=[]
+                colliderM = blend['reactions'][idx]['collider-list'][0]
+                colliderMlist=[]
                 if mech_rxn['type'] == 'falloff' and 'Troe' in mech_rxn:
-                    colliderM.append({
+                    colliderMlist.append({
                         'collider': 'M',
                         'eps': {'A': 1, 'b': 0, 'Ea': 0},
                         'low-P-rate-constant': mech_rxn['low-P-rate-constant'],
@@ -79,13 +108,13 @@ class masterFitter:
                         'Troe': mech_rxn['Troe'],
                     })
                 elif mech_rxn['type'] == 'pressure-dependent-Arrhenius':
-                    colliderM.append({
+                    colliderMlist.append({
                         'collider': 'M',
                         'eps': {'A': 1, 'b': 0, 'Ea': 0},
                         'rate-constants': mech_rxn['rate-constants'],
                     })
                 elif mech_rxn['type'] == 'Chebyshev':
-                    colliderM.append({
+                    colliderMlist.append({
                         'collider': 'M',
                         'eps': {'A': 1, 'b': 0, 'Ea': 0},
                         'temperature-range': mech_rxn['temperature-range'],
@@ -97,25 +126,14 @@ class masterFitter:
                 shortMechanism['reactions'].append({
                             'equation': mech_rxn['equation'],
                             'type': 'linear-burke',
-                            'collider-list': colliderM + blend['reactions'][idx]['collider-list']
+                            'collider-list': colliderMlist + blend['reactions'][idx]['collider-list']
                             })
             else:
                 shortMechanism['reactions'].append(mech_rxn)
         # return yaml.safe_dump(shortMechanism,default_flow_style=None,sort_keys=False, allow_unicode=True)
         return shortMechanism
     
-    def openyaml(self,fname):
-        with open(fname) as f:
-            data = yaml.safe_load(f)
-        def fix_no(data):
-            if isinstance(data, dict):
-                return {k: fix_no(v) for k, v in data.items()}
-            elif isinstance(data, list):
-                return [fix_no(item) for item in data]
-            elif data is False and isinstance(data, bool):
-                return "NO"
-            return data
-        return fix_no(data)
+    
     
     def deleteDuplicates(self):
         # defaults2 = {'reactions': []}
