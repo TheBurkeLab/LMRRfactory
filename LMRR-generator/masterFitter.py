@@ -2,7 +2,7 @@
 Class that allows for fitting of rate constants at various temperatures and pressures (k(T,P))
 """
 import sys, os
-sys.path.append("/Users/pjsingal/Documents/cantera/build/python")
+sys.path.append("C:/Users/pjsin/Documents/cantera/build/python")
 import cantera as ct
 import numpy as np
 from scipy.optimize import curve_fit
@@ -37,9 +37,9 @@ class masterFitter:
             elif reaction.get('type') == 'Chebyshev':
                 self.pDepReactions.append(reaction)
                 self.pDepReactionNames.append(reaction['equation'])
-            elif reaction.get('type') == 'three-body':
-                self.pDepReactions.append(reaction)
-                self.pDepReactionNames.append(reaction['equation'])
+            # elif reaction.get('type') == 'three-body':
+            #     self.pDepReactions.append(reaction)
+            #     self.pDepReactionNames.append(reaction['equation'])
 
         if len(self.pDepReactions)==0:
             print("No pressure-dependent reactions found in mechanism. Please choose another mechanism.")
