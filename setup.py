@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-VERSION = '1.0.0' 
+VERSION = '1.0.1' 
 DESCRIPTION = 'Auto-generate LMR-R reactions and mechanisms'
 LONG_DESCRIPTION = 'Auto-generates LMR-R reactions (and mechanisms) according to the user’s choice of Plog, Troe, or Chebyshev sub-formats'
 

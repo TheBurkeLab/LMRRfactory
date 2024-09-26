@@ -1157,19 +1157,19 @@ reactions:
   rate-constant: {A: 3.0e+13, b: 0.0, Ea: 0.0}
 - equation: HCO + HCO <=> CO + CH2O  # Reaction 71
   rate-constant: {A: 2.7e+13, b: 0.0, Ea: 0.0}
-# - equation: NH2 + H (+M) <=> NH3 (+M)
-#   type: falloff
-#   low-P-rate-constant: {A: 2.6e+23, b: -2.083, Ea: 0.0}
-#   high-P-rate-constant: {A: 150000000000000.0, b: 0.167, Ea: 0.0}
-#   Troe: {A: 0.5, T3: 1.0e-30, T1: 1.0e+30, T2: 1.0e+30}
-#   efficiencies: {N2: 2.5, AR: 1.0}
-- equation: NH3 <=> H + NH2
-  type: pressure-dependent-Arrhenius
-  rate-constants:
-  - {P: 0.1 atm, A: 7.23e+29, b: -5.316, Ea: 110862.4}
-  - {P: 1 atm, A: 3.497e+30, b: -5.224, Ea: 111163.3}
-  - {P: 10 atm, A: 1.975e+31, b: -5.155, Ea: 111887.8}
-  - {P: 100 atm, A: 2.689e+31, b: -4.920, Ea: 112778.7}
+- equation: NH2 + H (+M) <=> NH3 (+M)
+  type: falloff
+  low-P-rate-constant: {A: 2.6e+23, b: -2.083, Ea: 0.0}
+  high-P-rate-constant: {A: 150000000000000.0, b: 0.167, Ea: 0.0}
+  Troe: {A: 0.5, T3: 1.0e-30, T1: 1.0e+30, T2: 1.0e+30}
+  efficiencies: {N2: 2.5, AR: 1.0}
+# - equation: NH3 <=> H + NH2
+#   type: pressure-dependent-Arrhenius
+#   rate-constants:
+#   - {P: 0.1 atm, A: 7.23e+29, b: -5.316, Ea: 110862.4}
+#   - {P: 1 atm, A: 3.497e+30, b: -5.224, Ea: 111163.3}
+#   - {P: 10 atm, A: 1.975e+31, b: -5.155, Ea: 111887.8}
+#   - {P: 100 atm, A: 2.689e+31, b: -4.920, Ea: 112778.7}
 - equation: NH3 + H <=> NH2 + H2  # Reaction 73
   rate-constant: {A: 5.4e+05, b: 2.4, Ea: 9916.0}
 - equation: NH3 + O <=> NH2 + OH  # Reaction 74
