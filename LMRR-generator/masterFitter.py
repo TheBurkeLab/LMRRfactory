@@ -2,7 +2,7 @@
 Class that allows for fitting of rate constants at various temperatures and pressures (k(T,P))
 """
 import sys, os
-sys.path.append("/users/pjsingal/Documents/cantera/build/python")
+sys.path.append("/Users/pjsingal/Documents/cantera/build/python")
 import cantera as ct
 import numpy as np
 from scipy.optimize import curve_fit
