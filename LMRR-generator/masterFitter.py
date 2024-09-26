@@ -140,7 +140,7 @@ class masterFitter:
     def blendedInput(self):
         defaults2=self.deleteDuplicates()
         blend = {'reactions': []}
-        speciesList = self.mech['phase'][0]['species']
+        speciesList = self.mech['phases'][0]['species']
         defaultRxnNames = []
         defaultColliderNames = []
         for defaultRxn in defaults2['reactions']:
@@ -155,10 +155,14 @@ class masterFitter:
                     flag = False
             if flag == True:
                 blend['reactions'].append(defaultRxn)
+
+        blendRxnNames = []
+        for blendRxn in blend['reactions']:
+            blendRxnNames.append(blendRxn['equation'])
         
         for inputRxn in self.input['reactions']:
-            if inputRxn['equation'] in defaultRxnNames:
-                idx = defaultRxnNames.index(inputRxn['equation'])
+            if inputRxn['equation'] in blendRxnNames:
+                idx = blendRxnNames.index(inputRxn['equation'])
                 for inputCol in inputRxn['collider-list']:
                     if inputCol['collider'] in speciesList:
                         blend['reactions'][idx]['collider-list'].append(inputCol)
