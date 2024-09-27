@@ -254,7 +254,8 @@ class masterFitter:
         return Xdict
 
     def get_YAML_kTP(self,reaction,collider):
-        gas = ct.Solution("shortMech.yaml")
+        # gas = ct.Solution("shortMech.yaml")
+        gas = ct.Solution(yaml=self.shortMech)
         k_TP = []
         for T in self.T_ls:
             temp = []
@@ -335,7 +336,8 @@ class masterFitter:
             }
             def arrhenius(T, A, n, Ea):
                 return np.log(A) + n*np.log(T)+ (-Ea/(1.987*T))
-            gas = ct.Solution('shortMech.yaml')
+            # gas = ct.Solution("shortMech.yaml")
+            gas = ct.Solution(yaml=self.shortMech)
             Xdict = self.get_Xdict(reaction)
             for i,P in enumerate(Xdict.keys()):
                 k_list = []
@@ -378,7 +380,8 @@ class masterFitter:
             logk_fit = np.log10(k0) + np.log10(M) + np.log10(ki) + logF - np.log10(ki + k0 * M)
             return logk_fit
         Xdict=self.get_Xdict(reaction)
-        gas = ct.Solution('shortMech.yaml')
+        # gas = ct.Solution("shortMech.yaml")
+        gas = ct.Solution(yaml=self.shortMech)
         logk_list=[]
         for i,P in enumerate(Xdict.keys()):
             for j,T in enumerate(Xdict[P]):
