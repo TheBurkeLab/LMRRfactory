@@ -1,0 +1,3 @@
+[submodule "LMRRfactory/ext/cantera"]
+	path = LMRRfactory/ext/cantera
+	url = https://github.com/pjsingal/cantera.git
