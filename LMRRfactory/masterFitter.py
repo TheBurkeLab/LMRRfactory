@@ -22,7 +22,7 @@ class masterFitter:
         self.T_max = T_ls[-1]
         self.M_only=M_only
 
-        datapath = pkg_resources.resource_filename('LMRRfactory', 'data')
+        datapath = pkg_resources.resource_filename('LMRRfactory', 'data') + "/"
 
         # self.input = self.openyaml(inputFile)
         with open(inputFile) as f:
