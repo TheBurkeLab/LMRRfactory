@@ -1,3 +1,0 @@
-
-scons: *** No SConstruct file found.
-File "C:\Users\pjsin\anaconda3\envs\ct-build\Lib\site-packages\SCons\Script\Main.py", line 985, in _main

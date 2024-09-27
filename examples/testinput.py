@@ -14,9 +14,9 @@ P_list=np.logspace(-1,2,num=5)
 
 mF = masterFitter(T_list,P_list,"testinput.yaml",n_P=7,n_T=7,M_only=True)
 
-# mF.Troe("LMRtest_Troe_M")
+mF.Troe("LMRtest_Troe_M")
 mF.PLOG("LMRtest_PLOG_M")
-# mF.cheb2D("LMRtest_cheb_M")
+mF.cheb2D("LMRtest_cheb_M")
 
 # ###################################################
 # def makeplot(nom_liste,nom_fig):
