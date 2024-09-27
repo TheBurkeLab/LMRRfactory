@@ -1,4 +1,4 @@
-chemical-mechanism: LMRR-generator/test/inputs/mechanisms/alzuetamechanism.yaml
+chemical-mechanism: test/inputs/mechanisms/alzuetamechanism.yaml
 reactions:
 - equation: H + OH (+M) <=> H2O (+M)
   reference-collider: N2

@@ -24,7 +24,7 @@ class masterFitter:
         # self.input = self.openyaml(inputFile)
         with open(inputFile) as f:
             self.input = yaml.safe_load(f)
-        with open("LMRR-generator/data/thirdbodydefaults.yaml") as f:
+        with open("data/thirdbodydefaults.yaml") as f:
             self.defaults = yaml.safe_load(f)
         self.mech = self.yaml_custom_load(self.input['chemical-mechanism'])
 
