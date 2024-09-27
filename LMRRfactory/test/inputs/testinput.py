@@ -1,4 +1,3 @@
-import sys,os
 from LMRRfactory.masterFitter import masterFitter
 import numpy as np
 

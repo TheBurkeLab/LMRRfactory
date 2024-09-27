@@ -1,9 +1,7 @@
 """
 Class that allows for fitting of rate constants at various temperatures and pressures (k(T,P))
 """
-import sys, os
-sys.path.append("C:/Users/pjsin/Documents/cantera/build/python")
-import cantera as ct
+from LMRRfactory.ext.cantera.build.python import cantera as ct
 import numpy as np
 from scipy.optimize import curve_fit
 from scipy.optimize import least_squares
