@@ -1,9 +1,9 @@
 # import LMRRfactory as LMRR
 # from LMRRfactory.masterFitter import masterFitter
 import numpy as np
-import sys, os
+# import sys, os
 # sys.path.append("C:/Users/pjsin/Documents/LMRRfactory/build/lib")
-import LMRRfactory.masterFitter as mF
+from LMRRfactory.masterFitter import masterFitter
 
 ######################################################################
 
@@ -12,7 +12,7 @@ T_list=np.linspace(200,2000,100)
 # P_list=np.logspace(-12,12,num=120)
 P_list=np.logspace(-1,2,num=5)
 
-mFF = mF(T_list,P_list,"testinput.yaml",n_P=7,n_T=7,M_only=True)
+mF = masterFitter(T_list,P_list,"testinput.yaml",n_P=7,n_T=7,M_only=True)
 
 # mF.Troe("LMRtest_Troe_M")
 mF.PLOG("LMRtest_PLOG_M")

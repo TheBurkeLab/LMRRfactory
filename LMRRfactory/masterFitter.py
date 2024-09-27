@@ -8,6 +8,7 @@ import numpy as np
 from scipy.optimize import curve_fit
 from scipy.optimize import least_squares
 import yaml
+import pkg_resources
 
 class masterFitter:
     def __init__(self, T_ls, P_ls, inputFile,n_P=7, n_T=7, M_only=False):
@@ -21,10 +22,12 @@ class masterFitter:
         self.T_max = T_ls[-1]
         self.M_only=M_only
 
+        datapath = pkg_resources.resource_filename('LMRRfactory', 'data')
+
         # self.input = self.openyaml(inputFile)
         with open(inputFile) as f:
             self.input = yaml.safe_load(f)
-        with open("thirdbodydefaults.yaml") as f:
+        with open(datapath+"thirdbodydefaults.yaml") as f:
             self.defaults = yaml.safe_load(f)
         self.mech = self.yaml_custom_load(self.input['chemical-mechanism'])
 
