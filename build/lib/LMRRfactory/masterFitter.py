@@ -2,13 +2,14 @@
 Class that allows for fitting of rate constants at various temperatures and pressures (k(T,P))
 """
 import sys, os
-sys.path.append("C:/Users/pjsin/Documents/cantera/build/python")
+import pkg_resources
+sys.path.append(pkg_resources.resource_filename('LMRRfactory', 'ext/cantera/build/python'))
 import cantera as ct
 import numpy as np
 from scipy.optimize import curve_fit
 from scipy.optimize import least_squares
 import yaml
-import pkg_resources
+
 
 class masterFitter:
     def __init__(self, T_ls, P_ls, inputFile,n_P=7, n_T=7, M_only=False):

@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-VERSION = '0.0.7'
+VERSION = '0.0.8'
 DESCRIPTION = 'Auto-generate LMR-R reactions and mechanisms'
 LONG_DESCRIPTION = "Auto-generates LMR-R reactions (and mechanisms) according to the user's choice of Plog, Troe, or Chebyshev sub-formats"
 
@@ -15,7 +15,7 @@ setup(
         long_description=LONG_DESCRIPTION,
         packages=find_packages(),
         include_package_data=True,
-        package_data={"LMRRfactory":['data']},
+        package_data={"LMRRfactory":['data','ext/cantera/build/python']},
         # install_requires=['cantera','numpy','pyyaml','scipy'],
         install_requires=['numpy','pyyaml','scipy'],
 
