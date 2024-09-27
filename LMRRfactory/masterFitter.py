@@ -1,7 +1,9 @@
 """
 Class that allows for fitting of rate constants at various temperatures and pressures (k(T,P))
 """
-from LMRRfactory.ext import cantera as ct
+import sys, os
+sys.path.append("C:/Users/pjsin/Documents/cantera/build/python")
+import cantera as ct
 import numpy as np
 from scipy.optimize import curve_fit
 from scipy.optimize import least_squares
@@ -22,7 +24,7 @@ class masterFitter:
         # self.input = self.openyaml(inputFile)
         with open(inputFile) as f:
             self.input = yaml.safe_load(f)
-        with open("data/thirdbodydefaults.yaml") as f:
+        with open("thirdbodydefaults.yaml") as f:
             self.defaults = yaml.safe_load(f)
         self.mech = self.yaml_custom_load(self.input['chemical-mechanism'])
 
@@ -460,13 +462,13 @@ class masterFitter:
     def cheb2D(self,foutName): # returns Chebyshev in LMRR YAML format
         self.final_yaml(foutName,self.get_cheb_table)
 
-# # INPUTS
-T_list=np.linspace(200,2000,100)
-# P_list=np.logspace(-12,12,num=120)
-P_list=np.logspace(-1,2,num=5)
+# # # INPUTS
+# T_list=np.linspace(200,2000,100)
+# # P_list=np.logspace(-12,12,num=120)
+# P_list=np.logspace(-1,2,num=5)
 
-mF = masterFitter(T_list,P_list,"LMRR-generator//test//inputs//testinput.yaml",n_P=7,n_T=7,M_only=True)
+# mF = masterFitter(T_list,P_list,"LMRR-generator//test//inputs//testinput.yaml",n_P=7,n_T=7,M_only=True)
 
-mF.Troe("LMRtest_Troe_M")
-mF.PLOG("LMRtest_PLOG_M")
-mF.cheb2D("LMRtest_cheb_M")
+# mF.Troe("LMRtest_Troe_M")
+# mF.PLOG("LMRtest_PLOG_M")
+# mF.cheb2D("LMRtest_cheb_M")

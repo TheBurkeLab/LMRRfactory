@@ -8,4 +8,3 @@ LMRRfactory.egg-info/SOURCES.txt
 LMRRfactory.egg-info/dependency_links.txt
 LMRRfactory.egg-info/requires.txt
 LMRRfactory.egg-info/top_level.txt
-LMRRfactory/ext/__init__.py

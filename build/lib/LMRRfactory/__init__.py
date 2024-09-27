@@ -1,3 +1,12 @@
-from masterFitter import masterFitter 
+# import os
+# from LMRRfactory import masterFitter
 
-# 'method' is a function that is present in a file called 'file.py'
+# try:
+#     from importlib.metadata import version, PackageNotFoundError  # type: ignore
+# except ImportError:  # pragma: no cover
+#     from importlib_metadata import version, PackageNotFoundError  # type: ignore
+
+# try:
+#     __version__ = version(__name__)
+# except PackageNotFoundError:  # pragma: no cover
+#     __version__ = "unknown"

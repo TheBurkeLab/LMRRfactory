@@ -1,4 +1,4 @@
-chemical-mechanism: test/inputs/mechanisms/alzuetamechanism.yaml
+chemical-mechanism: alzuetamechanism.yaml
 reactions:
 - equation: H + OH (+M) <=> H2O (+M)
   reference-collider: N2
