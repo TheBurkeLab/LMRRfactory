@@ -469,13 +469,13 @@ class masterFitter:
     def cheb2D(self,foutName): # returns Chebyshev in LMRR YAML format
         self.final_yaml(foutName,self.get_cheb_table)
 
-# # # INPUTS
-# T_list=np.linspace(200,2000,100)
-# # P_list=np.logspace(-12,12,num=120)
-# P_list=np.logspace(-1,2,num=5)
+# # INPUTS
+T_list=np.linspace(200,2000,100)
+# P_list=np.logspace(-12,12,num=120)
+P_list=np.logspace(-1,2,num=5)
 
-# mF = masterFitter(T_list,P_list,"LMRR-generator//test//inputs//testinput.yaml",n_P=7,n_T=7,M_only=True)
+mF = masterFitter(T_list,P_list,"LMRR-generator//test//inputs//testinput.yaml",n_P=7,n_T=7,M_only=True)
 
-# mF.Troe("LMRtest_Troe_M")
-# mF.PLOG("LMRtest_PLOG_M")
-# mF.cheb2D("LMRtest_cheb_M")
+mF.Troe("LMRtest_Troe_M")
+mF.PLOG("LMRtest_PLOG_M")
+mF.cheb2D("LMRtest_cheb_M")

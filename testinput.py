@@ -3,7 +3,7 @@
 import numpy as np
 # import sys, os
 # sys.path.append("C:/Users/pjsin/Documents/LMRRfactory/build/lib")
-from LMRRfactory.masterFitter import masterFitter
+from masterFitter import masterFitter
 
 ######################################################################
 
