@@ -12,6 +12,7 @@ from scipy.optimize import curve_fit
 from scipy.optimize import least_squares
 import yaml
 import copy
+import re
 
 
 class masterFitter:
@@ -29,8 +30,10 @@ class masterFitter:
         # datapath = pkg_resources.resource_filename('LMRRfactory', 'data') + "/"
 
         # self.input = self.openyaml(inputFile)
-        self.input = self.yamlLoader1(inputFile,"inputsdoubled.yaml")
-        self.defaults = self.yamlLoader1("thirdbodydefaults.yaml","thirdbodydefaults_doubled.yaml")
+        with open(inputFile) as f:
+            self.input = yaml.safe_load(f)
+        with open("thirdbodydefaults.yaml") as f:
+            self.defaults = yaml.safe_load(f)
 
         if mechPath == "from_yaml":
             self.mech = self.yamlLoader2(self.input['chemical-mechanism'])
@@ -55,9 +58,7 @@ class masterFitter:
         else:
             self.shortMech = self.zippedMech()
 
-    def yamlLoader1(self,finName,foutName):
-        with open(finName) as f:
-            mech = yaml.safe_load(f)
+    def generalizedEquations(self,mech):
         newMech={'reactions': []}
         for rxn in mech['reactions']:
             eqn = rxn['equation']
@@ -83,31 +84,32 @@ class masterFitter:
                 if spec1==spec2:
                     reactants = f"2 {spec1}"
                     rxn = copy.deepcopy(rxn)
-                    rxn['equation']=f"{reactants} <=> {products}"
-                    newMech['reactions'].append(rxn)
-                    rxn = copy.deepcopy(rxn)
-                    rxn['equation']=f"{products} <=> {reactants}"
-                    newMech['reactions'].append(rxn)
-                    rxn = copy.deepcopy(rxn)
                     rxn['equation']=f"{reactants} (+M) <=> {products} (+M)"
                     newMech['reactions'].append(rxn)
                     rxn = copy.deepcopy(rxn)
                     rxn['equation']=f"{products} (+M) <=> {reactants} (+M)"
+                    newMech['reactions'].append(rxn)
+                    rxn = copy.deepcopy(rxn)
+                    rxn['equation']=f"{reactants} <=> {products}"
+                    newMech['reactions'].append(rxn)
+                    rxn = copy.deepcopy(rxn)
+                    rxn['equation']=f"{products} <=> {reactants}"
                     newMech['reactions'].append(rxn)
                 else:
                     reactants = f"{spec2} + {spec1}"
                     rxn = copy.deepcopy(rxn)
-                    rxn['equation']=f"{reactants} <=> {products}"
-                    newMech['reactions'].append(rxn)
-                    rxn = copy.deepcopy(rxn)
-                    rxn['equation']=f"{products} <=> {reactants}"
-                    newMech['reactions'].append(rxn)
-                    rxn = copy.deepcopy(rxn)
                     rxn['equation']=f"{reactants} (+M) <=> {products} (+M)"
                     newMech['reactions'].append(rxn)
                     rxn = copy.deepcopy(rxn)
                     rxn['equation']=f"{products} (+M) <=> {reactants} (+M)"
                     newMech['reactions'].append(rxn)
+                    rxn = copy.deepcopy(rxn)
+                    rxn['equation']=f"{reactants} <=> {products}"
+                    newMech['reactions'].append(rxn)
+                    rxn = copy.deepcopy(rxn)
+                    rxn['equation']=f"{products} <=> {reactants}"
+                    newMech['reactions'].append(rxn)
+                    
             elif "+" in products:
                 spec1, spec2 = products.split("+")
                 spec1=spec1.strip()
@@ -115,33 +117,68 @@ class masterFitter:
                 if spec1==spec2:
                     products = f"2 {spec1}"
                     rxn = copy.deepcopy(rxn)
-                    rxn['equation']=f"{reactants} <=> {products}"
-                    newMech['reactions'].append(rxn)
-                    rxn = copy.deepcopy(rxn)
-                    rxn['equation']=f"{products} <=> {reactants}"
-                    newMech['reactions'].append(rxn)
-                    rxn = copy.deepcopy(rxn)
                     rxn['equation']=f"{reactants} (+M) <=> {products} (+M)"
                     newMech['reactions'].append(rxn)
                     rxn = copy.deepcopy(rxn)
                     rxn['equation']=f"{products} (+M) <=> {reactants} (+M)"
                     newMech['reactions'].append(rxn)
+                    rxn = copy.deepcopy(rxn)
+                    rxn['equation']=f"{reactants} <=> {products}"
+                    newMech['reactions'].append(rxn)
+                    rxn = copy.deepcopy(rxn)
+                    rxn['equation']=f"{products} <=> {reactants}"
+                    newMech['reactions'].append(rxn)
+                    
                 else:
                     products = f"{spec2} + {spec1}"
                     rxn = copy.deepcopy(rxn)
-                    rxn['equation']=f"{reactants} <=> {products}"
-                    newMech['reactions'].append(rxn)
-                    rxn = copy.deepcopy(rxn)
-                    rxn['equation']=f"{products} <=> {reactants}"
-                    newMech['reactions'].append(rxn)
-                    rxn = copy.deepcopy(rxn)
                     rxn['equation']=f"{reactants} (+M) <=> {products} (+M)"
                     newMech['reactions'].append(rxn)
                     rxn = copy.deepcopy(rxn)
                     rxn['equation']=f"{products} (+M) <=> {reactants} (+M)"
                     newMech['reactions'].append(rxn)
-        # with open(foutName, 'w') as outfile:
-        #         yaml.dump(newMech, outfile, default_flow_style=None,sort_keys=False)
+                    rxn = copy.deepcopy(rxn)
+                    rxn['equation']=f"{reactants} <=> {products}"
+                    newMech['reactions'].append(rxn)
+                    rxn = copy.deepcopy(rxn)
+                    rxn['equation']=f"{products} <=> {reactants}"
+                    newMech['reactions'].append(rxn)
+                    
+        #     elif re.search(r'2\b',reactants) == True:
+        #         spec = reactants.replace("2","")
+        #         spec = spec.strip()
+        #         reactants = f"{spec} + {spec}"
+        #         rxn = copy.deepcopy(rxn)
+        #         rxn['equation']=f"{reactants} (+M) <=> {products} (+M)"
+        #         newMech['reactions'].append(rxn)
+        #         rxn = copy.deepcopy(rxn)
+        #         rxn['equation']=f"{products} (+M) <=> {reactants} (+M)"
+        #         newMech['reactions'].append(rxn)
+        #         rxn = copy.deepcopy(rxn)
+        #         rxn['equation']=f"{reactants} <=> {products}"
+        #         newMech['reactions'].append(rxn)
+        #         rxn = copy.deepcopy(rxn)
+        #         rxn['equation']=f"{products} <=> {reactants}"
+        #         newMech['reactions'].append(rxn)
+            
+        #     elif re.search(r'2\b',products) == True:
+        #         spec = products.replace("2","")
+        #         spec = spec.strip()
+        #         products = f"{spec} + {spec}"
+        #         rxn = copy.deepcopy(rxn)
+        #         rxn['equation']=f"{reactants} (+M) <=> {products} (+M)"
+        #         newMech['reactions'].append(rxn)
+        #         rxn = copy.deepcopy(rxn)
+        #         rxn['equation']=f"{products} (+M) <=> {reactants} (+M)"
+        #         newMech['reactions'].append(rxn)
+        #         rxn = copy.deepcopy(rxn)
+        #         rxn['equation']=f"{reactants} <=> {products}"
+        #         newMech['reactions'].append(rxn)
+        #         rxn = copy.deepcopy(rxn)
+        #         rxn['equation']=f"{products} <=> {reactants}"
+        #         newMech['reactions'].append(rxn)
+        # # with open('blend_double.yaml', 'w') as outfile:
+        # #         yaml.dump(newMech, outfile, default_flow_style=None,sort_keys=False)
         return newMech
     
     def yamlLoader2(self,fname):
@@ -165,10 +202,55 @@ class masterFitter:
                     keyStr = str(key).lower()
                     if keyStr == "false":
                         reaction['efficiencies']["NO"] = reaction['efficiencies'].pop(key)
+            # if reaction.get('type')=='pressure-dependent-Arrhenius' or reaction.get('type')=='Chebyshev' or (reaction.get('type')=='falloff' and reaction.get('Troe') is not None):
+            #     eqn = reaction['equation']
+            #     reactants, products = eqn.split("<=>")
+            #     if "(+M)" in reactants:
+            #         reactants = reactants.replace("(+M)","").strip()
+            #         products = products.replace("(+M)","").strip()
+            #         if "+" in reactants:
+            #             spec1,spec2 = reactants.split("+")
+            #             spec1=spec1.strip()
+            #             spec2=spec2.strip()
+            #             if spec1==spec2:
+            #                 reactants = f"2 {spec1}"
+            #                 # rxn = copy.deepcopy(reaction)
+            #                 reaction['equation'] = f"{reactants} (+M) <=> {products} (+M)"
+
+            #         if "+" in products:
+            #             spec1,spec2 = products.split("+")
+            #             spec1=spec1.strip()
+            #             spec2=spec2.strip()
+            #             if spec1==spec2:
+            #                 products = f"2 {spec1}"
+            #                 # rxn = copy.deepcopy(reaction)
+            #                 reaction['equation'] = f"{reactants} (+M) <=> {products} (+M)"
+            #     else:
+            #         reactants = reactants.strip()
+            #         products = products.strip()
+            #         print(reactants)
+            #         if "+" in reactants:
+            #             spec1, spec2 = reactants.split("+")
+            #             spec1=spec1.strip()
+            #             spec2=spec2.strip()
+            #             if spec1==spec2:
+            #                 reactants = f"2 {spec1}"
+            #                 # rxn = copy.deepcopy(reaction)
+            #                 reaction['equation'] = f"{reactants} <=> {products}"
+            #         elif "+" in products:
+            #             spec1, spec2 = products.split("+")
+            #             spec1=spec1.strip()
+            #             spec2=spec2.strip()
+            #             if spec1==spec2:
+            #                 products = f"2 {spec1}"
+            #                 # rxn = copy.deepcopy(reaction)
+            #                 reaction['equation'] = f"{reactants} <=> {products}"
+        with open("newAlzueta.yaml", 'w') as outfile:
+            yaml.dump(copy.deepcopy(data), outfile, default_flow_style=None,sort_keys=False)
         return data
 
-
     def zippedMech(self):
+        # blend=self.generalizedEquations(self.blendedInput())
         blend=self.blendedInput()
         shortMechanism={
             'units': self.mech['units'],
@@ -216,19 +298,27 @@ class masterFitter:
                             })
             else:
                 shortMechanism['reactions'].append(mech_rxn)
+        
         return shortMechanism
     
     def blendedInput(self):
         defaults2=self.deleteDuplicates()
+        # with open("defaults2.yaml", 'w') as outfile:
+        #     yaml.dump(defaults2, outfile, default_flow_style=None,sort_keys=False)
+        # with open("inputs2_double.yaml", 'w') as outfile:
+        #     yaml.dump(self.generalizedEquations(self.input), outfile, default_flow_style=None,sort_keys=False)
+            
         blend = {'reactions': []}
         speciesList = self.mech['phases'][0]['species']
         defaultRxnNames = []
         defaultColliderNames = []
+        # for defaultRxn in self.generalizedEquations(defaults2)['reactions']:
         for defaultRxn in defaults2['reactions']:
             defaultRxnNames.append(defaultRxn['equation'])
             for defaultCol in defaultRxn['colliders']:
                 defaultColliderNames.append(defaultCol['name'])
         # first fill it with all of the default reactions and colliders (which have valid species)
+        # for defaultRxn in self.generalizedEquations(defaults2)['reactions']:
         for defaultRxn in defaults2['reactions']:
             flag = True
             for defaultCol in defaultRxn['colliders']:
@@ -241,6 +331,7 @@ class masterFitter:
         for blendRxn in blend['reactions']:
             blendRxnNames.append(blendRxn['equation'])
         
+        # for inputRxn in self.generalizedEquations(self.input)['reactions']:
         for inputRxn in self.input['reactions']:
             if inputRxn['equation'] in blendRxnNames: #input reaction also exists in defaults file
                 idx = blendRxnNames.index(inputRxn['equation'])
@@ -280,6 +371,8 @@ class masterFitter:
                 A_fit, beta_fit, Ea_fit = result.x
                 col['eps'] = {'A': round(float(A_fit),5),'b': round(float(beta_fit),5),'Ea': round(float(Ea_fit),5)}
                 del col['temperatures']
+        with open('blend_double.yaml', 'w') as outfile:
+                yaml.dump(blend, outfile, default_flow_style=None,sort_keys=False)
         return blend
     
     
@@ -298,12 +391,15 @@ class masterFitter:
         defaults2 = {'reactions': []}
         inputRxnNames=[]
         inputColliderNames=[]
+        # bigInput = self.generalizedEquations(self.input)
+        # for inputRxn in bigInput['reactions']:
         for inputRxn in self.input['reactions']:
             inputRxnNames.append(inputRxn['equation'])
             inputRxnColliderNames=[]
             for inputCol in inputRxn['colliders']:
                 inputRxnColliderNames.append(inputCol['name'])
             inputColliderNames.append(inputRxnColliderNames)
+        print(inputRxnNames)
         for defaultRxn in self.defaults['reactions']:
             if defaultRxn['equation'] in inputRxnNames:
                 idx = inputRxnNames.index(defaultRxn['equation'])
@@ -556,6 +652,9 @@ class masterFitter:
         with open(foutName, 'w') as outfile:
             yaml.dump(newMechanism, outfile, default_flow_style=None,sort_keys=False)
 
+    def colliders(self,foutName): # returns PLOG in LMRR YAML format
+        with open(foutName, 'w') as outfile:
+            yaml.dump(self.shortMech, outfile, default_flow_style=None,sort_keys=False)
     def Troe(self,foutName): # returns PLOG in LMRR YAML format
         self.final_yaml(foutName,self.get_Troe_table)
     def PLOG(self,foutName): # returns PLOG in LMRR YAML format
@@ -568,13 +667,13 @@ class masterFitter:
 
 models = [
     {'name': 'Alzueta', 'path': 'alzuetamechanism.yaml'},
-    # {'name': 'Mei', 'path': 'G:\\Mon disque\\Columbia\\Burke Lab\\07 Mechanisms\\Mei-2019\\mei-2019.yaml'},
-    # # {'name': 'Glarborg', 'path': "G:\\Mon disque\\Columbia\\Burke Lab\\07 Mechanisms\\Glarborg-2018\\glarborg-2018.yaml"},
-    # {'name': 'Zhang', 'path': "G:\\Mon disque\\Columbia\\Burke Lab\\07 Mechanisms\\Zhang-2017\\zhang-2017.yaml"},
-    # {'name': 'Otomo', 'path': "G:\\Mon disque\\Columbia\\Burke Lab\\07 Mechanisms\\Otomo-2018\\otomo-2018.yaml"},
-    # {'name': 'Stagni', 'path': "G:\\Mon disque\\Columbia\\Burke Lab\\07 Mechanisms\\Stagni-2020\\stagni-2020.yaml"},
-    # # {'name': 'Shrestha', 'path': "G:\\Mon disque\\Columbia\\Burke Lab\\07 Mechanisms\\Shrestha-2021\\shrestha-2021.yaml"},
-    # {'name': 'Han', 'path': "G:\\Mon disque\\Columbia\\Burke Lab\\07 Mechanisms\\Han-2021\\han-2021.yaml"},
+    {'name': 'Mei', 'path': 'G:\\Mon disque\\Columbia\\Burke Lab\\07 Mechanisms\\Mei-2019\\mei-2019.yaml'},
+    # {'name': 'Glarborg', 'path': "G:\\Mon disque\\Columbia\\Burke Lab\\07 Mechanisms\\Glarborg-2018\\glarborg-2018.yaml"},
+    {'name': 'Zhang', 'path': "G:\\Mon disque\\Columbia\\Burke Lab\\07 Mechanisms\\Zhang-2017\\zhang-2017.yaml"},
+    {'name': 'Otomo', 'path': "G:\\Mon disque\\Columbia\\Burke Lab\\07 Mechanisms\\Otomo-2018\\otomo-2018.yaml"},
+    {'name': 'Stagni', 'path': "G:\\Mon disque\\Columbia\\Burke Lab\\07 Mechanisms\\Stagni-2020\\stagni-2020.yaml"},
+    # {'name': 'Shrestha', 'path': "G:\\Mon disque\\Columbia\\Burke Lab\\07 Mechanisms\\Shrestha-2021\\shrestha-2021.yaml"},
+    {'name': 'Han', 'path': "G:\\Mon disque\\Columbia\\Burke Lab\\07 Mechanisms\\Han-2021\\han-2021.yaml"},
     ]
 # colours = ["xkcd:grey","xkcd:purple", "xkcd:teal", "orange", "r", "b", "xkcd:lime green", "xkcd:magenta", "xkcd:navy blue"]
 
@@ -584,8 +683,9 @@ for i, model in enumerate (models):
     # P_list=np.logspace(-12,12,num=120)
     P_list=np.logspace(-1,2,num=10)
     mF = masterFitter(T_list,P_list,"testinput.yaml",n_P=7,n_T=7,M_only=True, mechPath=model['path'])
-    path=f'outputs\\{model['name']}'
+    path=f'outputs'
     os.makedirs(path,exist_ok=True)
-    mF.Troe(path+"\\LMRtest_Troe_M")
+    mF.colliders(path+f"\\{model['name']}_LMRR.yaml")
+    # mF.Troe(path+"\\LMRtest_Troe_M")
     # mF.PLOG(path+"\\LMRtest_PLOG_M")
     # mF.cheb2D(path+"\\LMRtest_cheb_M")

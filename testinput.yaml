@@ -39,7 +39,7 @@ reactions:
 #     temperatures: [300,1000,2000]
 #     note: Jasper-2022
 
-- equation: H2O2 (+M) <=> 2 OH (+M)
+- equation: H2O2 (+M) <=> OH + OH (+M)
   reference-collider: AR
   colliders:
   - name: N2
@@ -77,8 +77,8 @@ reactions:
 
 
 
-# - equation: NH3 (+M) <=> H + NH2 (+M)
-- equation: NH3 <=> H + NH2
+- equation: NH3 <=> NH2 + H
+# - equation: NH3 <=> H + NH2 # this one isn't converting properly
   reference-collider: AR
   colliders:
   - name: N2
@@ -107,7 +107,7 @@ reactions:
     note: Jasper-2022
 
 
-- equation: 2 NH2 (+M) <=> N2H4 (+M)
+- equation: NH2 + NH2 (+M) <=> N2H4 (+M)
   reference-collider: AR
   colliders:
   - name: N2
@@ -136,50 +136,6 @@ reactions:
     note: Jasper-2022
   - name: H2O
     eps: [6.42,8.15,9.09]
-    temperatures: [300,1000,2000]
-    note: Jasper-2022
-
-- equation: CH4 (+M) <=> ?? # Ar reference collider
-  reference-collider: AR
-  colliders:
-  - name: HE
-    eps: [1.01,1.70,2.56]
-    temperatures: [300,1000,2000]
-    note: Jasper-2022
-  - name: N2
-    eps: [1.02,1.10,1.28]
-    temperatures: [300,1000,2000]
-    note: Jasper-2022
-  - name: O2
-    eps: [1.09,1.19,1.33]
-    temperatures: [300,1000,2000]
-    note: Jasper-2022
-  - name: H2
-    eps: [2.29,3.31,4.09]
-    temperatures: [300,1000,2000]
-    note: Jasper-2022
-  - name: CO2
-    eps: [1.64,1.65,1.77]
-    temperatures: [300,1000,2000]
-    note: Jasper-2022
-  - name: CH4
-    eps: [2.98,4.66,5.11]
-    temperatures: [300,1000,2000]
-    note: Jasper-2022
-  - name: H2O
-    eps: [4.17,6.19,6.96]
-    temperatures: [300,1000,2000]
-    note: Jasper-2022
-
-- equation: HCN (+M) <=> ?? # Ar reference collider
-  reference-collider: AR
-  colliders:
-  - name: N2
-    eps: [1.05,1.26,1.47]
-    temperatures: [300,1000,2000]
-    note: Jasper-2022
-  - name: H2O
-    eps: [4.24,4.87,5.56]
     temperatures: [300,1000,2000]
     note: Jasper-2022
 
@@ -292,61 +248,5 @@ reactions:
     note: JOM-2015
   - name: O2
     eps: [1.20,1.16]
-    temperatures: [300,2000]
-    note: JOM-2015
-
-- equation: C6H14 (+M) <=> ?? #Ar reference collider
-  reference-collider: AR
-  colliders:
-  - name: HE
-    eps: [1.15,0.80]
-    temperatures: [300,2000]
-    note: JOM-2015
-  - name: NE
-    eps: [0.78,0.83]
-    temperatures: [300,2000]
-    note: JOM-2015
-  - name: KR
-    eps: [0.92,0.90]
-    temperatures: [300,2000]
-    note: JOM-2015
-  - name: H2
-    eps: [2.17,0.97]
-    temperatures: [300,2000]
-    note: JOM-2015
-  - name: N2
-    eps: [1.14,1.11]
-    temperatures: [300,2000]
-    note: JOM-2015
-  - name: O2
-    eps: [1.20,1.08]
-    temperatures: [300,2000]
-    note: JOM-2015
-
-- equation: C8H18 (+M) <=> ?? #Ar reference collider
-  reference-collider: AR
-  colliders:
-  - name: HE
-    eps: [1.16,0.66]
-    temperatures: [300,2000]
-    note: JOM-2015
-  - name: NE
-    eps: [0.79,0.81]
-    temperatures: [300,2000]
-    note: JOM-2015
-  - name: KR
-    eps: [0.88,0.90]
-    temperatures: [300,2000]
-    note: JOM-2015
-  - name: H2
-    eps: [2.16,0.85]
-    temperatures: [300,2000]
-    note: JOM-2015
-  - name: N2
-    eps: [1.13,1.03]
-    temperatures: [300,2000]
-    note: JOM-2015
-  - name: O2
-    eps: [1.19,0.98]
     temperatures: [300,2000]
     note: JOM-2015

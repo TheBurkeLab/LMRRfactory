@@ -676,50 +676,52 @@ reactions:
   rate-constant: {A: 19000000000000.0, b: 0.0, Ea: -1788.0}
   efficiencies: {H2: 2.5, H2O: 12.0, AR: 0.0, CO: 1.9, CO2: 3.8}
 - equation: H + OH (+M) <=> H2O (+M)
-  type: linear-burke
+  type: linear-Burke
   reference-collider: N2
-  collider-list:
-  - collider: M
+  colliders:
+  - name: M
     eps: {A: 1, b: 0, Ea: 0}
-    rate-constants:
-    - {P: 1.000e-01 atm, A: 5134913865433818.0, b: -2.8039872970994724, Ea: 508.9828989753552}
-    - {P: 5.623e-01 atm, A: 2.970170484201694e+16, b: -2.807685077273634, Ea: 532.131023320295}
-    - {P: 3.162e+00 atm, A: 2.0932476267597878e+17, b: -2.8354555520654037, Ea: 631.5703282090816}
-    - {P: 1.778e+01 atm, A: 2.622307794697393e+18, b: -2.931277064085145, Ea: 993.0823790716228}
-    - {P: 1.000e+02 atm, A: 7.521042709327447e+18, b: -2.8259846298250135, Ea: 1471.4543485103088}
-  - collider: H2O
+    low-P-rate-constant: {A: 4.53e+21, b: -1.81, Ea: 498.7}
+    high-P-rate-constant: {A: 25100000000000.0, b: 0.234, Ea: -114.2}
+    Troe: {A: 0.73, T3: 1.0e-30, T1: 1.0e+30, T2: 1.0e+30}
+  - name: H2O
     eps: {A: 0.10637, b: 0.54858, Ea: -229.16643}
-  - collider: AR
+    note: Jasper-2022
+  - name: AR
     eps: {A: 0.02208, b: 0.4739, Ea: -112.52939}
+    note: Jasper-2022
 - equation: H2O + O2 <=> H + OH + O2
   duplicate: true
   rate-constant: {A: 9.15e+27, b: -3.322, Ea: 120790.0}
 - equation: H2O + H2O <=> H + OH + H2O
   rate-constant: {A: 1.0e+26, b: -2.44, Ea: 120180.0}
 - equation: H + O2 (+M) <=> HO2 (+M)
-  type: linear-burke
+  type: linear-Burke
   reference-collider: AR
-  collider-list:
-  - collider: M
+  colliders:
+  - name: M
     eps: {A: 1, b: 0, Ea: 0}
-    rate-constants:
-    - {P: 1.000e-01 atm, A: 637265438597860.5, b: -2.7031237575742377, Ea: 546.2941015438954}
-    - {P: 5.623e-01 atm, A: 3532267284692920.5, b: -2.7020378806718335, Ea: 573.1688431512454}
-    - {P: 3.162e+00 atm, A: 2.2018512265741324e+16, b: -2.715404782491471, Ea: 657.8827075087808}
-    - {P: 1.778e+01 atm, A: 2.0994805975383312e+17, b: -2.7801332220697947, Ea: 932.8656413560814}
-    - {P: 1.000e+02 atm, A: 1.3082616821272095e+18, b: -2.7821828613983266, Ea: 1409.707984732369}
-  - collider: N2
+    low-P-rate-constant: {A: 6.366e+20, b: -1.72, Ea: 524.8}
+    high-P-rate-constant: {A: 4700000000000.0, b: 0.44, Ea: 0.0}
+    Troe: {A: 0.5, T3: 1.0e-30, T1: 1.0e+30}
+  - name: N2
     eps: {A: 124.93184, b: -0.59326, Ea: 540.92123}
-  - collider: H2
+    note: Jasper-2022
+  - name: H2
     eps: {A: 31371.70908, b: -1.25419, Ea: 1129.24106}
-  - collider: CO2
+    note: Jasper-2022
+  - name: CO2
     eps: {A: 162412680.25829, b: -2.27622, Ea: 1970.23295}
-  - collider: NH3
+    note: Jasper-2022
+  - name: NH3
     eps: {A: 4.9775, b: 0.16486, Ea: -280.3505}
-  - collider: H2O
+    note: Jasper-2022
+  - name: H2O
     eps: {A: 36.91456, b: -0.07129, Ea: 31.90868}
-  - collider: HE
+    note: Jasper-2022
+  - name: HE
     eps: {A: 0.3376, b: 0.18257, Ea: 36.24078}
+    note: Jasper-2022
 - equation: HO2 + H <=> H2 + O2
   rate-constant: {A: 2800000.0, b: 2.09, Ea: -1451.0}
 - equation: HO2 + H <=> OH + OH
@@ -738,24 +740,24 @@ reactions:
   rate-constant: {A: 0.019, b: 4.12, Ea: -4960.0}
 - equation: HO2 + HO2 <=> O2 + OH + OH
   rate-constant: {A: 6.4e+17, b: -1.54, Ea: 8540.0}
-- equation: H2O2 (+M) <=> 2 OH (+M)
-  type: linear-burke
+- equation: H2O2 (+M) <=> OH + OH (+M)
+  type: linear-Burke
   reference-collider: AR
-  collider-list:
-  - collider: M
+  colliders:
+  - name: M
     eps: {A: 1, b: 0, Ea: 0}
-    rate-constants:
-    - {P: 1.000e-01 atm, A: 1.0259008139506819e+22, b: -3.4608342542299506, Ea: 49234.083651275534}
-    - {P: 5.623e-01 atm, A: 4.3514851016653147e+23, b: -3.7115229322574272, Ea: 49876.11461374105}
-    - {P: 3.162e+00 atm, A: 5.857879551781599e+24, b: -3.8061196816578886, Ea: 50547.384003085135}
-    - {P: 1.778e+01 atm, A: 2.6271441553748065e+24, b: -3.4592352030426463, Ea: 50867.7566939551}
-    - {P: 1.000e+02 atm, A: 3.1768338514111646e+22, b: -2.6587827803541084, Ea: 50746.36704401226}
-  - collider: N2
+    low-P-rate-constant: {A: 2.5e+24, b: -2.3, Ea: 48749.0}
+    high-P-rate-constant: {A: 2000000000000.0, b: 0.9, Ea: 48749.0}
+    Troe: {A: 0.43, T3: 1.0e-30, T1: 1.0e+30}
+  - name: N2
     eps: {A: 1.14813, b: 0.04601, Ea: -2.92413}
-  - collider: CO2
+    note: Jasper-2022
+  - name: CO2
     eps: {A: 89.88392, b: -0.42797, Ea: 241.39243}
-  - collider: H2O2
+    note: Jasper-2022
+  - name: H2O2
     eps: {A: 0.6453, b: 0.42627, Ea: 42.89316}
+    note: Jasper-2022
 - equation: H2O2 + H <=> H2O + OH
   rate-constant: {A: 24000000000000.0, b: 0.0, Ea: 3970.0}
 - equation: H2O2 + H <=> HO2 + H2
@@ -945,26 +947,27 @@ reactions:
   rate-constant: {A: 0.029, b: 3.764, Ea: 18185.0}
 - equation: NH2 + NH2 <=> NH3 + NH
   rate-constant: {A: 5.6, b: 3.53, Ea: 552.0}
-- equation: 2 NH2 (+M) <=> N2H4 (+M)
-  type: linear-burke
+- equation: NH2 + NH2 (+M) <=> N2H4 (+M)
+  type: linear-Burke
   reference-collider: AR
-  collider-list:
-  - collider: M
+  colliders:
+  - name: M
     eps: {A: 1, b: 0, Ea: 0}
-    rate-constants:
-    - {P: 1.000e-01 atm, A: 1.4336918630114757e+28, b: -6.439021405028751, Ea: 3072.2926806569294}
-    - {P: 5.623e-01 atm, A: 1.8412502809704343e+27, b: -5.937947999406659, Ea: 3091.9165860459284}
-    - {P: 3.162e+00 atm, A: 2.3684425487717686e+25, b: -5.1498617586519355, Ea: 2869.946249329146}
-    - {P: 1.778e+01 atm, A: 9.120288961869158e+22, b: -4.230460775702071, Ea: 2525.419074269556}
-    - {P: 1.000e+02 atm, A: 3.583118415911604e+20, b: -3.353101078653726, Ea: 2145.4825154330088}
-  - collider: N2
+    low-P-rate-constant: {A: 1.6e+34, b: -5.49, Ea: 1987.0}
+    high-P-rate-constant: {A: 560000000000000.0, b: -0.414, Ea: 66.0}
+    Troe: {A: 0.31, T3: 1.0e-30, T1: 1.0e+30, T2: 1.0e+30}
+  - name: N2
     eps: {A: 14.68478, b: -0.30096, Ea: 165.14611}
-  - collider: O2
+    note: Jasper-2022
+  - name: O2
     eps: {A: 1.53608, b: -0.03909, Ea: 4.43752}
-  - collider: NH3
+    note: Jasper-2022
+  - name: NH3
     eps: {A: 16.41959, b: -0.07296, Ea: 366.09891}
-  - collider: H2O
+    note: Jasper-2022
+  - name: H2O
     eps: {A: 21.76579, b: -0.11471, Ea: 419.21607}
+    note: Jasper-2022
 - equation: NH2 + NH2 <=> tHNNH + H2
   rate-constant: {A: 170000000.0, b: 1.02, Ea: 11783.0}
 - equation: NH2 + NH2 <=> H2NN + H2
@@ -1082,22 +1085,11 @@ reactions:
   rate-constant: {A: 29000.0, b: 2.69, Ea: 9557.0}
 - equation: NH2OH + HO2 <=> H2NO + H2O2
   rate-constant: {A: 14000.0, b: 2.69, Ea: 6418.0}
-- equation: HNO (+M) <=> H + NO (+M)
-  type: linear-burke
-  reference-collider: AR
-  collider-list:
-  - collider: M
-    eps: {A: 1, b: 0, Ea: 0}
-    rate-constants:
-    - {P: 1.000e-01 atm, A: 2.0121000000001425e+19, b: -3.0210000000000092, Ea: 47787.087606661386}
-    - {P: 5.623e-01 atm, A: 1.0520106386713394e+20, b: -3.0112500000000035, Ea: 47853.080822723474}
-    - {P: 3.162e+00 atm, A: 4.8272285837733514e+20, b: -2.983499999999996, Ea: 47985.06725484766}
-    - {P: 1.778e+01 atm, A: 1.850740055813474e+21, b: -2.932999999999999, Ea: 48184.7967231568}
-    - {P: 1.000e+02 atm, A: 5.644500000000259e+21, b: -2.8550000000000058, Ea: 48454.01904777377}
-  - collider: N2
-    eps: {A: 7.56771, b: -0.19688, Ea: 253.16785}
-  - collider: H2O
-    eps: {A: 3.35451, b: 0.13335, Ea: 66.4633}
+- equation: HNO + H (+M) <=> H2NO (+M)
+  type: falloff
+  low-P-rate-constant: {A: 1.5e+19, b: -1.632, Ea: 0.0}
+  high-P-rate-constant: {A: 55000000000000.0, b: 0.0, Ea: 3250.0}
+  efficiencies: {H2O: 10.0}
 - equation: H2NO <=> HNOH
   type: pressure-dependent-Arrhenius
   rate-constants:
@@ -1146,7 +1138,7 @@ reactions:
   rate-constant: {A: 1800000.0, b: 1.94, Ea: -1152.0}
 - equation: HNOH + NO2 <=> HONO + HNO
   rate-constant: {A: 800000000000.0, b: 0.0, Ea: 6000.0}
-- equation: NO + H (+M) <=> HNO (+M)
+- equation: H + NO (+M) <=> HNO (+M)
   type: falloff
   low-P-rate-constant: {A: 240000000000000.0, b: 0.206, Ea: -1550.0}
   high-P-rate-constant: {A: 1500000000000000.0, b: -0.41, Ea: 0.0}

@@ -1004,8 +1004,8 @@ reactions:
   rate-constant: {A: 0.019, b: 4.12, Ea: -4960.0}
 - equation: HO2 + HO2 <=> O2 + OH + OH  # Reaction 24
   rate-constant: {A: 6.4e+17, b: -1.54, Ea: 8540.0}
-# - equation: H2O2 (+M) <=> OH + OH (+M)  # Reaction 25
-- equation: H2O2 (+M) <=> 2 OH (+M)
+- equation: H2O2 (+M) <=> OH + OH (+M)  # Reaction 25
+# - equation: H2O2 (+M) <=> 2 OH (+M)
   type: falloff
   low-P-rate-constant: {A: 2.5e+24, b: -2.3, Ea: 4.8749e+04}
   high-P-rate-constant: {A: 2.0e+12, b: 0.9, Ea: 4.8749e+04}
@@ -1209,8 +1209,8 @@ reactions:
   rate-constant: {A: 0.029, b: 3.764, Ea: 1.8185e+04}
 - equation: NH2 + NH2 <=> NH3 + NH  # Reaction 89
   rate-constant: {A: 5.6, b: 3.53, Ea: 552.0}
-# - equation: NH2 + NH2 (+M) <=> N2H4 (+M)  # Reaction 90
-- equation: 2 NH2 (+M) <=> N2H4 (+M)
+- equation: NH2 + NH2 (+M) <=> N2H4 (+M)  # Reaction 90
+# - equation: 2 NH2 (+M) <=> N2H4 (+M)
   type: falloff
   low-P-rate-constant: {A: 1.6e+34, b: -5.49, Ea: 1987.0}
   high-P-rate-constant: {A: 5.6e+14, b: -0.414, Ea: 66.0}
@@ -1332,20 +1332,11 @@ reactions:
   rate-constant: {A: 2.9e+04, b: 2.69, Ea: 9557.0}
 - equation: NH2OH + HO2 <=> H2NO + H2O2  # Reaction 145
   rate-constant: {A: 1.4e+04, b: 2.69, Ea: 6418.0}
-# - equation: NO + H (+M) <=> HNO (+M)
-#   type: falloff
-#   low-P-rate-constant: {A: 240000000000000.0, b: 0.206, Ea: -1550.0}
-#   high-P-rate-constant: {A: 1500000000000000.0, b: -0.41, Ea: 0.0}
-#   Troe: {A: 0.82, T3: 1.0e-30, T1: 1.0e+30, T2: 1.0e+30}
-#   efficiencies: {N2: 1.6}
-- equation: HNO (+M) <=> H + NO (+M)
-  type: pressure-dependent-Arrhenius
-  rate-constants:
-  - {P: 0.1 atm, A: 2.0121e+19, b: -3.021, Ea: 47792.0}
-  - {P: 1 atm, A: 1.8259e+20, b: -3.008, Ea: 47880.0}
-  - {P: 10 atm, A: 1.2762e+21, b: -2.959, Ea: 48100.0}
-  - {P: 100 atm, A: 5.6445e+21, b: -2.855, Ea: 48459.0}
-  - {P: 1000 atm, A: 9.7111e+21, b: -2.642, Ea: 48940.0}
+- equation: HNO + H (+M) <=> H2NO (+M)  # Reaction 146
+  type: falloff
+  low-P-rate-constant: {A: 1.5e+19, b: -1.632, Ea: 0.0}
+  high-P-rate-constant: {A: 5.5e+13, b: 0.0, Ea: 3250.0}
+  efficiencies: {H2O: 10.0}
 - equation: H2NO <=> HNOH  # Reaction 147
   type: pressure-dependent-Arrhenius
   rate-constants:
@@ -1394,7 +1385,8 @@ reactions:
   rate-constant: {A: 1.8e+06, b: 1.94, Ea: -1152.0}
 - equation: HNOH + NO2 <=> HONO + HNO  # Reaction 166
   rate-constant: {A: 8.0e+11, b: 0.0, Ea: 6000.0}
-- equation: NO + H (+M) <=> HNO (+M)  # Reaction 167
+# - equation: NO + H (+M) <=> HNO (+M)  # Reaction 167
+- equation: H + NO (+M) <=> HNO (+M)  # Reaction 167
   type: falloff
   low-P-rate-constant: {A: 2.4e+14, b: 0.206, Ea: -1550.0}
   high-P-rate-constant: {A: 1.5e+15, b: -0.41, Ea: 0.0}

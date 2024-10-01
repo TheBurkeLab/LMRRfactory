@@ -29,31 +29,32 @@ def generalized_equations(finName,foutName):
             if spec1==spec2:
                 reactants = f"2 {spec1}"
                 rxn = copy.deepcopy(rxn)
-                rxn['equation']=f"{reactants} <=> {products}"
-                newMech['reactions'].append(rxn)
-                rxn = copy.deepcopy(rxn)
-                rxn['equation']=f"{products} <=> {reactants}"
-                newMech['reactions'].append(rxn)
-                rxn = copy.deepcopy(rxn)
                 rxn['equation']=f"{reactants} (+M) <=> {products} (+M)"
                 newMech['reactions'].append(rxn)
                 rxn = copy.deepcopy(rxn)
                 rxn['equation']=f"{products} (+M) <=> {reactants} (+M)"
+                newMech['reactions'].append(rxn)
+                rxn = copy.deepcopy(rxn)
+                rxn['equation']=f"{reactants} <=> {products}"
+                newMech['reactions'].append(rxn)
+                rxn = copy.deepcopy(rxn)
+                rxn['equation']=f"{products} <=> {reactants}"
                 newMech['reactions'].append(rxn)
             else:
                 reactants = f"{spec2} + {spec1}"
                 rxn = copy.deepcopy(rxn)
-                rxn['equation']=f"{reactants} <=> {products}"
-                newMech['reactions'].append(rxn)
-                rxn = copy.deepcopy(rxn)
-                rxn['equation']=f"{products} <=> {reactants}"
-                newMech['reactions'].append(rxn)
-                rxn = copy.deepcopy(rxn)
                 rxn['equation']=f"{reactants} (+M) <=> {products} (+M)"
                 newMech['reactions'].append(rxn)
                 rxn = copy.deepcopy(rxn)
                 rxn['equation']=f"{products} (+M) <=> {reactants} (+M)"
                 newMech['reactions'].append(rxn)
+                rxn = copy.deepcopy(rxn)
+                rxn['equation']=f"{reactants} <=> {products}"
+                newMech['reactions'].append(rxn)
+                rxn = copy.deepcopy(rxn)
+                rxn['equation']=f"{products} <=> {reactants}"
+                newMech['reactions'].append(rxn)
+                
         elif "+" in products:
             spec1, spec2 = products.split("+")
             spec1=spec1.strip()
@@ -61,35 +62,71 @@ def generalized_equations(finName,foutName):
             if spec1==spec2:
                 products = f"2 {spec1}"
                 rxn = copy.deepcopy(rxn)
-                rxn['equation']=f"{reactants} <=> {products}"
-                newMech['reactions'].append(rxn)
-                rxn = copy.deepcopy(rxn)
-                rxn['equation']=f"{products} <=> {reactants}"
-                newMech['reactions'].append(rxn)
-                rxn = copy.deepcopy(rxn)
                 rxn['equation']=f"{reactants} (+M) <=> {products} (+M)"
                 newMech['reactions'].append(rxn)
                 rxn = copy.deepcopy(rxn)
                 rxn['equation']=f"{products} (+M) <=> {reactants} (+M)"
                 newMech['reactions'].append(rxn)
+                rxn = copy.deepcopy(rxn)
+                rxn['equation']=f"{reactants} <=> {products}"
+                newMech['reactions'].append(rxn)
+                rxn = copy.deepcopy(rxn)
+                rxn['equation']=f"{products} <=> {reactants}"
+                newMech['reactions'].append(rxn)
+                
             else:
                 products = f"{spec2} + {spec1}"
                 rxn = copy.deepcopy(rxn)
-                rxn['equation']=f"{reactants} <=> {products}"
-                newMech['reactions'].append(rxn)
-                rxn = copy.deepcopy(rxn)
-                rxn['equation']=f"{products} <=> {reactants}"
-                newMech['reactions'].append(rxn)
-                rxn = copy.deepcopy(rxn)
                 rxn['equation']=f"{reactants} (+M) <=> {products} (+M)"
                 newMech['reactions'].append(rxn)
                 rxn = copy.deepcopy(rxn)
                 rxn['equation']=f"{products} (+M) <=> {reactants} (+M)"
                 newMech['reactions'].append(rxn)
+                rxn = copy.deepcopy(rxn)
+                rxn['equation']=f"{reactants} <=> {products}"
+                newMech['reactions'].append(rxn)
+                rxn = copy.deepcopy(rxn)
+                rxn['equation']=f"{products} <=> {reactants}"
+                newMech['reactions'].append(rxn)
+                
+        elif "2 " in reactants:
+            spec = reactants.replace("2","")
+            spec = spec.strip()
+            reactants = f"{spec} + {spec}"
+            rxn = copy.deepcopy(rxn)
+            rxn['equation']=f"{reactants} (+M) <=> {products} (+M)"
+            newMech['reactions'].append(rxn)
+            rxn = copy.deepcopy(rxn)
+            rxn['equation']=f"{products} (+M) <=> {reactants} (+M)"
+            newMech['reactions'].append(rxn)
+            rxn = copy.deepcopy(rxn)
+            rxn['equation']=f"{reactants} <=> {products}"
+            newMech['reactions'].append(rxn)
+            rxn = copy.deepcopy(rxn)
+            rxn['equation']=f"{products} <=> {reactants}"
+            newMech['reactions'].append(rxn)
+        
+        elif "2" in products:
+            spec = products.replace("2","")
+            spec = spec.strip()
+            products = f"{spec} + {spec}"
+            rxn = copy.deepcopy(rxn)
+            rxn['equation']=f"{reactants} (+M) <=> {products} (+M)"
+            newMech['reactions'].append(rxn)
+            rxn = copy.deepcopy(rxn)
+            rxn['equation']=f"{products} (+M) <=> {reactants} (+M)"
+            newMech['reactions'].append(rxn)
+            rxn = copy.deepcopy(rxn)
+            rxn['equation']=f"{reactants} <=> {products}"
+            newMech['reactions'].append(rxn)
+            rxn = copy.deepcopy(rxn)
+            rxn['equation']=f"{products} <=> {reactants}"
+            newMech['reactions'].append(rxn)
     with open(foutName, 'w') as outfile:
-            yaml.dump(newMech, outfile, default_flow_style=None,sort_keys=False)
+        yaml.dump(newMech, outfile, default_flow_style=None,sort_keys=False)
 
-bidirectional_input("thirdbodydefaults.yaml","thirdbodydefaults_doubled.yaml")
+# generalized_equations("thirdbodydefaults.yaml","thirdbodydefaults_doubled.yaml")
+generalized_equations("testinput.yaml","testinput_doubled.yaml")
 
 
 

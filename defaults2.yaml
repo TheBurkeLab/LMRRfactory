@@ -1,0 +1,80 @@
+reactions:
+- equation: H + OH (+M) <=> H2O (+M)
+  reference-collider: N2
+  colliders:
+  - name: H2O
+    eps: [3.57, 5.28, 7.29]
+    temperatures: [300, 1000, 2000]
+    note: Jasper-2022
+- equation: H + O2 (+M) <=> HO2 (+M)
+  reference-collider: AR
+  colliders:
+  - name: N2
+    eps: [1.71, 1.58, 1.2]
+    temperatures: [300, 1000, 2000]
+    note: Jasper-2022
+  - name: H2
+    eps: [3.69, 3.07, 1.71]
+    temperatures: [300, 1000, 2000]
+    note: Jasper-2022
+  - name: CO2
+    eps: [13.7, 8.94, 3.03]
+    temperatures: [300, 1000, 2000]
+    note: Jasper-2022
+  - name: NH3
+    eps: [20.4, 17.9, 18.7]
+    temperatures: [300, 1000, 2000]
+    note: Jasper-2022
+  - name: H2O
+    eps: [23.3, 22.2, 21.3]
+    temperatures: [300, 1000, 2000]
+    note: Jasper-2022
+- equation: H2O2 (+M) <=> OH + OH (+M)
+  reference-collider: AR
+  colliders:
+  - name: H2O
+    eps: [5.51, 10.2, 13.3]
+    temperatures: [300, 1000, 2000]
+    note: Jasper-2022
+  - name: HE
+    eps: [0.827, 0.966]
+    temperatures: [750, 1500]
+    note: Matsugi-2021
+  - name: H2
+    eps: [2.192, 2.085]
+    temperatures: [750, 1500]
+    note: Matsugi-2021
+  - name: CO
+    eps: [2.673, 2.746]
+    temperatures: [750, 1500]
+    note: Matsugi-2021
+  - name: CH4
+    eps: [6.692, 4.797]
+    temperatures: [750, 1500]
+    note: Matsugi-2021
+- equation: CH4 (+M) <=> CH3 + H (+M)
+  reference-collider: AR
+  colliders:
+  - name: CO2
+    eps: [1.64, 1.65, 1.77]
+    temperatures: [300, 1000, 2000]
+    note: Jasper-2022
+  - name: CH4
+    eps: [2.98, 4.66, 5.11]
+    temperatures: [300, 1000, 2000]
+    note: Jasper-2022
+  - name: H2O
+    eps: [4.17, 6.19, 6.96]
+    temperatures: [300, 1000, 2000]
+    note: Jasper-2022
+- equation: HCN (+M) <=> HNC (+M)
+  reference-collider: AR
+  colliders:
+  - name: N2
+    eps: [1.05, 1.26, 1.47]
+    temperatures: [300, 1000, 2000]
+    note: Jasper-2022
+  - name: H2O
+    eps: [4.24, 4.87, 5.56]
+    temperatures: [300, 1000, 2000]
+    note: Jasper-2022
