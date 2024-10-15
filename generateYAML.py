@@ -110,24 +110,28 @@ def blendedInput(data):
             if all(col['name'] in speciesList for col in inputRxn['colliders']):
                 blendData['reactions'].append(inputRxn)
 
+    # Convert collision efficiencies to arrhenius format and save to blended YAML
     for reaction in blendData['reactions']:
-        for col in reaction['colliders']:
-            # print(reaction['equation'])
-            temperatures=np.array(col['temperatures'])
-            eps = np.array(col['eps'])
-            def arrhenius_rate(T, A, beta, Ea):
-                # R = 8.314  # Gas constant in J/(mol K)
-                R = 1.987 # cal/molK
-                return A * T**beta * np.exp(-Ea / (R * T))
-            def fit_function(params, T, ln_rate_constants):
-                A, beta, Ea = params
-                return np.log(arrhenius_rate(T, A, beta, Ea)) - ln_rate_constants
-            initial_guess = [3, 0.5, 50.0]
-            result = least_squares(fit_function, initial_guess, args=(temperatures, np.log(eps)))
-            A_fit, beta_fit, Ea_fit = result.x
-            col['eps'] = {'A': round(float(A_fit),5),'b': round(float(beta_fit),5),'Ea': round(float(Ea_fit),5)}
-            del col['temperatures']
+        [arrheniusFit(col) for col in reaction['colliders']]
     data['blend']=blendData
+
+def arrheniusFit(col):
+    temperatures=np.array(col['temperatures'])
+    eps = np.array(col['eps'])
+    def arrhenius_rate(T, A, beta, Ea):
+        # R = 8.314  # Gas constant in J/(mol K)
+        R = 1.987 # cal/molK
+        return A * T**beta * np.exp(-Ea / (R * T))
+    def fit_function(params, T, ln_rate_constants):
+        A, beta, Ea = params
+        return np.log(arrhenius_rate(T, A, beta, Ea)) - ln_rate_constants
+    initial_guess = [3, 0.5, 50.0]
+    result = least_squares(fit_function, initial_guess, args=(temperatures, np.log(eps)))
+    A_fit, beta_fit, Ea_fit = result.x
+    # Update eps values and remove temperatures
+    col['eps'] = {'A': round(float(A_fit),5),'b': round(float(beta_fit),5),'Ea': round(float(Ea_fit),5)}
+    del col['temperatures']
+
 
 def zippedMech(data):
     newData={
