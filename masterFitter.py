@@ -1,16 +1,16 @@
 """
 Class that allows for fitting of rate constants at various temperatures and pressures (k(T,P))
 """
-# import sys, os
+
 # import pkg_resources
 # sys.path.append(pkg_resources.resource_filename('LMRRfactory', 'ext/cantera/build/python'))
-
 
 from generateYAML import generateYAML
 from chebyshevFitter import chebyshev
 from troeFitter import troe
 from plogFitter import plog
 import yaml
+import os
 
 
 class masterFitter:

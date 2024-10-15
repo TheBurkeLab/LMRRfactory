@@ -10,15 +10,16 @@ def generateYAML(self):
         'mech': loadYAML(self.mechInput), # load input mechanism}
         'defaults': loadYAML("thirdbodydefaults.yaml") # load default colliders
     }
+    fname2 = self.foutName.replace(".yaml","")
     cleanMechInput(data) # clean up 'NO' parsing errors in 'mech'
-    # saveYAML(data['mech'], "Alzueta_cleaned.yaml")
+    saveYAML(data['mech'], fname2+"_cleaned.yaml")
     lookForPdep(data) # Verify that 'mech' has >=1 relevant p-dep reaction
     # Remove defaults colliders and reactions that were explictly provided by user
     deleteDuplicates(data)
-    # saveYAML(data['defaults'], "defaults_uniqueOnly.yaml")
+    saveYAML(data['defaults'], fname2+"_uniqueDefaults.yaml")
     # Blend the user inputs and remaining collider defaults into a single YAML
     blendedInput(data)
-    # saveYAML(data['blend'], "blendedInput.yaml")
+    saveYAML(data['blend'], fname2+"_blended.yaml")
     # Sub the colliders into their corresponding reactions in the input mechanism
     zippedMech(data)
     saveYAML(data['output'], self.foutName)
@@ -85,7 +86,7 @@ def deleteDuplicates(data): # delete duplicates from thirdBodyDefaults
         for inputCol in inputRxn['colliders']:
             inputRxnColliderNames.append(inputCol['name'])
         inputColliderNames.append(inputRxnColliderNames)
-    print(inputRxnNames)
+    # print(inputRxnNames)
     for defaultRxn in data['defaults']['reactions']:
         if defaultRxn['equation'] in inputRxnNames:
             idx = inputRxnNames.index(defaultRxn['equation'])
