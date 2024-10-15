@@ -35,6 +35,8 @@ class masterFitter:
         with open(mechInput) as f:
             self.mech = yaml.safe_load(f) # load input mechanism
         self.mech = self.cleanedYAML(self.mech) # clean up 'NO' parsing errors
+        self.lookForPdep() # Verify that self.mech has >=1 relevant p-dep reaction
+
         with open("thirdbodydefaults.yaml") as f:
             self.defaults = yaml.safe_load(f) # load default colliders
         # Remove defaults colliders and reactions that were explictly provided by user
@@ -43,30 +45,6 @@ class masterFitter:
         self.blend = self.blendedInput()
         # Sub the colliders into their corresponding reactions in the input mechanism
         self.outMech = self.zippedMech()
-        
-
-
-
-        self.pDepReactionNames=[]
-        self.pDepReactions = []
-        for reaction in self.mech['reactions']:
-            if reaction.get('type') == 'falloff'  and 'Troe' in reaction:
-                self.pDepReactions.append(reaction)
-                self.pDepReactionNames.append(reaction['equation'])
-            elif reaction.get('type') == 'pressure-dependent-Arrhenius':
-                self.pDepReactions.append(reaction)
-                self.pDepReactionNames.append(reaction['equation'])
-            elif reaction.get('type') == 'Chebyshev':
-                self.pDepReactions.append(reaction)
-                self.pDepReactionNames.append(reaction['equation'])
-
-        if len(self.pDepReactions)==0:
-            print("No pressure-dependent reactions found in mechanism. Please choose another mechanism.")
-        else:
-            
-            self.outMech = self.zippedMech()
-
-    
 
     def cleanedYAML(self,data):
         cleanedData = data
@@ -96,6 +74,15 @@ class masterFitter:
         # with open("newAlzueta.yaml", 'w') as outfile:
         #     yaml.dump(copy.deepcopy(cleanedData), outfile, default_flow_style=None,sort_keys=False)
         return cleanedData
+    
+    def lookForPdep(self):
+        # Raise an error if the input mech has no Troe, PLOG, or Chebyshev reactions
+        if not any(
+            reaction.get('type') in ['pressure-dependent-Arrhenius', 'Chebyshev'] or
+            (reaction.get('type') == 'falloff' and 'Troe' in reaction)
+            for reaction in self.mech['reactions']
+        ):
+            raise ValueError("No pressure-dependent reactions found in mechanism. Please choose another mechanism.")
 
     def deleteDuplicates(self):
         # defaults2 = {'reactions': []}
