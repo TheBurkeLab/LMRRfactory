@@ -4,6 +4,7 @@ import numpy as np
 from scipy.optimize import curve_fit
 from scipy.optimize import least_squares
 import copy
+
 def main(self):
     # input = self.openyaml(inputFile)
     data = {}
@@ -12,17 +13,21 @@ def main(self):
     with open(self.mechInput) as f:
         data['mech'] = yaml.safe_load(f) # load input mechanism
     cleanMechInput(data) # clean up 'NO' parsing errors in data['mech']
+    saveYAML(data['mech'], "Alzueta_cleaned.yaml")
     lookForPdep(data) # Verify that mech has >=1 relevant p-dep reaction
 
     with open("thirdbodydefaults.yaml") as f:
         data['defaults'] = yaml.safe_load(f) # load default colliders
     # Remove defaults colliders and reactions that were explictly provided by user
     deleteDuplicates(data)
+    saveYAML(data['defaults'], "defaults_uniqueOnly.yaml")
     # Blend the user inputs and remaining collider defaults into a single YAML
     blendedInput(data)
+    saveYAML(data['blend'], "blendedInput.yaml")
     # Sub the colliders into their corresponding reactions in the input mechanism
     zippedMech(data)
-
+    saveYAML(data['output'], "Alzueta_LMRR.yaml")
+    saveYAML(data['output'], "Alzueta_LMRR.yaml")
 
 def cleanMechInput(data):
     cleanedData = data['mech']
@@ -234,3 +239,8 @@ def zippedMech(data):
             shortMechanism['reactions'].append(mech_rxn)
     data['output']=shortMechanism
 
+def saveYAML(dataSet, fOutName):
+    with open(fOutName, 'w') as outfile:
+        yaml.dump(copy.deepcopy(dataSet['output']), outfile,
+                  default_flow_style=None,
+                  sort_keys=False)
