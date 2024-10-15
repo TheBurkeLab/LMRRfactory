@@ -16,7 +16,7 @@ import re
 
 
 class masterFitter:
-    def __init__(self, T_ls, P_ls, inputFile,n_P=7, n_T=7, M_only=False, mechPath="from_yaml"):
+    def __init__(self, T_ls, P_ls, colliderInput,mechInput,n_P=7, n_T=7, M_only=False):
         self.T_ls = T_ls
         self.P_ls = P_ls
         self.n_P=n_P
@@ -30,15 +30,12 @@ class masterFitter:
         # datapath = pkg_resources.resource_filename('LMRRfactory', 'data') + "/"
 
         # self.input = self.openyaml(inputFile)
-        with open(inputFile) as f:
+        with open(colliderInput) as f:
             self.input = yaml.safe_load(f)
         with open("thirdbodydefaults.yaml") as f:
             self.defaults = yaml.safe_load(f)
 
-        if mechPath == "from_yaml":
-            self.mech = self.yamlLoader2(self.input['chemical-mechanism'])
-        else:
-            self.mech = self.yamlLoader2(mechPath)
+        self.mech = self.yamlLoader2(mechInput)
 
         self.pDepReactionNames=[]
         self.pDepReactions = []
@@ -622,8 +619,7 @@ class masterFitter:
                 'eps': epsilon,
             }
         return colDict
-    
-    
+
     def final_yaml(self,foutName,fit_fxn): # returns PLOG in LMRR YAML format
         newMechanism={
                 'units': self.mech['units'],
@@ -667,23 +663,25 @@ class masterFitter:
 
 models = [
     {'name': 'Alzueta', 'path': 'alzuetamechanism.yaml'},
-    {'name': 'Mei', 'path': 'G:\\Mon disque\\Columbia\\Burke Lab\\07 Mechanisms\\Mei-2019\\mei-2019.yaml'},
-    # {'name': 'Glarborg', 'path': "G:\\Mon disque\\Columbia\\Burke Lab\\07 Mechanisms\\Glarborg-2018\\glarborg-2018.yaml"},
-    {'name': 'Zhang', 'path': "G:\\Mon disque\\Columbia\\Burke Lab\\07 Mechanisms\\Zhang-2017\\zhang-2017.yaml"},
-    {'name': 'Otomo', 'path': "G:\\Mon disque\\Columbia\\Burke Lab\\07 Mechanisms\\Otomo-2018\\otomo-2018.yaml"},
-    {'name': 'Stagni', 'path': "G:\\Mon disque\\Columbia\\Burke Lab\\07 Mechanisms\\Stagni-2020\\stagni-2020.yaml"},
-    # {'name': 'Shrestha', 'path': "G:\\Mon disque\\Columbia\\Burke Lab\\07 Mechanisms\\Shrestha-2021\\shrestha-2021.yaml"},
-    {'name': 'Han', 'path': "G:\\Mon disque\\Columbia\\Burke Lab\\07 Mechanisms\\Han-2021\\han-2021.yaml"},
+    # {'name': 'Mei', 'path': 'G:\\Mon disque\\Columbia\\Burke Lab\\07 Mechanisms\\Mei-2019\\mei-2019.yaml'},
+    # # {'name': 'Glarborg', 'path': "G:\\Mon disque\\Columbia\\Burke Lab\\07 Mechanisms\\Glarborg-2018\\glarborg-2018.yaml"},
+    # {'name': 'Zhang', 'path': "G:\\Mon disque\\Columbia\\Burke Lab\\07 Mechanisms\\Zhang-2017\\zhang-2017.yaml"},
+    # {'name': 'Otomo', 'path': "G:\\Mon disque\\Columbia\\Burke Lab\\07 Mechanisms\\Otomo-2018\\otomo-2018.yaml"},
+    # {'name': 'Stagni', 'path': "G:\\Mon disque\\Columbia\\Burke Lab\\07 Mechanisms\\Stagni-2020\\stagni-2020.yaml"},
+    # # {'name': 'Shrestha', 'path': "G:\\Mon disque\\Columbia\\Burke Lab\\07 Mechanisms\\Shrestha-2021\\shrestha-2021.yaml"},
+    # {'name': 'Han', 'path': "G:\\Mon disque\\Columbia\\Burke Lab\\07 Mechanisms\\Han-2021\\han-2021.yaml"},
     ]
 # colours = ["xkcd:grey","xkcd:purple", "xkcd:teal", "orange", "r", "b", "xkcd:lime green", "xkcd:magenta", "xkcd:navy blue"]
+
+date='Oct15'
 
 for i, model in enumerate (models):
     # # INPUTS
     T_list=np.linspace(200,2000,100)
     # P_list=np.logspace(-12,12,num=120)
     P_list=np.logspace(-1,2,num=10)
-    mF = masterFitter(T_list,P_list,"testinput.yaml",n_P=7,n_T=7,M_only=True, mechPath=model['path'])
-    path=f'outputs'
+    mF = masterFitter(T_list,P_list,colliderInput="testinput.yaml",mechInput=model['path'],n_P=7,n_T=7,M_only=True)
+    path=f'outputs\\{date}'
     os.makedirs(path,exist_ok=True)
     mF.colliders(path+f"\\{model['name']}_LMRR.yaml")
     # mF.Troe(path+"\\LMRtest_Troe_M")
