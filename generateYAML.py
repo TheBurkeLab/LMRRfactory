@@ -5,7 +5,7 @@ from scipy.optimize import curve_fit
 from scipy.optimize import least_squares
 import copy
 
-def main(self):
+def generateYAML(self):
     data = {
         'input': loadYAML(self.colliderInput), # load input colliders
         'mech': loadYAML(self.mechInput), # load input mechanism}
@@ -24,6 +24,7 @@ def main(self):
     zippedMech(data)
     saveYAML(data['output'], "Alzueta_LMRR.yaml")
     saveYAML(data['output'], "Alzueta_LMRR.yaml")
+    return data['output']
 
 def cleanMechInput(data):
     cleanedData = data['mech']

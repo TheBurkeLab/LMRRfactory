@@ -8,18 +8,33 @@ import sys, os
 sys.path.append("C:/Users/pjsin/Documents/cantera/build/python")
 import cantera as ct
 import numpy as np
-from scipy.optimize import curve_fit
-from scipy.optimize import least_squares
+
+from generateYAML import generateYAML
 from chebyshevFitter import chebyshev
 from troeFitter import troe
 from plogFitter import plog
 import yaml
-import copy
-import re
 
 
 class masterFitter:
-    def __init__(self, T_ls, P_ls, colliderInput,mechInput,n_P=7, n_T=7, M_only=False):
+    def __init__(self, T_ls, P_ls, colliderInput,mechInput,yamlName,n_P=7, n_T=7, M_only=False):
+        self.M_only=M_only
+        self.colliderInput = colliderInput
+        self.mechInput = mechInput
+        self.yamlName = yamlName
+        self.data = generateYAML() # create a YAML in the LMRR format
+
+    def Troe(self,T_ls, P_ls): # returns PLOG in LMRR YAML format
+        self.T_ls = T_ls
+        self.P_ls = P_ls
+        foutName = self.yamlName+"_Troe"
+        self.fittedYAML(foutName,troe)
+    def PLOG(self,T_ls, P_ls): # returns PLOG in LMRR YAML format
+        self.T_ls = T_ls
+        self.P_ls = P_ls
+        foutName = self.yamlName+"_PLOG"
+        self.fittedYAML(foutName,plog)
+    def Chebyshev(self,T_ls, P_ls,n_P=7, n_T=7): # returns Chebyshev in LMRR YAML format
         self.T_ls = T_ls
         self.P_ls = P_ls
         self.n_P=n_P
@@ -28,18 +43,7 @@ class masterFitter:
         self.P_max = P_ls[-1]
         self.T_min = T_ls[0]
         self.T_max = T_ls[-1]
-        self.M_only=M_only
-        self.colliderInput = colliderInput
-        self.mechInput = mechInput
-
-    def colliders(self,foutName): # returns PLOG in LMRR YAML format
-        with open(foutName, 'w') as outfile:
-            yaml.dump(self.outMech, outfile, default_flow_style=None,sort_keys=False)
-    def Troe(self,foutName): # returns PLOG in LMRR YAML format
-        self.fittedYAML(foutName,troe)
-    def PLOG(self,foutName): # returns PLOG in LMRR YAML format
-        self.fittedYAML(foutName,plog)
-    def cheb2D(self,foutName): # returns Chebyshev in LMRR YAML format
+        foutName = self.yamlName+"_Chebyshev"
         self.fittedYAML(foutName,chebyshev)
 
     def fittedYAML(self,foutName,fit_fxn): # KEEP
@@ -100,91 +104,6 @@ for i, model in enumerate (models):
     # mF.Troe(path+"\\LMRtest_Troe_M")
     # mF.PLOG(path+"\\LMRtest_PLOG_M")
     # mF.cheb2D(path+"\\LMRtest_cheb_M")
-
-
-
-
-
-
-
-
-#########################
-
-    # def yamlLoader2(self,fname):
-    #     with open(fname) as f:
-    #         data = yaml.safe_load(f)
-    #     newMolecList = []
-    #     # Prevent 'NO' from being misinterpreted as bool in species list
-    #     for molec in data['phases'][0]['species']:
-    #         if str(molec).lower()=="false":
-    #             newMolecList.append("NO")
-    #         else:
-    #             newMolecList.append(molec)
-    #     # Updated the YAML with the corrected species list
-    #     data['phases'][0]['species'] = newMolecList
-    #     for species in data['species']:
-    #         name = str(species['name']).lower()
-    #         if name == "false":
-    #             species['name']="NO"
-    #     # Prevent 'NO' from being misinterpreted as bool in efficiencies list found in
-    #     # Troe falloff reactions
-    #     for reaction in data['reactions']:
-    #         effs = reaction.get('efficiencies')
-    #         if effs is not None:
-    #             for key in list(effs.keys()):
-    #                 keyStr = str(key).lower()
-    #                 if keyStr == "false":
-    #                     reaction['efficiencies']["NO"] = reaction['efficiencies'].pop(key)
-                        
-    #         # if reaction.get('type')=='pressure-dependent-Arrhenius' or reaction.get('type')=='Chebyshev' or (reaction.get('type')=='falloff' and reaction.get('Troe') is not None):
-    #         #     eqn = reaction['equation']
-    #         #     reactants, products = eqn.split("<=>")
-    #         #     if "(+M)" in reactants:
-    #         #         reactants = reactants.replace("(+M)","").strip()
-    #         #         products = products.replace("(+M)","").strip()
-    #         #         if "+" in reactants:
-    #         #             spec1,spec2 = reactants.split("+")
-    #         #             spec1=spec1.strip()
-    #         #             spec2=spec2.strip()
-    #         #             if spec1==spec2:
-    #         #                 reactants = f"2 {spec1}"
-    #         #                 # rxn = copy.deepcopy(reaction)
-    #         #                 reaction['equation'] = f"{reactants} (+M) <=> {products} (+M)"
-
-    #         #         if "+" in products:
-    #         #             spec1,spec2 = products.split("+")
-    #         #             spec1=spec1.strip()
-    #         #             spec2=spec2.strip()
-    #         #             if spec1==spec2:
-    #         #                 products = f"2 {spec1}"
-    #         #                 # rxn = copy.deepcopy(reaction)
-    #         #                 reaction['equation'] = f"{reactants} (+M) <=> {products} (+M)"
-    #         #     else:
-    #         #         reactants = reactants.strip()
-    #         #         products = products.strip()
-    #         #         print(reactants)
-    #         #         if "+" in reactants:
-    #         #             spec1, spec2 = reactants.split("+")
-    #         #             spec1=spec1.strip()
-    #         #             spec2=spec2.strip()
-    #         #             if spec1==spec2:
-    #         #                 reactants = f"2 {spec1}"
-    #         #                 # rxn = copy.deepcopy(reaction)
-    #         #                 reaction['equation'] = f"{reactants} <=> {products}"
-    #         #         elif "+" in products:
-    #         #             spec1, spec2 = products.split("+")
-    #         #             spec1=spec1.strip()
-    #         #             spec2=spec2.strip()
-    #         #             if spec1==spec2:
-    #         #                 products = f"2 {spec1}"
-    #         #                 # rxn = copy.deepcopy(reaction)
-    #         #                 reaction['equation'] = f"{reactants} <=> {products}"
-    #     with open("newAlzueta.yaml", 'w') as outfile:
-    #         yaml.dump(copy.deepcopy(data), outfile, default_flow_style=None,sort_keys=False)
-    #     return data
-
-
-
 
 
 

@@ -6,7 +6,7 @@ import yaml
 
 def get_YAML_kTP(self,reaction,collider):
     # gas = ct.Solution("shortMech.yaml")
-    gas = ct.Solution(yaml=yaml.safe_dump(self.outMech))
+    gas = ct.Solution(yaml=yaml.safe_dump(self.data))
     k_TP = []
     for T in self.T_ls:
         temp = []
