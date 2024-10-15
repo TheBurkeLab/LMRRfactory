@@ -64,111 +64,70 @@ def lookForPdep(data):
         raise ValueError("No pressure-dependent reactions found in mechanism. Please choose another mechanism.")
 
 def deleteDuplicates(data): # delete duplicates from thirdBodyDefaults
-    # defaults2 = {'reactions': []}
-    # defaultRxnNames=[]
-    # for defaultRxn in defaults['reactions']:
-    #     defaultRxnNames.append(defaultRxn['equation'])
-    # for inputRxn in input['reactions']:
-    #     if inputRxn['equation'] in defaultRxnNames:
-    #         defaultRxnNames.remove(inputRxn['equation'])
-    # newReactionList = []
-    # for defaultRxn in defaults['reactions']:
-    #     if defaultRxn['equation'] in defaultRxnNames:
-    #         newReactionList.append(defaultRxn)
-    defaults2 = {'reactions': []}
-    inputRxnNames=[]
-    inputColliderNames=[]
-    # bigInput = self.generalizedEquations(input)
-    # for inputRxn in bigInput['reactions']:
-    for inputRxn in data['input']['reactions']:
-        inputRxnNames.append(inputRxn['equation'])
-        inputRxnColliderNames=[]
-        for inputCol in inputRxn['colliders']:
-            inputRxnColliderNames.append(inputCol['name'])
-        inputColliderNames.append(inputRxnColliderNames)
-    # print(inputRxnNames)
+    newData = {'reactions': []}
+    inputRxnNames = [rxn['equation'] for rxn in data['input']['reactions']]
+    inputColliderNames = [[col['name'] for col in rxn['colliders']] for rxn in data['input']['reactions']]
+
     for defaultRxn in data['defaults']['reactions']:
         if defaultRxn['equation'] in inputRxnNames:
             idx = inputRxnNames.index(defaultRxn['equation'])
-            defaultColliderNames=[]
-            for defaultCol in defaultRxn['colliders']:
-                defaultColliderNames.append(defaultCol['name'])
-            # print(defaultRxn['equation'])
-            for defaultCol in defaultRxn['colliders']:
-                if defaultCol['name'] in inputColliderNames[idx]:
-                    defaultColliderNames.remove(defaultCol['name'])
-            # print(inputColliderNames[idx])
-            # print(defaultColliderNames)
-            newColliderList=[] #only contains colliders that aren't already in the input
-            for defaultCol in defaultRxn['colliders']:
-                if defaultCol['name'] in defaultColliderNames:
-                    newColliderList.append(defaultCol)
+            inputColliders = inputColliderNames[idx]
+            newColliderList = [col for col in defaultRxn['colliders'] if col['name'] not in inputColliders]
             if len(newColliderList)>0:
-                defaults2['reactions'].append({
+                newData['reactions'].append({
                     'equation': defaultRxn['equation'],
                     'reference-collider': defaultRxn['reference-collider'],
                     'colliders': newColliderList
                 })
         else: # reaction isn't in input, so keep the entire default rxn
-            defaults2['reactions'].append(defaultRxn)
-    data['defaults']=defaults2
+            newData['reactions'].append(defaultRxn)
+    data['defaults']=newData
 
 def blendedInput(data):
-    # with open("defaults2.yaml", 'w') as outfile:
-    #     yaml.dump(defaults2, outfile, default_flow_style=None,sort_keys=False)
-    # with open("inputs2_double.yaml", 'w') as outfile:
-    #     yaml.dump(self.generalizedEquations(input), outfile, default_flow_style=None,sort_keys=False)
-    blend = {'reactions': []}
+    newData = {'reactions': []}
     speciesList = data['mech']['phases'][0]['species']
     defaultRxnNames = []
     defaultColliderNames = []
-    # for defaultRxn in self.generalizedEquations(defaults2)['reactions']:
     for defaultRxn in data['defaults']['reactions']:
         defaultRxnNames.append(defaultRxn['equation'])
         for defaultCol in defaultRxn['colliders']:
             defaultColliderNames.append(defaultCol['name'])
     # first fill it with all of the default reactions and colliders (which have valid species)
-    # for defaultRxn in self.generalizedEquations(defaults2)['reactions']:
     for defaultRxn in data['defaults']['reactions']:
         flag = True
         for defaultCol in defaultRxn['colliders']:
             if defaultCol['name'] not in speciesList:
                 flag = False
         if flag == True:
-            blend['reactions'].append(defaultRxn)
-
+            newData['reactions'].append(defaultRxn)
     blendRxnNames = []
-    for blendRxn in blend['reactions']:
+    for blendRxn in newData['reactions']:
         blendRxnNames.append(blendRxn['equation'])
 
-    # for inputRxn in self.generalizedEquations(input)['reactions']:
     for inputRxn in data['input']['reactions']:
         if inputRxn['equation'] in blendRxnNames: #input reaction also exists in defaults file
             idx = blendRxnNames.index(inputRxn['equation'])
             # print(inputRxn['reference-collider'])
-            if inputRxn['reference-collider'] == blend['reactions'][idx]['reference-collider']: #no blending conflicts bc colliders have same ref
+            if inputRxn['reference-collider'] == newData['reactions'][idx]['reference-collider']: #no blending conflicts bc colliders have same ref
                 for inputCol in inputRxn['colliders']:
                     if inputCol['name'] in speciesList:
-                        blend['reactions'][idx]['colliders'].append(inputCol)
+                        newData['reactions'][idx]['colliders'].append(inputCol)
             else: #blending conflict -> delete all default colliders and override with the user inputs
-                print(f"The user-provided reference collider for {inputRxn['equation']}, ({inputRxn['reference-collider']}) does not match the program default ({blend['reactions'][idx]['reference-collider']}).")
+                print(f"The user-provided reference collider for {inputRxn['equation']}, ({inputRxn['reference-collider']}) does not match the program default ({newData['reactions'][idx]['reference-collider']}).")
                 print(f"The default colliders have thus been deleted and the reaction has been completely overrided by (rather than blended with) the user's custom input values.")
-                blend['reactions'][idx]['colliders'] = inputRxn['colliders']
+                newData['reactions'][idx]['colliders'] = inputRxn['colliders']
         else:
             flag = True
             for inputCol in inputRxn['colliders']:
                 if inputCol['name'] not in speciesList:
                     flag = False
             if flag == True:
-                blend['reactions'].append(inputRxn)
-    for reaction in blend['reactions']:
+                newData['reactions'].append(inputRxn)
+    for reaction in newData['reactions']:
         for col in reaction['colliders']:
             # print(reaction['equation'])
             temperatures=np.array(col['temperatures'])
             eps = np.array(col['eps'])
-            # epsLow=effs['epsLow']['A']
-            # epsHigh=effs['epsHigh']['A']
-            # rate_constants=np.array([epsLow,epsHigh])
             def arrhenius_rate(T, A, beta, Ea):
                 # R = 8.314  # Gas constant in J/(mol K)
                 R = 1.987 # cal/molK
@@ -181,25 +140,22 @@ def blendedInput(data):
             A_fit, beta_fit, Ea_fit = result.x
             col['eps'] = {'A': round(float(A_fit),5),'b': round(float(beta_fit),5),'Ea': round(float(Ea_fit),5)}
             del col['temperatures']
-    # with open('blend_double.yaml', 'w') as outfile:
-    #         yaml.dump(blend, outfile, default_flow_style=None,sort_keys=False)
-    data['blend']=blend
+    data['blend']=newData
 
 def zippedMech(data):
-    blend=data['blend']
-    shortMechanism={
+    newData={
         'units': data['mech']['units'],
         'phases': data['mech']['phases'],
         'species': data['mech']['species'],
         'reactions': []
         }
     blendRxnNames = []
-    for rxn in blend['reactions']:
+    for rxn in data['blend']['reactions']:
         blendRxnNames.append(rxn['equation'])
     for mech_rxn in data['mech']['reactions']:
         if mech_rxn['equation'] in blendRxnNames:
             idx = blendRxnNames.index(mech_rxn['equation'])
-            colliderM = blend['reactions'][idx]['colliders'][0] #figure out what this is for
+            colliderM = data['blend']['reactions'][idx]['colliders'][0] #figure out what this is for
             colliderMlist=[]
             if mech_rxn['type'] == 'falloff' and 'Troe' in mech_rxn:
                 colliderMlist.append({
@@ -224,16 +180,16 @@ def zippedMech(data):
                     'data': mech_rxn['data'],
                 })
 
-            # colliderList.append(blend['reactions'][idx]['colliders'])
-            shortMechanism['reactions'].append({
+            # colliderList.append(data['blend']['reactions'][idx]['colliders'])
+            newData['reactions'].append({
                         'equation': mech_rxn['equation'],
                         'type': 'linear-Burke',
-                        'reference-collider': blend['reactions'][idx]['reference-collider'],
-                        'colliders': colliderMlist + blend['reactions'][idx]['colliders']
+                        'reference-collider': data['blend']['reactions'][idx]['reference-collider'],
+                        'colliders': colliderMlist + data['blend']['reactions'][idx]['colliders']
                         })
         else:
-            shortMechanism['reactions'].append(mech_rxn)
-    data['output']=shortMechanism
+            newData['reactions'].append(mech_rxn)
+    data['output']=newData
 
 def loadYAML(fName):
     with open(fName) as f:
