@@ -67,7 +67,6 @@ def deleteDuplicates(data): # delete duplicates from thirdBodyDefaults
     newData = {'reactions': []}
     inputRxnNames = [rxn['equation'] for rxn in data['input']['reactions']]
     inputColliderNames = [[col['name'] for col in rxn['colliders']] for rxn in data['input']['reactions']]
-
     for defaultRxn in data['defaults']['reactions']:
         if defaultRxn['equation'] in inputRxnNames:
             idx = inputRxnNames.index(defaultRxn['equation'])
@@ -84,46 +83,34 @@ def deleteDuplicates(data): # delete duplicates from thirdBodyDefaults
     data['defaults']=newData
 
 def blendedInput(data):
-    newData = {'reactions': []}
+    blendData = {'reactions': []}
     speciesList = data['mech']['phases'][0]['species']
-    defaultRxnNames = []
-    defaultColliderNames = []
-    for defaultRxn in data['defaults']['reactions']:
-        defaultRxnNames.append(defaultRxn['equation'])
-        for defaultCol in defaultRxn['colliders']:
-            defaultColliderNames.append(defaultCol['name'])
+
     # first fill it with all of the default reactions and colliders (which have valid species)
     for defaultRxn in data['defaults']['reactions']:
-        flag = True
-        for defaultCol in defaultRxn['colliders']:
-            if defaultCol['name'] not in speciesList:
-                flag = False
-        if flag == True:
-            newData['reactions'].append(defaultRxn)
-    blendRxnNames = []
-    for blendRxn in newData['reactions']:
-        blendRxnNames.append(blendRxn['equation'])
+        if all(col['name'] in speciesList for col in defaultRxn['colliders']):
+            blendData['reactions'].append(defaultRxn)
+
+    defaultRxnNames = [rxn['equation'] for rxn in blendData['reactions']]
 
     for inputRxn in data['input']['reactions']:
-        if inputRxn['equation'] in blendRxnNames: #input reaction also exists in defaults file
-            idx = blendRxnNames.index(inputRxn['equation'])
-            # print(inputRxn['reference-collider'])
-            if inputRxn['reference-collider'] == newData['reactions'][idx]['reference-collider']: #no blending conflicts bc colliders have same ref
-                for inputCol in inputRxn['colliders']:
-                    if inputCol['name'] in speciesList:
-                        newData['reactions'][idx]['colliders'].append(inputCol)
-            else: #blending conflict -> delete all default colliders and override with the user inputs
-                print(f"The user-provided reference collider for {inputRxn['equation']}, ({inputRxn['reference-collider']}) does not match the program default ({newData['reactions'][idx]['reference-collider']}).")
+        if inputRxn['equation'] in defaultRxnNames: #input reaction also exists in defaults file
+            idx = defaultRxnNames.index(inputRxn['equation'])
+            blendRxn = blendData['reactions'][idx]
+            # If reference colliders match, append new colliders, otherwise override with the user inputs
+            if inputRxn['reference-collider'] == blendRxn['reference-collider']:
+                newColliders = [col for col in inputRxn['colliders'] if col['name'] in speciesList]
+                blendRxn['colliders'].extend(newColliders)
+            else:
+                print(f"The user-provided reference collider for {inputRxn['equation']}, ({inputRxn['reference-collider']}) does not match the program default ({blendData['reactions'][idx]['reference-collider']}).")
                 print(f"The default colliders have thus been deleted and the reaction has been completely overrided by (rather than blended with) the user's custom input values.")
-                newData['reactions'][idx]['colliders'] = inputRxn['colliders']
+                blendData['reactions'][idx]['colliders'] = inputRxn['colliders']
         else:
-            flag = True
-            for inputCol in inputRxn['colliders']:
-                if inputCol['name'] not in speciesList:
-                    flag = False
-            if flag == True:
-                newData['reactions'].append(inputRxn)
-    for reaction in newData['reactions']:
+            # Add new input reactions to the blend if valid species
+            if all(col['name'] in speciesList for col in inputRxn['colliders']):
+                blendData['reactions'].append(inputRxn)
+
+    for reaction in blendData['reactions']:
         for col in reaction['colliders']:
             # print(reaction['equation'])
             temperatures=np.array(col['temperatures'])
@@ -140,7 +127,7 @@ def blendedInput(data):
             A_fit, beta_fit, Ea_fit = result.x
             col['eps'] = {'A': round(float(A_fit),5),'b': round(float(beta_fit),5),'Ea': round(float(Ea_fit),5)}
             del col['temperatures']
-    data['blend']=newData
+    data['blend']=blendData
 
 def zippedMech(data):
     newData={
