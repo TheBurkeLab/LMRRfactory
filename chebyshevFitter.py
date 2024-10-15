@@ -1,6 +1,6 @@
 import numpy as np
-from scipy.optimize import curve_fit
-from scipy.optimize import least_squares
+import sys
+sys.path.append("C:/Users/pjsin/Documents/cantera/build/python")
 import cantera as ct
 import yaml
 

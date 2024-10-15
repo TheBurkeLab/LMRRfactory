@@ -1,7 +1,6 @@
 # datapath = pkg_resources.resource_filename('LMRRfactory', 'data') + "/"
 import yaml
 import numpy as np
-from scipy.optimize import curve_fit
 from scipy.optimize import least_squares
 import copy
 
