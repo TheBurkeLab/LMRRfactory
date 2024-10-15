@@ -12,18 +12,17 @@ def generateYAML(self):
         'defaults': loadYAML("thirdbodydefaults.yaml") # load default colliders
     }
     cleanMechInput(data) # clean up 'NO' parsing errors in 'mech'
-    saveYAML(data['mech'], "Alzueta_cleaned.yaml")
+    # saveYAML(data['mech'], "Alzueta_cleaned.yaml")
     lookForPdep(data) # Verify that 'mech' has >=1 relevant p-dep reaction
     # Remove defaults colliders and reactions that were explictly provided by user
     deleteDuplicates(data)
-    saveYAML(data['defaults'], "defaults_uniqueOnly.yaml")
+    # saveYAML(data['defaults'], "defaults_uniqueOnly.yaml")
     # Blend the user inputs and remaining collider defaults into a single YAML
     blendedInput(data)
-    saveYAML(data['blend'], "blendedInput.yaml")
+    # saveYAML(data['blend'], "blendedInput.yaml")
     # Sub the colliders into their corresponding reactions in the input mechanism
     zippedMech(data)
-    saveYAML(data['output'], "Alzueta_LMRR.yaml")
-    saveYAML(data['output'], "Alzueta_LMRR.yaml")
+    saveYAML(data['output'], self.foutName)
     return data['output']
 
 def cleanMechInput(data):

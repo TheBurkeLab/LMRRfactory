@@ -4,10 +4,7 @@ Class that allows for fitting of rate constants at various temperatures and pres
 # import sys, os
 # import pkg_resources
 # sys.path.append(pkg_resources.resource_filename('LMRRfactory', 'ext/cantera/build/python'))
-import sys, os
-sys.path.append("C:/Users/pjsin/Documents/cantera/build/python")
-import cantera as ct
-import numpy as np
+
 
 from generateYAML import generateYAML
 from chebyshevFitter import chebyshev
@@ -17,22 +14,22 @@ import yaml
 
 
 class masterFitter:
-    def __init__(self,colliderInput,mechInput,yamlName):
+    def __init__(self,colliderInput,mechInput,foutName):
         self.colliderInput = colliderInput
         self.mechInput = mechInput
-        self.yamlName = yamlName
-        self.data = generateYAML() # create a YAML in the LMRR format
+        self.foutName = foutName
+        self.data = generateYAML(self) # create a YAML in the LMRR format
 
     def Troe(self,T_ls, P_ls): # returns PLOG in LMRR YAML format
         self.T_ls = T_ls
         self.P_ls = P_ls
-        foutName = self.yamlName+"_Troe"
+        foutName = self.foutName+"_Troe"
         self.fittedYAML(foutName,troe)
 
     def PLOG(self,T_ls, P_ls): # returns PLOG in LMRR YAML format
         self.T_ls = T_ls
         self.P_ls = P_ls
-        foutName = self.yamlName+"_PLOG"
+        foutName = self.foutName+"_PLOG"
         self.fittedYAML(foutName,plog)
 
     def Chebyshev(self,T_ls, P_ls,n_P=7, n_T=7): # returns Chebyshev in LMRR YAML format
@@ -44,7 +41,7 @@ class masterFitter:
         self.P_max = P_ls[-1]
         self.T_min = T_ls[0]
         self.T_max = T_ls[-1]
-        foutName = self.yamlName+"_Chebyshev"
+        foutName = self.foutName+"_Chebyshev"
         self.fittedYAML(foutName,chebyshev)
 
     def fittedYAML(self,foutName,fit_fxn): # KEEP
@@ -91,20 +88,28 @@ models = [
 # colours = ["xkcd:grey","xkcd:purple", "xkcd:teal", "orange", "r", "b", "xkcd:lime green", "xkcd:magenta", "xkcd:navy blue"]
 
 date='Oct15'
+path=f'outputs\\{date}'
+os.makedirs(path,exist_ok=True)
 
-for i, model in enumerate (models):
-    # # INPUTS
-    T_list=np.linspace(200,2000,100)
-    # P_list=np.logspace(-12,12,num=120)
-    P_list=np.logspace(-1,2,num=10)
-    mF = masterFitter(T_list,P_list,colliderInput="testinput.yaml",mechInput=model['path'],n_P=7,n_T=7,M_only=True)
-    path=f'outputs\\{date}'
-    os.makedirs(path,exist_ok=True)
-    mF.colliders(path+f"\\{model['name']}_LMRR.yaml")
-    mF.Troe("troeTest.yaml")
-    # mF.Troe(path+"\\LMRtest_Troe_M")
-    # mF.PLOG(path+"\\LMRtest_PLOG_M")
-    # mF.cheb2D(path+"\\LMRtest_cheb_M")
+mF = masterFitter(colliderInput = "testinput.yaml",
+                  mechInput = 'alzuetamechanism.yaml',
+                  foutName = path+f'\\alzuetamechanism_LMRR.yaml'
+                  )
+
+
+# for i, model in enumerate (models):
+#     # # INPUTS
+#     T_list=np.linspace(200,2000,100)
+#     # P_list=np.logspace(-12,12,num=120)
+#     P_list=np.logspace(-1,2,num=10)
+#     mF = masterFitter(T_list,P_list,colliderInput="testinput.yaml",mechInput=model['path'],n_P=7,n_T=7,M_only=True)
+#     path=f'outputs\\{date}'
+#     os.makedirs(path,exist_ok=True)
+#     mF.colliders(path+f"\\{model['name']}_LMRR.yaml")
+#     mF.Troe("troeTest.yaml")
+#     # mF.Troe(path+"\\LMRtest_Troe_M")
+#     # mF.PLOG(path+"\\LMRtest_PLOG_M")
+#     # mF.cheb2D(path+"\\LMRtest_cheb_M")
 
 
 
