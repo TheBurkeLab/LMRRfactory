@@ -37,6 +37,14 @@ class masterFitter:
         self.mech = self.cleanedYAML(self.mech) # clean up 'NO' parsing errors
         with open("thirdbodydefaults.yaml") as f:
             self.defaults = yaml.safe_load(f) # load default colliders
+        # Remove defaults colliders and reactions that were explictly provided by user
+        self.defaults2 = self.deleteDuplicates()
+        # Blend the user inputs and remaining collider defaults into a single YAML
+        self.blend = self.blendedInput()
+        # Sub the colliders into their corresponding reactions in the input mechanism
+        self.outMech = self.zippedMech()
+        
+
 
 
         self.pDepReactionNames=[]
@@ -55,130 +63,10 @@ class masterFitter:
         if len(self.pDepReactions)==0:
             print("No pressure-dependent reactions found in mechanism. Please choose another mechanism.")
         else:
-            self.shortMech = self.zippedMech()
-
-    def generalizedEquations(self,mech):
-        newMech={'reactions': []}
-        for rxn in mech['reactions']:
-            eqn = rxn['equation']
-            reactants, products = eqn.split('<=>')
-            reactants = reactants.strip()
-            products = products.strip()
-            newMech['reactions'].append(rxn) #append the fwd direction
-            rxn = copy.deepcopy(rxn)
-            rxn['equation']=f"{products} <=> {reactants}"
-            newMech['reactions'].append(rxn) #append the rev direction
-            rxn = copy.deepcopy(rxn)
-            products = products.replace("(+M)","").strip()
-            reactants = reactants.replace("(+M)","").strip()
-            rxn['equation']=f"{reactants} <=> {products}"
-            newMech['reactions'].append(rxn)
-            rxn = copy.deepcopy(rxn)
-            rxn['equation']=f"{products} <=> {reactants}"
-            newMech['reactions'].append(rxn)
-            if "+" in reactants:
-                spec1, spec2 = reactants.split("+")
-                spec1=spec1.strip()
-                spec2=spec2.strip()
-                if spec1==spec2:
-                    reactants = f"2 {spec1}"
-                    rxn = copy.deepcopy(rxn)
-                    rxn['equation']=f"{reactants} (+M) <=> {products} (+M)"
-                    newMech['reactions'].append(rxn)
-                    rxn = copy.deepcopy(rxn)
-                    rxn['equation']=f"{products} (+M) <=> {reactants} (+M)"
-                    newMech['reactions'].append(rxn)
-                    rxn = copy.deepcopy(rxn)
-                    rxn['equation']=f"{reactants} <=> {products}"
-                    newMech['reactions'].append(rxn)
-                    rxn = copy.deepcopy(rxn)
-                    rxn['equation']=f"{products} <=> {reactants}"
-                    newMech['reactions'].append(rxn)
-                else:
-                    reactants = f"{spec2} + {spec1}"
-                    rxn = copy.deepcopy(rxn)
-                    rxn['equation']=f"{reactants} (+M) <=> {products} (+M)"
-                    newMech['reactions'].append(rxn)
-                    rxn = copy.deepcopy(rxn)
-                    rxn['equation']=f"{products} (+M) <=> {reactants} (+M)"
-                    newMech['reactions'].append(rxn)
-                    rxn = copy.deepcopy(rxn)
-                    rxn['equation']=f"{reactants} <=> {products}"
-                    newMech['reactions'].append(rxn)
-                    rxn = copy.deepcopy(rxn)
-                    rxn['equation']=f"{products} <=> {reactants}"
-                    newMech['reactions'].append(rxn)
-                    
-            elif "+" in products:
-                spec1, spec2 = products.split("+")
-                spec1=spec1.strip()
-                spec2=spec2.strip()
-                if spec1==spec2:
-                    products = f"2 {spec1}"
-                    rxn = copy.deepcopy(rxn)
-                    rxn['equation']=f"{reactants} (+M) <=> {products} (+M)"
-                    newMech['reactions'].append(rxn)
-                    rxn = copy.deepcopy(rxn)
-                    rxn['equation']=f"{products} (+M) <=> {reactants} (+M)"
-                    newMech['reactions'].append(rxn)
-                    rxn = copy.deepcopy(rxn)
-                    rxn['equation']=f"{reactants} <=> {products}"
-                    newMech['reactions'].append(rxn)
-                    rxn = copy.deepcopy(rxn)
-                    rxn['equation']=f"{products} <=> {reactants}"
-                    newMech['reactions'].append(rxn)
-                    
-                else:
-                    products = f"{spec2} + {spec1}"
-                    rxn = copy.deepcopy(rxn)
-                    rxn['equation']=f"{reactants} (+M) <=> {products} (+M)"
-                    newMech['reactions'].append(rxn)
-                    rxn = copy.deepcopy(rxn)
-                    rxn['equation']=f"{products} (+M) <=> {reactants} (+M)"
-                    newMech['reactions'].append(rxn)
-                    rxn = copy.deepcopy(rxn)
-                    rxn['equation']=f"{reactants} <=> {products}"
-                    newMech['reactions'].append(rxn)
-                    rxn = copy.deepcopy(rxn)
-                    rxn['equation']=f"{products} <=> {reactants}"
-                    newMech['reactions'].append(rxn)
-                    
-        #     elif re.search(r'2\b',reactants) == True:
-        #         spec = reactants.replace("2","")
-        #         spec = spec.strip()
-        #         reactants = f"{spec} + {spec}"
-        #         rxn = copy.deepcopy(rxn)
-        #         rxn['equation']=f"{reactants} (+M) <=> {products} (+M)"
-        #         newMech['reactions'].append(rxn)
-        #         rxn = copy.deepcopy(rxn)
-        #         rxn['equation']=f"{products} (+M) <=> {reactants} (+M)"
-        #         newMech['reactions'].append(rxn)
-        #         rxn = copy.deepcopy(rxn)
-        #         rxn['equation']=f"{reactants} <=> {products}"
-        #         newMech['reactions'].append(rxn)
-        #         rxn = copy.deepcopy(rxn)
-        #         rxn['equation']=f"{products} <=> {reactants}"
-        #         newMech['reactions'].append(rxn)
             
-        #     elif re.search(r'2\b',products) == True:
-        #         spec = products.replace("2","")
-        #         spec = spec.strip()
-        #         products = f"{spec} + {spec}"
-        #         rxn = copy.deepcopy(rxn)
-        #         rxn['equation']=f"{reactants} (+M) <=> {products} (+M)"
-        #         newMech['reactions'].append(rxn)
-        #         rxn = copy.deepcopy(rxn)
-        #         rxn['equation']=f"{products} (+M) <=> {reactants} (+M)"
-        #         newMech['reactions'].append(rxn)
-        #         rxn = copy.deepcopy(rxn)
-        #         rxn['equation']=f"{reactants} <=> {products}"
-        #         newMech['reactions'].append(rxn)
-        #         rxn = copy.deepcopy(rxn)
-        #         rxn['equation']=f"{products} <=> {reactants}"
-        #         newMech['reactions'].append(rxn)
-        # # with open('blend_double.yaml', 'w') as outfile:
-        # #         yaml.dump(newMech, outfile, default_flow_style=None,sort_keys=False)
-        return newMech
+            self.outMech = self.zippedMech()
+
+    
 
     def cleanedYAML(self,data):
         cleanedData = data
@@ -209,67 +97,62 @@ class masterFitter:
         #     yaml.dump(copy.deepcopy(cleanedData), outfile, default_flow_style=None,sort_keys=False)
         return cleanedData
 
-
-
-    def zippedMech(self):
-        # blend=self.generalizedEquations(self.blendedInput())
-        blend=self.blendedInput()
-        shortMechanism={
-            'units': self.mech['units'],
-            'phases': self.mech['phases'],
-            'species': self.mech['species'],
-            'reactions': []
-            }
-        blendRxnNames = []
-        for rxn in blend['reactions']:
-            blendRxnNames.append(rxn['equation'])
-        for mech_rxn in self.mech['reactions']:
-            if mech_rxn['equation'] in blendRxnNames:
-                idx = blendRxnNames.index(mech_rxn['equation'])
-                colliderM = blend['reactions'][idx]['colliders'][0]
-                colliderMlist=[]
-                if mech_rxn['type'] == 'falloff' and 'Troe' in mech_rxn:
-                    colliderMlist.append({
-                        'name': 'M',
-                        'eps': {'A': 1, 'b': 0, 'Ea': 0},
-                        'low-P-rate-constant': mech_rxn['low-P-rate-constant'],
-                        'high-P-rate-constant': mech_rxn['high-P-rate-constant'],
-                        'Troe': mech_rxn['Troe'],
+    def deleteDuplicates(self):
+        # defaults2 = {'reactions': []}
+        # defaultRxnNames=[]
+        # for defaultRxn in self.defaults['reactions']:
+        #     defaultRxnNames.append(defaultRxn['equation'])
+        # for inputRxn in self.input['reactions']:
+        #     if inputRxn['equation'] in defaultRxnNames:
+        #         defaultRxnNames.remove(inputRxn['equation'])
+        # newReactionList = []
+        # for defaultRxn in self.defaults['reactions']:
+        #     if defaultRxn['equation'] in defaultRxnNames:
+        #         newReactionList.append(defaultRxn)
+        defaults2 = {'reactions': []}
+        inputRxnNames=[]
+        inputColliderNames=[]
+        # bigInput = self.generalizedEquations(self.input)
+        # for inputRxn in bigInput['reactions']:
+        for inputRxn in self.input['reactions']:
+            inputRxnNames.append(inputRxn['equation'])
+            inputRxnColliderNames=[]
+            for inputCol in inputRxn['colliders']:
+                inputRxnColliderNames.append(inputCol['name'])
+            inputColliderNames.append(inputRxnColliderNames)
+        print(inputRxnNames)
+        for defaultRxn in self.defaults['reactions']:
+            if defaultRxn['equation'] in inputRxnNames:
+                idx = inputRxnNames.index(defaultRxn['equation'])
+                defaultColliderNames=[]
+                for defaultCol in defaultRxn['colliders']:
+                    defaultColliderNames.append(defaultCol['name'])
+                # print(defaultRxn['equation'])
+                for defaultCol in defaultRxn['colliders']:
+                    if defaultCol['name'] in inputColliderNames[idx]:
+                        defaultColliderNames.remove(defaultCol['name'])
+                # print(inputColliderNames[idx])
+                # print(defaultColliderNames)
+                newColliderList=[] #only contains colliders that aren't already in the input
+                for defaultCol in defaultRxn['colliders']:
+                    if defaultCol['name'] in defaultColliderNames:
+                        newColliderList.append(defaultCol)
+                if len(newColliderList)>0:
+                    defaults2['reactions'].append({
+                        'equation': defaultRxn['equation'],
+                        'reference-collider': defaultRxn['reference-collider'],
+                        'colliders': newColliderList
                     })
-                elif mech_rxn['type'] == 'pressure-dependent-Arrhenius':
-                    colliderMlist.append({
-                        'name': 'M',
-                        'eps': {'A': 1, 'b': 0, 'Ea': 0},
-                        'rate-constants': mech_rxn['rate-constants'],
-                    })
-                elif mech_rxn['type'] == 'Chebyshev':
-                    colliderMlist.append({
-                        'name': 'M',
-                        'eps': {'A': 1, 'b': 0, 'Ea': 0},
-                        'temperature-range': mech_rxn['temperature-range'],
-                        'pressure-range': mech_rxn['pressure-range'],
-                        'data': mech_rxn['data'],
-                    })
+            else: # reaction isn't in input, so keep the entire default rxn
+                defaults2['reactions'].append(defaultRxn)
+        return defaults2
 
-                # colliderList.append(blend['reactions'][idx]['colliders'])
-                shortMechanism['reactions'].append({
-                            'equation': mech_rxn['equation'],
-                            'type': 'linear-Burke',
-                            'reference-collider': blend['reactions'][idx]['reference-collider'],
-                            'colliders': colliderMlist + blend['reactions'][idx]['colliders']
-                            })
-            else:
-                shortMechanism['reactions'].append(mech_rxn)
-        
-        return shortMechanism
-    
     def blendedInput(self):
-        defaults2=self.deleteDuplicates()
         # with open("defaults2.yaml", 'w') as outfile:
         #     yaml.dump(defaults2, outfile, default_flow_style=None,sort_keys=False)
         # with open("inputs2_double.yaml", 'w') as outfile:
         #     yaml.dump(self.generalizedEquations(self.input), outfile, default_flow_style=None,sort_keys=False)
-            
+        defaults2 = self.defaults2
         blend = {'reactions': []}
         speciesList = self.mech['phases'][0]['species']
         defaultRxnNames = []
@@ -328,7 +211,7 @@ class masterFitter:
                 def fit_function(params, T, ln_rate_constants):
                     A, beta, Ea = params
                     return np.log(arrhenius_rate(T, A, beta, Ea)) - ln_rate_constants
-                initial_guess = [3, 0.5, 50.0]  
+                initial_guess = [3, 0.5, 50.0]
                 result = least_squares(fit_function, initial_guess, args=(temperatures, np.log(eps)))
                 A_fit, beta_fit, Ea_fit = result.x
                 col['eps'] = {'A': round(float(A_fit),5),'b': round(float(beta_fit),5),'Ea': round(float(Ea_fit),5)}
@@ -336,59 +219,56 @@ class masterFitter:
         with open('blend_double.yaml', 'w') as outfile:
                 yaml.dump(blend, outfile, default_flow_style=None,sort_keys=False)
         return blend
-    
-    
-    def deleteDuplicates(self):
-        # defaults2 = {'reactions': []}
-        # defaultRxnNames=[]
-        # for defaultRxn in self.defaults['reactions']:
-        #     defaultRxnNames.append(defaultRxn['equation'])
-        # for inputRxn in self.input['reactions']:
-        #     if inputRxn['equation'] in defaultRxnNames:
-        #         defaultRxnNames.remove(inputRxn['equation'])
-        # newReactionList = []
-        # for defaultRxn in self.defaults['reactions']:
-        #     if defaultRxn['equation'] in defaultRxnNames:
-        #         newReactionList.append(defaultRxn)
-        defaults2 = {'reactions': []}
-        inputRxnNames=[]
-        inputColliderNames=[]
-        # bigInput = self.generalizedEquations(self.input)
-        # for inputRxn in bigInput['reactions']:
-        for inputRxn in self.input['reactions']:
-            inputRxnNames.append(inputRxn['equation'])
-            inputRxnColliderNames=[]
-            for inputCol in inputRxn['colliders']:
-                inputRxnColliderNames.append(inputCol['name'])
-            inputColliderNames.append(inputRxnColliderNames)
-        print(inputRxnNames)
-        for defaultRxn in self.defaults['reactions']:
-            if defaultRxn['equation'] in inputRxnNames:
-                idx = inputRxnNames.index(defaultRxn['equation'])
-                defaultColliderNames=[]
-                for defaultCol in defaultRxn['colliders']:
-                    defaultColliderNames.append(defaultCol['name'])
-                # print(defaultRxn['equation'])
-                for defaultCol in defaultRxn['colliders']:
-                    if defaultCol['name'] in inputColliderNames[idx]:
-                        defaultColliderNames.remove(defaultCol['name'])
-                # print(inputColliderNames[idx])
-                # print(defaultColliderNames)
-                newColliderList=[] #only contains colliders that aren't already in the input
-                for defaultCol in defaultRxn['colliders']:
-                    if defaultCol['name'] in defaultColliderNames:
-                        newColliderList.append(defaultCol)
-                if len(newColliderList)>0:
-                    defaults2['reactions'].append({
-                        'equation': defaultRxn['equation'],
-                        'reference-collider': defaultRxn['reference-collider'],
-                        'colliders': newColliderList
+
+    def zippedMech(self):
+        blend=self.blend
+        shortMechanism={
+            'units': self.mech['units'],
+            'phases': self.mech['phases'],
+            'species': self.mech['species'],
+            'reactions': []
+            }
+        blendRxnNames = []
+        for rxn in blend['reactions']:
+            blendRxnNames.append(rxn['equation'])
+        for mech_rxn in self.mech['reactions']:
+            if mech_rxn['equation'] in blendRxnNames:
+                idx = blendRxnNames.index(mech_rxn['equation'])
+                colliderM = blend['reactions'][idx]['colliders'][0]
+                colliderMlist=[]
+                if mech_rxn['type'] == 'falloff' and 'Troe' in mech_rxn:
+                    colliderMlist.append({
+                        'name': 'M',
+                        'eps': {'A': 1, 'b': 0, 'Ea': 0},
+                        'low-P-rate-constant': mech_rxn['low-P-rate-constant'],
+                        'high-P-rate-constant': mech_rxn['high-P-rate-constant'],
+                        'Troe': mech_rxn['Troe'],
                     })
-            else: # reaction isn't in input, so keep the entire default rxn
-                defaults2['reactions'].append(defaultRxn)
-        return defaults2
-    
-    
+                elif mech_rxn['type'] == 'pressure-dependent-Arrhenius':
+                    colliderMlist.append({
+                        'name': 'M',
+                        'eps': {'A': 1, 'b': 0, 'Ea': 0},
+                        'rate-constants': mech_rxn['rate-constants'],
+                    })
+                elif mech_rxn['type'] == 'Chebyshev':
+                    colliderMlist.append({
+                        'name': 'M',
+                        'eps': {'A': 1, 'b': 0, 'Ea': 0},
+                        'temperature-range': mech_rxn['temperature-range'],
+                        'pressure-range': mech_rxn['pressure-range'],
+                        'data': mech_rxn['data'],
+                    })
+
+                # colliderList.append(blend['reactions'][idx]['colliders'])
+                shortMechanism['reactions'].append({
+                            'equation': mech_rxn['equation'],
+                            'type': 'linear-Burke',
+                            'reference-collider': blend['reactions'][idx]['reference-collider'],
+                            'colliders': colliderMlist + blend['reactions'][idx]['colliders']
+                            })
+            else:
+                shortMechanism['reactions'].append(mech_rxn)
+        return shortMechanism
 
     def get_Xvec(self,reaction):
         Prange = self.P_ls
@@ -408,7 +288,7 @@ class masterFitter:
 
     def get_YAML_kTP(self,reaction,collider):
         # gas = ct.Solution("shortMech.yaml")
-        gas = ct.Solution(yaml=yaml.safe_dump(self.shortMech))
+        gas = ct.Solution(yaml=yaml.safe_dump(self.outMech))
         k_TP = []
         for T in self.T_ls:
             temp = []
@@ -490,7 +370,7 @@ class masterFitter:
             def arrhenius(T, A, n, Ea):
                 return np.log(A) + n*np.log(T)+ (-Ea/(1.987*T))
             # gas = ct.Solution("shortMech.yaml")
-            gas = ct.Solution(yaml=yaml.safe_dump(self.shortMech))
+            gas = ct.Solution(yaml=yaml.safe_dump(self.outMech))
             Xdict = self.get_Xdict(reaction)
             for i,P in enumerate(Xdict.keys()):
                 k_list = []
@@ -534,7 +414,7 @@ class masterFitter:
             return logk_fit
         Xdict=self.get_Xdict(reaction)
         # gas = ct.Solution("shortMech.yaml")
-        gas = ct.Solution(yaml=yaml.safe_dump(self.shortMech))
+        gas = ct.Solution(yaml=yaml.safe_dump(self.outMech))
         logk_list=[]
         for i,P in enumerate(Xdict.keys()):
             for j,T in enumerate(Xdict[P]):
@@ -592,7 +472,7 @@ class masterFitter:
                 'species': self.mech['species'],
                 'reactions': []
                 }
-        for reaction in self.shortMech['reactions']:
+        for reaction in self.outMech['reactions']:
             if reaction.get('type')=='linear-Burke':
                 colliderList=[]
                 for i, col in enumerate(reaction['colliders']):
@@ -615,7 +495,7 @@ class masterFitter:
 
     def colliders(self,foutName): # returns PLOG in LMRR YAML format
         with open(foutName, 'w') as outfile:
-            yaml.dump(self.shortMech, outfile, default_flow_style=None,sort_keys=False)
+            yaml.dump(self.outMech, outfile, default_flow_style=None,sort_keys=False)
     def Troe(self,foutName): # returns PLOG in LMRR YAML format
         self.final_yaml(foutName,self.get_Troe_table)
     def PLOG(self,foutName): # returns PLOG in LMRR YAML format
@@ -734,3 +614,131 @@ for i, model in enumerate (models):
     #     with open("newAlzueta.yaml", 'w') as outfile:
     #         yaml.dump(copy.deepcopy(data), outfile, default_flow_style=None,sort_keys=False)
     #     return data
+
+
+
+
+
+
+    # def generalizedEquations(self,mech):
+    #     newMech={'reactions': []}
+    #     for rxn in mech['reactions']:
+    #         eqn = rxn['equation']
+    #         reactants, products = eqn.split('<=>')
+    #         reactants = reactants.strip()
+    #         products = products.strip()
+    #         newMech['reactions'].append(rxn) #append the fwd direction
+    #         rxn = copy.deepcopy(rxn)
+    #         rxn['equation']=f"{products} <=> {reactants}"
+    #         newMech['reactions'].append(rxn) #append the rev direction
+    #         rxn = copy.deepcopy(rxn)
+    #         products = products.replace("(+M)","").strip()
+    #         reactants = reactants.replace("(+M)","").strip()
+    #         rxn['equation']=f"{reactants} <=> {products}"
+    #         newMech['reactions'].append(rxn)
+    #         rxn = copy.deepcopy(rxn)
+    #         rxn['equation']=f"{products} <=> {reactants}"
+    #         newMech['reactions'].append(rxn)
+    #         if "+" in reactants:
+    #             spec1, spec2 = reactants.split("+")
+    #             spec1=spec1.strip()
+    #             spec2=spec2.strip()
+    #             if spec1==spec2:
+    #                 reactants = f"2 {spec1}"
+    #                 rxn = copy.deepcopy(rxn)
+    #                 rxn['equation']=f"{reactants} (+M) <=> {products} (+M)"
+    #                 newMech['reactions'].append(rxn)
+    #                 rxn = copy.deepcopy(rxn)
+    #                 rxn['equation']=f"{products} (+M) <=> {reactants} (+M)"
+    #                 newMech['reactions'].append(rxn)
+    #                 rxn = copy.deepcopy(rxn)
+    #                 rxn['equation']=f"{reactants} <=> {products}"
+    #                 newMech['reactions'].append(rxn)
+    #                 rxn = copy.deepcopy(rxn)
+    #                 rxn['equation']=f"{products} <=> {reactants}"
+    #                 newMech['reactions'].append(rxn)
+    #             else:
+    #                 reactants = f"{spec2} + {spec1}"
+    #                 rxn = copy.deepcopy(rxn)
+    #                 rxn['equation']=f"{reactants} (+M) <=> {products} (+M)"
+    #                 newMech['reactions'].append(rxn)
+    #                 rxn = copy.deepcopy(rxn)
+    #                 rxn['equation']=f"{products} (+M) <=> {reactants} (+M)"
+    #                 newMech['reactions'].append(rxn)
+    #                 rxn = copy.deepcopy(rxn)
+    #                 rxn['equation']=f"{reactants} <=> {products}"
+    #                 newMech['reactions'].append(rxn)
+    #                 rxn = copy.deepcopy(rxn)
+    #                 rxn['equation']=f"{products} <=> {reactants}"
+    #                 newMech['reactions'].append(rxn)
+                    
+    #         elif "+" in products:
+    #             spec1, spec2 = products.split("+")
+    #             spec1=spec1.strip()
+    #             spec2=spec2.strip()
+    #             if spec1==spec2:
+    #                 products = f"2 {spec1}"
+    #                 rxn = copy.deepcopy(rxn)
+    #                 rxn['equation']=f"{reactants} (+M) <=> {products} (+M)"
+    #                 newMech['reactions'].append(rxn)
+    #                 rxn = copy.deepcopy(rxn)
+    #                 rxn['equation']=f"{products} (+M) <=> {reactants} (+M)"
+    #                 newMech['reactions'].append(rxn)
+    #                 rxn = copy.deepcopy(rxn)
+    #                 rxn['equation']=f"{reactants} <=> {products}"
+    #                 newMech['reactions'].append(rxn)
+    #                 rxn = copy.deepcopy(rxn)
+    #                 rxn['equation']=f"{products} <=> {reactants}"
+    #                 newMech['reactions'].append(rxn)
+                    
+    #             else:
+    #                 products = f"{spec2} + {spec1}"
+    #                 rxn = copy.deepcopy(rxn)
+    #                 rxn['equation']=f"{reactants} (+M) <=> {products} (+M)"
+    #                 newMech['reactions'].append(rxn)
+    #                 rxn = copy.deepcopy(rxn)
+    #                 rxn['equation']=f"{products} (+M) <=> {reactants} (+M)"
+    #                 newMech['reactions'].append(rxn)
+    #                 rxn = copy.deepcopy(rxn)
+    #                 rxn['equation']=f"{reactants} <=> {products}"
+    #                 newMech['reactions'].append(rxn)
+    #                 rxn = copy.deepcopy(rxn)
+    #                 rxn['equation']=f"{products} <=> {reactants}"
+    #                 newMech['reactions'].append(rxn)
+                    
+    #     #     elif re.search(r'2\b',reactants) == True:
+    #     #         spec = reactants.replace("2","")
+    #     #         spec = spec.strip()
+    #     #         reactants = f"{spec} + {spec}"
+    #     #         rxn = copy.deepcopy(rxn)
+    #     #         rxn['equation']=f"{reactants} (+M) <=> {products} (+M)"
+    #     #         newMech['reactions'].append(rxn)
+    #     #         rxn = copy.deepcopy(rxn)
+    #     #         rxn['equation']=f"{products} (+M) <=> {reactants} (+M)"
+    #     #         newMech['reactions'].append(rxn)
+    #     #         rxn = copy.deepcopy(rxn)
+    #     #         rxn['equation']=f"{reactants} <=> {products}"
+    #     #         newMech['reactions'].append(rxn)
+    #     #         rxn = copy.deepcopy(rxn)
+    #     #         rxn['equation']=f"{products} <=> {reactants}"
+    #     #         newMech['reactions'].append(rxn)
+            
+    #     #     elif re.search(r'2\b',products) == True:
+    #     #         spec = products.replace("2","")
+    #     #         spec = spec.strip()
+    #     #         products = f"{spec} + {spec}"
+    #     #         rxn = copy.deepcopy(rxn)
+    #     #         rxn['equation']=f"{reactants} (+M) <=> {products} (+M)"
+    #     #         newMech['reactions'].append(rxn)
+    #     #         rxn = copy.deepcopy(rxn)
+    #     #         rxn['equation']=f"{products} (+M) <=> {reactants} (+M)"
+    #     #         newMech['reactions'].append(rxn)
+    #     #         rxn = copy.deepcopy(rxn)
+    #     #         rxn['equation']=f"{reactants} <=> {products}"
+    #     #         newMech['reactions'].append(rxn)
+    #     #         rxn = copy.deepcopy(rxn)
+    #     #         rxn['equation']=f"{products} <=> {reactants}"
+    #     #         newMech['reactions'].append(rxn)
+    #     # # with open('blend_double.yaml', 'w') as outfile:
+    #     # #         yaml.dump(newMech, outfile, default_flow_style=None,sort_keys=False)
+    #     return newMech
