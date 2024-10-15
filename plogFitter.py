@@ -21,8 +21,8 @@ def get_PLOG_table(self,reaction,collider,label,epsilon,kTP='off'):
         def arrhenius(T, A, n, Ea):
             return np.log(A) + n*np.log(T)+ (-Ea/(1.987*T))
         # gas = ct.Solution("shortMech.yaml")
-        gas = ct.Solution(yaml=yaml.safe_dump(self.outMech))
-        Xdict = self.get_Xdict(reaction)
+        gas = ct.Solution(yaml=yaml.safe_dump(self.data))
+        Xdict = get_Xdict(reaction)
         for i,P in enumerate(Xdict.keys()):
             k_list = []
             for j,T in enumerate(Xdict[P]):
