@@ -3,28 +3,29 @@ import yaml
 import numpy as np
 from scipy.optimize import curve_fit
 from scipy.optimize import least_squares
-
+import copy
 def main(self):
     # input = self.openyaml(inputFile)
     data = {}
     with open(self.colliderInput) as f:
-        input = yaml.safe_load(f) # load input colliders
+        data['input'] = yaml.safe_load(f) # load input colliders
     with open(self.mechInput) as f:
-        mech = yaml.safe_load(f) # load input mechanism
-    mech = self.cleanedYAML(mech) # clean up 'NO' parsing errors
-    self.lookForPdep() # Verify that mech has >=1 relevant p-dep reaction
+        data['mech'] = yaml.safe_load(f) # load input mechanism
+    cleanMechInput(data) # clean up 'NO' parsing errors in data['mech']
+    lookForPdep(data) # Verify that mech has >=1 relevant p-dep reaction
 
     with open("thirdbodydefaults.yaml") as f:
-        defaults = yaml.safe_load(f) # load default colliders
+        data['defaults'] = yaml.safe_load(f) # load default colliders
     # Remove defaults colliders and reactions that were explictly provided by user
-    defaults2 = self.deleteDuplicates()
+    deleteDuplicates(data)
     # Blend the user inputs and remaining collider defaults into a single YAML
-    self.blend = self.blendedInput()
+    blendedInput(data)
     # Sub the colliders into their corresponding reactions in the input mechanism
-    self.outMech = self.zippedMech()
+    zippedMech(data)
 
-def cleanedYAML(self,data):
-    cleanedData = data
+
+def cleanMechInput(data):
+    cleanedData = data['mech']
     newMolecList = []
     # Prevent 'NO' from being misinterpreted as bool in species list
     for molec in cleanedData['phases'][0]['species']:
@@ -50,18 +51,18 @@ def cleanedYAML(self,data):
     # # Uncomment if you want to see what the cleaned YAML looks like
     # with open("newAlzueta.yaml", 'w') as outfile:
     #     yaml.dump(copy.deepcopy(cleanedData), outfile, default_flow_style=None,sort_keys=False)
-    return cleanedData
+    data['mech']=cleanedData
 
-def lookForPdep(self, mech):
+def lookForPdep(data):
     # Raise an error if the input mech has no Troe, PLOG, or Chebyshev reactions
     if not any(
         reaction.get('type') in ['pressure-dependent-Arrhenius', 'Chebyshev'] or
         (reaction.get('type') == 'falloff' and 'Troe' in reaction)
-        for reaction in mech['reactions']
+        for reaction in data['mech']['reactions']
     ):
         raise ValueError("No pressure-dependent reactions found in mechanism. Please choose another mechanism.")
 
-def deleteDuplicates(self,defaultData): # delete duplicates from thirdBodyDefaults
+def deleteDuplicates(data): # delete duplicates from thirdBodyDefaults
     # defaults2 = {'reactions': []}
     # defaultRxnNames=[]
     # for defaultRxn in defaults['reactions']:
@@ -85,7 +86,7 @@ def deleteDuplicates(self,defaultData): # delete duplicates from thirdBodyDefaul
             inputRxnColliderNames.append(inputCol['name'])
         inputColliderNames.append(inputRxnColliderNames)
     print(inputRxnNames)
-    for defaultRxn in defaultData['reactions']:
+    for defaultRxn in data['defaults']['reactions']:
         if defaultRxn['equation'] in inputRxnNames:
             idx = inputRxnNames.index(defaultRxn['equation'])
             defaultColliderNames=[]
@@ -109,26 +110,25 @@ def deleteDuplicates(self,defaultData): # delete duplicates from thirdBodyDefaul
                 })
         else: # reaction isn't in input, so keep the entire default rxn
             defaults2['reactions'].append(defaultRxn)
-    return defaults2
+    data['defaults']=defaults2
 
-def blendedInput(self,defaultData,colliderData,):
+def blendedInput(data):
     # with open("defaults2.yaml", 'w') as outfile:
     #     yaml.dump(defaults2, outfile, default_flow_style=None,sort_keys=False)
     # with open("inputs2_double.yaml", 'w') as outfile:
     #     yaml.dump(self.generalizedEquations(input), outfile, default_flow_style=None,sort_keys=False)
-    defaults2 = defaults2
     blend = {'reactions': []}
-    speciesList = mech['phases'][0]['species']
+    speciesList = data['mech']['phases'][0]['species']
     defaultRxnNames = []
     defaultColliderNames = []
     # for defaultRxn in self.generalizedEquations(defaults2)['reactions']:
-    for defaultRxn in defaults2['reactions']:
+    for defaultRxn in data['defaults']['reactions']:
         defaultRxnNames.append(defaultRxn['equation'])
         for defaultCol in defaultRxn['colliders']:
             defaultColliderNames.append(defaultCol['name'])
     # first fill it with all of the default reactions and colliders (which have valid species)
     # for defaultRxn in self.generalizedEquations(defaults2)['reactions']:
-    for defaultRxn in defaults2['reactions']:
+    for defaultRxn in data['defaults']['reactions']:
         flag = True
         for defaultCol in defaultRxn['colliders']:
             if defaultCol['name'] not in speciesList:
@@ -139,9 +139,9 @@ def blendedInput(self,defaultData,colliderData,):
     blendRxnNames = []
     for blendRxn in blend['reactions']:
         blendRxnNames.append(blendRxn['equation'])
-    
+
     # for inputRxn in self.generalizedEquations(input)['reactions']:
-    for inputRxn in input['reactions']:
+    for inputRxn in data['input']['reactions']:
         if inputRxn['equation'] in blendRxnNames: #input reaction also exists in defaults file
             idx = blendRxnNames.index(inputRxn['equation'])
             # print(inputRxn['reference-collider'])
@@ -162,7 +162,7 @@ def blendedInput(self,defaultData,colliderData,):
                 blend['reactions'].append(inputRxn)
     for reaction in blend['reactions']:
         for col in reaction['colliders']:
-            print(reaction['equation'])
+            # print(reaction['equation'])
             temperatures=np.array(col['temperatures'])
             eps = np.array(col['eps'])
             # epsLow=effs['epsLow']['A']
@@ -180,25 +180,25 @@ def blendedInput(self,defaultData,colliderData,):
             A_fit, beta_fit, Ea_fit = result.x
             col['eps'] = {'A': round(float(A_fit),5),'b': round(float(beta_fit),5),'Ea': round(float(Ea_fit),5)}
             del col['temperatures']
-    with open('blend_double.yaml', 'w') as outfile:
-            yaml.dump(blend, outfile, default_flow_style=None,sort_keys=False)
-    return blend
+    # with open('blend_double.yaml', 'w') as outfile:
+    #         yaml.dump(blend, outfile, default_flow_style=None,sort_keys=False)
+    data['blend']=blend
 
-def zippedMech(self):
-    blend=self.blend
+def zippedMech(data):
+    blend=data['blend']
     shortMechanism={
-        'units': mech['units'],
-        'phases': mech['phases'],
-        'species': mech['species'],
+        'units': data['mech']['units'],
+        'phases': data['mech']['phases'],
+        'species': data['mech']['species'],
         'reactions': []
         }
     blendRxnNames = []
     for rxn in blend['reactions']:
         blendRxnNames.append(rxn['equation'])
-    for mech_rxn in mech['reactions']:
+    for mech_rxn in data['mech']['reactions']:
         if mech_rxn['equation'] in blendRxnNames:
             idx = blendRxnNames.index(mech_rxn['equation'])
-            colliderM = blend['reactions'][idx]['colliders'][0]
+            colliderM = blend['reactions'][idx]['colliders'][0] #figure out what this is for
             colliderMlist=[]
             if mech_rxn['type'] == 'falloff' and 'Troe' in mech_rxn:
                 colliderMlist.append({
@@ -232,4 +232,5 @@ def zippedMech(self):
                         })
         else:
             shortMechanism['reactions'].append(mech_rxn)
-    return shortMechanism
+    data['output']=shortMechanism
+
