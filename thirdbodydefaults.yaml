@@ -49,9 +49,9 @@ defaults: # AR is always reference collider
   temperatures: [750,1500]
   note: Matsugi-2021
 - name: CH4
-    eps: [9.94,13.3,14.3]
-    temperatures: [300,1000,2000]
-    note: Jasper-2022
+  eps: [9.94,13.3,14.3]
+  temperatures: [300,1000,2000]
+  note: Jasper-2022
 - name: O2
   eps: [1.55,1.48,1.70]
   temperatures: [300,1000,2000]
