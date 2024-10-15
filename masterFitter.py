@@ -31,11 +31,13 @@ class masterFitter:
 
         # self.input = self.openyaml(inputFile)
         with open(colliderInput) as f:
-            self.input = yaml.safe_load(f)
+            self.input = yaml.safe_load(f) # load input colliders
+        with open(mechInput) as f:
+            self.mech = yaml.safe_load(f) # load input mechanism
+        self.mech = self.cleanedYAML(self.mech) # clean up 'NO' parsing errors
         with open("thirdbodydefaults.yaml") as f:
-            self.defaults = yaml.safe_load(f)
+            self.defaults = yaml.safe_load(f) # load default colliders
 
-        self.mech = self.yamlLoader2(mechInput)
 
         self.pDepReactionNames=[]
         self.pDepReactions = []
@@ -177,74 +179,37 @@ class masterFitter:
         # # with open('blend_double.yaml', 'w') as outfile:
         # #         yaml.dump(newMech, outfile, default_flow_style=None,sort_keys=False)
         return newMech
-    
-    def yamlLoader2(self,fname):
-        with open(fname) as f:
-            data = yaml.safe_load(f)
+
+    def cleanedYAML(self,data):
+        cleanedData = data
         newMolecList = []
-        for molec in data['phases'][0]['species']:
+        # Prevent 'NO' from being misinterpreted as bool in species list
+        for molec in cleanedData['phases'][0]['species']:
             if str(molec).lower()=="false":
                 newMolecList.append("NO")
             else:
                 newMolecList.append(molec)
-        data['phases'][0]['species'] = newMolecList
-        for species in data['species']:
+        # Updated the YAML with the corrected species list
+        cleanedData['phases'][0]['species'] = newMolecList
+        for species in cleanedData['species']:
             name = str(species['name']).lower()
             if name == "false":
                 species['name']="NO"
-        for reaction in data['reactions']:
+        # Prevent 'NO' from being misinterpreted as bool in efficiencies list found in
+        # Troe falloff reactions
+        for reaction in cleanedData['reactions']:
             effs = reaction.get('efficiencies')
             if effs is not None:
                 for key in list(effs.keys()):
                     keyStr = str(key).lower()
                     if keyStr == "false":
                         reaction['efficiencies']["NO"] = reaction['efficiencies'].pop(key)
-            # if reaction.get('type')=='pressure-dependent-Arrhenius' or reaction.get('type')=='Chebyshev' or (reaction.get('type')=='falloff' and reaction.get('Troe') is not None):
-            #     eqn = reaction['equation']
-            #     reactants, products = eqn.split("<=>")
-            #     if "(+M)" in reactants:
-            #         reactants = reactants.replace("(+M)","").strip()
-            #         products = products.replace("(+M)","").strip()
-            #         if "+" in reactants:
-            #             spec1,spec2 = reactants.split("+")
-            #             spec1=spec1.strip()
-            #             spec2=spec2.strip()
-            #             if spec1==spec2:
-            #                 reactants = f"2 {spec1}"
-            #                 # rxn = copy.deepcopy(reaction)
-            #                 reaction['equation'] = f"{reactants} (+M) <=> {products} (+M)"
+        # # Uncomment if you want to see what the cleaned YAML looks like
+        # with open("newAlzueta.yaml", 'w') as outfile:
+        #     yaml.dump(copy.deepcopy(cleanedData), outfile, default_flow_style=None,sort_keys=False)
+        return cleanedData
 
-            #         if "+" in products:
-            #             spec1,spec2 = products.split("+")
-            #             spec1=spec1.strip()
-            #             spec2=spec2.strip()
-            #             if spec1==spec2:
-            #                 products = f"2 {spec1}"
-            #                 # rxn = copy.deepcopy(reaction)
-            #                 reaction['equation'] = f"{reactants} (+M) <=> {products} (+M)"
-            #     else:
-            #         reactants = reactants.strip()
-            #         products = products.strip()
-            #         print(reactants)
-            #         if "+" in reactants:
-            #             spec1, spec2 = reactants.split("+")
-            #             spec1=spec1.strip()
-            #             spec2=spec2.strip()
-            #             if spec1==spec2:
-            #                 reactants = f"2 {spec1}"
-            #                 # rxn = copy.deepcopy(reaction)
-            #                 reaction['equation'] = f"{reactants} <=> {products}"
-            #         elif "+" in products:
-            #             spec1, spec2 = products.split("+")
-            #             spec1=spec1.strip()
-            #             spec2=spec2.strip()
-            #             if spec1==spec2:
-            #                 products = f"2 {spec1}"
-            #                 # rxn = copy.deepcopy(reaction)
-            #                 reaction['equation'] = f"{reactants} <=> {products}"
-        with open("newAlzueta.yaml", 'w') as outfile:
-            yaml.dump(copy.deepcopy(data), outfile, default_flow_style=None,sort_keys=False)
-        return data
+
 
     def zippedMech(self):
         # blend=self.generalizedEquations(self.blendedInput())
@@ -687,3 +652,85 @@ for i, model in enumerate (models):
     # mF.Troe(path+"\\LMRtest_Troe_M")
     # mF.PLOG(path+"\\LMRtest_PLOG_M")
     # mF.cheb2D(path+"\\LMRtest_cheb_M")
+
+
+
+
+
+
+
+
+#########################
+
+    # def yamlLoader2(self,fname):
+    #     with open(fname) as f:
+    #         data = yaml.safe_load(f)
+    #     newMolecList = []
+    #     # Prevent 'NO' from being misinterpreted as bool in species list
+    #     for molec in data['phases'][0]['species']:
+    #         if str(molec).lower()=="false":
+    #             newMolecList.append("NO")
+    #         else:
+    #             newMolecList.append(molec)
+    #     # Updated the YAML with the corrected species list
+    #     data['phases'][0]['species'] = newMolecList
+    #     for species in data['species']:
+    #         name = str(species['name']).lower()
+    #         if name == "false":
+    #             species['name']="NO"
+    #     # Prevent 'NO' from being misinterpreted as bool in efficiencies list found in
+    #     # Troe falloff reactions
+    #     for reaction in data['reactions']:
+    #         effs = reaction.get('efficiencies')
+    #         if effs is not None:
+    #             for key in list(effs.keys()):
+    #                 keyStr = str(key).lower()
+    #                 if keyStr == "false":
+    #                     reaction['efficiencies']["NO"] = reaction['efficiencies'].pop(key)
+                        
+    #         # if reaction.get('type')=='pressure-dependent-Arrhenius' or reaction.get('type')=='Chebyshev' or (reaction.get('type')=='falloff' and reaction.get('Troe') is not None):
+    #         #     eqn = reaction['equation']
+    #         #     reactants, products = eqn.split("<=>")
+    #         #     if "(+M)" in reactants:
+    #         #         reactants = reactants.replace("(+M)","").strip()
+    #         #         products = products.replace("(+M)","").strip()
+    #         #         if "+" in reactants:
+    #         #             spec1,spec2 = reactants.split("+")
+    #         #             spec1=spec1.strip()
+    #         #             spec2=spec2.strip()
+    #         #             if spec1==spec2:
+    #         #                 reactants = f"2 {spec1}"
+    #         #                 # rxn = copy.deepcopy(reaction)
+    #         #                 reaction['equation'] = f"{reactants} (+M) <=> {products} (+M)"
+
+    #         #         if "+" in products:
+    #         #             spec1,spec2 = products.split("+")
+    #         #             spec1=spec1.strip()
+    #         #             spec2=spec2.strip()
+    #         #             if spec1==spec2:
+    #         #                 products = f"2 {spec1}"
+    #         #                 # rxn = copy.deepcopy(reaction)
+    #         #                 reaction['equation'] = f"{reactants} (+M) <=> {products} (+M)"
+    #         #     else:
+    #         #         reactants = reactants.strip()
+    #         #         products = products.strip()
+    #         #         print(reactants)
+    #         #         if "+" in reactants:
+    #         #             spec1, spec2 = reactants.split("+")
+    #         #             spec1=spec1.strip()
+    #         #             spec2=spec2.strip()
+    #         #             if spec1==spec2:
+    #         #                 reactants = f"2 {spec1}"
+    #         #                 # rxn = copy.deepcopy(reaction)
+    #         #                 reaction['equation'] = f"{reactants} <=> {products}"
+    #         #         elif "+" in products:
+    #         #             spec1, spec2 = products.split("+")
+    #         #             spec1=spec1.strip()
+    #         #             spec2=spec2.strip()
+    #         #             if spec1==spec2:
+    #         #                 products = f"2 {spec1}"
+    #         #                 # rxn = copy.deepcopy(reaction)
+    #         #                 reaction['equation'] = f"{reactants} <=> {products}"
+    #     with open("newAlzueta.yaml", 'w') as outfile:
+    #         yaml.dump(copy.deepcopy(data), outfile, default_flow_style=None,sort_keys=False)
+    #     return data
