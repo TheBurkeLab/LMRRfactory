@@ -17,8 +17,7 @@ import yaml
 
 
 class masterFitter:
-    def __init__(self, T_ls, P_ls, colliderInput,mechInput,yamlName,n_P=7, n_T=7, M_only=False):
-        self.M_only=M_only
+    def __init__(self,colliderInput,mechInput,yamlName):
         self.colliderInput = colliderInput
         self.mechInput = mechInput
         self.yamlName = yamlName
@@ -29,11 +28,13 @@ class masterFitter:
         self.P_ls = P_ls
         foutName = self.yamlName+"_Troe"
         self.fittedYAML(foutName,troe)
+
     def PLOG(self,T_ls, P_ls): # returns PLOG in LMRR YAML format
         self.T_ls = T_ls
         self.P_ls = P_ls
         foutName = self.yamlName+"_PLOG"
         self.fittedYAML(foutName,plog)
+
     def Chebyshev(self,T_ls, P_ls,n_P=7, n_T=7): # returns Chebyshev in LMRR YAML format
         self.T_ls = T_ls
         self.P_ls = P_ls
