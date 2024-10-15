@@ -79,7 +79,7 @@ def deleteDuplicates(data): # delete duplicates from thirdBodyDefaults
     inputColliderNames=[]
     # bigInput = self.generalizedEquations(input)
     # for inputRxn in bigInput['reactions']:
-    for inputRxn in input['reactions']:
+    for inputRxn in data['input']['reactions']:
         inputRxnNames.append(inputRxn['equation'])
         inputRxnColliderNames=[]
         for inputCol in inputRxn['colliders']:
@@ -240,6 +240,6 @@ def loadYAML(fName):
 
 def saveYAML(dataSet, fName):
     with open(fName, 'w') as outfile:
-        yaml.dump(copy.deepcopy(dataSet['output']), outfile,
+        yaml.dump(copy.deepcopy(dataSet), outfile,
                   default_flow_style=None,
                   sort_keys=False)
