@@ -149,7 +149,11 @@ def blendedInput(data):
                       f"\nThe default colliders have thus been deleted and the reaction"
                       f" has been completely overrided by (rather than blended with) "
                       f"the user's custom input values.")
-                blendData['reactions'][idx]['colliders'] = inputRxn['colliders']
+                blendRxn['reference-collider'] = inputRxn['reference-collider']
+                newColliders = [col for col in inputRxn['colliders']
+                                if col['name'] in speciesList]
+                blendRxn['colliders'] = newColliders
+                # blendRxn['colliders'] = inputRxn['colliders']
         else:
             if all(col['name'] in speciesList for col in inputRxn['colliders']):
                 blendData['reactions'].append(inputRxn)
