@@ -12,42 +12,37 @@ def generateYAML(self):
     }
     fname2 = self.foutName.replace(".yaml","")
     cleanMechInput(data) # clean up 'NO' parsing errors in 'mech'
-    saveYAML(data['mech'], fname2+"_cleaned.yaml")
+    saveYAML(data['mech'], f"{fname2}_cleaned.yaml")
     lookForPdep(data) # Verify that 'mech' has >=1 relevant p-dep reaction
     # Remove defaults colliders and reactions that were explictly provided by user
     deleteDuplicates(data)
-    saveYAML(data['defaults'], fname2+"_uniqueDefaults.yaml")
+    saveYAML(data['defaults'], f"{fname2}_uniqueDefaults.yaml")
     # Blend the user inputs and remaining collider defaults into a single YAML
     blendedInput(data)
-    saveYAML(data['blend'], fname2+"_blended.yaml")
+    saveYAML(data['blend'], f"{fname2}_blended.yaml")
     # Sub the colliders into their corresponding reactions in the input mechanism
     zippedMech(data)
     saveYAML(data['output'], self.foutName)
     return data['output']
 
 def cleanMechInput(data):
-    cleanedData = data['mech']
-
     # Prevent 'NO' from being misinterpreted as bool in species list
-    cleanedData['phases'][0]['species'] = [
+    data['mech']['phases'][0]['species'] = [
         "NO" if str(molec).lower() == "false" else molec
-        for molec in cleanedData['phases'][0]['species']
+        for molec in data['mech']['phases'][0]['species']
     ]
-
-    for species in cleanedData['species']:
+    for species in data['mech']['species']:
         if str(species['name']).lower() == "false":
             species['name']="NO"
-
     # Prevent 'NO' from being misinterpreted as bool in efficiencies list found in
     # Troe falloff reactions
-    for reaction in cleanedData['reactions']:
+    for reaction in data['mech']['reactions']:
         effs = reaction.get('efficiencies')
         if effs:
             reaction['efficiencies'] = {
                 "NO" if str(key).lower() == "false" else key: effs[key]
                 for key in effs
             }
-    data['mech']=cleanedData
 
 def lookForPdep(data):
     # Raise an error if the input mech has no Troe, PLOG, or Chebyshev reactions
