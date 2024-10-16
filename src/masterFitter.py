@@ -5,10 +5,10 @@ Class that allows for fitting of rate constants at various temperatures and pres
 # import pkg_resources
 # sys.path.append(pkg_resources.resource_filename('LMRRfactory', 'ext/cantera/build/python'))
 
-from generateYAML import generateYAML
-from chebyshevFitter import chebyshev
-from src.troeFitter import troe
-from plogFitter import plog
+from src.methods.generateYAML import generateYAML
+from src.methods.chebyshevFitter import chebyshev
+from src.methods.troeFitter import troe
+from src.methods.plogFitter import plog
 import yaml
 import os
 
