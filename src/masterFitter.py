@@ -5,10 +5,10 @@ Class that allows for fitting of rate constants at various temperatures and pres
 # import pkg_resources
 # sys.path.append(pkg_resources.resource_filename('LMRRfactory', 'ext/cantera/build/python'))
 
-from src.methods.generateYAML import generateYAML
-from src.methods.chebyshevFitter import chebyshev
-from src.methods.troeFitter import troe
-from src.methods.plogFitter import plog
+from methods.generateYAML import generateYAML
+from methods.chebyshevFitter import chebyshev
+from methods.troeFitter import troe
+from methods.plogFitter import plog
 import yaml
 import os
 
@@ -87,7 +87,7 @@ models = [
     ]
 # colours = ["xkcd:grey","xkcd:purple", "xkcd:teal", "orange", "r", "b", "xkcd:lime green", "xkcd:magenta", "xkcd:navy blue"]
 
-date='Oct15'
+date='Oct16'
 path=f'test\\outputs\\{date}'
 os.makedirs(path,exist_ok=True)
 
@@ -110,128 +110,3 @@ mF = masterFitter(colliderInput = "test\\testinput.yaml",
 #     # mF.Troe(path+"\\LMRtest_Troe_M")
 #     # mF.PLOG(path+"\\LMRtest_PLOG_M")
 #     # mF.cheb2D(path+"\\LMRtest_cheb_M")
-
-
-
-    # def generalizedEquations(self,mech):
-    #     newMech={'reactions': []}
-    #     for rxn in mech['reactions']:
-    #         eqn = rxn['equation']
-    #         reactants, products = eqn.split('<=>')
-    #         reactants = reactants.strip()
-    #         products = products.strip()
-    #         newMech['reactions'].append(rxn) #append the fwd direction
-    #         rxn = copy.deepcopy(rxn)
-    #         rxn['equation']=f"{products} <=> {reactants}"
-    #         newMech['reactions'].append(rxn) #append the rev direction
-    #         rxn = copy.deepcopy(rxn)
-    #         products = products.replace("(+M)","").strip()
-    #         reactants = reactants.replace("(+M)","").strip()
-    #         rxn['equation']=f"{reactants} <=> {products}"
-    #         newMech['reactions'].append(rxn)
-    #         rxn = copy.deepcopy(rxn)
-    #         rxn['equation']=f"{products} <=> {reactants}"
-    #         newMech['reactions'].append(rxn)
-    #         if "+" in reactants:
-    #             spec1, spec2 = reactants.split("+")
-    #             spec1=spec1.strip()
-    #             spec2=spec2.strip()
-    #             if spec1==spec2:
-    #                 reactants = f"2 {spec1}"
-    #                 rxn = copy.deepcopy(rxn)
-    #                 rxn['equation']=f"{reactants} (+M) <=> {products} (+M)"
-    #                 newMech['reactions'].append(rxn)
-    #                 rxn = copy.deepcopy(rxn)
-    #                 rxn['equation']=f"{products} (+M) <=> {reactants} (+M)"
-    #                 newMech['reactions'].append(rxn)
-    #                 rxn = copy.deepcopy(rxn)
-    #                 rxn['equation']=f"{reactants} <=> {products}"
-    #                 newMech['reactions'].append(rxn)
-    #                 rxn = copy.deepcopy(rxn)
-    #                 rxn['equation']=f"{products} <=> {reactants}"
-    #                 newMech['reactions'].append(rxn)
-    #             else:
-    #                 reactants = f"{spec2} + {spec1}"
-    #                 rxn = copy.deepcopy(rxn)
-    #                 rxn['equation']=f"{reactants} (+M) <=> {products} (+M)"
-    #                 newMech['reactions'].append(rxn)
-    #                 rxn = copy.deepcopy(rxn)
-    #                 rxn['equation']=f"{products} (+M) <=> {reactants} (+M)"
-    #                 newMech['reactions'].append(rxn)
-    #                 rxn = copy.deepcopy(rxn)
-    #                 rxn['equation']=f"{reactants} <=> {products}"
-    #                 newMech['reactions'].append(rxn)
-    #                 rxn = copy.deepcopy(rxn)
-    #                 rxn['equation']=f"{products} <=> {reactants}"
-    #                 newMech['reactions'].append(rxn)
-                    
-    #         elif "+" in products:
-    #             spec1, spec2 = products.split("+")
-    #             spec1=spec1.strip()
-    #             spec2=spec2.strip()
-    #             if spec1==spec2:
-    #                 products = f"2 {spec1}"
-    #                 rxn = copy.deepcopy(rxn)
-    #                 rxn['equation']=f"{reactants} (+M) <=> {products} (+M)"
-    #                 newMech['reactions'].append(rxn)
-    #                 rxn = copy.deepcopy(rxn)
-    #                 rxn['equation']=f"{products} (+M) <=> {reactants} (+M)"
-    #                 newMech['reactions'].append(rxn)
-    #                 rxn = copy.deepcopy(rxn)
-    #                 rxn['equation']=f"{reactants} <=> {products}"
-    #                 newMech['reactions'].append(rxn)
-    #                 rxn = copy.deepcopy(rxn)
-    #                 rxn['equation']=f"{products} <=> {reactants}"
-    #                 newMech['reactions'].append(rxn)
-                    
-    #             else:
-    #                 products = f"{spec2} + {spec1}"
-    #                 rxn = copy.deepcopy(rxn)
-    #                 rxn['equation']=f"{reactants} (+M) <=> {products} (+M)"
-    #                 newMech['reactions'].append(rxn)
-    #                 rxn = copy.deepcopy(rxn)
-    #                 rxn['equation']=f"{products} (+M) <=> {reactants} (+M)"
-    #                 newMech['reactions'].append(rxn)
-    #                 rxn = copy.deepcopy(rxn)
-    #                 rxn['equation']=f"{reactants} <=> {products}"
-    #                 newMech['reactions'].append(rxn)
-    #                 rxn = copy.deepcopy(rxn)
-    #                 rxn['equation']=f"{products} <=> {reactants}"
-    #                 newMech['reactions'].append(rxn)
-                    
-    #     #     elif re.search(r'2\b',reactants) == True:
-    #     #         spec = reactants.replace("2","")
-    #     #         spec = spec.strip()
-    #     #         reactants = f"{spec} + {spec}"
-    #     #         rxn = copy.deepcopy(rxn)
-    #     #         rxn['equation']=f"{reactants} (+M) <=> {products} (+M)"
-    #     #         newMech['reactions'].append(rxn)
-    #     #         rxn = copy.deepcopy(rxn)
-    #     #         rxn['equation']=f"{products} (+M) <=> {reactants} (+M)"
-    #     #         newMech['reactions'].append(rxn)
-    #     #         rxn = copy.deepcopy(rxn)
-    #     #         rxn['equation']=f"{reactants} <=> {products}"
-    #     #         newMech['reactions'].append(rxn)
-    #     #         rxn = copy.deepcopy(rxn)
-    #     #         rxn['equation']=f"{products} <=> {reactants}"
-    #     #         newMech['reactions'].append(rxn)
-            
-    #     #     elif re.search(r'2\b',products) == True:
-    #     #         spec = products.replace("2","")
-    #     #         spec = spec.strip()
-    #     #         products = f"{spec} + {spec}"
-    #     #         rxn = copy.deepcopy(rxn)
-    #     #         rxn['equation']=f"{reactants} (+M) <=> {products} (+M)"
-    #     #         newMech['reactions'].append(rxn)
-    #     #         rxn = copy.deepcopy(rxn)
-    #     #         rxn['equation']=f"{products} (+M) <=> {reactants} (+M)"
-    #     #         newMech['reactions'].append(rxn)
-    #     #         rxn = copy.deepcopy(rxn)
-    #     #         rxn['equation']=f"{reactants} <=> {products}"
-    #     #         newMech['reactions'].append(rxn)
-    #     #         rxn = copy.deepcopy(rxn)
-    #     #         rxn['equation']=f"{products} <=> {reactants}"
-    #     #         newMech['reactions'].append(rxn)
-    #     # # with open('blend_double.yaml', 'w') as outfile:
-    #     # #         yaml.dump(newMech, outfile, default_flow_style=None,sort_keys=False)
-    #     return newMech
