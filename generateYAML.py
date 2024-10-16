@@ -167,7 +167,6 @@ def zippedMech(data):
                     'data': mech_rxn['data'],
                 })
 
-            # colliderList.append(data['blend']['reactions'][idx]['colliders'])
             newData['reactions'].append({
                 'equation': mech_rxn['equation'],
                 'type': 'linear-Burke',
