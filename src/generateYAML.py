@@ -8,7 +8,7 @@ def generateYAML(self):
     data = {
         'input': loadYAML(self.colliderInput), # load input colliders
         'mech': loadYAML(self.mechInput), # load input mechanism}
-        'defaults': loadYAML("thirdbodydefaults.yaml") # load default colliders
+        'defaults': loadYAML("data\\thirdbodydefaults.yaml") # load default colliders
     }
     foutName = self.foutName.replace(".yaml","")
     cleanMechInput(data) # clean up 'NO' parsing errors in 'mech'

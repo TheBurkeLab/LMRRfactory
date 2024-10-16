@@ -88,11 +88,11 @@ models = [
 # colours = ["xkcd:grey","xkcd:purple", "xkcd:teal", "orange", "r", "b", "xkcd:lime green", "xkcd:magenta", "xkcd:navy blue"]
 
 date='Oct15'
-path=f'outputs\\{date}'
+path=f'test\\outputs\\{date}'
 os.makedirs(path,exist_ok=True)
 
-mF = masterFitter(colliderInput = "testinput.yaml",
-                  mechInput = 'alzuetamechanism.yaml',
+mF = masterFitter(colliderInput = "test\\testinput.yaml",
+                  mechInput = 'test\\data\\alzuetamechanism.yaml',
                   foutName = path+f'\\alzuetamechanism_LMRR.yaml'
                   )
 
