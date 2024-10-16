@@ -65,9 +65,9 @@ iv) H2 <=> 2 H, v) H + H (+M) <=> H2 (+M), vi) H + H <=> H2,
 vii) 2 H (+M) <=> H2 (+M), viii) 2 H <=> H2. Let's say 
 A = 'NH3 (+M) <=> NH2 + H (+M)' and B = 'H2 <=> 2 H', and chemical mechanism 
 C.yaml contains many different random chemical equations, including one of the 
-variations of the equation above. I want to check if A and B are in mechanism 
-C, and return True if A, or any of the equivalent forms shown above, are in 
-the mechanism. How to do this with python, making using of a Cantera Solution 
+variations of each equation above. I want to check if A and B are in mechanism 
+C, and return True if A or B, or any of their equivalent forms shown above, are 
+in the mechanism.. How to do this with python, making using of a Cantera Solution 
 object, i.e. gas = ct.Solution("mechanism.yaml"). I want a generalized approach 
 that works for equations besides just 'NH3 (+M) <=> NH2 + H (+M)' and 'H2 <=> 2 H'. 
 I want the normalization function to automatically know that '2 H' is equivalent 
@@ -79,52 +79,77 @@ import re
 from collections import Counter
 
 def normalize_equation(equation):
-    # Split reactants and products
+    """
+    Normalize a chemical equation by simplifying coefficients and 
+    removing colliders, and ordering species consistently.
+    """
+    # Split the equation into reactants and products
     reactants, products = equation.split('<=>')
-    reactants = reactants.strip().split('+')
-    products = products.strip().split('+')
-    
-    # Helper function to normalize a single species
-    def normalize_species(species):
-        # Remove colliders and strip whitespace
-        species = species.replace('(+M)', '').strip()
-        # Count stoichiometry (e.g., '2 H' becomes 'H + H')
-        count = re.findall(r'(\d*)\s*(\S+)', species)
-        normalized = []
-        for c, s in count:
-            c = int(c) if c else 1
-            normalized.extend([s] * c)  # Expand to the right number of species
-        return normalized
+    reactants = reactants.strip().replace('(+M)', '').replace(' ', '')
+    products = products.strip().replace('(+M)', '').replace(' ', '')
 
-    # Normalize reactants and products
-    normalized_reactants = sorted(normalize_species(r) for r in reactants)
-    normalized_products = sorted(normalize_species(p) for p in products)
-    
-    # Combine and return as a tuple (reactants, products)
-    return (tuple(normalized_reactants), tuple(normalized_products))
+    # Function to normalize individual side of the equation
+    def normalize_side(side):
+        # Split into species and their coefficients
+        species_list = re.split(r'\+|\s*<=>\s*', side)
+        species_counter = Counter()
 
-def check_equations_in_mechanism(equation_list, mechanism_file):
+        for species in species_list:
+            # Handle cases with coefficients like '2H'
+            match = re.match(r'(\d*)(\D+)', species)
+            if match:
+                coeff, name = match.groups()
+                coeff = int(coeff) if coeff else 1  # Default to 1 if no coefficient
+                species_counter[name] += coeff
+            else:
+                species_counter[species] += 1
+
+        # Sort and create a normalized string
+        normalized_species = []
+        for name, count in sorted(species_counter.items()):
+            if count > 1:
+                normalized_species.append(f"{count} {name}")
+            else:
+                normalized_species.append(name)
+
+        return ' + '.join(normalized_species)
+
+    normalized_reactants = normalize_side(reactants)
+    normalized_products = normalize_side(products)
+
+    return f"{normalized_reactants} <=> {normalized_products}"
+
+def find_equivalent_reactions(mechanism_file, target_equations):
+    """
+    Check if any of the target equations or their equivalent forms 
+    exist in the Cantera mechanism file.
+    """
+    # Load the mechanism using Cantera
     gas = ct.Solution(mechanism_file)
-    mechanism_equations = [reaction.equation for reaction in gas.reactions()]
-    
-    # Normalize the equations from the mechanism
-    normalized_mechanism = {normalize_equation(eq) for eq in mechanism_equations}
-    
-    # Check each equation in the list against the normalized mechanism
-    for equation in equation_list:
-        normalized_equation = normalize_equation(equation)
-        if normalized_equation in normalized_mechanism:
-            return True
-            
-    return False
 
-# Example usage
-A = 'NH3 (+M) <=> NH2 + H (+M)'
-B = 'H2 <=> 2 H'
-equations_to_check = [A, B]
+    # Extract equations from the mechanism
+    mechanism_equations = []
+    for rxn in gas.reactions():
+        mechanism_equations.append(str(rxn))
 
-# Replace 'C.yaml' with your actual mechanism file
-if check_equations_in_mechanism(equations_to_check, 'C.yaml'):
-    print("One or more equations are present in the mechanism.")
-else:
-    print("No matching equations found.")
+    # Normalize the mechanism equations
+    normalized_mechanism_equations = {normalize_equation(eqn) for eqn in mechanism_equations}
+
+    # Check for equivalent target equations
+    for target in target_equations:
+        normalized_target = normalize_equation(target)
+        if normalized_target in normalized_mechanism_equations:
+            return True  # Found an equivalent reaction
+
+    return False  # No equivalent reactions found
+
+# Example usage:
+target_equations = [
+    'NH3 (+M) <=> NH2 + H (+M)',
+    'H2 <=> 2 H'
+]
+mechanism_file = 'C.yaml'  # Replace with your mechanism file name
+
+# Call the function to check for equivalents
+result = find_equivalent_reactions(mechanism_file, target_equations)
+print(result)  # Should return True if any equivalents are found
