@@ -148,32 +148,25 @@ def zippedMech(data):
         'species': data['mech']['species'],
         'reactions': []
         }
-    blendRxnNames = []
-    for rxn in data['blend']['reactions']:
-        blendRxnNames.append(rxn['equation'])
+    blendRxnNames = [rxn['equation'] for rxn in data['blend']['reactions']]
     for mech_rxn in data['mech']['reactions']:
         if mech_rxn['equation'] in blendRxnNames:
             idx = blendRxnNames.index(mech_rxn['equation'])
-            colliderM = data['blend']['reactions'][idx]['colliders'][0] #figure out what this is for
-            colliderMlist=[]
+            blend_rxn = data['blend']['reactions'][idx]
+            colliderM = {
+                'name': 'M',
+                'eps': {'A': 1, 'b': 0, 'Ea': 0},
+            }
             if mech_rxn['type'] == 'falloff' and 'Troe' in mech_rxn:
-                colliderMlist.append({
-                    'name': 'M',
-                    'eps': {'A': 1, 'b': 0, 'Ea': 0},
+                colliderM.update({
                     'low-P-rate-constant': mech_rxn['low-P-rate-constant'],
                     'high-P-rate-constant': mech_rxn['high-P-rate-constant'],
                     'Troe': mech_rxn['Troe'],
                 })
             elif mech_rxn['type'] == 'pressure-dependent-Arrhenius':
-                colliderMlist.append({
-                    'name': 'M',
-                    'eps': {'A': 1, 'b': 0, 'Ea': 0},
-                    'rate-constants': mech_rxn['rate-constants'],
-                })
+                colliderM['rate-constants'] = mech_rxn['rate-constants'],
             elif mech_rxn['type'] == 'Chebyshev':
-                colliderMlist.append({
-                    'name': 'M',
-                    'eps': {'A': 1, 'b': 0, 'Ea': 0},
+                colliderM.update({
                     'temperature-range': mech_rxn['temperature-range'],
                     'pressure-range': mech_rxn['pressure-range'],
                     'data': mech_rxn['data'],
@@ -184,7 +177,7 @@ def zippedMech(data):
                 'equation': mech_rxn['equation'],
                 'type': 'linear-Burke',
                 'reference-collider': data['blend']['reactions'][idx]['reference-collider'],
-                'colliders': colliderMlist + data['blend']['reactions'][idx]['colliders']
+                'colliders': [colliderM] + blend_rxn['colliders']
                 })
         else:
             newData['reactions'].append(mech_rxn)
