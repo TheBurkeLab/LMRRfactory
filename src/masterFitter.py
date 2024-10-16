@@ -94,7 +94,7 @@ os.makedirs(path,exist_ok=True)
 
 mF = masterFitter(colliderInput = "test\\testinput.yaml",
                   mechInput = 'test\\data\\alzuetamechanism.yaml',
-                  foutName = path+f'\\alzuetamechanism_LMRR.yaml',
+                  foutName = path+f'\\alzuetamechanism_LMRR_generic.yaml',
                   genericColliders=True,
                   )
 
