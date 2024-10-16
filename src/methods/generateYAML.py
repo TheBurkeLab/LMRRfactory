@@ -16,6 +16,12 @@ def generateYAML(self):
     cleanMechInput(data) # clean up 'NO' parsing errors in 'mech'
     saveYAML(data['mech'], f"{foutName}_cleaned.yaml")
     lookForPdep(data) # Verify that 'mech' has >=1 relevant p-dep reaction
+
+    for reaction in data['input']['reactions']:
+        reaction['equation'] = normalize(reaction['equation'])
+    for reaction in data['defaults']['reactions']:
+        reaction['equation'] = normalize(reaction['equation'])
+
     # Remove defaults colliders and reactions that were explictly provided by user
     deleteDuplicates(data)
     saveYAML(data['defaults'], f"{foutName}_uniqueDefaults.yaml")
@@ -83,23 +89,22 @@ def normalize(equation):
     norm_products = normalize_side(products)
     # Make it so that equations inputted in reverse directions are still deemed the same
     if norm_reactants > norm_products:
-        norm_reaction = f"{norm_reactants} <=> {norm_products}"
+        norm_equation = f"{norm_reactants} <=> {norm_products}"
     else:
-        norm_reaction = f"{norm_products} <=> {norm_reactants}"
+        norm_equation = f"{norm_products} <=> {norm_reactants}"
     # print(norm_reaction)
-    return norm_reaction
+    return norm_equation
 
 def deleteDuplicates(data): # delete duplicates from thirdBodyDefaults
     newData = {'reactions': []}
-    inputRxnNames = [normalize(rxn['equation']) for rxn in data['input']['reactions']]
-    
+    inputRxnNames = [rxn['equation'] for rxn in data['input']['reactions']]
     inputColliderNames = [[col['name'] for col in rxn['colliders']]
                           for rxn in data['input']['reactions']]
     for defaultRxn in data['defaults']['reactions']:
-        if normalize(defaultRxn['equation']) in inputRxnNames:
+        if defaultRxn['equation'] in inputRxnNames:
             # print(defaultRxn['equation'])
             # print(normalize(defaultRxn['equation']))
-            idx = inputRxnNames.index(normalize(defaultRxn['equation']))
+            idx = inputRxnNames.index(defaultRxn['equation'])
             inputColliders = inputColliderNames[idx]
             newColliderList = [col for col in defaultRxn['colliders']
                                if col['name'] not in inputColliders]
@@ -123,13 +128,13 @@ def blendedInput(data):
         if all(col['name'] in speciesList for col in defaultRxn['colliders']):
             blendData['reactions'].append(defaultRxn)
 
-    defaultRxnNames = [normalize(rxn['equation']) for rxn in blendData['reactions']]
+    defaultRxnNames = [rxn['equation'] for rxn in blendData['reactions']]
 
     for inputRxn in data['input']['reactions']:
         # Check if input reaction also exists in defaults file, otherwise add the entire
         # input reaction to the blend as-is
-        if normalize(inputRxn['equation']) in defaultRxnNames:
-            idx = defaultRxnNames.index(normalize(inputRxn['equation']))
+        if inputRxn['equation'] in defaultRxnNames:
+            idx = defaultRxnNames.index(inputRxn['equation'])
             blendRxn = blendData['reactions'][idx]
             # If reference colliders match, append new colliders, otherwise override
             # with the user inputs
@@ -181,7 +186,7 @@ def zippedMech(data):
         'species': data['mech']['species'],
         'reactions': []
         }
-    blendRxnNames = [normalize(rxn['equation']) for rxn in data['blend']['reactions']]
+    blendRxnNames = [rxn['equation'] for rxn in data['blend']['reactions']]
     for mech_rxn in data['mech']['reactions']:
         if normalize(mech_rxn['equation']) in blendRxnNames:
             idx = blendRxnNames.index(normalize(mech_rxn['equation']))
