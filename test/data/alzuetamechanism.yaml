@@ -1591,7 +1591,7 @@ reactions:
   rate-constant: {A: 1.7e+08, b: 1.5, Ea: -646.0}
 - equation: N2H3 + O <=> NH2 + HNO  # Reaction 233
   rate-constant: {A: 3.0e+13, b: 0.0, Ea: 0.0}
-- equation: N2H3 + O => NH2 + NO + H  # Reaction 234
+- equation: N2H3 + O <=> NH2 + NO + H  # Reaction 234
   rate-constant: {A: 3.0e+13, b: 0.0, Ea: 0.0}
 - equation: N2H3 + OH <=> tHNNH + H2O  # Reaction 235
   rate-constant: {A: 1.2e+06, b: 2.0, Ea: -1192.0}
@@ -1663,9 +1663,9 @@ reactions:
   rate-constant: {A: 7.0e+13, b: 0.0, Ea: 0.0}
 - equation: H2NN + OH <=> NNH + H2O  # Reaction 262
   rate-constant: {A: 2.4e+06, b: 2.0, Ea: -1192.0}
-- equation: H2NN + OH => NH2 + NO + H  # Reaction 263
+- equation: H2NN + OH <=> NH2 + NO + H  # Reaction 263
   rate-constant: {A: 2.0e+12, b: 0.0, Ea: 0.0}
-- equation: H2NN + HO2 => NH2 + NO + OH  # Reaction 264
+- equation: H2NN + HO2 <=> NH2 + NO + OH  # Reaction 264
   rate-constant: {A: 9.0e+12, b: 0.0, Ea: 0.0}
 - equation: H2NN + HO2 <=> NNH + H2O2  # Reaction 265
   rate-constant: {A: 2.9e+04, b: 2.69, Ea: -1600.0}
