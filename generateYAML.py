@@ -27,28 +27,26 @@ def generateYAML(self):
 
 def cleanMechInput(data):
     cleanedData = data['mech']
-    newMolecList = []
+
     # Prevent 'NO' from being misinterpreted as bool in species list
-    for molec in cleanedData['phases'][0]['species']:
-        if str(molec).lower()=="false":
-            newMolecList.append("NO")
-        else:
-            newMolecList.append(molec)
-    # Updated the YAML with the corrected species list
-    cleanedData['phases'][0]['species'] = newMolecList
+    cleanedData['phases'][0]['species'] = [
+        "NO" if str(molec).lower() == "false" else molec
+        for molec in cleanedData['phases'][0]['species']
+    ]
+
     for species in cleanedData['species']:
-        name = str(species['name']).lower()
-        if name == "false":
+        if str(species['name']).lower() == "false":
             species['name']="NO"
+
     # Prevent 'NO' from being misinterpreted as bool in efficiencies list found in
     # Troe falloff reactions
     for reaction in cleanedData['reactions']:
         effs = reaction.get('efficiencies')
-        if effs is not None:
-            for key in list(effs.keys()):
-                keyStr = str(key).lower()
-                if keyStr == "false":
-                    reaction['efficiencies']["NO"] = reaction['efficiencies'].pop(key)
+        if effs:
+            reaction['efficiencies'] = {
+                "NO" if str(key).lower() == "false" else key: effs[key]
+                for key in effs
+            }
     data['mech']=cleanedData
 
 def lookForPdep(data):
