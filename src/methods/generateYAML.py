@@ -3,6 +3,8 @@ import yaml
 import numpy as np
 from scipy.optimize import least_squares
 import copy
+from collections import Counter
+import re
 
 def generateYAML(self):
     data = {
@@ -53,6 +55,41 @@ def lookForPdep(data):
     ):
         raise ValueError("No pressure-dependent reactions found in mechanism."
                          " Please choose another mechanism.")
+
+def normalize_equation(equation):
+    # Split the equation into reactants and products
+    reactants, products = equation.split('<=>')
+    reactants = reactants.strip().replace('(+M)', '').replace(' ', '')
+    products = products.strip().replace('(+M)', '').replace(' ', '')
+
+    def normalize_side(side):
+        # Split into species and their coefficients
+        species_list = re.split(r'\s*\+\s*', side)
+        species_counter = Counter()
+        for species in species_list:
+            # Handle cases with coefficients like '2H' and '2 H'
+            match = re.match(r'(\d*)\s*([^\d\s]\w*)', species)
+            if not match:
+                raise ValueError(f"Incorrect formula for {equation} in input YAML.")
+            coeff, name = match.groups()
+            coeff = int(coeff) if coeff else 1  # Default to 1 if no coefficient
+            species_counter[name] += coeff
+        normalized_species = []
+        for name in sorted(species_counter.keys()):  # Sort species alphabetically
+            count = species_counter[name]
+            normalized_species.extend([name]*count)
+        normalized_side = ' + '.join(normalized_species)
+        return normalized_side
+    norm_reactants = normalize_side(reactants)
+    norm_products = normalize_side(products)
+    # Make it so that equations inputted in reverse directions are still deemed the same
+    if norm_reactants > norm_products:
+        norm_reaction = f"{norm_reactants} <=> {norm_products}"
+    else:
+        norm_reaction = f"{norm_products} <=> {norm_reactants}"
+    print(norm_reaction)
+    return norm_reaction
+
 
 def deleteDuplicates(data): # delete duplicates from thirdBodyDefaults
     newData = {'reactions': []}
