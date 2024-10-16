@@ -162,7 +162,12 @@ def blendedInput(data):
 
     # Convert collision efficiencies to arrhenius format and save to blended YAML
     for reaction in blendData['reactions']:
-        [arrheniusFit(col) for col in reaction['colliders']]
+        reaction['colliders']=[arrheniusFit(col) for col in reaction['colliders']]
+
+
+        # colliders = [arrheniusFit(col)
+        #             for col in reaction['colliders']
+        #             if col['name'] in speciesList]
     data['blend']=blendData
 
 def arrheniusFit(col):
