@@ -91,7 +91,7 @@ def normalize_equation(equation):
     # Function to normalize individual side of the equation
     def normalize_side(side):
         # Split into species and their coefficients
-        species_list = re.split(r'\+|\s*<=>\s*', side)
+        species_list = re.split(r'\s*\+\s*', side)  # Split on '+' with optional whitespace
         species_counter = Counter()
 
         for species in species_list:
@@ -104,9 +104,10 @@ def normalize_equation(equation):
             else:
                 species_counter[species] += 1
 
-        # Sort and create a normalized string
+        # Sort species alphabetically and create a normalized string
         normalized_species = []
-        for name, count in sorted(species_counter.items()):
+        for name in sorted(species_counter.keys()):  # Sort species alphabetically
+            count = species_counter[name]
             if count > 1:
                 normalized_species.append(f"{count} {name}")
             else:
@@ -114,6 +115,7 @@ def normalize_equation(equation):
 
         return ' + '.join(normalized_species)
 
+    # Normalize both sides and return the formatted equation
     normalized_reactants = normalize_side(reactants)
     normalized_products = normalize_side(products)
 
