@@ -56,12 +56,11 @@ def lookForPdep(data):
         raise ValueError("No pressure-dependent reactions found in mechanism."
                          " Please choose another mechanism.")
 
-def normalize_equation(equation):
+def normalize(equation):
     # Split the equation into reactants and products
     reactants, products = equation.split('<=>')
     reactants = reactants.strip().replace('(+M)', '').replace(' ', '')
     products = products.strip().replace('(+M)', '').replace(' ', '')
-
     def normalize_side(side):
         # Split into species and their coefficients
         species_list = re.split(r'\s*\+\s*', side)
@@ -87,18 +86,20 @@ def normalize_equation(equation):
         norm_reaction = f"{norm_reactants} <=> {norm_products}"
     else:
         norm_reaction = f"{norm_products} <=> {norm_reactants}"
-    print(norm_reaction)
+    # print(norm_reaction)
     return norm_reaction
-
 
 def deleteDuplicates(data): # delete duplicates from thirdBodyDefaults
     newData = {'reactions': []}
-    inputRxnNames = [rxn['equation'] for rxn in data['input']['reactions']]
+    inputRxnNames = [normalize(rxn['equation']) for rxn in data['input']['reactions']]
+    
     inputColliderNames = [[col['name'] for col in rxn['colliders']]
                           for rxn in data['input']['reactions']]
     for defaultRxn in data['defaults']['reactions']:
-        if defaultRxn['equation'] in inputRxnNames:
-            idx = inputRxnNames.index(defaultRxn['equation'])
+        if normalize(defaultRxn['equation']) in inputRxnNames:
+            # print(defaultRxn['equation'])
+            # print(normalize(defaultRxn['equation']))
+            idx = inputRxnNames.index(normalize(defaultRxn['equation']))
             inputColliders = inputColliderNames[idx]
             newColliderList = [col for col in defaultRxn['colliders']
                                if col['name'] not in inputColliders]
@@ -122,13 +123,13 @@ def blendedInput(data):
         if all(col['name'] in speciesList for col in defaultRxn['colliders']):
             blendData['reactions'].append(defaultRxn)
 
-    defaultRxnNames = [rxn['equation'] for rxn in blendData['reactions']]
+    defaultRxnNames = [normalize(rxn['equation']) for rxn in blendData['reactions']]
 
     for inputRxn in data['input']['reactions']:
         # Check if input reaction also exists in defaults file, otherwise add the entire
         # input reaction to the blend as-is
-        if inputRxn['equation'] in defaultRxnNames:
-            idx = defaultRxnNames.index(inputRxn['equation'])
+        if normalize(inputRxn['equation']) in defaultRxnNames:
+            idx = defaultRxnNames.index(normalize(inputRxn['equation']))
             blendRxn = blendData['reactions'][idx]
             # If reference colliders match, append new colliders, otherwise override
             # with the user inputs
@@ -180,10 +181,10 @@ def zippedMech(data):
         'species': data['mech']['species'],
         'reactions': []
         }
-    blendRxnNames = [rxn['equation'] for rxn in data['blend']['reactions']]
+    blendRxnNames = [normalize(rxn['equation']) for rxn in data['blend']['reactions']]
     for mech_rxn in data['mech']['reactions']:
-        if mech_rxn['equation'] in blendRxnNames:
-            idx = blendRxnNames.index(mech_rxn['equation'])
+        if normalize(mech_rxn['equation']) in blendRxnNames:
+            idx = blendRxnNames.index(normalize(mech_rxn['equation']))
             blend_rxn = data['blend']['reactions'][idx]
             colliderM = {
                 'name': 'M',
