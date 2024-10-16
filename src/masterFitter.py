@@ -14,10 +14,11 @@ import os
 
 
 class masterFitter:
-    def __init__(self,colliderInput,mechInput,foutName):
+    def __init__(self,colliderInput,mechInput,foutName,genericColliders=False):
         self.colliderInput = colliderInput
         self.mechInput = mechInput
         self.foutName = foutName
+        self.genericColliders = genericColliders
         self.data = generateYAML(self) # create a YAML in the LMRR format
 
     def Troe(self,T_ls, P_ls): # returns PLOG in LMRR YAML format
@@ -93,7 +94,8 @@ os.makedirs(path,exist_ok=True)
 
 mF = masterFitter(colliderInput = "test\\testinput.yaml",
                   mechInput = 'test\\data\\alzuetamechanism.yaml',
-                  foutName = path+f'\\alzuetamechanism_LMRR.yaml'
+                  foutName = path+f'\\alzuetamechanism_LMRR.yaml',
+                  genericColliders=True,
                   )
 
 

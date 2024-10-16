@@ -10,11 +10,12 @@ def generateYAML(self):
     data = {
         'input': loadYAML(self.colliderInput), # load input colliders
         'mech': loadYAML(self.mechInput), # load input mechanism}
-        'defaults': loadYAML("data\\thirdbodydefaults.yaml") # load default colliders
+        'defaults': loadYAML("data\\thirdbodydefaults.yaml"), # load default colliders
+        'generic': self.genericColliders # True or False
     }
-    foutName = self.foutName.replace(".yaml","")
+    # foutName = self.foutName.replace(".yaml","")
     cleanMechInput(data) # clean up 'NO' parsing errors in 'mech'
-    saveYAML(data['mech'], f"{foutName}_cleaned.yaml")
+    # saveYAML(data['mech'], f"{foutName}_cleaned.yaml")
     lookForPdep(data) # Verify that 'mech' has >=1 relevant p-dep reaction
 
     for reaction in data['input']['reactions']:
@@ -24,10 +25,10 @@ def generateYAML(self):
 
     # Remove defaults colliders and reactions that were explictly provided by user
     deleteDuplicates(data)
-    saveYAML(data['defaults'], f"{foutName}_uniqueDefaults.yaml")
+    # saveYAML(data['defaults'], f"{foutName}_uniqueDefaults.yaml")
     # Blend the user inputs and remaining collider defaults into a single YAML
     blendedInput(data)
-    saveYAML(data['blend'], f"{foutName}_blended.yaml")
+    # saveYAML(data['blend'], f"{foutName}_blended.yaml")
     # Sub the colliders into their corresponding reactions in the input mechanism
     zippedMech(data)
     saveYAML(data['output'], self.foutName)
@@ -96,7 +97,8 @@ def normalize(equation):
     return norm_equation
 
 def deleteDuplicates(data): # delete duplicates from thirdBodyDefaults
-    newData = {'reactions': []}
+    newData = {'generic-colliders': data['defaults']['generic-colliders'],
+               'reactions': []}
     inputRxnNames = [rxn['equation'] for rxn in data['input']['reactions']]
     inputColliderNames = [[col['name'] for col in rxn['colliders']]
                           for rxn in data['input']['reactions']]
@@ -164,8 +166,9 @@ def blendedInput(data):
     data['blend']=blendData
 
 def arrheniusFit(col):
-    temps=np.array(col['temperatures'])
-    eps = np.array(col['eps'])
+    newCol = copy.deepcopy(col)
+    temps=np.array(newCol['temperatures'])
+    eps = np.array(newCol['eps'])
     def arrhenius_rate(T, A, beta, Ea):
         # R = 8.314  # Gas constant in J/(mol K)
         R = 1.987 # cal/molK
@@ -177,10 +180,11 @@ def arrheniusFit(col):
     result = least_squares(fit_function, initial_guess, args=(temps, np.log(eps)))
     A_fit, beta_fit, Ea_fit = result.x
     # Update eps values and remove temperatures
-    col['eps'] = {'A': round(float(A_fit),5),
+    newCol['eps'] = {'A': round(float(A_fit),5),
                   'b': round(float(beta_fit),5),
                   'Ea': round(float(Ea_fit),5)}
-    col.pop('temperatures', None)
+    newCol.pop('temperatures', None)
+    return newCol
 
 
 def zippedMech(data):
@@ -192,35 +196,56 @@ def zippedMech(data):
         }
     blendRxnNames = [rxn['equation'] for rxn in data['blend']['reactions']]
     for mech_rxn in data['mech']['reactions']:
-        if normalize(mech_rxn['equation']) in blendRxnNames:
-            idx = blendRxnNames.index(normalize(mech_rxn['equation']))
-            blend_rxn = data['blend']['reactions'][idx]
+        pDep = False
+        # Create the M-collider entry for the pressure-dependent reactions
+        if mech_rxn.get('type') == 'falloff' and 'Troe' in mech_rxn:
+            pDep = True
             colliderM = {
                 'name': 'M',
                 'eps': {'A': 1, 'b': 0, 'Ea': 0},
+                'low-P-rate-constant': mech_rxn['low-P-rate-constant'],
+                'high-P-rate-constant': mech_rxn['high-P-rate-constant'],
+                'Troe': mech_rxn['Troe'],
             }
-            if mech_rxn['type'] == 'falloff' and 'Troe' in mech_rxn:
-                colliderM.update({
-                    'low-P-rate-constant': mech_rxn['low-P-rate-constant'],
-                    'high-P-rate-constant': mech_rxn['high-P-rate-constant'],
-                    'Troe': mech_rxn['Troe'],
-                })
-            elif mech_rxn['type'] == 'pressure-dependent-Arrhenius':
-                colliderM['rate-constants'] = mech_rxn['rate-constants'],
-            elif mech_rxn['type'] == 'Chebyshev':
-                colliderM.update({
-                    'temperature-range': mech_rxn['temperature-range'],
-                    'pressure-range': mech_rxn['pressure-range'],
-                    'data': mech_rxn['data'],
-                })
-
+        elif mech_rxn.get('type') == 'pressure-dependent-Arrhenius':
+            pDep = True
+            colliderM = {
+                'name': 'M',
+                'eps': {'A': 1, 'b': 0, 'Ea': 0},
+                'rate-constants': mech_rxn['rate-constants']
+            }
+        elif mech_rxn.get('type') == 'Chebyshev':
+            pDep = True
+            colliderM = {
+                'name': 'M',
+                'eps': {'A': 1, 'b': 0, 'Ea': 0},
+                'temperature-range': mech_rxn['temperature-range'],
+                'pressure-range': mech_rxn['pressure-range'],
+                'data': mech_rxn['data'],
+            }
+        if pDep:
+            # rxn is specifically covered either in defaults or user input
+            if normalize(mech_rxn['equation']) in blendRxnNames:
+                idx = blendRxnNames.index(normalize(mech_rxn['equation']))
+                blend_rxn = data['blend']['reactions'][idx]
+                refCol = data['blend']['reactions'][idx]['reference-collider']
+                colliders = blend_rxn['colliders']
+                # user has opted to have generic 3b effs applied to all p-dep reactions
+                # which lack a specification in thirdbodydefaults and testinput
+                # print(data['defaults']['generic'])
+            elif data['generic'] == True:
+                refCol = 'AR' #just assumed, not aiming for perfection
+                speciesList = data['mech']['phases'][0]['species']
+                colliders = [arrheniusFit(col)
+                             for col in data['defaults']['generic-colliders']
+                             if col['name'] in speciesList]
             newData['reactions'].append({
                 'equation': mech_rxn['equation'],
                 'type': 'linear-Burke',
-                'reference-collider': data['blend']['reactions'][idx]['reference-collider'],
-                'colliders': [colliderM] + blend_rxn['colliders']
-                })
-        else:
+                'reference-collider': refCol,
+                'colliders': [colliderM] + colliders,
+            })
+        else: # not a pressure dependent reaction, so just append it as-is
             newData['reactions'].append(mech_rxn)
     data['output']=newData
 

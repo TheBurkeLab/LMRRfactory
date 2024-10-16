@@ -6,10 +6,10 @@ reactions:
     eps: [0.398, 0.617, 0.833]
     temperatures: [300,1000,2000]
     note: Jasper-2022
-  # - name: H2O
-  #   eps: [3.57, 5.28, 7.29]
-  #   temperatures: [300,1000,2000]
-  #   note: Jasper-2022
+  - name: H2O
+    eps: [3.57, 5.28, 7.29]
+    temperatures: [300,1000,2000]
+    note: Jasper-2022
 
 - equation: H + O2 (+M) <=> HO2 (+M)
   reference-collider: AR
@@ -81,10 +81,10 @@ reactions:
 # - equation: NH3 <=> H + NH2 # this one isn't converting properly
   reference-collider: AR
   colliders:
-  - name: N2
-    eps: [3.15,2.47,2.25]
-    temperatures: [300,1000,2000]
-    note: Jasper-2022
+  # - name: N2
+  #   eps: [3.15,2.47,2.25]
+  #   temperatures: [300,1000,2000]
+  #   note: Jasper-2022
   - name: O2
     eps: [1.55,1.48,1.70]
     temperatures: [300,1000,2000]
