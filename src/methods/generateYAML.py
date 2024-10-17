@@ -11,7 +11,7 @@ def generateYAML(self):
         'input': loadYAML(self.colliderInput), # load input colliders
         'mech': loadYAML(self.mechInput), # load input mechanism}
         'defaults': loadYAML("data\\thirdbodydefaults.yaml"), # load default colliders
-        'generic': self.genericColliders # True or False
+        'generic': self.allPdep # True or False
     }
     # foutName = self.foutName.replace(".yaml","")
     cleanMechInput(data) # clean up 'NO' parsing errors in 'mech'
@@ -31,7 +31,7 @@ def generateYAML(self):
     # saveYAML(data['blend'], f"{foutName}_blended.yaml")
     # Sub the colliders into their corresponding reactions in the input mechanism
     zippedMech(data)
-    saveYAML(data['output'], self.foutName)
+    saveYAML(data['output'], self.foutName+".yaml")
     return data['output']
 
 def cleanMechInput(data):
