@@ -34,6 +34,7 @@ def generateYAML(self):
     zippedMech(data)
     saveYAML(data['output'], self.foutName+".yaml")
     print(f"LMR-R mechanism successfully generated from {os.path.basename(self.mechInput)}")
+    print(f"The new file is stored at {self.foutName+".yaml"}\n")
     return data['output']
 
 def cleanMechInput(data):
@@ -230,7 +231,12 @@ def zippedMech(data):
                 'pressure-range': mech_rxn['pressure-range'],
                 'data': mech_rxn['data'],
             }
-        if pDep:
+
+        addReaction = True
+        for rxn in newData['reactions']:
+            if mech_rxn['equation'] == rxn['equation']:
+                addReaction = False # Avoids adding a duplicate rxn that already exists in mech
+        if pDep and addReaction:
             # rxn is specifically covered either in defaults or user input
             if normalize(mech_rxn['equation']) in blendRxnNames:
                 idx = blendRxnNames.index(normalize(mech_rxn['equation']))
@@ -252,7 +258,7 @@ def zippedMech(data):
                 'reference-collider': refCol,
                 'colliders': [colliderM] + colliders,
             })
-        else: # not a pressure dependent reaction, so just append it as-is
+        elif addReaction: # not a pressure dependent reaction, so just append it as-is
             newData['reactions'].append(mech_rxn)
     data['output']=newData
 
