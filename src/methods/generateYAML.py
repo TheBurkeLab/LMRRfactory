@@ -5,6 +5,7 @@ from scipy.optimize import least_squares
 import copy
 from collections import Counter
 import re
+import os
 
 def generateYAML(self):
     data = {
@@ -32,6 +33,7 @@ def generateYAML(self):
     # Sub the colliders into their corresponding reactions in the input mechanism
     zippedMech(data)
     saveYAML(data['output'], self.foutName+".yaml")
+    print(f"LMR-R mechanism successfully generated from {os.path.basename(self.mechInput)}")
     return data['output']
 
 def cleanMechInput(data):

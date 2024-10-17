@@ -11,10 +11,12 @@ from methods.troeFitter import troe
 from methods.plogFitter import plog
 import yaml
 import os
+import numpy as np
+
+
 
 
 class masterFitter:
-    # def __init__(self,colliders=None,baseMech=None,lmrrMech=None, allPdep = False):
     def __init__(self,baseInput=None,lmrrInput=None,allPdep=False,date=""):
         self.T_ls = None
         self.P_ls = None
@@ -62,12 +64,12 @@ class masterFitter:
             except FileNotFoundError:
                 print(f"Error: The file '{lmrrInput}' was not found.")
 
-    def Troe(self,T_ls, P_ls): # returns PLOG in LMRR YAML format
+    def Troe(self,T_ls, P_ls): # returns Troe in LMRR YAML format
         try:
             self.T_ls = T_ls
             self.P_ls = P_ls
-            foutName = self.foutName+"_Troe"
-            self._fittedYAML(foutName,troe)
+            foutName2 = self.foutName+"_Troe.yaml"
+            self._fittedYAML(foutName2,troe)
         except ValueError:
             print(f"Error: no LMR-R mechanism detected. If one already exists, it can be imported using LMRRfactory.load() -- otherwise, a new one can be generated using LMRRfactory.generate()")
 
@@ -97,9 +99,9 @@ class masterFitter:
 
     def _fittedYAML(self,foutName,fit_fxn): # KEEP
         newMechanism={
-                'units': self.mech['units'],
-                'phases': self.mech['phases'],
-                'species': self.mech['species'],
+                'units': self.data['units'],
+                'phases': self.data['phases'],
+                'species': self.data['species'],
                 'reactions': []
                 }
         for reaction in self.data['reactions']:
@@ -126,38 +128,22 @@ class masterFitter:
 ########################################################################################
 
 
-models = [
-    {'name': 'Alzueta', 'path': 'alzuetamechanism.yaml'},
-    # {'name': 'Mei', 'path': 'G:\\Mon disque\\Columbia\\Burke Lab\\07 Mechanisms\\Mei-2019\\mei-2019.yaml'},
-    # # {'name': 'Glarborg', 'path': "G:\\Mon disque\\Columbia\\Burke Lab\\07 Mechanisms\\Glarborg-2018\\glarborg-2018.yaml"},
-    # {'name': 'Zhang', 'path': "G:\\Mon disque\\Columbia\\Burke Lab\\07 Mechanisms\\Zhang-2017\\zhang-2017.yaml"},
-    # {'name': 'Otomo', 'path': "G:\\Mon disque\\Columbia\\Burke Lab\\07 Mechanisms\\Otomo-2018\\otomo-2018.yaml"},
-    # {'name': 'Stagni', 'path': "G:\\Mon disque\\Columbia\\Burke Lab\\07 Mechanisms\\Stagni-2020\\stagni-2020.yaml"},
-    # # {'name': 'Shrestha', 'path': "G:\\Mon disque\\Columbia\\Burke Lab\\07 Mechanisms\\Shrestha-2021\\shrestha-2021.yaml"},
-    # {'name': 'Han', 'path': "G:\\Mon disque\\Columbia\\Burke Lab\\07 Mechanisms\\Han-2021\\han-2021.yaml"},
-    ]
-# colours = ["xkcd:grey","xkcd:purple", "xkcd:teal", "orange", "r", "b", "xkcd:lime green", "xkcd:magenta", "xkcd:navy blue"]
+models = {
+    'Alzueta': 'test\\data\\alzuetamechanism.yaml',
+    # 'Mei': 'G:\\Mon disque\\Columbia\\Burke Lab\\07Mechanisms\\Mei-2019\\mei-2019.yaml',
+    # 'Glarborg': "G:\\Mon disque\\Columbia\\Burke Lab\\07 Mechanisms\\Glarborg-2018\\glarborg-2018.yaml",
+    # 'Zhang': "G:\\Mon disque\\Columbia\\Burke Lab\\07 Mechanisms\\Zhang-2017\\zhang-2017.yaml",
+    # 'Otomo': "G:\\Mon disque\\Columbia\\Burke Lab\\07 Mechanisms\\Otomo-2018\\otomo-2018.yaml",
+    # 'Stagni': "G:\\Mon disque\\Columbia\\Burke Lab\\07 Mechanisms\\Stagni-2020\\stagni-2020.yaml",
+    # 'Shrestha': "G:\\Mon disque\\Columbia\\Burke Lab\\07 Mechanisms\\Shrestha-2021\\shrestha-2021.yaml",
+    # 'Han': "G:\\Mon disque\\Columbia\\Burke Lab\\07 Mechanisms\\Han-2021\\han-2021.yaml"
+    }
 
-base = {'mechanism': 'test\\data\\alzuetamechanism.yaml', 'colliders': 'test\\testinput.yaml'}
-mF = masterFitter(baseInput=base,allPdep=True,date='Oct17')
+T_list=np.linspace(200,2000,100)
+P_list=np.logspace(-1,2,num=10)
 
-# mF = masterFitter(colliderInput = "test\\testinput.yaml",
-#                   mechInput = 'test\\data\\alzuetamechanism.yaml',
-#                   foutName = path+f'\\alzuetamechanism_LMRR_generic.yaml',
-#                   allPdep=True,
-#                   )
-
-
-# for i, model in enumerate (models):
-#     # # INPUTS
-#     T_list=np.linspace(200,2000,100)
-#     # P_list=np.logspace(-12,12,num=120)
-#     P_list=np.logspace(-1,2,num=10)
-#     mF = masterFitter(T_list,P_list,colliderInput="testinput.yaml",mechInput=model['path'],n_P=7,n_T=7,M_only=True)
-#     path=f'outputs\\{date}'
-#     os.makedirs(path,exist_ok=True)
-#     mF.colliders(path+f"\\{model['name']}_LMRR.yaml")
-#     mF.Troe("troeTest.yaml")
-#     # mF.Troe(path+"\\LMRtest_Troe_M")
-#     # mF.PLOG(path+"\\LMRtest_PLOG_M")
-#     # mF.cheb2D(path+"\\LMRtest_cheb_M")
+for m in models.keys():
+    base = {'mechanism': models[m]}
+    base['colliders'] = 'test\\testinput.yaml'
+    mF = masterFitter(baseInput=base,allPdep=True,date='Oct17')
+    mF.Troe(T_list,P_list)
