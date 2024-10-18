@@ -38,9 +38,9 @@ def troe(self,reaction,collider,label,epsilon,kTP='off'):
         logF = np.log10(Fcent) / den
         logk_fit = np.log10(k0) + np.log10(M) + np.log10(ki) + logF - np.log10(ki + k0 * M)
         return logk_fit
-    Xdict=self.get_Xdict(reaction)
+    Xdict=get_Xdict(self,reaction)
     # gas = ct.Solution("shortMech.yaml")
-    gas = ct.Solution(yaml=yaml.safe_dump(self.outMech))
+    gas = ct.Solution(yaml=yaml.safe_dump(self.data))
     logk_list=[]
     for i,P in enumerate(Xdict.keys()):
         for j,T in enumerate(Xdict[P]):
@@ -71,7 +71,7 @@ def troe(self,reaction,collider,label,epsilon,kTP='off'):
             [1e-100, -np.inf, -np.inf, 1e-100, -np.inf, -np.inf, 1e-100],  # Lower bounds
             [np.inf, np.inf, np.inf, np.inf, np.inf, np.inf, 1]         # Upper bounds
         )
-    Xvec=self.get_Xvec(reaction)
+    Xvec=get_Xvec(self,reaction)
     popt, pcov = curve_fit(f,Xvec,logk_list,p0=guess,maxfev=1000000,bounds=bounds)
     a0,n0,ea0,ai,ni,eai=popt[0],popt[1],popt[2],popt[3],popt[4],popt[5]
     def numFmt(val):

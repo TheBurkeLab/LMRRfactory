@@ -13,7 +13,9 @@ import yaml
 import os
 import numpy as np
 
+import warnings
 
+warnings.filterwarnings("ignore")
 
 
 class masterFitter:
@@ -41,10 +43,8 @@ class masterFitter:
             try:
                 self.colliderInput = baseInput['colliders']
                 self.mechInput = baseInput['mechanism']
-                print(self.mechInput)
                 self.foutName = os.path.basename(self.mechInput).replace(".yaml","")
                 self.foutName = path + self.foutName + "_LMRR"
-                print(self.foutName)
                 try:
                     # create a YAML in the LMRR format
                     if allPdep:
@@ -64,16 +64,13 @@ class masterFitter:
             except FileNotFoundError:
                 print(f"Error: The file '{lmrrInput}' was not found.")
 
-    def Troe(self,T_ls, P_ls): # returns Troe in LMRR YAML format
-        try:
-            self.T_ls = T_ls
-            self.P_ls = P_ls
-            foutName2 = self.foutName+"_Troe.yaml"
-            self._fittedYAML(foutName2,troe)
-        except ValueError:
-            print(f"Error: no LMR-R mechanism detected. If one already exists, it can be imported using LMRRfactory.load() -- otherwise, a new one can be generated using LMRRfactory.generate()")
+    def convertToTroe(self,T_ls, P_ls): # returns Troe in LMRR YAML format
+        self.T_ls = T_ls
+        self.P_ls = P_ls
+        foutName2 = self.foutName+"_Troe.yaml"
+        self._fittedYAML(foutName2,troe)
 
-    def PLOG(self,T_ls, P_ls): # returns PLOG in LMRR YAML format
+    def convertToPLOG(self,T_ls, P_ls): # returns PLOG in LMRR YAML format
         try:
             self.T_ls = T_ls
             self.P_ls = P_ls
@@ -82,7 +79,7 @@ class masterFitter:
         except ValueError:
             print(f"Error: no LMR-R mechanism detected. If one already exists, it can be imported using LMRRfactory.load() -- otherwise, a new one can be generated using LMRRfactory.generate()")
 
-    def Chebyshev(self,T_ls, P_ls,n_P=7, n_T=7): # returns Chebyshev in LMRR YAML format
+    def convertToChebyshev(self,T_ls, P_ls,n_P=7, n_T=7): # returns Chebyshev in LMRR YAML format
         try:
             self.T_ls = T_ls
             self.P_ls = P_ls
@@ -108,12 +105,13 @@ class masterFitter:
             if reaction.get('type')=='linear-Burke':
                 colliderList=[]
                 for i, col in enumerate(reaction['colliders']):
+                    # print(col)
                     if i == 0:
-                        colliderList.append(fit_fxn(reaction,reaction['reference-collider'],"M",col['eps'],kTP='on'))
+                        colliderList.append(fit_fxn(self,reaction,reaction['reference-collider'],"M",col['eps'],kTP='on'))
                     elif len(list(reaction['colliders'][i].keys()))>3:
-                        colliderList.append(fit_fxn(reaction,col['name'],col['name'],col['eps'],kTP='on'))
+                        colliderList.append(fit_fxn(self,reaction,col['name'],col['name'],col['eps'],kTP='off'))
                     else:
-                        colliderList.append(fit_fxn(reaction,col['name'],col['name'],col['eps'],kTP='off'))
+                        colliderList.append(fit_fxn(self,reaction,col['name'],col['name'],col['eps'],kTP='off'))
                 newMechanism['reactions'].append({
                     'equation': reaction['equation'],
                     'type': 'linear-Burke',
