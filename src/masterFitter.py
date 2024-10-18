@@ -107,11 +107,11 @@ class masterFitter:
                 for i, col in enumerate(reaction['colliders']):
                     # print(col)
                     if i == 0:
-                        colliderList.append(fit_fxn(self,reaction,reaction['reference-collider'],"M",col['eps'],kTP='on'))
+                        colliderList.append(fit_fxn(self,reaction,reaction['reference-collider'],"M",col['efficiency'],kTP='on'))
                     elif len(list(reaction['colliders'][i].keys()))>3:
-                        colliderList.append(fit_fxn(self,reaction,col['name'],col['name'],col['eps'],kTP='off'))
+                        colliderList.append(fit_fxn(self,reaction,col['name'],col['name'],col['efficiency'],kTP='off'))
                     else:
-                        colliderList.append(fit_fxn(self,reaction,col['name'],col['name'],col['eps'],kTP='off'))
+                        colliderList.append(fit_fxn(self,reaction,col['name'],col['name'],col['efficiency'],kTP='off'))
                 newMechanism['reactions'].append({
                     'equation': reaction['equation'],
                     'type': 'linear-Burke',
@@ -144,4 +144,4 @@ for m in models.keys():
     base = {'mechanism': models[m]}
     base['colliders'] = 'test\\testinput.yaml'
     mF = masterFitter(baseInput=base,allPdep=True,date='Oct17')
-    mF.Troe(T_list,P_list)
+    mF.convertToTroe(T_list,P_list)
