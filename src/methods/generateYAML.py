@@ -176,7 +176,7 @@ def blendedInput(data):
 def arrheniusFit(col):
     newCol = copy.deepcopy(col)
     temps=np.array(newCol['temperatures'])
-    eps = np.array(newCol['eps'])
+    eps = np.array(newCol['efficiency'])
     def arrhenius_rate(T, A, beta, Ea):
         # R = 8.314  # Gas constant in J/(mol K)
         R = 1.987 # cal/molK
@@ -188,7 +188,7 @@ def arrheniusFit(col):
     result = least_squares(fit_function, initial_guess, args=(temps, np.log(eps)))
     A_fit, beta_fit, Ea_fit = result.x
     # Update eps values and remove temperatures
-    newCol['eps'] = {'A': round(float(A_fit),5),
+    newCol['efficiency'] = {'A': round(float(A_fit),5),
                   'b': round(float(beta_fit),5),
                   'Ea': round(float(Ea_fit),5)}
     newCol.pop('temperatures', None)
@@ -210,7 +210,7 @@ def zippedMech(data):
             pDep = True
             colliderM = {
                 'name': 'M',
-                'eps': {'A': 1, 'b': 0, 'Ea': 0},
+                'efficiency': {'A': 1, 'b': 0, 'Ea': 0},
                 'type': 'falloff',
                 'low-P-rate-constant': mech_rxn['low-P-rate-constant'],
                 'high-P-rate-constant': mech_rxn['high-P-rate-constant'],
@@ -220,7 +220,7 @@ def zippedMech(data):
             pDep = True
             colliderM = {
                 'name': 'M',
-                'eps': {'A': 1, 'b': 0, 'Ea': 0},
+                'efficiency': {'A': 1, 'b': 0, 'Ea': 0},
                 'type': 'pressure-dependent-Arrhenius',
                 'rate-constants': mech_rxn['rate-constants']
             }
@@ -228,7 +228,7 @@ def zippedMech(data):
             pDep = True
             colliderM = {
                 'name': 'M',
-                'eps': {'A': 1, 'b': 0, 'Ea': 0},
+                'efficiency': {'A': 1, 'b': 0, 'Ea': 0},
                 'type': 'Chebyshev',
                 'temperature-range': mech_rxn['temperature-range'],
                 'pressure-range': mech_rxn['pressure-range'],
