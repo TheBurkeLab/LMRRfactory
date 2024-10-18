@@ -241,7 +241,12 @@ def zippedMech(data):
                 blend_rxn = data['blend']['reactions'][idx]
                 refCol = data['blend']['reactions'][idx]['reference-collider']
                 colliders = blend_rxn['colliders']
-                append = True
+                newData['reactions'].append({
+                    'equation': mech_rxn['equation'],
+                    'type': 'linear-Burke',
+                    'reference-collider': refCol,
+                    'colliders': [colliderM] + colliders,
+                })
             elif data['generic']:
                 # user has opted to have generic 3b effs applied to all p-dep reactions
                 # which lack a specification in thirdbodydefaults and testinput
@@ -251,14 +256,14 @@ def zippedMech(data):
                 colliders = [arrheniusFit(col)
                              for col in data['defaults']['generic-colliders']
                              if col['name'] in speciesList]
-                append = True
-            if append == True:
                 newData['reactions'].append({
                     'equation': mech_rxn['equation'],
                     'type': 'linear-Burke',
                     'reference-collider': refCol,
                     'colliders': [colliderM] + colliders,
                 })
+            else:
+                newData['reactions'].append(mech_rxn)
         elif pDep and not addReaction:
             del mech_rxn['duplicate']
             newData['reactions'].append(mech_rxn)

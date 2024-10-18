@@ -143,5 +143,23 @@ P_list=np.logspace(-1,2,num=10)
 for m in models.keys():
     base = {'mechanism': models[m]}
     base['colliders'] = 'test\\testinput.yaml'
-    mF = masterFitter(baseInput=base,allPdep=True,date='Oct17')
+    mF = masterFitter(baseInput=base,allPdep=False,date='Oct17')
     mF.convertToTroe(T_list,P_list)
+
+# with open("test\\outputs\\Oct17\\alzuetamechanism_LMRR.yaml") as f:
+#     myYaml = yaml.safe_load(f)
+
+# def lookforA(key):
+#     rateconst = reaction.get(key)
+#     if rateconst:
+#         a = rateconst['A']
+#         if not a:
+#             print(f"reaction {reaction['equation']}")
+
+# for reaction in myYaml['reactions']:
+
+#     lookforA("rate-constant")
+#     lookforA("low-P-rate-constant")
+#     lookforA("high-P-rate-constant")
+#     lookforA("rate-constant")
+#     lookforA("rate-constant")
