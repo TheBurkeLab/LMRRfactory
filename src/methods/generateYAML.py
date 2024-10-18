@@ -237,27 +237,31 @@ def zippedMech(data):
             if mech_rxn['equation'] == rxn['equation']:
                 addReaction = False # Avoids adding a duplicate LMRR rxn that already exists in mech
         if pDep and addReaction:
+            append = False
             # rxn is specifically covered either in defaults or user input
             if normalize(mech_rxn['equation']) in blendRxnNames:
                 idx = blendRxnNames.index(normalize(mech_rxn['equation']))
                 blend_rxn = data['blend']['reactions'][idx]
                 refCol = data['blend']['reactions'][idx]['reference-collider']
                 colliders = blend_rxn['colliders']
+                append = True
+            elif data['generic']:
                 # user has opted to have generic 3b effs applied to all p-dep reactions
                 # which lack a specification in thirdbodydefaults and testinput
                 # print(data['defaults']['generic'])
-            elif data['generic'] == True:
                 refCol = 'AR' #just assumed, not aiming for perfection
                 speciesList = data['mech']['phases'][0]['species']
                 colliders = [arrheniusFit(col)
                              for col in data['defaults']['generic-colliders']
                              if col['name'] in speciesList]
-            newData['reactions'].append({
-                'equation': mech_rxn['equation'],
-                'type': 'linear-Burke',
-                'reference-collider': refCol,
-                'colliders': [colliderM] + colliders,
-            })
+                append = True
+            if append == True:
+                newData['reactions'].append({
+                    'equation': mech_rxn['equation'],
+                    'type': 'linear-Burke',
+                    'reference-collider': refCol,
+                    'colliders': [colliderM] + colliders,
+                })
         elif pDep and not addReaction:
             del mech_rxn['duplicate']
             newData['reactions'].append(mech_rxn)
