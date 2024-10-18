@@ -211,6 +211,7 @@ def zippedMech(data):
             colliderM = {
                 'name': 'M',
                 'eps': {'A': 1, 'b': 0, 'Ea': 0},
+                'type': 'falloff',
                 'low-P-rate-constant': mech_rxn['low-P-rate-constant'],
                 'high-P-rate-constant': mech_rxn['high-P-rate-constant'],
                 'Troe': mech_rxn['Troe'],
@@ -220,6 +221,7 @@ def zippedMech(data):
             colliderM = {
                 'name': 'M',
                 'eps': {'A': 1, 'b': 0, 'Ea': 0},
+                'type': 'pressure-dependent-Arrhenius',
                 'rate-constants': mech_rxn['rate-constants']
             }
         elif mech_rxn.get('type') == 'Chebyshev':
@@ -227,6 +229,7 @@ def zippedMech(data):
             colliderM = {
                 'name': 'M',
                 'eps': {'A': 1, 'b': 0, 'Ea': 0},
+                'type': 'Chebyshev',
                 'temperature-range': mech_rxn['temperature-range'],
                 'pressure-range': mech_rxn['pressure-range'],
                 'data': mech_rxn['data'],
