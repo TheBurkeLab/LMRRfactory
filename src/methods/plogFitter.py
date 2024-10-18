@@ -16,7 +16,7 @@ def get_PLOG_table(self,reaction,collider,label,epsilon,kTP='off'):
     if kTP=='on':
         colDict = {
             'name': label,
-            'eps': epsilon,
+            'efficiency': epsilon,
             'rate-constants': []
         }
         def arrhenius(T, A, n, Ea):
@@ -42,7 +42,7 @@ def get_PLOG_table(self,reaction,collider,label,epsilon,kTP='off'):
     else:
         colDict = {
             'name': label,
-            'eps': epsilon,
+            'efficiency': epsilon,
         }
     return colDict
 

@@ -107,11 +107,11 @@ class masterFitter:
                 for i, col in enumerate(reaction['colliders']):
                     # print(col)
                     if i == 0:
-                        colliderList.append(fit_fxn(self,reaction,reaction['reference-collider'],"M",col['efficiency'],kTP='on'))
+                        colliderList.append(fit_fxn(self,reaction,reaction['reference-collider'],"M",kTP='on'))
                     elif len(list(reaction['colliders'][i].keys()))>3:
-                        colliderList.append(fit_fxn(self,reaction,col['name'],col['name'],col['efficiency'],kTP='off'))
+                        colliderList.append(fit_fxn(self,reaction,col['name'],col['name'],epsilon=col['efficiency'],kTP='off'))
                     else:
-                        colliderList.append(fit_fxn(self,reaction,col['name'],col['name'],col['efficiency'],kTP='off'))
+                        colliderList.append(fit_fxn(self,reaction,col['name'],col['name'],epsilon=col['efficiency'],kTP='off'))
                 newMechanism['reactions'].append({
                     'equation': reaction['equation'],
                     'type': 'linear-Burke',

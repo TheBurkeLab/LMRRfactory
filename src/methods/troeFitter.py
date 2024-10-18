@@ -21,7 +21,7 @@ def get_Xdict(self,reaction):
         Xdict[P]=self.T_ls
     return Xdict
 
-def troe(self,reaction,collider,label,epsilon,kTP='off'):
+def troe(self,reaction,collider,label,epsilon=None,kTP='off'):
     def f(X,a0,n0,ea0,ai,ni,eai,Fcent):
         N= 0.75 - 1.27 * np.log10(Fcent)
         c= -0.4 - 0.67 * np.log10(Fcent)
@@ -76,10 +76,17 @@ def troe(self,reaction,collider,label,epsilon,kTP='off'):
     a0,n0,ea0,ai,ni,eai=popt[0],popt[1],popt[2],popt[3],popt[4],popt[5]
     def numFmt(val):
         return round(float(val),3)
-    if kTP=='on':
+    if kTP=='on' and not epsilon:
         colDict = {
             'name': label,
-            'eps': epsilon,
+            'low-P-rate-constant': {'A':numFmt(a0), 'b': numFmt(n0), 'Ea': numFmt(ea0)},
+            'high-P-rate-constant': {'A': numFmt(ai), 'b': numFmt(ni), 'Ea': numFmt(eai)},
+            'Troe': {'A': round(float(popt[6]),3), 'T3': 1.0e-30, 'T1': 1.0e+30}
+        }
+    elif kTP=='on' and epsilon:
+        colDict = {
+            'name': label,
+            'efficiency': epsilon,
             'low-P-rate-constant': {'A':numFmt(a0), 'b': numFmt(n0), 'Ea': numFmt(ea0)},
             'high-P-rate-constant': {'A': numFmt(ai), 'b': numFmt(ni), 'Ea': numFmt(eai)},
             'Troe': {'A': round(float(popt[6]),3), 'T3': 1.0e-30, 'T1': 1.0e+30}
@@ -87,6 +94,6 @@ def troe(self,reaction,collider,label,epsilon,kTP='off'):
     else:
         colDict = {
             'name': label,
-            'eps': epsilon,
+            'efficiency': epsilon,
         }
     return colDict

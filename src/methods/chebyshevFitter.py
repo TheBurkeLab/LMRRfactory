@@ -57,7 +57,7 @@ def get_cheb_table(self,reaction,collider,label,epsilon,kTP='off'):
     if kTP=='on':
         colDict = {
             'name': label,
-            'eps': epsilon,
+            'efficiency': epsilon,
             'temperature-range': [float(self.T_min), float(self.T_max)],
             'pressure-range': [f'{self.P_min:.3e} atm', f'{self.P_max:.3e} atm'],
             'data': []
@@ -71,7 +71,7 @@ def get_cheb_table(self,reaction,collider,label,epsilon,kTP='off'):
     else:
         colDict = {
             'name': label,
-            'eps': epsilon,
+            'efficiency': epsilon,
         }
     return colDict
 
