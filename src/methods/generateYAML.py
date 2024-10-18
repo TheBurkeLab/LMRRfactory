@@ -187,10 +187,7 @@ def arrheniusFit(col):
     initial_guess = [3, 0.5, 50.0]
     result = least_squares(fit_function, initial_guess, args=(temps, np.log(eps)))
     A_fit, beta_fit, Ea_fit = result.x
-    # Update eps values and remove temperatures
-    newCol['efficiency'] = {'A': round(float(A_fit),5),
-                  'b': round(float(beta_fit),5),
-                  'Ea': round(float(Ea_fit),5)}
+    newCol['efficiency'] = {'A': round(A_fit.item(),4),'b': round(beta_fit.item(),4),'Ea': round(Ea_fit.item(),4)}
     newCol.pop('temperatures', None)
     return newCol
 
