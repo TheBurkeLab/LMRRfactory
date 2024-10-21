@@ -33,8 +33,8 @@ def generateYAML(self):
     # Sub the colliders into their corresponding reactions in the input mechanism
     zippedMech(data)
     saveYAML(data['output'], self.foutName+".yaml")
-    print(f"LMR-R mechanism successfully generated from {os.path.basename(self.mechInput)}")
-    print(f"The new file is stored at {self.foutName+".yaml"}")
+    print(f"LMR-R mechanism successfully generated and stored at "
+          f"{self.foutName+".yaml"}")
     return data['output']
 
 def cleanMechInput(data):
