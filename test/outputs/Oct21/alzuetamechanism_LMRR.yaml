@@ -684,11 +684,11 @@ reactions:
     low-P-rate-constant: {A: 4.53e+21, b: -1.81, Ea: 498.7}
     high-P-rate-constant: {A: 25100000000000.0, b: 0.234, Ea: -114.2}
     Troe: {A: 0.73, T3: 1.0e-30, T1: 1.0e+30, T2: 1.0e+30}
-  - name: AR
-    efficiency: {A: 0.0221, b: 0.4739, Ea: -112.5294}
-    note: Jasper-2022
   - name: H2O
     efficiency: {A: 0.1064, b: 0.5486, Ea: -229.1664}
+    note: Jasper-2022
+  - name: AR
+    efficiency: {A: 0.0221, b: 0.4739, Ea: -112.5294}
     note: Jasper-2022
 - equation: H2O + O2 <=> H + OH + O2
   duplicate: true
@@ -704,6 +704,9 @@ reactions:
     low-P-rate-constant: {A: 6.366e+20, b: -1.72, Ea: 524.8}
     high-P-rate-constant: {A: 4700000000000.0, b: 0.44, Ea: 0.0}
     Troe: {A: 0.5, T3: 1.0e-30, T1: 1.0e+30}
+  - name: HE
+    efficiency: {A: 0.3376, b: 0.1826, Ea: 36.2408}
+    note: Jasper-2022
   - name: N2
     efficiency: {A: 124.9318, b: -0.5933, Ea: 540.9212}
     note: Jasper-2022
@@ -718,9 +721,6 @@ reactions:
     note: Jasper-2022
   - name: H2O
     efficiency: {A: 36.9146, b: -0.0713, Ea: 31.9087}
-    note: Jasper-2022
-  - name: HE
-    efficiency: {A: 0.3376, b: 0.1826, Ea: 36.2408}
     note: Jasper-2022
 - equation: HO2 + H <=> H2 + O2
   rate-constant: {A: 2800000.0, b: 2.09, Ea: -1451.0}
@@ -741,23 +741,12 @@ reactions:
 - equation: HO2 + HO2 <=> O2 + OH + OH
   rate-constant: {A: 6.4e+17, b: -1.54, Ea: 8540.0}
 - equation: H2O2 (+M) <=> OH + OH (+M)
-  type: linear-Burke
-  reference-collider: AR
-  colliders:
-  - name: M
-    type: falloff
-    low-P-rate-constant: {A: 2.5e+24, b: -2.3, Ea: 48749.0}
-    high-P-rate-constant: {A: 2000000000000.0, b: 0.9, Ea: 48749.0}
-    Troe: {A: 0.43, T3: 1.0e-30, T1: 1.0e+30}
-  - name: N2
-    efficiency: {A: 1.1481, b: 0.046, Ea: -2.9241}
-    note: Jasper-2022
-  - name: CO2
-    efficiency: {A: 89.8839, b: -0.428, Ea: 241.3924}
-    note: Jasper-2022
-  - name: H2O2
-    efficiency: {A: 0.6453, b: 0.4263, Ea: 42.8932}
-    note: Jasper-2022
+  type: falloff
+  low-P-rate-constant: {A: 2.5e+24, b: -2.3, Ea: 48749.0}
+  high-P-rate-constant: {A: 2000000000000.0, b: 0.9, Ea: 48749.0}
+  Troe: {A: 0.43, T3: 1.0e-30, T1: 1.0e+30}
+  efficiencies: {AR: 1.0, H2O: 7.5, CO2: 1.6, N2: 1.5, O2: 1.2, H2O2: 7.7, H2: 3.7,
+    CO: 2.8}
 - equation: H2O2 + H <=> H2O + OH
   rate-constant: {A: 24000000000000.0, b: 0.0, Ea: 3970.0}
 - equation: H2O2 + H <=> HO2 + H2
@@ -913,18 +902,6 @@ reactions:
     Troe: {A: 0.5, T3: 1.0e-30, T1: 1.0e+30, T2: 1.0e+30}
   - name: N2
     efficiency: {A: 4.4928, b: -0.0946, Ea: -110.0712}
-    note: Jasper-2022
-  - name: O2
-    efficiency: {A: 0.1152, b: 0.3412, Ea: -389.2099}
-    note: Jasper-2022
-  - name: CO2
-    efficiency: {A: 9.1958, b: 0.0611, Ea: 90.1088}
-    note: Jasper-2022
-  - name: NH3
-    efficiency: {A: 14.9004, b: 0.0607, Ea: 247.6525}
-    note: Jasper-2022
-  - name: H2O
-    efficiency: {A: 11.456, b: 0.1275, Ea: 313.9592}
     note: Jasper-2022
 - equation: NH3 + H <=> NH2 + H2
   rate-constant: {A: 540000.0, b: 2.4, Ea: 9916.0}
