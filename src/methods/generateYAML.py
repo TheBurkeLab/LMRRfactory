@@ -229,11 +229,7 @@ def zippedMech(data):
                 'data': mech_rxn['data'],
             }
 
-        addReaction = True
-        for rxn in newData['reactions']:
-            if mech_rxn['equation'] == rxn['equation']:
-                addReaction = False # Avoids adding a duplicate LMRR rxn that already exists in mech
-        if pDep and addReaction:
+        if pDep:
             append = False
             # rxn is specifically covered either in defaults or user input
             if normalize(mech_rxn['equation']) in blendRxnNames:
@@ -264,9 +260,6 @@ def zippedMech(data):
                 })
             else:
                 newData['reactions'].append(mech_rxn)
-        elif pDep and not addReaction:
-            del mech_rxn['duplicate']
-            newData['reactions'].append(mech_rxn)
         else: # not a pressure dependent reaction, so just append it as-is
             newData['reactions'].append(mech_rxn)
     data['output']=newData
