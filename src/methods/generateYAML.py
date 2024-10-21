@@ -254,8 +254,8 @@ def zippedMech(data):
             }
             if mech_rxn.get('duplicate') is not None:
                 newRxn['duplicate'] = True
-            newRxn['reference-collider'] = refCol
-            refCol = 'AR' #just assumed, not aiming for perfection
+            newRxn['reference-collider'] = 'AR' #just assumed, not aiming for perfection
+            # refCol = 'AR' #just assumed, not aiming for perfection
             speciesList = data['mech']['phases'][0]['species']
             colliders = [arrheniusFit(col)
                             for col in data['defaults']['generic-colliders']
