@@ -17,7 +17,7 @@ import warnings
 
 warnings.filterwarnings("ignore")
 
-class masterFitter:
+class LMRRfactory:
     def __init__(self,baseInput=None,lmrrInput=None,allPdep=False,date=""):
         self.T_ls = None
         self.P_ls = None
@@ -138,23 +138,3 @@ class masterFitter:
             yaml.dump(newMechanism, outfile, default_flow_style=None,sort_keys=False)
 
 ########################################################################################
-
-models = {
-    'Alzueta': 'test\\data\\alzuetamechanism.yaml',
-    # 'Mei': 'G:\\Mon disque\\Columbia\\Burke Lab\\07Mechanisms\\Mei-2019\\mei-2019.yaml',
-    # 'Glarborg': "G:\\Mon disque\\Columbia\\Burke Lab\\07 Mechanisms\\Glarborg-2018\\glarborg-2018.yaml",
-    # 'Zhang': "G:\\Mon disque\\Columbia\\Burke Lab\\07 Mechanisms\\Zhang-2017\\zhang-2017.yaml",
-    # 'Otomo': "G:\\Mon disque\\Columbia\\Burke Lab\\07 Mechanisms\\Otomo-2018\\otomo-2018.yaml",
-    # 'Stagni': "G:\\Mon disque\\Columbia\\Burke Lab\\07 Mechanisms\\Stagni-2020\\stagni-2020.yaml",
-    # 'Shrestha': "G:\\Mon disque\\Columbia\\Burke Lab\\07 Mechanisms\\Shrestha-2021\\shrestha-2021.yaml",
-    # 'Han': "G:\\Mon disque\\Columbia\\Burke Lab\\07 Mechanisms\\Han-2021\\han-2021.yaml"
-    }
-
-T_list=np.linspace(200,2000,100)
-P_list=np.logspace(-1,2,num=10)
-
-for m in models.keys():
-    base = {'mechanism': models[m]}
-    base['colliders'] = 'test\\testinput.yaml'
-    mF = masterFitter(baseInput=base,allPdep=True,date='Oct21')
-    mF.convertToTroe(T_list,P_list)
