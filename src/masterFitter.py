@@ -17,7 +17,6 @@ import warnings
 
 warnings.filterwarnings("ignore")
 
-
 class masterFitter:
     def __init__(self,baseInput=None,lmrrInput=None,allPdep=False,date=""):
         self.T_ls = None
@@ -53,7 +52,8 @@ class masterFitter:
                         self.foutName = self.foutName + "_allP"
                     self.data = generateYAML(self)
                 except ValueError:
-                    print(f"An LMR-R mechanism could not be generated using the baseInput files.")
+                    print(f"An LMR-R mechanism could not be generated using the "
+                          "baseInput files.")
             except ValueError:
                 print("Base input must take the form: "
                         "{'colliders': 'filename1', 'mechanism': 'filename2'}")
@@ -81,9 +81,12 @@ class masterFitter:
             foutName = self.foutName+"_PLOG"
             self._fittedYAML(foutName,plog)
         except ValueError:
-            print(f"Error: no LMR-R mechanism detected. If one already exists, it can be imported using LMRRfactory.load() -- otherwise, a new one can be generated using LMRRfactory.generate()")
+            print(f"Error: no LMR-R mechanism detected. If one already exists, it can "
+                  "be imported using LMRRfactory.load() -- otherwise, a new one can be "
+                  "generated using LMRRfactory.generate()")
 
-    def convertToChebyshev(self,T_ls, P_ls,n_P=7, n_T=7): # returns Chebyshev in LMRR YAML format
+    # returns Chebyshev in LMRR YAML format
+    def convertToChebyshev(self,T_ls, P_ls,n_P=7, n_T=7):
         try:
             self.T_ls = T_ls
             self.P_ls = P_ls
@@ -96,7 +99,9 @@ class masterFitter:
             foutName = self.foutName+"_Chebyshev"
             self._fittedYAML(foutName,chebyshev)
         except ValueError:
-            print(f"Error: no LMR-R mechanism detected. If one already exists, it can be imported using LMRRfactory.load() -- otherwise, a new one can be generated using LMRRfactory.generate()")
+            print(f"Error: no LMR-R mechanism detected. If one already exists, it can "
+                  "be imported using LMRRfactory.load() -- otherwise, a new one can be "
+                  "generated using LMRRfactory.generate()")
 
     def _fittedYAML(self,foutName,fit_fxn): # KEEP
         newMechanism={
@@ -112,11 +117,15 @@ class masterFitter:
                 for i, col in enumerate(reaction['colliders']):
                     # print(col)
                     if i == 0:
-                        colliderList.append(fit_fxn(self,reaction,reaction['reference-collider'],"M",kTP='on'))
+                        colliderList.append(fit_fxn(self, reaction,
+                                                    reaction['reference-collider'],
+                                                    "M", kTP='on'))
                     elif len(list(reaction['colliders'][i].keys()))>3:
-                        colliderList.append(fit_fxn(self,reaction,col['name'],col['name'],epsilon=col['efficiency'],kTP='off'))
+                        colliderList.append(fit_fxn(self, reaction, col['name'], col['name'],
+                                                    epsilon=col['efficiency'],kTP='off'))
                     else:
-                        colliderList.append(fit_fxn(self,reaction,col['name'],col['name'],epsilon=col['efficiency'],kTP='off'))
+                        colliderList.append(fit_fxn(self, reaction, col['name'], col['name'],
+                                                    epsilon=col['efficiency'], kTP='off'))
                 newMechanism['reactions'].append({
                     'equation': reaction['equation'],
                     'type': 'linear-Burke',
@@ -129,7 +138,6 @@ class masterFitter:
             yaml.dump(newMechanism, outfile, default_flow_style=None,sort_keys=False)
 
 ########################################################################################
-
 
 models = {
     'Alzueta': 'test\\data\\alzuetamechanism.yaml',
