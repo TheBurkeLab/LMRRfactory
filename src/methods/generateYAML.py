@@ -34,7 +34,7 @@ def generateYAML(self):
     zippedMech(data)
     saveYAML(data['output'], self.foutName+".yaml")
     print(f"LMR-R mechanism successfully generated from {os.path.basename(self.mechInput)}")
-    print(f"The new file is stored at {self.foutName+".yaml"}\n")
+    print(f"The new file is stored at {self.foutName+".yaml"}")
     return data['output']
 
 def cleanMechInput(data):
@@ -229,38 +229,40 @@ def zippedMech(data):
                 'data': mech_rxn['data'],
             }
 
-        if pDep:
-            append = False
-            # rxn is specifically covered either in defaults or user input
-            if normalize(mech_rxn['equation']) in blendRxnNames:
-                idx = blendRxnNames.index(normalize(mech_rxn['equation']))
-                blend_rxn = data['blend']['reactions'][idx]
-                refCol = data['blend']['reactions'][idx]['reference-collider']
-                colliders = blend_rxn['colliders']
-                newData['reactions'].append({
-                    'equation': mech_rxn['equation'],
-                    'type': 'linear-Burke',
-                    'reference-collider': refCol,
-                    'colliders': [colliderM] + colliders,
-                })
-            elif data['generic']:
-                # user has opted to have generic 3b effs applied to all p-dep reactions
-                # which lack a specification in thirdbodydefaults and testinput
-                # print(data['defaults']['generic'])
-                refCol = 'AR' #just assumed, not aiming for perfection
-                speciesList = data['mech']['phases'][0]['species']
-                colliders = [arrheniusFit(col)
-                             for col in data['defaults']['generic-colliders']
-                             if col['name'] in speciesList]
-                newData['reactions'].append({
-                    'equation': mech_rxn['equation'],
-                    'type': 'linear-Burke',
-                    'reference-collider': refCol,
-                    'colliders': [colliderM] + colliders,
-                })
-            else:
-                newData['reactions'].append(mech_rxn)
-        else: # not a pressure dependent reaction, so just append it as-is
+        if pDep and normalize(mech_rxn['equation']) in blendRxnNames:
+        # rxn is specifically covered either in defaults or user input
+            newRxn = {
+                'equation': mech_rxn['equation'],
+                'type': 'linear-Burke'
+            }
+            if mech_rxn.get('duplicate') is not None:
+                newRxn['duplicate'] = True
+            idx = blendRxnNames.index(normalize(mech_rxn['equation']))
+            blend_rxn = data['blend']['reactions'][idx]
+            refCol = data['blend']['reactions'][idx]['reference-collider']
+            colliders = blend_rxn['colliders']
+            newRxn['reference-collider'] = refCol
+            newRxn['colliders'] = [colliderM] + colliders
+            newData['reactions'].append(newRxn)
+        elif pDep and data['generic']:
+            # user has opted to have generic 3b effs applied to all p-dep reactions
+            # which lack a specification in thirdbodydefaults and testinput
+            # print(data['defaults']['generic'])
+            newRxn = {
+                'equation': mech_rxn['equation'],
+                'type': 'linear-Burke'
+            }
+            if mech_rxn.get('duplicate') is not None:
+                newRxn['duplicate'] = True
+            newRxn['reference-collider'] = refCol
+            refCol = 'AR' #just assumed, not aiming for perfection
+            speciesList = data['mech']['phases'][0]['species']
+            colliders = [arrheniusFit(col)
+                            for col in data['defaults']['generic-colliders']
+                            if col['name'] in speciesList]
+            newRxn['colliders'] = [colliderM] + colliders
+            newData['reactions'].append(newRxn)
+        else: # just append it as-is
             newData['reactions'].append(mech_rxn)
     data['output']=newData
 

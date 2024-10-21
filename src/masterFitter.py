@@ -69,7 +69,10 @@ class masterFitter:
         self.T_ls = T_ls
         self.P_ls = P_ls
         foutName2 = self.foutName+"_Troe.yaml"
+        print(f"\nConverting k(T,P) aspect of all linear-Burke reactions inside "
+              f"{os.path.basename(self.foutName)} to Troe format.")
         self._fittedYAML(foutName2,troe)
+        print(f"The new file is stored at {self.foutName+'_Troe.yaml'}")
 
     def convertToPLOG(self,T_ls, P_ls): # returns PLOG in LMRR YAML format
         try:
@@ -145,7 +148,7 @@ P_list=np.logspace(-1,2,num=10)
 for m in models.keys():
     base = {'mechanism': models[m]}
     base['colliders'] = 'test\\testinput.yaml'
-    mF = masterFitter(baseInput=base,allPdep=False,date='Oct17')
+    mF = masterFitter(baseInput=base,allPdep=True,date='Oct21')
     mF.convertToTroe(T_list,P_list)
 # import sys
 # sys.path.append("C:/Users/pjsin/Documents/cantera/build/python")
