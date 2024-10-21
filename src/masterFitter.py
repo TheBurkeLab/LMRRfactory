@@ -28,6 +28,7 @@ class masterFitter:
         self.P_max = None
         self.T_min = None
         self.T_max = None
+        self.rxnIdx = None
         # self.allPdep is option to apply generic 3b-effs to all p-dep reactions in
         # mechanism that haven't already been explicitly specified in either
         # "thirdbodydefaults.yaml" or self.colliderInput
@@ -101,7 +102,8 @@ class masterFitter:
                 'species': self.data['species'],
                 'reactions': []
                 }
-        for reaction in self.data['reactions']:
+        for rxnIdx, reaction in enumerate(self.data['reactions']):
+            self.rxnIdx = rxnIdx
             if reaction.get('type')=='linear-Burke':
                 colliderList=[]
                 for i, col in enumerate(reaction['colliders']):
@@ -145,21 +147,52 @@ for m in models.keys():
     base['colliders'] = 'test\\testinput.yaml'
     mF = masterFitter(baseInput=base,allPdep=False,date='Oct17')
     mF.convertToTroe(T_list,P_list)
+# import sys
+# sys.path.append("C:/Users/pjsin/Documents/cantera/build/python")
+# import cantera as ct
+# # gas = ct.Solution("test\\outputs\\Oct17\\alzuetamechanism_LMRR.yaml")
 
-# with open("test\\outputs\\Oct17\\alzuetamechanism_LMRR.yaml") as f:
-#     myYaml = yaml.safe_load(f)
 
-# def lookforA(key):
-#     rateconst = reaction.get(key)
-#     if rateconst:
-#         a = rateconst['A']
-#         if not a:
-#             print(f"reaction {reaction['equation']}")
+# import yaml
 
-# for reaction in myYaml['reactions']:
+# # Load the YAML file
+# with open('test/outputs/Oct17/alzuetamechanism_LMRR.yaml', 'r') as file:
+#     mechanism_data = yaml.safe_load(file)
 
-#     lookforA("rate-constant")
-#     lookforA("low-P-rate-constant")
-#     lookforA("high-P-rate-constant")
-#     lookforA("rate-constant")
-#     lookforA("rate-constant")
+# # Initialize a list to hold reactions with issues
+# problematic_reactions = []
+
+# # Iterate through each reaction in the mechanism
+# for reaction in mechanism_data.get('reactions', []):
+#     if 'rate-constant' in reaction and 'A' in reaction['rate-constant']:
+#         a_value = reaction['rate-constant']['A']
+#         # Check if 'A' is None or empty
+#         if a_value is None or a_value == '':
+#             problematic_reactions.append(reaction)
+
+# # Print out the problematic reactions
+# if problematic_reactions:
+#     print("Reactions with missing or empty 'A' values:")
+#     for i, r in enumerate(problematic_reactions):
+#         print(f"Reaction {i + 1}: {r}")
+# else:
+#     print("No reactions found with missing or empty 'A' values.")
+
+
+# # with open("test\\outputs\\Oct17\\alzuetamechanism_LMRR.yaml") as f:
+# #     myYaml = yaml.safe_load(f)
+
+# # def lookforA(key):
+# #     rateconst = reaction.get(key)
+# #     if rateconst:
+# #         a = rateconst['A']
+# #         if not a:
+# #             print(f"reaction {reaction['equation']}")
+
+# # for reaction in myYaml['reactions']:
+
+# #     lookforA("rate-constant")
+# #     lookforA("low-P-rate-constant")
+# #     lookforA("high-P-rate-constant")
+# #     lookforA("rate-constant")
+# #     lookforA("rate-constant")

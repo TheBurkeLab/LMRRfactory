@@ -40,12 +40,17 @@ def troe(self,reaction,collider,label,epsilon=None,kTP='off'):
         return logk_fit
     Xdict=get_Xdict(self,reaction)
     # gas = ct.Solution("shortMech.yaml")
-    gas = ct.Solution(yaml=yaml.safe_dump(self.data))
+    # with open(self.foutName+".yaml") as f:
+    #     test = yaml.safe_load(f)
+    #     # print(test)
+    # gas = ct.Solution(yaml=yaml.safe_dump(self.data))
+
+    gas = ct.Solution(self.foutName+".yaml")
     logk_list=[]
     for i,P in enumerate(Xdict.keys()):
         for j,T in enumerate(Xdict[P]):
             gas.TPX=T,P*ct.one_atm,{collider:1.0}
-            k_TP=gas.forward_rate_constants[gas.reaction_equations().index(reaction['equation'])]
+            k_TP=gas.forward_rate_constants[self.rxnIdx]
             logk_list.append(np.log10(k_TP))
     # NEED TO GENERALIZE THE FOLLOWING LINES
     # if "H + OH (+M)" in reaction:
