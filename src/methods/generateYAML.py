@@ -125,6 +125,7 @@ def deleteDuplicates(data): # delete duplicates from thirdBodyDefaults
         else: # reaction isn't in input, so keep the entire default rxn
             newData['reactions'].append(defaultRxn)
     data['defaults']=newData
+    saveYAML(data['defaults'], "defaults2.yaml")
 
 def blendedInput(data):
     blendData = {'reactions': []}
@@ -133,8 +134,12 @@ def blendedInput(data):
     # first fill it with all of the default reactions and colliders (which have valid
     # species)
     for defaultRxn in data['defaults']['reactions']:
-        if all(col['name'] in speciesList for col in defaultRxn['colliders']):
-            blendData['reactions'].append(defaultRxn)
+        newCollList = []
+        for col in defaultRxn['colliders']:
+            if col["name"] in speciesList:
+                newCollList.append(col)
+        defaultRxn['colliders'] = newCollList
+        blendData['reactions'].append(defaultRxn)
 
     defaultRxnNames = [rxn['equation'] for rxn in blendData['reactions']]
 
@@ -176,6 +181,7 @@ def blendedInput(data):
         #             for col in reaction['colliders']
         #             if col['name'] in speciesList]
     data['blend']=blendData
+    saveYAML(data['blend'], "blend.yaml")
 
 def arrheniusFit(col):
     newCol = copy.deepcopy(col)
