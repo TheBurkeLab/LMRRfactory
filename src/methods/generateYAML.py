@@ -14,24 +14,18 @@ def generateYAML(self):
         'defaults': loadYAML("data\\thirdbodydefaults.yaml"), # load default colliders
         'generic': self.allPdep # True or False
     }
-    # foutName = self.foutName.replace(".yaml","")
     cleanMechInput(data) # clean up 'NO' parsing errors in 'mech'
-    # saveYAML(data['mech'], f"{foutName}_cleaned.yaml")
     lookForPdep(data) # Verify that 'mech' has >=1 relevant p-dep reaction
-
     if data.get('input', {}).get('reactions', []) is not None:
         for reaction in data['input']['reactions']:
             reaction['equation'] = normalize(reaction['equation'])
     if data.get('defaults', {}).get('reactions', []) is not None:
         for reaction in data['defaults']['reactions']:
             reaction['equation'] = normalize(reaction['equation'])
-
     # Remove defaults colliders and reactions that were explictly provided by user
     deleteDuplicates(data)
-    # saveYAML(data['defaults'], f"{foutName}_uniqueDefaults.yaml")
     # Blend the user inputs and remaining collider defaults into a single YAML
     blendedInput(data)
-    # saveYAML(data['blend'], f"{foutName}_blended.yaml")
     # Sub the colliders into their corresponding reactions in the input mechanism
     zippedMech(data)
     saveYAML(data['output'], self.foutName+".yaml")
@@ -98,7 +92,6 @@ def normalize(equation):
         norm_equation = f"{norm_reactants} <=> {norm_products}"
     else:
         norm_equation = f"{norm_products} <=> {norm_reactants}"
-    # print(norm_reaction)
     return norm_equation
 
 def deleteDuplicates(data): # delete duplicates from thirdBodyDefaults
@@ -109,7 +102,6 @@ def deleteDuplicates(data): # delete duplicates from thirdBodyDefaults
         inputRxnNames = [rxn['equation'] for rxn in data['input']['reactions']]
         inputColliderNames = [[col['name'] for col in rxn['colliders']]
                             for rxn in data['input']['reactions']]
-
     for defaultRxn in data['defaults']['reactions']:
         if inputRxnNames is not None and defaultRxn['equation'] in inputRxnNames:
             idx = inputRxnNames.index(defaultRxn['equation'])
@@ -125,12 +117,10 @@ def deleteDuplicates(data): # delete duplicates from thirdBodyDefaults
         else: # reaction isn't in input, so keep the entire default rxn
             newData['reactions'].append(defaultRxn)
     data['defaults']=newData
-    saveYAML(data['defaults'], "defaults2.yaml")
 
 def blendedInput(data):
     blendData = {'reactions': []}
     speciesList = data['mech']['phases'][0]['species']
-
     # first fill it with all of the default reactions and colliders (which have valid
     # species)
     for defaultRxn in data['defaults']['reactions']:
@@ -140,9 +130,7 @@ def blendedInput(data):
                 newCollList.append(col)
         defaultRxn['colliders'] = newCollList
         blendData['reactions'].append(defaultRxn)
-
     defaultRxnNames = [rxn['equation'] for rxn in blendData['reactions']]
-
     if data.get('input', {}).get('reactions', []) is not None:
         for inputRxn in data['input']['reactions']:
             # Check if input reaction also exists in defaults file, otherwise add the entire
@@ -171,17 +159,10 @@ def blendedInput(data):
             else:
                 if all(col['name'] in speciesList for col in inputRxn['colliders']):
                     blendData['reactions'].append(inputRxn)
-
     # Convert collision efficiencies to arrhenius format and save to blended YAML
     for reaction in blendData['reactions']:
         reaction['colliders']=[arrheniusFit(col) for col in reaction['colliders']]
-
-
-        # colliders = [arrheniusFit(col)
-        #             for col in reaction['colliders']
-        #             if col['name'] in speciesList]
     data['blend']=blendData
-    saveYAML(data['blend'], "blend.yaml")
 
 def arrheniusFit(col):
     newCol = copy.deepcopy(col)
