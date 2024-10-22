@@ -19,10 +19,12 @@ def generateYAML(self):
     # saveYAML(data['mech'], f"{foutName}_cleaned.yaml")
     lookForPdep(data) # Verify that 'mech' has >=1 relevant p-dep reaction
 
-    for reaction in data['input']['reactions']:
-        reaction['equation'] = normalize(reaction['equation'])
-    for reaction in data['defaults']['reactions']:
-        reaction['equation'] = normalize(reaction['equation'])
+    if data.get('input', {}).get('reactions', []) is not None:
+        for reaction in data['input']['reactions']:
+            reaction['equation'] = normalize(reaction['equation'])
+    if data.get('defaults', {}).get('reactions', []) is not None:
+        for reaction in data['defaults']['reactions']:
+            reaction['equation'] = normalize(reaction['equation'])
 
     # Remove defaults colliders and reactions that were explictly provided by user
     deleteDuplicates(data)
@@ -102,13 +104,14 @@ def normalize(equation):
 def deleteDuplicates(data): # delete duplicates from thirdBodyDefaults
     newData = {'generic-colliders': data['defaults']['generic-colliders'],
                'reactions': []}
-    inputRxnNames = [rxn['equation'] for rxn in data['input']['reactions']]
-    inputColliderNames = [[col['name'] for col in rxn['colliders']]
-                          for rxn in data['input']['reactions']]
+    inputRxnNames = None
+    if data.get('input', {}).get('reactions', []) is not None:
+        inputRxnNames = [rxn['equation'] for rxn in data['input']['reactions']]
+        inputColliderNames = [[col['name'] for col in rxn['colliders']]
+                            for rxn in data['input']['reactions']]
+
     for defaultRxn in data['defaults']['reactions']:
-        if defaultRxn['equation'] in inputRxnNames:
-            # print(defaultRxn['equation'])
-            # print(normalize(defaultRxn['equation']))
+        if inputRxnNames is not None and defaultRxn['equation'] in inputRxnNames:
             idx = inputRxnNames.index(defaultRxn['equation'])
             inputColliders = inputColliderNames[idx]
             newColliderList = [col for col in defaultRxn['colliders']
@@ -135,33 +138,34 @@ def blendedInput(data):
 
     defaultRxnNames = [rxn['equation'] for rxn in blendData['reactions']]
 
-    for inputRxn in data['input']['reactions']:
-        # Check if input reaction also exists in defaults file, otherwise add the entire
-        # input reaction to the blend as-is
-        if inputRxn['equation'] in defaultRxnNames:
-            idx = defaultRxnNames.index(inputRxn['equation'])
-            blendRxn = blendData['reactions'][idx]
-            # If reference colliders match, append new colliders, otherwise override
-            # with the user inputs
-            if inputRxn['reference-collider'] == blendRxn['reference-collider']:
-                newColliders = [col for col in inputRxn['colliders']
-                                if col['name'] in speciesList]
-                blendRxn['colliders'].extend(newColliders)
+    if data.get('input', {}).get('reactions', []) is not None:
+        for inputRxn in data['input']['reactions']:
+            # Check if input reaction also exists in defaults file, otherwise add the entire
+            # input reaction to the blend as-is
+            if inputRxn['equation'] in defaultRxnNames:
+                idx = defaultRxnNames.index(inputRxn['equation'])
+                blendRxn = blendData['reactions'][idx]
+                # If reference colliders match, append new colliders, otherwise override
+                # with the user inputs
+                if inputRxn['reference-collider'] == blendRxn['reference-collider']:
+                    newColliders = [col for col in inputRxn['colliders']
+                                    if col['name'] in speciesList]
+                    blendRxn['colliders'].extend(newColliders)
+                else:
+                    print(f"User-provided reference collider for {inputRxn['equation']}, "
+                        f"({inputRxn['reference-collider']}) does not match the program "
+                        f"default ({blendData['reactions'][idx]['reference-collider']})."
+                        f"\nThe default colliders have thus been deleted and the reaction"
+                        f" has been completely overrided by (rather than blended with) "
+                        f"the user's custom input values.")
+                    blendRxn['reference-collider'] = inputRxn['reference-collider']
+                    newColliders = [col for col in inputRxn['colliders']
+                                    if col['name'] in speciesList]
+                    blendRxn['colliders'] = newColliders
+                    # blendRxn['colliders'] = inputRxn['colliders']
             else:
-                print(f"User-provided reference collider for {inputRxn['equation']}, "
-                      f"({inputRxn['reference-collider']}) does not match the program "
-                      f"default ({blendData['reactions'][idx]['reference-collider']})."
-                      f"\nThe default colliders have thus been deleted and the reaction"
-                      f" has been completely overrided by (rather than blended with) "
-                      f"the user's custom input values.")
-                blendRxn['reference-collider'] = inputRxn['reference-collider']
-                newColliders = [col for col in inputRxn['colliders']
-                                if col['name'] in speciesList]
-                blendRxn['colliders'] = newColliders
-                # blendRxn['colliders'] = inputRxn['colliders']
-        else:
-            if all(col['name'] in speciesList for col in inputRxn['colliders']):
-                blendData['reactions'].append(inputRxn)
+                if all(col['name'] in speciesList for col in inputRxn['colliders']):
+                    blendData['reactions'].append(inputRxn)
 
     # Convert collision efficiencies to arrhenius format and save to blended YAML
     for reaction in blendData['reactions']:
