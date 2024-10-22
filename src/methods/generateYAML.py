@@ -228,6 +228,8 @@ def zippedMech(data):
             }
             if mech_rxn.get('duplicate') is not None:
                 newRxn['duplicate'] = True
+            if mech_rxn.get('units') is not None:
+                newRxn['units'] = mech_rxn['units']
             idx = blendRxnNames.index(normalize(mech_rxn['equation']))
             blend_rxn = data['blend']['reactions'][idx]
             refCol = data['blend']['reactions'][idx]['reference-collider']
