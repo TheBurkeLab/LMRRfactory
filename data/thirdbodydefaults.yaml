@@ -104,7 +104,8 @@ reactions:
     efficiency: [23.3,22.2,21.3]
     temperatures: [300,1000,2000]
     note: Jasper-2022
-- equation: H2O2 (+M) <=> OH + OH (+M)
+# - equation: H2O2 (+M) <=> OH + OH (+M)
+- equation: OH + OH <=> H2O2
   reference-collider: AR
   colliders:
   - name: N2
