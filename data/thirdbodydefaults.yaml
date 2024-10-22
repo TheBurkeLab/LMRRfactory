@@ -70,11 +70,11 @@ reactions:
   reference-collider: N2
   colliders:
   - name: AR
-    efficiency: [0.398, 0.617, 0.833]
+    efficiency: [0.39840637450199207, 0.6172839506172839, 0.8333333333333334]
     temperatures: [300,1000,2000]
     note: Jasper-2022
   - name: H2O
-    efficiency: [3.57, 5.28, 7.29]
+    efficiency: [3.573705179282869, 5.277777777777778, 7.291666666666667]
     temperatures: [300,1000,2000]
     note: Jasper-2022
 - equation: H + O2 (+M) <=> HO2 (+M)
