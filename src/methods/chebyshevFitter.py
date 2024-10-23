@@ -1,6 +1,6 @@
 import numpy as np
-import sys, os
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../cantera/build/python')))
+# import sys, os
+# sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../cantera/build/python')))
 import cantera as ct
 import yaml
 
