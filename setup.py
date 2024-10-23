@@ -15,7 +15,8 @@ setup(
         long_description=LONG_DESCRIPTION,
         packages=find_packages(),
         include_package_data=True,
-        package_data={"LMRRfactory":['data','ext/cantera/build/python']},
+        # package_data={"LMRRfactory":['data','ext/cantera/build/python']},
+        package_data={"LMRRfactory":['data']},
         # install_requires=['cantera','numpy','pyyaml','scipy'],
         install_requires=['numpy','pyyaml','scipy'],
 
