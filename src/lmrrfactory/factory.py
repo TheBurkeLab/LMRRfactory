@@ -5,7 +5,9 @@ Class that allows for fitting of rate constants at various temperatures and pres
 # import sys, os
 # sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__))))
 
-from methods.generateYAML import generateYAML
+
+
+from .methods.generateYAML import generateYAML
 # from methods.chebyshevFitter import chebyshev
 # from methods.troeFitter import troe
 # from methods.plogFitter import plog
@@ -18,7 +20,7 @@ import warnings
 warnings.filterwarnings("ignore")
 
 class LMRRfactory:
-    def __init__(self,baseInput=None,lmrrInput=None,allPdep=False,date=""):
+    def __init__(self,baseInput=None,lmrrInput=None,outputPath=None,allPdep=False,date=""):
         self.T_ls = None
         self.P_ls = None
         self.n_P= None
@@ -33,7 +35,8 @@ class LMRRfactory:
         # "thirdbodydefaults.yaml" or self.colliderInput
         self.allPdep = False
 
-        path='USSCI\\factory_mechanisms'
+        # path='USSCI\\factory_mechanisms'
+        path = outputPath
         if date!="":
             path+=f'\\{date}'
         os.makedirs(path,exist_ok=True)
