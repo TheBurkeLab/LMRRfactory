@@ -30,7 +30,7 @@ def generateYAML(self):
     zippedMech(data)
     saveYAML(data['output'], self.foutName+".yaml")
     print(f"LMR-R mechanism successfully generated and stored at "
-          f"{self.foutName+".yaml"}")
+          f"{self.foutName}.yaml")
     return data['output']
 
 def cleanMechInput(data):
