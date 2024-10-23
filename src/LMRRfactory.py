@@ -18,7 +18,7 @@ import warnings
 warnings.filterwarnings("ignore")
 
 class LMRRfactory:
-    def __init__(self,baseInput=None,lmrrInput=None,allPdep=False,date=""):
+    def __init__(self,baseInput=None,lmrrInput=None,outputPath=None,allPdep=False,date=""):
         self.T_ls = None
         self.P_ls = None
         self.n_P= None
@@ -33,7 +33,8 @@ class LMRRfactory:
         # "thirdbodydefaults.yaml" or self.colliderInput
         self.allPdep = False
 
-        path='USSCI\\factory_mechanisms'
+        # path='USSCI\\factory_mechanisms'
+        path = outputPath
         if date!="":
             path+=f'\\{date}'
         os.makedirs(path,exist_ok=True)
