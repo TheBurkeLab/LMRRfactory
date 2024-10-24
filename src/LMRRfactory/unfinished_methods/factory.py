@@ -7,7 +7,7 @@ Class that allows for fitting of rate constants at various temperatures and pres
 
 
 
-from .methods.generateYAML import generateYAML
+from ..generate import generateYAML
 # from methods.chebyshevFitter import chebyshev
 # from methods.troeFitter import troe
 # from methods.plogFitter import plog
