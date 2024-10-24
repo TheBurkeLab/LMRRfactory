@@ -3,8 +3,8 @@ requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "lmrrfactory"
-version = '0.0.4'
+name = "LMRRfactory"
+version = '0.0.20'
 authors = [
   { name="Patrick Singal", email="p.singal@columbia.edu" },
 ]
