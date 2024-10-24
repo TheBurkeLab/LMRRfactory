@@ -16,7 +16,7 @@ import warnings
 warnings.filterwarnings("ignore")
 
 class makeYAML:
-    def __init__(self,baseInput=None,lmrrInput=None,outputPath=None,allPdep=False,date=""):
+    def __init__(self,mechInput=None, colliderInput=None, lmrrInput=None,outputPath=None,allPdep=False,date=""):
         self.T_ls = None
         self.P_ls = None
         self.n_P= None
@@ -38,24 +38,21 @@ class makeYAML:
         os.makedirs(path,exist_ok=True)
         path+='\\'
 
-        if baseInput:
+        if mechInput:
+            if colliderInput:
+                self.colliderInput = colliderInput
+            self.mechInput = mechInput
+            self.foutName = os.path.basename(self.mechInput).replace(".yaml","")
+            self.foutName = path + self.foutName + "_LMRR"
             try:
-                self.colliderInput = baseInput['colliders']
-                self.mechInput = baseInput['mechanism']
-                self.foutName = os.path.basename(self.mechInput).replace(".yaml","")
-                self.foutName = path + self.foutName + "_LMRR"
-                try:
-                    # create a YAML in the LMRR format
-                    if allPdep:
-                        self.allPdep = True
-                        self.foutName = self.foutName + "_allP"
-                    self.data = self.generateYAML()
-                except ValueError:
-                    print(f"An LMR-R mechanism could not be generated using the "
-                          "baseInput files.")
+                # create a YAML in the LMRR format
+                if allPdep:
+                    self.allPdep = True
+                    self.foutName = self.foutName + "_allP"
+                self.data = self.generateYAML()
             except ValueError:
-                print("Base input must take the form: "
-                        "{'colliders': 'filename1', 'mechanism': 'filename2'}")
+                print(f"An LMR-R mechanism could not be generated using the "
+                        "baseInput files.")
         if lmrrInput:
             try:
                 with open(lmrrInput) as f:
