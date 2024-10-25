@@ -32,12 +32,12 @@ class makeYAML:
         # "thirdbodydefaults.yaml" or self.colliderInput
         self.allPdep = False
 
-        # path='USSCI\\factory_mechanisms'
+        # path='USSCI/factory_mechanisms'
         path = outputPath
         if date!="":
-            path+=f'\\{date}'
+            path+=f'/{date}'
         os.makedirs(path,exist_ok=True)
-        path+='\\'
+        path+='/'
 
         if mechInput:
             if colliderInput:
