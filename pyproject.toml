@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "LMRRfactory"
-version = '0.0.21'
+version = '0.0.38'
 authors = [
   { name="Patrick Singal", email="p.singal@columbia.edu" },
 ]
@@ -19,3 +19,9 @@ classifiers = [
 
 [project.urls]
 Homepage = "https://github.com/TheBurkeLab/LMRRfactory"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+LMRRfactory = ["*.yaml"]
