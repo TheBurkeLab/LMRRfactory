@@ -1,4 +1,4 @@
-buildcommands.sh
+# buildcommands.sh
 src/__pycache__
 src/methods/__pycache__
 # # Byte-compiled / optimized / DLL files
