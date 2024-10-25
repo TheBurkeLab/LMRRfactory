@@ -1,0 +1,14 @@
+README.md
+pyproject.toml
+src/LMRRfactory/__init__.py
+src/LMRRfactory/generate.py
+src/LMRRfactory/thirdbodydefaults.yaml
+src/LMRRfactory.egg-info/PKG-INFO
+src/LMRRfactory.egg-info/SOURCES.txt
+src/LMRRfactory.egg-info/dependency_links.txt
+src/LMRRfactory.egg-info/top_level.txt
+src/LMRRfactory/unfinished_methods/chebyshevFitter.py
+src/LMRRfactory/unfinished_methods/factory.py
+src/LMRRfactory/unfinished_methods/plogFitter.py
+src/LMRRfactory/unfinished_methods/troeFitter.py
+test/testinput.py
