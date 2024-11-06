@@ -1,51 +1,51 @@
 # DATABASE OF DEFAULT THIRD-BODY EFFICIENCIES FOR SELECT REACTIONS
 generic-colliders: # AR is always reference collider
 - name: HE
-  efficiency: [2.56]*3
+  efficiency: [2.56,2.56,2.56]
   temperatures: [300,1000,2000]
   note: Jasper-2022
 - name: N2
-  efficiency: [2.25]*3
+  efficiency: [2.25,2.25,2.25]
   temperatures: [300,1000,2000]
   note: Jasper-2022
 - name: H2
-  efficiency: [4.09]*3
+  efficiency: [4.09,4.09,4.09]
   temperatures: [300,1000,2000]
   note: Jasper-2022
 - name: CO2
-  efficiency: [14.3]*3
+  efficiency: [14.3,14.3,14.3]
   temperatures: [300,1000,2000]
   note: Jasper-2022
 - name: NH3
-  efficiency: [22.2]*3
+  efficiency: [22.2,22.2,22.2]
   temperatures: [300,1000,2000]
   note: Jasper-2022
 - name: H2O
-  efficiency: [27.9]*3
+  efficiency: [27.9,27.9,27.9]
   temperatures: [300,1000,2000]
   note: Jasper-2022
 - name: H2O2
-  efficiency: [16.3]*3
+  efficiency: [16.3,16.3,16.3]
   temperatures: [300,1000,2000]
   note: Jasper-2022 (generic)
 - name: CO
-  efficiency: [2.746]*2            #val at 1500K used b.c. 2000K unavailable
+  efficiency: [2.746,2.746]          #val at 1500K used b.c. 2000K unavailable
   temperatures: [750,1500]
   note: Matsugi-2021 (generic)
 - name: CH4
-  efficiency: [14.3]*3
+  efficiency: [14.3,14.3,14.3]
   temperatures: [300,1000,2000]
   note: Jasper-2022 (generic)
 - name: O2
-  efficiency: [1.70]*3
+  efficiency: [1.70,1.70,1.70]
   temperatures: [300,1000,2000]
   note: Jasper-2022 (generic)
 - name: NE
-  efficiency: [1.13]*2
+  efficiency: [1.13,1.13]
   temperatures: [300,2000]
   note: JOM-2015 (generic)
 - name: KR
-  efficiency: [0.96]*2
+  efficiency: [0.96,0.96]
   temperatures: [300,2000]
   note: JOM-2015 (generic)
 # - name: HE
