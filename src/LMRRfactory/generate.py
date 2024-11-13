@@ -127,8 +127,8 @@ class makeYAML:
     def normalize(self, equation):
         # Split the equation into reactants and products
         reactants, products = equation.split('=')
-        reactants = reactants.strip().replace('(+M)', '').replace(' ', '')
-        products = products.strip().replace('(+M)', '').replace(' ', '')
+        reactants = reactants.strip().replace('(+M)', '').replace(' ', '').replace('<','').replace('>','')
+        products = products.strip().replace('(+M)', '').replace(' ', '').replace('<','').replace('>','')
         def normalize_side(side):
             # Split into species and their coefficients
             species_list = re.split(r'\s*\+\s*', side)
