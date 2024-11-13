@@ -126,7 +126,7 @@ class makeYAML:
 
     def normalize(self, equation):
         # Split the equation into reactants and products
-        reactants, products = equation.split('<=>')
+        reactants, products = equation.split('=')
         reactants = reactants.strip().replace('(+M)', '').replace(' ', '')
         products = products.strip().replace('(+M)', '').replace(' ', '')
         def normalize_side(side):
