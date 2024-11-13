@@ -16,7 +16,7 @@ import warnings
 warnings.filterwarnings("ignore")
 
 class makeYAML:
-    def __init__(self,mechInput=None, colliderInput=None, lmrrInput=None,outputPath=None,allPdep=False,date=""):
+    def __init__(self,mechInput=None, colliderInput=None, lmrrInput=None,outputPath=None,allPdep=False):
         self.T_ls = None
         self.P_ls = None
         self.n_P= None
@@ -33,11 +33,11 @@ class makeYAML:
         self.allPdep = False
 
         # path='USSCI/factory_mechanisms'
-        path = outputPath
-        if date!="":
-            path+=f'/{date}'
-        os.makedirs(path,exist_ok=True)
-        path+='/'
+        # path = outputPath
+        # if date!="":
+        #     path+=f'/{date}'
+        os.makedirs(outputPath,exist_ok=True)
+        path=outputPath+'/'
 
         if mechInput:
             if colliderInput:
