@@ -45,15 +45,15 @@ class makeYAML:
             self.mechInput = mechInput
             self.foutName = os.path.basename(self.mechInput).replace(".yaml","")
             self.foutName = path + self.foutName + "_LMRR"
-            try:
-                # create a YAML in the LMRR format
-                if allPdep:
-                    self.allPdep = True
-                    self.foutName = self.foutName + "_allP"
-                self.data = self.generateYAML()
-            except ValueError:
-                print(f"An LMR-R mechanism could not be generated using the "
-                        "baseInput files.")
+            # try:
+            # create a YAML in the LMRR format
+            if allPdep:
+                self.allPdep = True
+                self.foutName = self.foutName + "_allP"
+            self.data = self.generateYAML()
+            # except ValueError:
+            #     print(f"An LMR-R mechanism could not be generated using the "
+            #             "baseInput files.")
         if lmrrInput:
             try:
                 with open(lmrrInput) as f:
