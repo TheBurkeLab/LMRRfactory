@@ -283,7 +283,7 @@ class makeYAML:
                     'pressure-range': mech_rxn['pressure-range'],
                     'data': mech_rxn['data'],
                 }
-
+            print(mech_rxn['equation'])
             if pDep and self.normalize(mech_rxn['equation']) in blendRxnNames:
             # rxn is specifically covered either in defaults or user input
                 newRxn = {
