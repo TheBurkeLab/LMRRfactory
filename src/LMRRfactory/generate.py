@@ -16,7 +16,7 @@ import warnings
 warnings.filterwarnings("ignore")
 
 class makeYAML:
-    def __init__(self,mechInput=None, colliderInput=None, lmrrInput=None,outputPath=None,allPdep=False):
+    def __init__(self,mechInput=None, colliderInput=None, lmrrInput=None,outputPath=None,allPdep=False,allPLOG=False):
         self.T_ls = None
         self.P_ls = None
         self.n_P= None
@@ -31,6 +31,7 @@ class makeYAML:
         # mechanism that haven't already been explicitly specified in either
         # "thirdbodydefaults.yaml" or self.colliderInput
         self.allPdep = False
+        self.allPLOG = False
 
         # path='USSCI/factory_mechanisms'
         # path = outputPath
@@ -50,6 +51,9 @@ class makeYAML:
             if allPdep:
                 self.allPdep = True
                 self.foutName = self.foutName + "_allP"
+            if allPLOG:
+                self.allPLOG = True
+                self.foutName = self.foutName + "_allPLOG"
             self.data = self.generateYAML()
             # except ValueError:
             #     print(f"An LMR-R mechanism could not be generated using the "
@@ -67,7 +71,8 @@ class makeYAML:
         data = {
             'mech': self.loadYAML(self.mechInput), # load input mechanism}
             'defaults': self.loadYAML(data_path+"thirdbodydefaults.yaml"), # load default colliders
-            'generic': self.allPdep # True or False
+            'allPdep': self.allPdep, # True or False
+            'allPLOG': self.allPLOG, # True or False
         }
         if self.colliderInput is not None:
             data['input']=self.loadYAML(self.colliderInput)
@@ -257,6 +262,7 @@ class makeYAML:
         blendRxnNames = [rxn['equation'] for rxn in data['blend']['reactions']]
         for mech_rxn in data['mech']['reactions']:
             pDep = False
+            PLOG = False
             # Create the M-collider entry for the pressure-dependent reactions
             if mech_rxn.get('type') == 'falloff' and 'Troe' in mech_rxn:
                 pDep = True
@@ -269,6 +275,7 @@ class makeYAML:
                 }
             elif mech_rxn.get('type') == 'pressure-dependent-Arrhenius':
                 pDep = True
+                PLOG = True
                 colliderM = {
                     'name': 'M',
                     'type': 'pressure-dependent-Arrhenius',
@@ -302,10 +309,28 @@ class makeYAML:
                 newRxn['reference-collider'] = refCol
                 newRxn['colliders'] = [colliderM] + colliders
                 newData['reactions'].append(newRxn)
-            elif pDep and data['generic']:
+            elif pDep and data['allPdep']:
                 # user has opted to have generic 3b effs applied to all p-dep reactions
                 # which lack a specification in thirdbodydefaults and testinput
-                # print(data['defaults']['generic'])
+                # print(data['defaults']['allPdep''])
+                newRxn = {
+                    'equation': mech_rxn['equation'],
+                    'type': 'linear-Burke'
+                }
+                if mech_rxn.get('duplicate') is not None:
+                    newRxn['duplicate'] = True
+                newRxn['reference-collider'] = 'AR' #just assumed, not aiming for perfection
+                # refCol = 'AR' #just assumed, not aiming for perfection
+                speciesList = data['mech']['phases'][0]['species']
+                colliders = [self.arrheniusFit(col)
+                                for col in data['defaults']['generic-colliders']
+                                if col['name'] in speciesList]
+                newRxn['colliders'] = [colliderM] + colliders
+                newData['reactions'].append(newRxn)
+            elif PLOG and data['allPLOG']:
+                # user has opted to have generic 3b effs applied to all PLOG reactions
+                # which lack a specification in thirdbodydefaults and testinput
+                # print(data['defaults']['allPdep''])
                 newRxn = {
                     'equation': mech_rxn['equation'],
                     'type': 'linear-Burke'
