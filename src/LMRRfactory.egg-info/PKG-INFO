@@ -1,0 +1,17 @@
+Metadata-Version: 2.1
+Name: LMRRfactory
+Version: 0.0.15
+Summary: Auto-generate LMR-R reactions and mechanisms
+Author-email: Patrick Singal <p.singal@columbia.edu>
+Project-URL: Homepage, https://github.com/TheBurkeLab/LMRRfactory
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+
+# Example Package
+
+This is a simple example package. You can use
+[GitHub-flavored Markdown](https://guides.github.com/features/mastering-markdown/)
+to write your content.
