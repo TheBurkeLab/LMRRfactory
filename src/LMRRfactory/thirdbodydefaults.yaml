@@ -69,6 +69,38 @@ generic-colliders: # AR is always reference collider
   efficiency: [3,3]
   temperatures: [300,2000]
   note: Glarborg-2018
+- name: CH3OCH3
+  efficiency: [5,5]
+  temperatures: [300,2000]
+  note: Sivaramakrishnan-CNF2011 via Bugler-2016
+- name: CH3F
+  efficiency: [6,6]
+  temperatures: [300,2000]
+  note: Cornell-2024
+- name: CH2F2
+  efficiency: [6,6]
+  temperatures: [300,2000]
+  note: Cornell-2024
+- name: CHF3
+  efficiency: [6,6]
+  temperatures: [300,2000]
+  note: Cornell-2024
+- name: HF
+  efficiency: [2,2]
+  temperatures: [300,2000]
+  note: Cornell-2024
+- name: CF2O
+  efficiency: [5,5]
+  temperatures: [300,2000]
+  note: Cornell-2024
+- name: CF4
+  efficiency: [6,6]
+  temperatures: [300,2000]
+  note: Cornell-2024
+- name: N2O4
+  efficiency: [2,2]
+  temperatures: [300,2000]
+  note: Zhang-2017
 
 # - name: HE
 #   efficiency: [1.01,1.70,2.56]
