@@ -61,7 +61,7 @@ generic-colliders: # AR is always reference collider
   efficiency: [2.5,2.5]
   temperatures: [300,2000]
   note: Aramco-3.0 / TsangHampson-1986
-  - name: CH2O
+- name: CH2O
   efficiency: [2.5,2.5]
   temperatures: [300,2000]
   note: Glarborg-2018
