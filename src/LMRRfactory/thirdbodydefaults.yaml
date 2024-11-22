@@ -48,6 +48,28 @@ generic-colliders: # AR is always reference collider
   efficiency: [0.96,0.96]
   temperatures: [300,2000]
   note: JOM-2015 (generic)
+#not sure if any of the following vals are ab initio, and what T they are with respect to
+- name: C2H6
+  efficiency: [3,3]
+  temperatures: [300,2000]
+  note: Aramco-3.0 / TsangHampson-1986
+- name: C2H2
+  efficiency: [2.5,2.5]
+  temperatures: [300,2000]
+  note: Aramco-3.0 / TsangHampson-1986
+- name: C2H4
+  efficiency: [2.5,2.5]
+  temperatures: [300,2000]
+  note: Aramco-3.0 / TsangHampson-1986
+  - name: CH2O
+  efficiency: [2.5,2.5]
+  temperatures: [300,2000]
+  note: Glarborg-2018
+- name: CH3OH
+  efficiency: [3,3]
+  temperatures: [300,2000]
+  note: Glarborg-2018
+
 # - name: HE
 #   efficiency: [1.01,1.70,2.56]
 #   temperatures: [300,1000,2000]
