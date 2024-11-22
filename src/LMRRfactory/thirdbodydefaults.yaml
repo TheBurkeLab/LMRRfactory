@@ -97,10 +97,30 @@ generic-colliders: # AR is always reference collider
   efficiency: [6,6]
   temperatures: [300,2000]
   note: Cornell-2024
+- name: NO
+  efficiency: [3.0,3.0]
+  temperatures: [300,2000]
+  note: Zhang-2017
+- name: NO2
+  efficiency: [6.2,6.2]
+  temperatures: [300,2000]
+  note: Zhang-2017
+- name: N2O
+  efficiency: [4.4,4.4]
+  temperatures: [300,2000]
+  note: Zhang-2017
 - name: N2O4
   efficiency: [2,2]
   temperatures: [300,2000]
   note: Zhang-2017
+- name: O
+  efficiency: [4,4]
+  temperatures: [300,2000]
+  note: Han-2021
+- name: O3
+  efficiency: [2.5,2.5]
+  temperatures: [300,2000]
+  note: Han-2021
 
 # - name: HE
 #   efficiency: [1.01,1.70,2.56]
