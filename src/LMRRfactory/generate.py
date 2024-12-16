@@ -387,7 +387,7 @@ class makeYAML:
                 for j, col in enumerate(colliders):
                     for i,extra in enumerate(extras):
                         if col['name']==extra['name']:
-                            colliders.pop(j)
+                            colliders.remove(col)
                 newRxn['colliders'] = [colliderM] + colliders + extras
                 newData['reactions'].append(newRxn)
             elif PLOG and data['allPLOG']:
@@ -418,7 +418,7 @@ class makeYAML:
                 for j, col in enumerate(colliders):
                     for i,extra in enumerate(extras):
                         if col['name']==extra['name']:
-                            colliders.pop(j)
+                            colliders.remove(col)
                 newRxn['colliders'] = [colliderM] + colliders + extras
                 newData['reactions'].append(newRxn)
             else: # just append it as-is
