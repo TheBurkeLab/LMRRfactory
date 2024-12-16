@@ -292,6 +292,7 @@ class makeYAML:
             }
         blendRxnNames = [rxn['equation'] for rxn in data['blend']['reactions']]
         for mech_rxn in data['mech']['reactions']:
+            print(mech_rxn['equation'])
             pDep = False
             PLOG = False
             # troeEfficiencies={}
