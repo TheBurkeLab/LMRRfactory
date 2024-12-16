@@ -336,7 +336,7 @@ class makeYAML:
                 }
             # print(troeEfficiencies)
             # print(mech_rxn['equation'])
-            # print(self.normalize(mech_rxn['equation']))
+            print(self.normalize(mech_rxn['equation']))
             if pDep and self.normalize(mech_rxn['equation']) in blendRxnNames:
             # rxn is specifically covered either in defaults or user input
                 newRxn = {
