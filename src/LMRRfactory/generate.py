@@ -256,7 +256,7 @@ class makeYAML:
             return []
         divisor=1
         for name, val in mech_rxn['efficiencies'].items():
-            if name==refCol:
+            if name==refCol and val!=0:
                 divisor=val
         extras=[]
         for name, val in mech_rxn['efficiencies'].items():    
@@ -299,6 +299,7 @@ class makeYAML:
             'reactions': []
             }
         blendRxnNames = [rxn['equation'] for rxn in data['blend']['reactions']]
+        
         for mech_rxn in data['mech']['reactions']:
             # print(mech_rxn['equation'])
             pDep = False
@@ -336,7 +337,7 @@ class makeYAML:
                 }
             # print(troeEfficiencies)
             # print(mech_rxn['equation'])
-            # print(self.normalize(mech_rxn['equation']))
+            print(self.normalize(mech_rxn['equation']))
             if pDep and self.normalize(mech_rxn['equation']) in blendRxnNames:
             # rxn is specifically covered either in defaults or user input
                 newRxn = {
@@ -353,8 +354,8 @@ class makeYAML:
                 colliders = blend_rxn['colliders']
                 newRxn['reference-collider'] = refCol
                 extras = self.extraColliders(mech_rxn,colliders,refCol)
-                for col in colliders:
-                    for i,extra in enumerate(extras):
+                for i,extra in enumerate(extras):
+                    for col in colliders:                    
                         if col['name']==extra['name']:
                             extras.pop(i)
                 newRxn['colliders'] = [colliderM] + colliders + extras
@@ -370,7 +371,7 @@ class makeYAML:
                 if mech_rxn.get('duplicate') is not None:
                     newRxn['duplicate'] = True
                 newRxn['reference-collider'] = 'AR' #just assumed, not aiming for perfection
-                # refCol = 'AR' #just assumed, not aiming for perfection
+                refCol = 'AR' #just assumed, not aiming for perfection
                 speciesList = data['mech']['phases'][0]['species']
                 colliders=[]
                 for col in data['defaults']['generic-colliders']:
@@ -384,10 +385,10 @@ class makeYAML:
                                 'note': col['note']
                             })
                 extras = self.extraColliders(mech_rxn,colliders,refCol)
-                for j, col in enumerate(colliders):
-                    for i,extra in enumerate(extras):
+                for i,extra in enumerate(extras):
+                    for j, col in enumerate(colliders):
                         if col['name']==extra['name']:
-                            colliders.pop(j)
+                            colliders.remove(col)
                 newRxn['colliders'] = [colliderM] + colliders + extras
                 newData['reactions'].append(newRxn)
             elif PLOG and data['allPLOG']:
@@ -401,7 +402,7 @@ class makeYAML:
                 if mech_rxn.get('duplicate') is not None:
                     newRxn['duplicate'] = True
                 newRxn['reference-collider'] = 'AR' #just assumed, not aiming for perfection
-                # refCol = 'AR' #just assumed, not aiming for perfection
+                refCol = 'AR' #just assumed, not aiming for perfection
                 speciesList = data['mech']['phases'][0]['species']
                 colliders=[]
                 for col in data['defaults']['generic-colliders']:
@@ -415,10 +416,11 @@ class makeYAML:
                                 'note': col['note']
                             })
                 extras = self.extraColliders(mech_rxn,colliders,refCol)
-                for j, col in enumerate(colliders):
-                    for i,extra in enumerate(extras):
+                
+                for i,extra in enumerate(extras):
+                    for j, col in enumerate(colliders):
                         if col['name']==extra['name']:
-                            colliders.pop(j)
+                            colliders.remove(col)
                 newRxn['colliders'] = [colliderM] + colliders + extras
                 newData['reactions'].append(newRxn)
             else: # just append it as-is
