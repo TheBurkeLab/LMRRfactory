@@ -256,7 +256,7 @@ class makeYAML:
             return []
         divisor=1
         for name, val in mech_rxn['efficiencies'].items():
-            if name==refCol:
+            if name==refCol and name!=0:
                 divisor=val
         extras=[]
         for name, val in mech_rxn['efficiencies'].items():    
