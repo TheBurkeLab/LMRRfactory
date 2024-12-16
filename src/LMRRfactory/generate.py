@@ -311,6 +311,7 @@ class makeYAML:
                     'pressure-range': mech_rxn['pressure-range'],
                     'data': mech_rxn['data'],
                 }
+            print(troeEfficiencies)
             # print(mech_rxn['equation'])
             # print(self.normalize(mech_rxn['equation']))
             if pDep and self.normalize(mech_rxn['equation']) in blendRxnNames:
