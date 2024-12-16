@@ -255,6 +255,7 @@ class makeYAML:
     def troeColliders(self,blend_rxn, troeEfficiencies):
         colliders = blend_rxn['colliders']
         colliderNames = [col['name'] for col in colliders]
+        print(colliderNames)
         extraColliders = []
         for eff in troeEfficiencies.keys():
             if eff not in colliderNames:
