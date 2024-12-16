@@ -7,5 +7,5 @@ models = {
 
 for m in models.keys():
     makeYAML(mechInput=models[m],
-             outputPath='USSCI/factory_mechanisms',
+             outputPath='test/outputs/Dec16',
              allPdep=False)
