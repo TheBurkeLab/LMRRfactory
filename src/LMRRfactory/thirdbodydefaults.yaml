@@ -1,158 +1,120 @@
 # DATABASE OF DEFAULT THIRD-BODY EFFICIENCIES FOR SELECT REACTIONS
 generic-colliders: # AR is always reference collider
 - name: HE
-  efficiency: [2.56,2.56,2.56]
-  temperatures: [300,1000,2000]
-  note: Jasper-2022
+  efficiency: 2.56
+  note: Jasper-2022 (generic)
 - name: N2
-  efficiency: [2.25,2.25,2.25]
-  temperatures: [300,1000,2000]
-  note: Jasper-2022
+  efficiency: 2.25
+  note: Jasper-2022 (generic)
 - name: H2
-  efficiency: [4.09,4.09,4.09]
-  temperatures: [300,1000,2000]
-  note: Jasper-2022
+  efficiency: 4.09
+  note: Jasper-2022 (generic)
 - name: CO2
-  efficiency: [14.3,14.3,14.3]
-  temperatures: [300,1000,2000]
-  note: Jasper-2022
+  efficiency: 14.3
+  note: Jasper-2022 (generic)
 - name: NH3
-  efficiency: [22.2,22.2,22.2]
-  temperatures: [300,1000,2000]
-  note: Jasper-2022
+  efficiency: 22.2
+  note: Jasper-2022 (generic)
 - name: H2O
-  efficiency: [27.9,27.9,27.9]
-  temperatures: [300,1000,2000]
-  note: Jasper-2022
+  efficiency: 27.9
+  note: Jasper-2022 (generic)
 - name: H2O2
-  efficiency: [16.3,16.3,16.3]
-  temperatures: [300,1000,2000]
+  efficiency: 16.3
   note: Jasper-2022 (generic)
 - name: CO
-  efficiency: [2.746,2.746]          #val at 1500K used b.c. 2000K unavailable
-  temperatures: [750,1500]
+  efficiency: 2.746
   note: Matsugi-2021 (generic)
 - name: CH4
-  efficiency: [14.3,14.3,14.3]
-  temperatures: [300,1000,2000]
+  efficiency: 14.3
   note: Jasper-2022 (generic)
 - name: O2
-  efficiency: [1.70,1.70,1.70]
-  temperatures: [300,1000,2000]
+  efficiency: 1.70
   note: Jasper-2022 (generic)
 - name: NE
-  efficiency: [1.13,1.13]
-  temperatures: [300,2000]
+  efficiency: 1.13
   note: JOM-2015 (generic)
 - name: KR
-  efficiency: [0.96,0.96]
-  temperatures: [300,2000]
+  efficiency: 0.96
   note: JOM-2015 (generic)
 #not sure if any of the following vals are ab initio, and what T they are with respect to
 - name: C2H6 # alternative vals available in ThInK Mech
-  efficiency: [3,3]
-  temperatures: [300,2000]
-  note: Aramco-3.0 / TsangHampson-1986
+  efficiency: 3
+  note: Aramco-3.0 / TsangHampson-1986 (generic)
 - name: CH2O
-  efficiency: [2.5,2.5]
-  temperatures: [300,2000]
-  note: Glarborg-2018
+  efficiency: 2.5
+  note: Glarborg-2018 (generic)
 - name: CH3OH
-  efficiency: [3,3]
-  temperatures: [300,2000]
-  note: Glarborg-2018
+  efficiency: 3
+  note: Glarborg-2018 (generic)
 - name: CH3OCH3
-  efficiency: [5,5]
-  temperatures: [300,2000]
-  note: Sivaramakrishnan-CNF2011 via Bugler-2016
+  efficiency: 5
+  note: Sivaramakrishnan-CNF2011 via Bugler-2016 (generic)
 - name: CH3F
-  efficiency: [6,6]
-  temperatures: [300,2000]
-  note: Cornell-2024
+  efficiency: 6
+  note: Cornell-2024 (generic)
 - name: CH2F2
-  efficiency: [6,6]
-  temperatures: [300,2000]
-  note: Cornell-2024
+  efficiency: 6
+  note: Cornell-2024 (generic)
 - name: CHF3
-  efficiency: [6,6]
-  temperatures: [300,2000]
-  note: Cornell-2024
+  efficiency: 6
+  note: Cornell-2024 (generic)
 - name: HF
-  efficiency: [2,2]
-  temperatures: [300,2000]
-  note: Cornell-2024
+  efficiency: 2
+  note: Cornell-2024 (generic)
 - name: CF2O
-  efficiency: [5,5]
-  temperatures: [300,2000]
-  note: Cornell-2024
+  efficiency: 5
+  note: Cornell-2024 (generic)
 - name: CF4
-  efficiency: [6,6]
-  temperatures: [300,2000]
-  note: Cornell-2024
+  efficiency: 6
+  note: Cornell-2024 (generic)
 - name: NO
-  efficiency: [3.0,3.0]
-  temperatures: [300,2000]
-  note: Zhang-2017
+  efficiency: 3
+  note: Zhang-2017 (generic)
 - name: NO2
-  efficiency: [6.2,6.2]
-  temperatures: [300,2000]
-  note: Zhang-2017
+  efficiency: 6.2
+  note: Zhang-2017 (generic)
 - name: N2O
-  efficiency: [4.4,4.4]
-  temperatures: [300,2000]
-  note: Zhang-2017
+  efficiency: 4.4
+  note: Zhang-2017 (generic)
 - name: N2O4
-  efficiency: [2,2]
-  temperatures: [300,2000]
-  note: Zhang-2017
+  efficiency: 2
+  note: Zhang-2017 (generic)
 - name: O
-  efficiency: [4,4]
-  temperatures: [300,2000]
-  note: Han-2021
+  efficiency: 4
+  note: Han-2021 (generic)
 - name: O3
-  efficiency: [2.5,2.5]
-  temperatures: [300,2000]
-  note: Han-2021
+  efficiency: 2.5
+  note: Han-2021 (generic)
 - name: C3H8 
-  efficiency: [3,3]
-  temperatures: [300,2000]
-  note: ThInK 1.0
+  efficiency: 3
+  note: ThInK 1.0 (generic)
 - name: C2H4
-  efficiency: [3,3]
-  temperatures: [300,2000]
-  note: ThInK 1.0
+  efficiency: 3
+  note: ThInK 1.0 (generic)
 - name: CH3CHCH2 #propene
-  efficiency: [3,3]
-  temperatures: [300,2000]
-  note: ThInK 1.0
+  efficiency: 3
+  note: ThInK 1.0 (generic)
 - name: C3H6 #propene
-  efficiency: [3,3]
-  temperatures: [300,2000]
-  note: ThInK 1.0
+  efficiency: 3
+  note: ThInK 1.0 (generic)
 - name: C2H2
-  efficiency: [3,3]
-  temperatures: [300,2000]
-  note: ThInK 1.0
+  efficiency: 3
+  note: ThInK 1.0 (generic)
 - name: CH2CCH2 #allene
-  efficiency: [3,3]
-  temperatures: [300,2000]
-  note: ThInK 1.0
+  efficiency: 3
+  note: ThInK 1.0 (generic)
 - name: CH3CCH # propyne
-  efficiency: [3,3]
-  temperatures: [300,2000]
-  note: ThInK 1.0
+  efficiency: 3
+  note: ThInK 1.0 (generic)
 - name: C3H4 # propyne
-  efficiency: [3,3]
-  temperatures: [300,2000]
-  note: ThInK 1.0
+  efficiency: 3
+  note: ThInK 1.0 (generic)
 - name: CH3OCHO # methyl-formate
-  efficiency: [2.3,2.3]
-  temperatures: [300,2000]
-  note: ThInK 1.0
+  efficiency: 2.3
+  note: ThInK 1.0 (generic)
 - name: C2H4O2 # methyl-formate
-  efficiency: [2.3,2.3]
-  temperatures: [300,2000]
-  note: ThInK 1.0
+  efficiency: 2.3
+  note: ThInK 1.0 (generic)
 
 reactions:
 - equation: H + OH (+M) <=> H2O (+M)
