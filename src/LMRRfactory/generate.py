@@ -250,37 +250,52 @@ class makeYAML:
         newCol['efficiency'] = {'A': round(A_fit.item(),8),'b': round(beta_fit.item(),8),'Ea': round(Ea_fit.item(),8)}
         newCol.pop('temperatures', None)
         return newCol
-    
-
-    # def troeColliders(self,blend_rxn, troeEfficiencies):
-    #     colliders = blend_rxn['colliders']
-    #     colliderNames = [col['name'] for col in colliders]
-    #     print(colliderNames)
-    #     extraColliders = []
-    #     for eff in troeEfficiencies.keys():
-    #         if eff not in colliderNames:
-    #             extraColliders.append({
-    #                 'name': eff,
-    #                 'efficiency': [troeEfficiencies[eff]]*2,
-    #                 'temperatures': [300,2000],
-    #                 'note': 'present work',
-    #             })
-    #     extraColliders = [self.arrheniusFit(col) for col in extraColliders]
-    #     print(extraColliders)
-    #     return extraColliders
 
     def extraColliders(self,mech_rxn,colliders,refCol):
+        if mech_rxn.get('efficiencies') is None:
+            return []
         extras=[]
-        if mech_rxn.get('efficiencies') is not None:
-            colliderNames = [col['name'] for col in colliders]
-            for eff in mech_rxn['efficiencies'].keys():
-                if eff not in colliderNames and eff!=refCol:
-                    extras.append({
-                        'name': eff,
-                        'efficiency': {'A':mech_rxn['efficiencies'][eff],'b':0,'Ea':0 },
-                        'note': 'present work',
-                    })
+        colliderNames = [col['name'] for col in colliders]
+        for name, val in mech_rxn['efficiencies'].items():
+            # if name not in colliderNames and name!=refCol:
+            if name!=refCol:
+                extras.append({
+                    'name': name,
+                    'efficiency': {'A':val,'b':0,'Ea':0 },
+                    'note': 'present work',
+                })
+            # else:
+            #     for col in colliders:
+            #         if name==col['name'] and val['A']!=col['efficiency']['A'] and col['efficiency']['A']:
+            #                 extras.append({
+            #                 'name': name,
+            #                 'efficiency': {'A':val,'b':0,'Ea':0 },
+            #                 'note': 'present work',
+            #             })
         return extras
+    
+# def extraColliders(self,mech_rxn,colliders,refCol):
+# if mech_rxn.get('efficiencies') is None:
+#     return []
+# extras=[]
+# colliderNames = [col['name'] for col in colliders]
+# for name, val in mech_rxn['efficiencies'].items():
+#     if name not in colliderNames and name!=refCol:
+#         extras.append({
+#             'name': name,
+#             'efficiency': {'A':val,'b':0,'Ea':0 },
+#             'note': 'present work',
+#         })
+#     else:
+#         for col in colliders:
+#             if name==col['name'] and val!=col['efficiency']['A']:
+#                     extras.append({
+#                     'name': name,
+#                     'efficiency': {'A':val,'b':0,'Ea':0 },
+#                     'note': 'present work',
+#                 })
+#         return extras
+
 
 
     def zippedMech(self, data):
@@ -344,9 +359,12 @@ class makeYAML:
                 refCol = data['blend']['reactions'][idx]['reference-collider']
                 colliders = blend_rxn['colliders']
                 newRxn['reference-collider'] = refCol
-                newRxn['colliders'] = [colliderM] + colliders
-                if mech_rxn.get('efficiencies') is not None:
-                    newRxn['colliders']+=self.extraColliders(mech_rxn,colliders,refCol)
+                extras = self.extraColliders(mech_rxn,colliders,refCol)
+                for col in colliders:
+                    for i,extra in enumerate(extras):
+                        if col['name']==extra['name']:
+                            extras.pop(i)
+                newRxn['colliders'] = [colliderM] + colliders + extras
                 newData['reactions'].append(newRxn)
             elif pDep and data['allPdep']:
                 # user has opted to have generic 3b effs applied to all p-dep reactions
@@ -372,7 +390,12 @@ class makeYAML:
                                 'efficiency': {'A': col['efficiency'],'b':0,'Ea':0},
                                 'note': col['note']
                             })
-                newRxn['colliders'] = [colliderM] + colliders + self.extraColliders(mech_rxn,colliders,refCol)
+                extras = self.extraColliders(mech_rxn,colliders,refCol)
+                for j, col in enumerate(colliders):
+                    for i,extra in enumerate(extras):
+                        if col['name']==extra['name']:
+                            colliders.pop(j)
+                newRxn['colliders'] = [colliderM] + colliders + extras
                 newData['reactions'].append(newRxn)
             elif PLOG and data['allPLOG']:
                 # user has opted to have generic 3b effs applied to all PLOG reactions
@@ -398,7 +421,12 @@ class makeYAML:
                                 'efficiency': {'A': col['efficiency'],'b':0,'Ea':0},
                                 'note': col['note']
                             })
-                newRxn['colliders'] = [colliderM] + colliders + self.extraColliders(mech_rxn,colliders,refCol)
+                extras = self.extraColliders(mech_rxn,colliders,refCol)
+                for j, col in enumerate(colliders):
+                    for i,extra in enumerate(extras):
+                        if col['name']==extra['name']:
+                            colliders.pop(j)
+                newRxn['colliders'] = [colliderM] + colliders + extras
                 newData['reactions'].append(newRxn)
             else: # just append it as-is
                 newData['reactions'].append(mech_rxn)
