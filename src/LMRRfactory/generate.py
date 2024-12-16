@@ -263,6 +263,14 @@ class makeYAML:
                     'efficiency': {'A':val,'b':0,'Ea':0 },
                     'note': 'present work',
                 })
+            else:
+                for col in colliders:
+                    if name==col['name'] and float(val)!=col['efficiency']['A']:
+                            extras.append({
+                            'name': name,
+                            'efficiency': {'A':val,'b':0,'Ea':0 },
+                            'note': 'present work',
+                        })
         return extras
     
 # def extraColliders(self,mech_rxn,colliders,refCol):
