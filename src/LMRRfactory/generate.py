@@ -257,7 +257,8 @@ class makeYAML:
         extras=[]
         colliderNames = [col['name'] for col in colliders]
         for name, val in mech_rxn['efficiencies'].items():
-            if name not in colliderNames and name!=refCol:
+            # if name not in colliderNames and name!=refCol:
+            if name!=refCol:
                 extras.append({
                     'name': name,
                     'efficiency': {'A':val,'b':0,'Ea':0 },
@@ -358,9 +359,12 @@ class makeYAML:
                 refCol = data['blend']['reactions'][idx]['reference-collider']
                 colliders = blend_rxn['colliders']
                 newRxn['reference-collider'] = refCol
-                newRxn['colliders'] = [colliderM] + colliders
-                if mech_rxn.get('efficiencies') is not None:
-                    newRxn['colliders']+=self.extraColliders(mech_rxn,colliders,refCol)
+                extras = self.extraColliders(mech_rxn,colliders,refCol)
+                for col in colliders:
+                    for extra in extras:
+                        if col['name']==extra['name']:
+                            extras.pop(extras)
+                newRxn['colliders'] = [colliderM] + colliders + extras
                 newData['reactions'].append(newRxn)
             elif pDep and data['allPdep']:
                 # user has opted to have generic 3b effs applied to all p-dep reactions
