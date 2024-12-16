@@ -252,22 +252,22 @@ class makeYAML:
         return newCol
     
 
-    def troeColliders(self,blend_rxn, troeEfficiencies):
-        colliders = blend_rxn['colliders']
-        colliderNames = [col['name'] for col in colliders]
-        print(colliderNames)
-        extraColliders = []
-        for eff in list(troeEfficiencies.keys()):
-            if eff not in colliderNames:
-                extraColliders.append({
-                    'name': eff,
-                    'efficiency': [troeEfficiencies[eff]]*2,
-                    'temperatures': [300,2000],
-                    'note': 'present work',
-                })
-        extraColliders = [self.arrheniusFit(col) for col in extraColliders]
-        print(extraColliders)
-        return extraColliders
+    # def troeColliders(self,blend_rxn, troeEfficiencies):
+    #     colliders = blend_rxn['colliders']
+    #     colliderNames = [col['name'] for col in colliders]
+    #     print(colliderNames)
+    #     extraColliders = []
+    #     for eff in troeEfficiencies.keys():
+    #         if eff not in colliderNames:
+    #             extraColliders.append({
+    #                 'name': eff,
+    #                 'efficiency': [troeEfficiencies[eff]]*2,
+    #                 'temperatures': [300,2000],
+    #                 'note': 'present work',
+    #             })
+    #     extraColliders = [self.arrheniusFit(col) for col in extraColliders]
+    #     print(extraColliders)
+    #     return extraColliders
 
 
     def zippedMech(self, data):
@@ -281,7 +281,7 @@ class makeYAML:
         for mech_rxn in data['mech']['reactions']:
             pDep = False
             PLOG = False
-            troeEfficiencies={}
+            # troeEfficiencies={}
             # Create the M-collider entry for the pressure-dependent reactions
             if mech_rxn.get('type') == 'falloff' and 'Troe' in mech_rxn:
                 pDep = True
@@ -292,9 +292,9 @@ class makeYAML:
                     'high-P-rate-constant': mech_rxn['high-P-rate-constant'],
                     'Troe': mech_rxn['Troe'],
                 }
-                if mech_rxn.get('efficiencies') is not None:
-                    for key in mech_rxn['efficiencies'].keys():
-                        troeEfficiencies[key]=mech_rxn['efficiencies'][key]
+                # if mech_rxn.get('efficiencies') is not None:
+                #     for key in mech_rxn['efficiencies'].keys():
+                #         troeEfficiencies[key]=mech_rxn['efficiencies'][key]
             elif mech_rxn.get('type') == 'pressure-dependent-Arrhenius':
                 pDep = True
                 PLOG = True
@@ -312,7 +312,7 @@ class makeYAML:
                     'pressure-range': mech_rxn['pressure-range'],
                     'data': mech_rxn['data'],
                 }
-            print(troeEfficiencies)
+            # print(troeEfficiencies)
             # print(mech_rxn['equation'])
             # print(self.normalize(mech_rxn['equation']))
             if pDep and self.normalize(mech_rxn['equation']) in blendRxnNames:
@@ -331,8 +331,24 @@ class makeYAML:
                 colliders = blend_rxn['colliders']
                 newRxn['reference-collider'] = refCol
                 newRxn['colliders'] = [colliderM] + colliders
+                if mech_rxn.get('efficiencies') is not None:
+                    colliderNames = [col['name'] for col in colliders]
+                    for eff in mech_rxn['efficiencies'].keys():
+                        if eff not in colliderNames:
+                            newDict= {
+                                'name': eff,
+                                'efficiency': {'A':mech_rxn['efficiencies'][eff],'b':0,'Ea':0 },
+                                'note': 'present work',
+                            }
+                            print(newDict)
+                            newRxn['colliders'].append({
+                                'name': eff,
+                                'efficiency': {'A':mech_rxn['efficiencies'][eff],'b':0,'Ea':0 },
+                                'note': 'present work',
+                            })
+                extraColliders = [self.arrheniusFit(col) for col in extraColliders]
+                print(extraColliders)
                 newData['reactions'].append(newRxn)
-                self.troeColliders(blend_rxn,troeEfficiencies)
             elif pDep and data['allPdep']:
                 # user has opted to have generic 3b effs applied to all p-dep reactions
                 # which lack a specification in thirdbodydefaults and testinput
