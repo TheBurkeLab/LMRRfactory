@@ -263,14 +263,14 @@ class makeYAML:
                     'efficiency': {'A':val,'b':0,'Ea':0 },
                     'note': 'present work',
                 })
-            else:
-                for col in colliders:
-                    if name==col['name'] and float(val)!=col['efficiency']['A']:
-                            extras.append({
-                            'name': name,
-                            'efficiency': {'A':val,'b':0,'Ea':0 },
-                            'note': 'present work',
-                        })
+            # else:
+            #     for col in colliders:
+            #         if name==col['name'] and val['A']!=col['efficiency']['A'] and col['efficiency']['A']:
+            #                 extras.append({
+            #                 'name': name,
+            #                 'efficiency': {'A':val,'b':0,'Ea':0 },
+            #                 'note': 'present work',
+            #             })
         return extras
     
 # def extraColliders(self,mech_rxn,colliders,refCol):
@@ -386,7 +386,12 @@ class makeYAML:
                                 'efficiency': {'A': col['efficiency'],'b':0,'Ea':0},
                                 'note': col['note']
                             })
-                newRxn['colliders'] = [colliderM] + colliders + self.extraColliders(mech_rxn,colliders,refCol)
+                extras = self.extraColliders(mech_rxn,colliders,refCol)
+                for col in colliders:
+                    for extra in extras:
+                        if col['name']==extra['name']:
+                            colliders.pop(col)
+                newRxn['colliders'] = [colliderM] + colliders + extras
                 newData['reactions'].append(newRxn)
             elif PLOG and data['allPLOG']:
                 # user has opted to have generic 3b effs applied to all PLOG reactions
@@ -412,7 +417,12 @@ class makeYAML:
                                 'efficiency': {'A': col['efficiency'],'b':0,'Ea':0},
                                 'note': col['note']
                             })
-                newRxn['colliders'] = [colliderM] + colliders + self.extraColliders(mech_rxn,colliders,refCol)
+                extras = self.extraColliders(mech_rxn,colliders,refCol)
+                for col in colliders:
+                    for extra in extras:
+                        if col['name']==extra['name']:
+                            colliders.pop(col)
+                newRxn['colliders'] = [colliderM] + colliders + extras
                 newData['reactions'].append(newRxn)
             else: # just append it as-is
                 newData['reactions'].append(mech_rxn)

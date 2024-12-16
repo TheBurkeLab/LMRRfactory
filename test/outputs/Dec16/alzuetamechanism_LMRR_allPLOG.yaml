@@ -776,8 +776,26 @@ reactions:
   - name: CO
     efficiency: {A: 2.50843065, b: 0.01466739, Ea: 50.00578392}
     note: Matsugi-2021
+  - name: H2O
+    efficiency: {A: 7.5, b: 0, Ea: 0}
+    note: present work
+  - name: CO2
+    efficiency: {A: 1.6, b: 0, Ea: 0}
+    note: present work
+  - name: N2
+    efficiency: {A: 1.5, b: 0, Ea: 0}
+    note: present work
   - name: O2
     efficiency: {A: 1.2, b: 0, Ea: 0}
+    note: present work
+  - name: H2O2
+    efficiency: {A: 7.7, b: 0, Ea: 0}
+    note: present work
+  - name: H2
+    efficiency: {A: 3.7, b: 0, Ea: 0}
+    note: present work
+  - name: CO
+    efficiency: {A: 2.8, b: 0, Ea: 0}
     note: present work
 - equation: H2O2 + H <=> H2O + OH
   rate-constant: {A: 24000000000000.0, b: 0.0, Ea: 3970.0}
