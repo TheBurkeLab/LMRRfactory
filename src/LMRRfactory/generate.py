@@ -251,14 +251,18 @@ class makeYAML:
         newCol.pop('temperatures', None)
         return newCol
 
-    def extraColliders(self,mech_rxn,colliders):
+    def extraColliders(self,mech_rxn,colliders,refCol):
         if mech_rxn.get('efficiencies') is None:
             return []
-        extras=[]
+        divisor=1
         for name, val in mech_rxn['efficiencies'].items():
+            if name==refCol:
+                divisor=val
+        extras=[]
+        for name, val in mech_rxn['efficiencies'].items():    
             extras.append({
                 'name': name,
-                'efficiency': {'A':val,'b':0,'Ea':0 },
+                'efficiency': {'A':val/divisor,'b':0,'Ea':0 },
                 'note': 'present work',
             })
         return extras
@@ -348,7 +352,7 @@ class makeYAML:
                 refCol = data['blend']['reactions'][idx]['reference-collider']
                 colliders = blend_rxn['colliders']
                 newRxn['reference-collider'] = refCol
-                extras = self.extraColliders(mech_rxn,colliders)
+                extras = self.extraColliders(mech_rxn,colliders,refCol)
                 for col in colliders:
                     for i,extra in enumerate(extras):
                         if col['name']==extra['name']:
@@ -379,7 +383,7 @@ class makeYAML:
                                 'efficiency': {'A': col['efficiency'],'b':0,'Ea':0},
                                 'note': col['note']
                             })
-                extras = self.extraColliders(mech_rxn,colliders)
+                extras = self.extraColliders(mech_rxn,colliders,refCol)
                 for j, col in enumerate(colliders):
                     for i,extra in enumerate(extras):
                         if col['name']==extra['name']:
@@ -410,7 +414,7 @@ class makeYAML:
                                 'efficiency': {'A': col['efficiency'],'b':0,'Ea':0},
                                 'note': col['note']
                             })
-                extras = self.extraColliders(mech_rxn,colliders)
+                extras = self.extraColliders(mech_rxn,colliders,refCol)
                 for j, col in enumerate(colliders):
                     for i,extra in enumerate(extras):
                         if col['name']==extra['name']:
