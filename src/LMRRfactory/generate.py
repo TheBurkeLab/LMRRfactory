@@ -280,6 +280,7 @@ class makeYAML:
                         'efficiency': {'A':mech_rxn['efficiencies'][eff],'b':0,'Ea':0 },
                         'note': 'present work',
                     })
+        return extras
 
 
     def zippedMech(self, data):
