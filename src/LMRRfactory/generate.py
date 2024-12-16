@@ -255,23 +255,12 @@ class makeYAML:
         if mech_rxn.get('efficiencies') is None:
             return []
         extras=[]
-        colliderNames = [col['name'] for col in colliders]
         for name, val in mech_rxn['efficiencies'].items():
-            # if name not in colliderNames and name!=refCol:
-            if name!=refCol:
-                extras.append({
-                    'name': name,
-                    'efficiency': {'A':val,'b':0,'Ea':0 },
-                    'note': 'present work',
-                })
-            # else:
-            #     for col in colliders:
-            #         if name==col['name'] and val['A']!=col['efficiency']['A'] and col['efficiency']['A']:
-            #                 extras.append({
-            #                 'name': name,
-            #                 'efficiency': {'A':val,'b':0,'Ea':0 },
-            #                 'note': 'present work',
-            #             })
+            extras.append({
+                'name': name,
+                'efficiency': {'A':val,'b':0,'Ea':0 },
+                'note': 'present work',
+            })
         return extras
     
 # def extraColliders(self,mech_rxn,colliders,refCol):
@@ -307,7 +296,7 @@ class makeYAML:
             }
         blendRxnNames = [rxn['equation'] for rxn in data['blend']['reactions']]
         for mech_rxn in data['mech']['reactions']:
-            print(mech_rxn['equation'])
+            # print(mech_rxn['equation'])
             pDep = False
             PLOG = False
             # troeEfficiencies={}
