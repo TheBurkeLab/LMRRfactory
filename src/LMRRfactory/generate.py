@@ -250,6 +250,23 @@ class makeYAML:
         newCol['efficiency'] = {'A': round(A_fit.item(),8),'b': round(beta_fit.item(),8),'Ea': round(Ea_fit.item(),8)}
         newCol.pop('temperatures', None)
         return newCol
+    
+
+    def troeColliders(self,blend_rxn, troeEfficiencies):
+        colliders = blend_rxn['colliders']
+        colliderNames = [col['name'] for col in colliders]
+        extraColliders = []
+        for eff in troeEfficiencies.keys():
+            if eff not in colliderNames:
+                extraColliders.append({
+                    'name': eff,
+                    'efficiency': [troeEfficiencies[eff]]*2,
+                    'temperatures': [300,2000],
+                    'note': 'present work',
+                })
+        extraColliders = [self.arrheniusFit(col) for col in extraColliders]
+        print(extraColliders)
+        return extraColliders
 
 
     def zippedMech(self, data):
@@ -263,6 +280,7 @@ class makeYAML:
         for mech_rxn in data['mech']['reactions']:
             pDep = False
             PLOG = False
+            troeEfficiencies={}
             # Create the M-collider entry for the pressure-dependent reactions
             if mech_rxn.get('type') == 'falloff' and 'Troe' in mech_rxn:
                 pDep = True
@@ -273,6 +291,9 @@ class makeYAML:
                     'high-P-rate-constant': mech_rxn['high-P-rate-constant'],
                     'Troe': mech_rxn['Troe'],
                 }
+                if mech_rxn.get('efficiencies') is not None:
+                    for key in mech_rxn['efficiencies'].keys():
+                        troeEfficiencies[key]=mech_rxn['efficiencies'][key]
             elif mech_rxn.get('type') == 'pressure-dependent-Arrhenius':
                 pDep = True
                 PLOG = True
@@ -290,8 +311,8 @@ class makeYAML:
                     'pressure-range': mech_rxn['pressure-range'],
                     'data': mech_rxn['data'],
                 }
-            print(mech_rxn['equation'])
-            print(self.normalize(mech_rxn['equation']))
+            # print(mech_rxn['equation'])
+            # print(self.normalize(mech_rxn['equation']))
             if pDep and self.normalize(mech_rxn['equation']) in blendRxnNames:
             # rxn is specifically covered either in defaults or user input
                 newRxn = {

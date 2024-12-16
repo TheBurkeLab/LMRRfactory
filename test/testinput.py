@@ -8,4 +8,4 @@ models = {
 for m in models.keys():
     makeYAML(mechInput=models[m],
              outputPath='USSCI/factory_mechanisms',
-             allPdep=False,date='Oct24')
+             allPdep=False)
