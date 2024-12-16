@@ -251,7 +251,7 @@ class makeYAML:
         newCol.pop('temperatures', None)
         return newCol
 
-    def extraColliders(self,mech_rxn,colliders,refCol):
+    def extraColliders(self,mech_rxn,colliders):
         if mech_rxn.get('efficiencies') is None:
             return []
         extras=[]
@@ -348,7 +348,7 @@ class makeYAML:
                 refCol = data['blend']['reactions'][idx]['reference-collider']
                 colliders = blend_rxn['colliders']
                 newRxn['reference-collider'] = refCol
-                extras = self.extraColliders(mech_rxn,colliders,refCol)
+                extras = self.extraColliders(mech_rxn,colliders)
                 for col in colliders:
                     for i,extra in enumerate(extras):
                         if col['name']==extra['name']:
@@ -379,7 +379,7 @@ class makeYAML:
                                 'efficiency': {'A': col['efficiency'],'b':0,'Ea':0},
                                 'note': col['note']
                             })
-                extras = self.extraColliders(mech_rxn,colliders,refCol)
+                extras = self.extraColliders(mech_rxn,colliders)
                 for j, col in enumerate(colliders):
                     for i,extra in enumerate(extras):
                         if col['name']==extra['name']:
@@ -410,7 +410,7 @@ class makeYAML:
                                 'efficiency': {'A': col['efficiency'],'b':0,'Ea':0},
                                 'note': col['note']
                             })
-                extras = self.extraColliders(mech_rxn,colliders,refCol)
+                extras = self.extraColliders(mech_rxn,colliders)
                 for j, col in enumerate(colliders):
                     for i,extra in enumerate(extras):
                         if col['name']==extra['name']:
