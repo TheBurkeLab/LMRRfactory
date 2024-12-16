@@ -345,7 +345,7 @@ class makeYAML:
                 newRxn['reference-collider'] = refCol
                 newRxn['colliders'] = [colliderM] + colliders
                 if mech_rxn.get('efficiencies') is not None:
-                    newRxn['colliders'].append(self.extraColliders(mech_rxn,colliders))
+                    newRxn['colliders']+=self.extraColliders(mech_rxn,colliders)
                 newData['reactions'].append(newRxn)
             elif pDep and data['allPdep']:
                 # user has opted to have generic 3b effs applied to all p-dep reactions
@@ -365,7 +365,7 @@ class makeYAML:
                                 if col['name'] in speciesList]
                 newRxn['colliders'] = [colliderM] + colliders
                 if mech_rxn.get('efficiencies') is not None:
-                    newRxn['colliders'].append(self.extraColliders(mech_rxn,colliders))
+                    newRxn['colliders']+=self.extraColliders(mech_rxn,colliders)
                 newData['reactions'].append(newRxn)
             elif PLOG and data['allPLOG']:
                 # user has opted to have generic 3b effs applied to all PLOG reactions
@@ -385,7 +385,7 @@ class makeYAML:
                                 if col['name'] in speciesList]
                 newRxn['colliders'] = [colliderM] + colliders
                 if mech_rxn.get('efficiencies') is not None:
-                    newRxn['colliders'].append(self.extraColliders(mech_rxn,colliders))
+                    newRxn['colliders']+=self.extraColliders(mech_rxn,colliders)
                 newData['reactions'].append(newRxn)
             else: # just append it as-is
                 newData['reactions'].append(mech_rxn)
