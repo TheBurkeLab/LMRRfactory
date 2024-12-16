@@ -346,8 +346,8 @@ class makeYAML:
                                 'efficiency': {'A':mech_rxn['efficiencies'][eff],'b':0,'Ea':0 },
                                 'note': 'present work',
                             })
-                extraColliders = [self.arrheniusFit(col) for col in extraColliders]
-                print(extraColliders)
+                # extraColliders = [self.arrheniusFit(col) for col in extraColliders]
+                # print(extraColliders)
                 newData['reactions'].append(newRxn)
             elif pDep and data['allPdep']:
                 # user has opted to have generic 3b effs applied to all p-dep reactions
