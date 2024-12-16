@@ -299,6 +299,7 @@ class makeYAML:
             'reactions': []
             }
         blendRxnNames = [rxn['equation'] for rxn in data['blend']['reactions']]
+        refCol = 'AR' #just assumed, not aiming for perfection
         for mech_rxn in data['mech']['reactions']:
             # print(mech_rxn['equation'])
             pDep = False
