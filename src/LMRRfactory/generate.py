@@ -391,10 +391,10 @@ class makeYAML:
                                 'note': col['note']
                             })
                 extras = self.extraColliders(mech_rxn,colliders,refCol)
-                for col in colliders:
-                    for extra in extras:
+                for j, col in enumerate(colliders):
+                    for i,extra in enumerate(extras):
                         if col['name']==extra['name']:
-                            colliders.pop(col)
+                            colliders.pop(j)
                 newRxn['colliders'] = [colliderM] + colliders + extras
                 newData['reactions'].append(newRxn)
             elif PLOG and data['allPLOG']:
@@ -422,10 +422,10 @@ class makeYAML:
                                 'note': col['note']
                             })
                 extras = self.extraColliders(mech_rxn,colliders,refCol)
-                for col in colliders:
-                    for extra in extras:
+                for j, col in enumerate(colliders):
+                    for i,extra in enumerate(extras):
                         if col['name']==extra['name']:
-                            colliders.pop(col)
+                            colliders.pop(j)
                 newRxn['colliders'] = [colliderM] + colliders + extras
                 newData['reactions'].append(newRxn)
             else: # just append it as-is
