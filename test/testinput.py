@@ -8,4 +8,7 @@ models = {
 for m in models.keys():
     makeYAML(mechInput=models[m],
              outputPath='test/outputs/Dec16',
-             allPdep=False)
+             allPdep=True)
+    makeYAML(mechInput=models[m],
+             outputPath='test/outputs/Dec16',
+             allPLOG=True)
