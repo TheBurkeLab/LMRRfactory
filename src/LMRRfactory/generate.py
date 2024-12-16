@@ -299,7 +299,7 @@ class makeYAML:
             'reactions': []
             }
         blendRxnNames = [rxn['equation'] for rxn in data['blend']['reactions']]
-        refCol = 'AR' #just assumed, not aiming for perfection
+        
         for mech_rxn in data['mech']['reactions']:
             # print(mech_rxn['equation'])
             pDep = False
@@ -371,7 +371,7 @@ class makeYAML:
                 if mech_rxn.get('duplicate') is not None:
                     newRxn['duplicate'] = True
                 newRxn['reference-collider'] = 'AR' #just assumed, not aiming for perfection
-                # refCol = 'AR' #just assumed, not aiming for perfection
+                refCol = 'AR' #just assumed, not aiming for perfection
                 speciesList = data['mech']['phases'][0]['species']
                 colliders=[]
                 for col in data['defaults']['generic-colliders']:
@@ -402,7 +402,7 @@ class makeYAML:
                 if mech_rxn.get('duplicate') is not None:
                     newRxn['duplicate'] = True
                 newRxn['reference-collider'] = 'AR' #just assumed, not aiming for perfection
-                # refCol = 'AR' #just assumed, not aiming for perfection
+                refCol = 'AR' #just assumed, not aiming for perfection
                 speciesList = data['mech']['phases'][0]['species']
                 colliders=[]
                 for col in data['defaults']['generic-colliders']:
