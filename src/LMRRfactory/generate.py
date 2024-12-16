@@ -363,7 +363,7 @@ class makeYAML:
                 for col in colliders:
                     for extra in extras:
                         if col['name']==extra['name']:
-                            extras.pop(extras)
+                            extras.pop(extra)
                 newRxn['colliders'] = [colliderM] + colliders + extras
                 newData['reactions'].append(newRxn)
             elif pDep and data['allPdep']:
