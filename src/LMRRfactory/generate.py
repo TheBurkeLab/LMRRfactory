@@ -353,8 +353,8 @@ class makeYAML:
                 colliders = blend_rxn['colliders']
                 newRxn['reference-collider'] = refCol
                 extras = self.extraColliders(mech_rxn,colliders,refCol)
-                for col in colliders:
-                    for i,extra in enumerate(extras):
+                for i,extra in enumerate(extras):
+                    for col in colliders:                    
                         if col['name']==extra['name']:
                             extras.pop(i)
                 newRxn['colliders'] = [colliderM] + colliders + extras
@@ -384,8 +384,8 @@ class makeYAML:
                                 'note': col['note']
                             })
                 extras = self.extraColliders(mech_rxn,colliders,refCol)
-                for j, col in enumerate(colliders):
-                    for i,extra in enumerate(extras):
+                for i,extra in enumerate(extras):
+                    for j, col in enumerate(colliders):
                         if col['name']==extra['name']:
                             colliders.remove(col)
                 newRxn['colliders'] = [colliderM] + colliders + extras
@@ -415,8 +415,9 @@ class makeYAML:
                                 'note': col['note']
                             })
                 extras = self.extraColliders(mech_rxn,colliders,refCol)
-                for j, col in enumerate(colliders):
-                    for i,extra in enumerate(extras):
+                
+                for i,extra in enumerate(extras):
+                    for j, col in enumerate(colliders):
                         if col['name']==extra['name']:
                             colliders.remove(col)
                 newRxn['colliders'] = [colliderM] + colliders + extras
