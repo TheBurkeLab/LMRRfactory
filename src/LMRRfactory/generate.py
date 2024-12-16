@@ -330,6 +330,7 @@ class makeYAML:
                 newRxn['reference-collider'] = refCol
                 newRxn['colliders'] = [colliderM] + colliders
                 newData['reactions'].append(newRxn)
+                self.troeColliders(blend_rxn,troeEfficiencies)
             elif pDep and data['allPdep']:
                 # user has opted to have generic 3b effs applied to all p-dep reactions
                 # which lack a specification in thirdbodydefaults and testinput
