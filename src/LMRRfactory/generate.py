@@ -361,9 +361,9 @@ class makeYAML:
                 newRxn['reference-collider'] = refCol
                 extras = self.extraColliders(mech_rxn,colliders,refCol)
                 for col in colliders:
-                    for extra in extras:
+                    for i,extra in enumerate(extras):
                         if col['name']==extra['name']:
-                            extras.pop(extra)
+                            extras.pop(i)
                 newRxn['colliders'] = [colliderM] + colliders + extras
                 newData['reactions'].append(newRxn)
             elif pDep and data['allPdep']:
