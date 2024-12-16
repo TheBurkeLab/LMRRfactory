@@ -257,7 +257,7 @@ class makeYAML:
         colliderNames = [col['name'] for col in colliders]
         print(colliderNames)
         extraColliders = []
-        for eff in troeEfficiencies.keys():
+        for eff in list(troeEfficiencies.keys()):
             if eff not in colliderNames:
                 extraColliders.append({
                     'name': eff,
