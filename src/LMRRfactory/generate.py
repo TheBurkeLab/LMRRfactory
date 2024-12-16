@@ -250,59 +250,42 @@ class makeYAML:
         newCol['efficiency'] = {'A': round(A_fit.item(),8),'b': round(beta_fit.item(),8),'Ea': round(Ea_fit.item(),8)}
         newCol.pop('temperatures', None)
         return newCol
-    
-
-    # def troeColliders(self,blend_rxn, troeEfficiencies):
-    #     colliders = blend_rxn['colliders']
-    #     colliderNames = [col['name'] for col in colliders]
-    #     print(colliderNames)
-    #     extraColliders = []
-    #     for eff in troeEfficiencies.keys():
-    #         if eff not in colliderNames:
-    #             extraColliders.append({
-    #                 'name': eff,
-    #                 'efficiency': [troeEfficiencies[eff]]*2,
-    #                 'temperatures': [300,2000],
-    #                 'note': 'present work',
-    #             })
-    #     extraColliders = [self.arrheniusFit(col) for col in extraColliders]
-    #     print(extraColliders)
-    #     return extraColliders
 
     def extraColliders(self,mech_rxn,colliders,refCol):
+        if mech_rxn.get('efficiencies') is None:
+            return []
         extras=[]
-        if mech_rxn.get('efficiencies') is not None:
-            colliderNames = [col['name'] for col in colliders]
-            for eff in mech_rxn['efficiencies'].keys():
-                if eff not in colliderNames and eff!=refCol:
-                    extras.append({
-                        'name': eff,
-                        'efficiency': {'A':mech_rxn['efficiencies'][eff],'b':0,'Ea':0 },
-                        'note': 'present work',
-                    })
+        colliderNames = [col['name'] for col in colliders]
+        for name, val in mech_rxn['efficiencies'].items():
+            if name not in colliderNames and name!=refCol:
+                extras.append({
+                    'name': name,
+                    'efficiency': {'A':val,'b':0,'Ea':0 },
+                    'note': 'present work',
+                })
         return extras
     
-        # def extraColliders(self,mech_rxn,colliders,refCol):
-        # if mech_rxn.get('efficiencies') is None:
-        #     return []
-        # extras=[]
-        # colliderNames = [col['name'] for col in colliders]
-        # for name, val in mech_rxn['efficiencies'].items():
-        #     if name not in colliderNames and name!=refCol:
-        #         extras.append({
-        #             'name': name,
-        #             'efficiency': {'A':val,'b':0,'Ea':0 },
-        #             'note': 'present work',
-        #         })
-        #     else:
-        #         for col in colliders:
-        #             if name==col['name'] and val!=col['efficiency']['A']:
-        #                     extras.append({
-        #                     'name': name,
-        #                     'efficiency': {'A':val,'b':0,'Ea':0 },
-        #                     'note': 'present work',
-        #                 })
-        # return extras
+# def extraColliders(self,mech_rxn,colliders,refCol):
+# if mech_rxn.get('efficiencies') is None:
+#     return []
+# extras=[]
+# colliderNames = [col['name'] for col in colliders]
+# for name, val in mech_rxn['efficiencies'].items():
+#     if name not in colliderNames and name!=refCol:
+#         extras.append({
+#             'name': name,
+#             'efficiency': {'A':val,'b':0,'Ea':0 },
+#             'note': 'present work',
+#         })
+#     else:
+#         for col in colliders:
+#             if name==col['name'] and val!=col['efficiency']['A']:
+#                     extras.append({
+#                     'name': name,
+#                     'efficiency': {'A':val,'b':0,'Ea':0 },
+#                     'note': 'present work',
+#                 })
+#         return extras
 
 
 
