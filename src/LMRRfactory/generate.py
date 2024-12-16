@@ -360,12 +360,18 @@ class makeYAML:
                 newRxn['reference-collider'] = 'AR' #just assumed, not aiming for perfection
                 # refCol = 'AR' #just assumed, not aiming for perfection
                 speciesList = data['mech']['phases'][0]['species']
-                colliders = [self.arrheniusFit(col)
-                                for col in data['defaults']['generic-colliders']
-                                if col['name'] in speciesList]
-                newRxn['colliders'] = [colliderM] + colliders
-                if mech_rxn.get('efficiencies') is not None:
-                    newRxn['colliders']+=self.extraColliders(mech_rxn,colliders,refCol)
+                colliders=[]
+                for col in data['defaults']['generic-colliders']:
+                    if col['name'] in speciesList:
+                        if col.get('temperatures') is not None:
+                            colliders.append(self.arrheniusFit(col))
+                        else:
+                            colliders.append({
+                                'name': col['name'],
+                                'efficiency': {'A': col['efficiency'],'b':0,'Ea':0},
+                                'note': col['note']
+                            })
+                newRxn['colliders'] = [colliderM] + colliders + self.extraColliders(mech_rxn,colliders,refCol)
                 newData['reactions'].append(newRxn)
             elif PLOG and data['allPLOG']:
                 # user has opted to have generic 3b effs applied to all PLOG reactions
@@ -380,12 +386,18 @@ class makeYAML:
                 newRxn['reference-collider'] = 'AR' #just assumed, not aiming for perfection
                 # refCol = 'AR' #just assumed, not aiming for perfection
                 speciesList = data['mech']['phases'][0]['species']
-                colliders = [self.arrheniusFit(col)
-                                for col in data['defaults']['generic-colliders']
-                                if col['name'] in speciesList]
-                newRxn['colliders'] = [colliderM] + colliders
-                if mech_rxn.get('efficiencies') is not None:
-                    newRxn['colliders']+=self.extraColliders(mech_rxn,colliders,refCol)
+                colliders=[]
+                for col in data['defaults']['generic-colliders']:
+                    if col['name'] in speciesList:
+                        if col.get('temperatures') is not None:
+                            colliders.append(self.arrheniusFit(col))
+                        else:
+                            colliders.append({
+                                'name': col['name'],
+                                'efficiency': {'A': col['efficiency'],'b':0,'Ea':0},
+                                'note': col['note']
+                            })
+                newRxn['colliders'] = [colliderM] + colliders + self.extraColliders(mech_rxn,colliders,refCol)
                 newData['reactions'].append(newRxn)
             else: # just append it as-is
                 newData['reactions'].append(mech_rxn)
