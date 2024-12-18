@@ -347,6 +347,100 @@ reactions:
     temperatures: [300,1000,2000]
     note: Jasper-2022
 
+
+#METHYL ISOCYANIDE CH3NC (technically the reactions below are for the n-isomer, CH3CN, not iso-)
+- equation: CH3CN <=> CH2CN + H #couldn't find T-dependent values
+  reference-collider: AR
+  colliders:
+  - name: CH3NC
+    efficiency: 7.27
+    note: Matsugi-JPCA2019
+  - name: HE
+    efficiency: 1.16
+    note: Matsugi-JPCA2019
+  - name: H2
+    efficiency: 1.85
+    note: Matsugi-JPCA2019
+  - name: N2
+    efficiency: 1.55
+    note: Matsugi-JPCA2019
+  - name: CO
+    efficiency: 1.61
+    note: Matsugi-JPCA2019
+  - name: CO2
+    efficiency: 2.78
+    note: Matsugi-JPCA2019
+  - name: HCN
+    efficiency: 4.23
+    note: Matsugi-JPCA2019
+  - name: NH3
+    efficiency: 5.06
+    note: Matsugi-JPCA2019
+  - name: CH4
+    efficiency: 2.99
+    note: Matsugi-JPCA2019
+  - name: CH3F
+    efficiency: 4.3
+    note: Matsugi-JPCA2019
+  - name: CF4
+    efficiency: 2.65
+    note: Matsugi-JPCA2019
+  - name: C2H2
+    efficiency: 3.11
+    note: Matsugi-JPCA2019
+  - name: C2H4
+    efficiency: 3.71
+    note: Matsugi-JPCA2019
+  - name: C2H6
+    efficiency: 
+    note: Matsugi-JPCA2019
+
+- equation: CH3CN <=> CH2CN + H #couldn't find T-dependent values
+  reference-collider: AR
+  colliders:
+  - name: CH3NC
+    efficiency: 7.27
+    note: Matsugi-JPCA2019
+  - name: HE
+    efficiency: 1.16
+    note: Matsugi-JPCA2019
+  - name: H2
+    efficiency: 1.85
+    note: Matsugi-JPCA2019
+  - name: N2
+    efficiency: 1.55
+    note: Matsugi-JPCA2019
+  - name: CO
+    efficiency: 1.61
+    note: Matsugi-JPCA2019
+  - name: CO2
+    efficiency: 2.78
+    note: Matsugi-JPCA2019
+  - name: HCN
+    efficiency: 4.23
+    note: Matsugi-JPCA2019
+  - name: NH3
+    efficiency: 5.06
+    note: Matsugi-JPCA2019
+  - name: CH4
+    efficiency: 2.99
+    note: Matsugi-JPCA2019
+  - name: CH3F
+    efficiency: 4.3
+    note: Matsugi-JPCA2019
+  - name: CF4
+    efficiency: 2.65
+    note: Matsugi-JPCA2019
+  - name: C2H2
+    efficiency: 3.11
+    note: Matsugi-JPCA2019
+  - name: C2H4
+    efficiency: 3.71
+    note: Matsugi-JPCA2019
+  - name: C2H6
+    efficiency: 
+    note: Matsugi-JPCA2019
+
 # METHANES
 - equation: CH4 (+M) <=> CH3 + H (+M) # Ar reference collider
   reference-collider: AR
@@ -729,7 +823,67 @@ reactions:
     efficiency: [1.38,1.52]
     temperatures: [300, 2000]
     note: JOM-2015
+- equation: C2H3 + CH3 <=> C3H5-A + H
+  reference-collider: AR
+  colliders:
+  - name: He  
+    efficiency: [1.42,1.53]
+    temperatures: [300, 2000]
+    note: JOM-2015
+  - name: H2  
+    efficiency: [2.91,2.02]
+    temperatures: [300, 2000]
+    note: JOM-2015
+  - name: O2  
+    efficiency: [1.38,1.52]
+    temperatures: [300, 2000]
+    note: JOM-2015
+- equation: C3H5-T + H <=> C3H5-A + H
+  reference-collider: AR
+  colliders:
+  - name: He  
+    efficiency: [1.42,1.53]
+    temperatures: [300, 2000]
+    note: JOM-2015
+  - name: H2  
+    efficiency: [2.91,2.02]
+    temperatures: [300, 2000]
+    note: JOM-2015
+  - name: O2  
+    efficiency: [1.38,1.52]
+    temperatures: [300, 2000]
+    note: JOM-2015
+- equation: C3H5-T + H <=> C2H3 + CH3 
+  reference-collider: AR
+  colliders:
+  - name: He  
+    efficiency: [1.42,1.53]
+    temperatures: [300, 2000]
+    note: JOM-2015
+  - name: H2  
+    efficiency: [2.91,2.02]
+    temperatures: [300, 2000]
+    note: JOM-2015
+  - name: O2  
+    efficiency: [1.38,1.52]
+    temperatures: [300, 2000]
+    note: JOM-2015
 - equation: CH2(S) + C2H4 <=> C3H5 + H
+  reference-collider: AR
+  colliders:
+  - name: He  
+    efficiency: [1.42,1.53]
+    temperatures: [300, 2000]
+    note: JOM-2015
+  - name: H2  
+    efficiency: [2.91,2.02]
+    temperatures: [300, 2000]
+    note: JOM-2015
+  - name: O2  
+    efficiency: [1.38,1.52]
+    temperatures: [300, 2000]
+    note: JOM-2015
+- equation: CH2(S) + C2H4 <=> C3H5-A + H
   reference-collider: AR
   colliders:
   - name: He  
@@ -1663,6 +1817,96 @@ reactions:
     efficiency: [1.22,1.13]
     temperatures: [300, 2000]
     note: JOM-2015
+- equation: IC4H8 + H <=> C3H6 + CH3
+  reference-collider: AR
+  colliders:
+  - name: He  
+    efficiency: [1.1,0.71]
+    temperatures: [300, 2000]
+    note: JOM-2015
+  - name: H2  
+    efficiency: [2.28,0.94]
+    temperatures: [300, 2000]
+    note: JOM-2015
+  - name: O2  
+    efficiency: [1.22,1.13]
+    temperatures: [300, 2000]
+    note: JOM-2015
+- equation: C4H8-1 + H <=> C2H4 + C2H5
+  reference-collider: AR
+  colliders:
+  - name: He  
+    efficiency: [1.1,0.71]
+    temperatures: [300, 2000]
+    note: JOM-2015
+  - name: H2  
+    efficiency: [2.28,0.94]
+    temperatures: [300, 2000]
+    note: JOM-2015
+  - name: O2  
+    efficiency: [1.22,1.13]
+    temperatures: [300, 2000]
+    note: JOM-2015
+- equation: C4H8-1 + H <=> C3H6 + CH3
+  reference-collider: AR
+  colliders:
+  - name: He  
+    efficiency: [1.1,0.71]
+    temperatures: [300, 2000]
+    note: JOM-2015
+  - name: H2  
+    efficiency: [2.28,0.94]
+    temperatures: [300, 2000]
+    note: JOM-2015
+  - name: O2  
+    efficiency: [1.22,1.13]
+    temperatures: [300, 2000]
+    note: JOM-2015
+- equation: C4H8-2 + H <=> C2H4 + C2H5
+  reference-collider: AR
+  colliders:
+  - name: He  
+    efficiency: [1.1,0.71]
+    temperatures: [300, 2000]
+    note: JOM-2015
+  - name: H2  
+    efficiency: [2.28,0.94]
+    temperatures: [300, 2000]
+    note: JOM-2015
+  - name: O2  
+    efficiency: [1.22,1.13]
+    temperatures: [300, 2000]
+    note: JOM-2015
+- equation: C4H8-2 + H <=> C3H6 + CH3
+  reference-collider: AR
+  colliders:
+  - name: He  
+    efficiency: [1.1,0.71]
+    temperatures: [300, 2000]
+    note: JOM-2015
+  - name: H2  
+    efficiency: [2.28,0.94]
+    temperatures: [300, 2000]
+    note: JOM-2015
+  - name: O2  
+    efficiency: [1.22,1.13]
+    temperatures: [300, 2000]
+    note: JOM-2015
+- equation: C4H8-1 + H <=> C4H8-2 + H
+  reference-collider: AR
+  colliders:
+  - name: He  
+    efficiency: [1.1,0.71]
+    temperatures: [300, 2000]
+    note: JOM-2015
+  - name: H2  
+    efficiency: [2.28,0.94]
+    temperatures: [300, 2000]
+    note: JOM-2015
+  - name: O2  
+    efficiency: [1.22,1.13]
+    temperatures: [300, 2000]
+    note: JOM-2015
 - equation: C4H8-2 + H <=> PC4H9
   reference-collider: AR
   colliders:
@@ -2089,6 +2333,21 @@ reactions:
     temperatures: [300, 2000]
     note: JOM-2015
 - equation: C4H71-3 + CH3 (+M) <=> CC5H10 (+M)
+  reference-collider: AR
+  colliders:
+  - name: He  
+    efficiency: [1.24,1.21]
+    temperatures: [300, 2000]
+    note: JOM-2015
+  - name: H2  
+    efficiency: [2.25,1.23]
+    temperatures: [300, 2000]
+    note: JOM-2015
+  - name: O2  
+    efficiency: [1.31,1.2]
+    temperatures: [300, 2000]
+    note: JOM-2015
+- equation: C4H6 + H <=> C2H4 + C2H3
   reference-collider: AR
   colliders:
   - name: He  
