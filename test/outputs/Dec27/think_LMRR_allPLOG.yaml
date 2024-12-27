@@ -2567,19 +2567,16 @@ reactions:
     high-P-rate-constant: {A: 1310000000000.0, b: 0.572, Ea: -203.0}
     Troe: {A: 0.9, T3: 1.0e-30, T1: 2300.0}
   - name: HE
-    efficiency: {A: 0.67520145, b: 0.18256786, Ea: 36.24077833}
-    note: Jasper-2022
-  - name: N2
-    efficiency: {A: 249.86367675, b: -0.59326267, Ea: 540.92123387}
+    efficiency: {A: 0.00270228, b: 0.77583052, Ea: -504.68045554}
     note: Jasper-2022
   - name: H2
-    efficiency: {A: 62743.41815129, b: -1.25419464, Ea: 1129.2410602}
+    efficiency: {A: 251.11060145, b: -0.66093197, Ea: 588.31982634}
     note: Jasper-2022
   - name: CO2
-    efficiency: {A: 324825360.51651865, b: -2.27621756, Ea: 1970.23294938}
+    efficiency: {A: 1300010.3285753, b: -1.68295489, Ea: 1429.31171551}
     note: Jasper-2022
   - name: H2O
-    efficiency: {A: 73.8291173, b: -0.07129016, Ea: 31.90867703}
+    efficiency: {A: 0.29547759, b: 0.52197251, Ea: -509.01255684}
     note: Jasper-2022
   - name: AR
     efficiency: {A: 0.5, b: 0, Ea: 0}
@@ -2650,10 +2647,10 @@ reactions:
     high-P-rate-constant: {A: 25100000000000.0, b: 0.234, Ea: -114.0}
     Troe: {A: 0.73, T3: 1.0e-30, T1: 1.0e+30, T2: 1.0e+30}
   - name: AR
-    efficiency: {A: 0.04412417, b: 0.47403597, Ea: -113.14813345}
+    efficiency: {A: 0.02206208, b: 0.47403597, Ea: -113.14813345}
     note: Jasper-2022
   - name: H2O
-    efficiency: {A: 0.20905732, b: 0.55078681, Ea: -232.67496903}
+    efficiency: {A: 0.10452866, b: 0.55078681, Ea: -232.67496903}
     note: Jasper-2022
   - name: CO2
     efficiency: {A: 2.0, b: 0, Ea: 0}
@@ -2699,6 +2696,10 @@ reactions:
   - name: H2O
     efficiency: {A: 1.36377291, b: 0.30659152, Ea: 210.07862109}
     note: Jasper-2022
+  - name: N2
+    duplicate: true
+    efficiency: {A: 7.898917, b: -0.2085334, Ea: 50.51000091}
+    note: Matsugi-2021
   - name: HE
     efficiency: {A: 0.22766022, b: 0.19992445, Ea: 50.01878812}
     note: Matsugi-2021

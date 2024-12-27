@@ -276,13 +276,33 @@ class makeYAML:
                 print(val)
                 divisor = val
         colliders=[]
+        # Get the T-dep values of N2, just in case needed 
+        Tdep_divisor_3=[1,1,1]
+        Tdep_divisor_2=[1,1]
+        if blend_rxn is not None:
+            for col in blend_rxn['colliders']:
+                if col['name'].lower()=='n2' and divisor!=1:
+                    if len(col['efficiency'])==3:
+                        Tdep_divisor_3=col['efficiency']
+                    elif len(col['efficiency'])==2:
+                        Tdep_divisor_2=col['efficiency']
+        # print(Tdep_divisor_3)
+        # print(Tdep_divisor_2)
+                    
         # Ab initio, reaction-specific T-dependent efficiencies
         if blend_rxn is not None:
             for col in blend_rxn['colliders']:
+                already_given = any(col['name'].lower() =='n2' for col in colliders)
                 if not (col['name'].lower()=='n2' and divisor!=1): #exclude N2 entry if the ref colliders is not Ar
-                    print(divisor)
-                    col['efficiency'] = [eff/divisor for eff in col['efficiency']]
-                    colliders.append(self.arrheniusFit(col))
+                    if not (col['name'].lower()=='n2' and already_given):
+                        # print(divisor)
+                        print(col['efficiency'])
+                        if len(col['efficiency'])==3:
+                            col['efficiency'] = np.divide(col['efficiency'],Tdep_divisor_3)
+                        if len(col['efficiency'])==2:
+                            col['efficiency'] = np.divide(col['efficiency'],Tdep_divisor_2)
+                        print(col['efficiency'])
+                        colliders.append(self.arrheniusFit(col))
         # Add troe efficiencies that haven't already been given a value
         for name, val in mech_rxn.get('efficiencies', {}).items():
             already_given = any(col['name'] == name for col in colliders)
@@ -301,7 +321,10 @@ class makeYAML:
                 exclude_N2 = True if (divisor!=1 and (genericCol['name']=='N2' or genericCol['name']=='n2')) else False
                 if genericCol['name'] in speciesList and not exclude_N2 and not already_given:
                     if genericCol.get('temperatures') is not None:
-                        genericCol['efficiency'] = [eff/divisor for eff in genericCol['efficiency']]
+                        if len(genericCol['efficiency'])==3:
+                            genericCol['efficiency'] = np.divide(genericCol['efficiency'],Tdep_divisor_3)
+                        if len(genericCol['efficiency'])==2:
+                            genericCol['efficiency'] = np.divide(genericCol['efficiency'],Tdep_divisor_2)
                         colliders.append(self.arrheniusFit(genericCol))
                     else:
                         colliders.append({
