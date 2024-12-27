@@ -1,0 +1,12 @@
+cff-version: "1.0.0"
+message: If you use this software, please cite it as below.
+authors:
+- family-names: Singal
+  given-names: Patrick J.
+  orcid: https://orcid.org/0009-0007-6129-7724
+- family-names: Burke
+  given-names: Michael P.
+title: "LMRRfactory: A Software Toolkit and Database for Implementing Mixture Rules at Scale"
+version: "1.0.0"
+doi: 10.5281/zenodo.14649195
+date-released: 2025-01-14

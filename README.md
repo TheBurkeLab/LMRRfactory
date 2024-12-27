@@ -1,5 +1,11 @@
-# Example Package
+## Installation
 
-This is a simple example package. You can use
-[GitHub-flavored Markdown](https://guides.github.com/features/mastering-markdown/)
-to write your content.
+Install the latest version from PyPI using pip:
+
+```bash
+pip install LMRRfactory
+```
+
+[![DOI](https://zenodo.org/badge/860023683.svg)](https://doi.org/10.5281/zenodo.14649194)
+
+[![PyPI version](https://badge.fury.io/py/LMRRfactory.svg)](https://pypi.org/project/LMRRfactory/)
