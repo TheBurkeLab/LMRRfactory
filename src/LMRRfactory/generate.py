@@ -279,15 +279,16 @@ class makeYAML:
         # Ab initio, reaction-specific T-dependent efficiencies
         if blend_rxn is not None:
             for col in blend_rxn['colliders']:
-                print(divisor)
-                col['efficiency'] = [eff/divisor for eff in col['efficiency']]
-                colliders.append(self.arrheniusFit(col))
+                if not (col['name'].lower()=='n2' and divisor!=1): #exclude N2 entry if the ref colliders is not Ar
+                    print(divisor)
+                    col['efficiency'] = [eff/divisor for eff in col['efficiency']]
+                    colliders.append(self.arrheniusFit(col))
         # Add troe efficiencies that haven't already been given a value
         for name, val in mech_rxn.get('efficiencies', {}).items():
             already_given = any(col['name'] == name for col in colliders)
             # for col in blend_rxn['colliders']
             #     if col[name] == name:
-            if not already_given and not (name.lower()=='ar' and val==1):
+            if not already_given and not (name.lower()=='ar' and val==1) and not (name.lower()=='n2' and val==1):
                 colliders.append({
                     'name': name,
                     'efficiency': {'A':val,'b':0,'Ea':0 },
