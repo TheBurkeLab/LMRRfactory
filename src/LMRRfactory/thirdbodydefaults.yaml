@@ -180,6 +180,10 @@ reactions:
     efficiency: [5.51,10.2,13.3]
     temperatures: [300,1000,2000]
     note: Jasper-2022
+  - name: N2
+    efficiency: [1.92,1.69]            #1/0.52, 1/0.59
+    temperatures: [750,1500]
+    note: Matsugi-2021
   - name: HE
     efficiency: [0.827,0.966]            #0.43/0.52, 0.57/0.59
     temperatures: [750,1500]
