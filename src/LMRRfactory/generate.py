@@ -228,9 +228,9 @@ class makeYAML:
                     else:
                         if all(col['name'] in speciesList for col in inputRxn['colliders']):
                             blendData['reactions'].append(inputRxn)
-        # Convert collision efficiencies to arrhenius format and save to blended YAML
-        for reaction in blendData['reactions']:
-            reaction['colliders']=[self.arrheniusFit(col) for col in reaction['colliders']]
+        # # Convert collision efficiencies to arrhenius format and save to blended YAML
+        # for reaction in blendData['reactions']:
+        #     reaction['colliders']=[self.arrheniusFit(col) for col in reaction['colliders']]
         data['blend']=blendData
 
     def arrheniusFit(self, col):
@@ -251,21 +251,64 @@ class makeYAML:
         newCol.pop('temperatures', None)
         return newCol
 
-    def extraColliders(self,mech_rxn,colliders,refCol):
-        if mech_rxn.get('efficiencies') is None:
-            return []
-        divisor=1
-        for name, val in mech_rxn['efficiencies'].items():
-            if name==refCol and val!=0:
-                divisor=val
-        extras=[]
-        for name, val in mech_rxn['efficiencies'].items():    
-            extras.append({
-                'name': name,
-                'efficiency': {'A':val/divisor,'b':0,'Ea':0 },
-                'note': 'present work',
-            })
-        return extras
+    # def extraColliders(self,mech_rxn,colliders,refCol):
+    #     if mech_rxn.get('efficiencies') is None:
+    #         return []
+    #     divisor=1
+    #     for name, val in mech_rxn['efficiencies'].items():
+    #         if name==refCol and val!=0:
+    #             divisor=val
+    #     extras=[]
+    #     for name, val in mech_rxn['efficiencies'].items():    
+    #         extras.append({
+    #             'name': name,
+    #             'efficiency': {'A':val/divisor,'b':0,'Ea':0 },
+    #             'note': 'present work',
+    #         })
+    #     return extras
+
+    def colliders(self,data,mech_rxn,blend_rxn=None,generic=False):
+        speciesList = data['mech']['phases'][0]['species']
+        divisor = 1
+        # already_given=False
+        for name, val in mech_rxn.get('efficiencies', {}).items():
+            if name.lower() =='ar' and val!=0:
+                print(val)
+                divisor = val
+        colliders=[]
+        # Ab initio, reaction-specific T-dependent efficiencies
+        if blend_rxn is not None:
+            for col in blend_rxn['colliders']:
+                print(divisor)
+                col['efficiency'] = [eff/divisor for eff in col['efficiency']]
+                colliders.append(self.arrheniusFit(col))
+        # Add troe efficiencies that haven't already been given a value
+        for name, val in mech_rxn.get('efficiencies', {}).items():
+            already_given = any(col['name'] == name for col in colliders)
+            # for col in blend_rxn['colliders']
+            #     if col[name] == name:
+            if not already_given and not (name.lower()=='ar' and val==1):
+                colliders.append({
+                    'name': name,
+                    'efficiency': {'A':val,'b':0,'Ea':0 },
+                    'note': 'present work',
+                })
+        # Add generic efficiencies if not already covered, and option is selected
+        if generic:
+            for genericCol in data['defaults']['generic-colliders']:
+                already_given = any(col['name'] == genericCol['name'] for col in colliders)
+                exclude_N2 = True if (divisor!=1 and (genericCol['name']=='N2' or genericCol['name']=='n2')) else False
+                if genericCol['name'] in speciesList and not exclude_N2 and not already_given:
+                    if genericCol.get('temperatures') is not None:
+                        genericCol['efficiency'] = [eff/divisor for eff in genericCol['efficiency']]
+                        colliders.append(self.arrheniusFit(genericCol))
+                    else:
+                        colliders.append({
+                            'name': genericCol['name'],
+                            'efficiency': {'A': genericCol['efficiency']/divisor,'b':0,'Ea':0},
+                            'note': genericCol['note']
+                        })
+        return colliders
 
     def zippedMech(self, data):
         newData={
@@ -326,15 +369,8 @@ class makeYAML:
                     newRxn['units'] = mech_rxn['units']
                 idx = blendRxnNames.index(self.normalize(mech_rxn['equation']))
                 blend_rxn = data['blend']['reactions'][idx]
-                refCol = data['blend']['reactions'][idx]['reference-collider']
-                colliders = blend_rxn['colliders']
-                newRxn['reference-collider'] = refCol
-                extras = self.extraColliders(mech_rxn,colliders,refCol)
-                for i,extra in enumerate(extras):
-                    for col in colliders:                    
-                        if col['name']==extra['name']:
-                            extras.pop(i)
-                newRxn['colliders'] = [colliderM] + colliders + extras
+                colliders = self.colliders(data,mech_rxn,blend_rxn=blend_rxn)
+                newRxn['colliders'] = [colliderM] + colliders
                 newData['reactions'].append(newRxn)
             elif pDep and data['allPdep']:
                 # user has opted to have generic 3b effs applied to all p-dep reactions
@@ -346,26 +382,8 @@ class makeYAML:
                 }
                 if mech_rxn.get('duplicate') is not None:
                     newRxn['duplicate'] = True
-                newRxn['reference-collider'] = 'AR' #just assumed, not aiming for perfection
-                refCol = 'AR' #just assumed, not aiming for perfection
-                speciesList = data['mech']['phases'][0]['species']
-                colliders=[]
-                for col in data['defaults']['generic-colliders']:
-                    if col['name'] in speciesList:
-                        if col.get('temperatures') is not None:
-                            colliders.append(self.arrheniusFit(col))
-                        else:
-                            colliders.append({
-                                'name': col['name'],
-                                'efficiency': {'A': col['efficiency'],'b':0,'Ea':0},
-                                'note': col['note']
-                            })
-                extras = self.extraColliders(mech_rxn,colliders,refCol)
-                for i,extra in enumerate(extras):
-                    for j, col in enumerate(colliders):
-                        if col['name']==extra['name']:
-                            colliders.remove(col)
-                newRxn['colliders'] = [colliderM] + colliders + extras
+                colliders = self.colliders(data,mech_rxn,generic=True)
+                newRxn['colliders'] = [colliderM] + colliders
                 newData['reactions'].append(newRxn)
             elif PLOG and data['allPLOG']:
                 # user has opted to have generic 3b effs applied to all PLOG reactions
@@ -377,20 +395,7 @@ class makeYAML:
                 }
                 if mech_rxn.get('duplicate') is not None:
                     newRxn['duplicate'] = True
-                newRxn['reference-collider'] = 'AR' #just assumed, not aiming for perfection
-                refCol = 'AR' #just assumed, not aiming for perfection
-                speciesList = data['mech']['phases'][0]['species']
-                colliders=[]
-                for col in data['defaults']['generic-colliders']:
-                    if col['name'] in speciesList:
-                        if col.get('temperatures') is not None:
-                            colliders.append(self.arrheniusFit(col))
-                        else:
-                            colliders.append({
-                                'name': col['name'],
-                                'efficiency': {'A': col['efficiency'],'b':0,'Ea':0},
-                                'note': col['note']
-                            })
+                colliders = self.colliders(data,mech_rxn,generic=True)
                 newRxn['colliders'] = [colliderM] + colliders
                 newData['reactions'].append(newRxn)
             else: # just append it as-is
