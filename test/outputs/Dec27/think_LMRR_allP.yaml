@@ -2910,9 +2910,6 @@ reactions:
   - name: H2O
     efficiency: {A: 7.0, b: 0, Ea: 0}
     note: present work
-  - name: N2
-    efficiency: {A: 5.163934426229508, b: 0, Ea: 0}
-    note: Jasper-2022 (generic) (300K)
   - name: H2O2
     efficiency: {A: 26.721311475409838, b: 0, Ea: 0}
     note: Jasper-2022 (generic)
@@ -3607,9 +3604,6 @@ reactions:
   - name: HE
     efficiency: {A: 3.6571428571428575, b: 0, Ea: 0}
     note: Jasper-2022 (generic)
-  - name: N2
-    efficiency: {A: 4.5, b: 0, Ea: 0}
-    note: Jasper-2022 (generic) (300K)
   - name: CO2
     efficiency: {A: 20.42857142857143, b: 0, Ea: 0}
     note: Jasper-2022 (generic)
@@ -3678,9 +3672,6 @@ reactions:
   - name: HE
     efficiency: {A: 3.6571428571428575, b: 0, Ea: 0}
     note: Jasper-2022 (generic)
-  - name: N2
-    efficiency: {A: 4.5, b: 0, Ea: 0}
-    note: Jasper-2022 (generic) (300K)
   - name: CO2
     efficiency: {A: 20.42857142857143, b: 0, Ea: 0}
     note: Jasper-2022 (generic)
@@ -4019,9 +4010,6 @@ reactions:
   - name: KR
     efficiency: {A: 0.7, b: 0, Ea: 0}
     note: present work
-  - name: N2
-    efficiency: {A: 4.5, b: 0, Ea: 0}
-    note: Jasper-2022 (generic) (300K)
   - name: CO2
     efficiency: {A: 20.42857142857143, b: 0, Ea: 0}
     note: Jasper-2022 (generic)
@@ -5162,9 +5150,6 @@ reactions:
   - name: KR
     efficiency: {A: 0.7, b: 0, Ea: 0}
     note: present work
-  - name: N2
-    efficiency: {A: 4.5, b: 0, Ea: 0}
-    note: Jasper-2022 (generic) (300K)
   - name: CO2
     efficiency: {A: 20.42857142857143, b: 0, Ea: 0}
     note: Jasper-2022 (generic)
@@ -5917,9 +5902,6 @@ reactions:
   - name: KR
     efficiency: {A: 0.7, b: 0, Ea: 0}
     note: present work
-  - name: N2
-    efficiency: {A: 4.5, b: 0, Ea: 0}
-    note: Jasper-2022 (generic) (300K)
   - name: CO2
     efficiency: {A: 20.42857142857143, b: 0, Ea: 0}
     note: Jasper-2022 (generic)
@@ -5988,9 +5970,6 @@ reactions:
   - name: KR
     efficiency: {A: 0.7, b: 0, Ea: 0}
     note: present work
-  - name: N2
-    efficiency: {A: 4.5, b: 0, Ea: 0}
-    note: Jasper-2022 (generic) (300K)
   - name: CO2
     efficiency: {A: 20.42857142857143, b: 0, Ea: 0}
     note: Jasper-2022 (generic)
@@ -17639,9 +17618,6 @@ reactions:
   - name: KR
     efficiency: {A: 0.7, b: 0, Ea: 0}
     note: present work
-  - name: N2
-    efficiency: {A: 4.5, b: 0, Ea: 0}
-    note: Jasper-2022 (generic) (300K)
   - name: CO2
     efficiency: {A: 20.42857142857143, b: 0, Ea: 0}
     note: Jasper-2022 (generic)
@@ -17710,9 +17686,6 @@ reactions:
   - name: KR
     efficiency: {A: 0.7, b: 0, Ea: 0}
     note: present work
-  - name: N2
-    efficiency: {A: 4.5, b: 0, Ea: 0}
-    note: Jasper-2022 (generic) (300K)
   - name: CO2
     efficiency: {A: 20.42857142857143, b: 0, Ea: 0}
     note: Jasper-2022 (generic)
@@ -17781,9 +17754,6 @@ reactions:
   - name: KR
     efficiency: {A: 0.7, b: 0, Ea: 0}
     note: present work
-  - name: N2
-    efficiency: {A: 4.5, b: 0, Ea: 0}
-    note: Jasper-2022 (generic) (300K)
   - name: CO2
     efficiency: {A: 20.42857142857143, b: 0, Ea: 0}
     note: Jasper-2022 (generic)
@@ -17925,9 +17895,6 @@ reactions:
   - name: KR
     efficiency: {A: 0.7, b: 0, Ea: 0}
     note: present work
-  - name: N2
-    efficiency: {A: 4.5, b: 0, Ea: 0}
-    note: Jasper-2022 (generic) (300K)
   - name: CO2
     efficiency: {A: 20.42857142857143, b: 0, Ea: 0}
     note: Jasper-2022 (generic)
@@ -18108,9 +18075,6 @@ reactions:
   - name: KR
     efficiency: {A: 0.7, b: 0, Ea: 0}
     note: present work
-  - name: N2
-    efficiency: {A: 4.5, b: 0, Ea: 0}
-    note: Jasper-2022 (generic) (300K)
   - name: CO2
     efficiency: {A: 20.42857142857143, b: 0, Ea: 0}
     note: Jasper-2022 (generic)
@@ -30122,9 +30086,6 @@ reactions:
   - name: HE
     efficiency: {A: 3.6571428571428575, b: 0, Ea: 0}
     note: Jasper-2022 (generic)
-  - name: N2
-    efficiency: {A: 4.5, b: 0, Ea: 0}
-    note: Jasper-2022 (generic) (300K)
   - name: H2O2
     efficiency: {A: 23.28571428571429, b: 0, Ea: 0}
     note: Jasper-2022 (generic)
