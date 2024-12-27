@@ -266,30 +266,6 @@ class makeYAML:
                 'note': 'present work',
             })
         return extras
-    
-# def extraColliders(self,mech_rxn,colliders,refCol):
-# if mech_rxn.get('efficiencies') is None:
-#     return []
-# extras=[]
-# colliderNames = [col['name'] for col in colliders]
-# for name, val in mech_rxn['efficiencies'].items():
-#     if name not in colliderNames and name!=refCol:
-#         extras.append({
-#             'name': name,
-#             'efficiency': {'A':val,'b':0,'Ea':0 },
-#             'note': 'present work',
-#         })
-#     else:
-#         for col in colliders:
-#             if name==col['name'] and val!=col['efficiency']['A']:
-#                     extras.append({
-#                     'name': name,
-#                     'efficiency': {'A':val,'b':0,'Ea':0 },
-#                     'note': 'present work',
-#                 })
-#         return extras
-
-
 
     def zippedMech(self, data):
         newData={
@@ -415,13 +391,7 @@ class makeYAML:
                                 'efficiency': {'A': col['efficiency'],'b':0,'Ea':0},
                                 'note': col['note']
                             })
-                extras = self.extraColliders(mech_rxn,colliders,refCol)
-                
-                for i,extra in enumerate(extras):
-                    for j, col in enumerate(colliders):
-                        if col['name']==extra['name']:
-                            colliders.remove(col)
-                newRxn['colliders'] = [colliderM] + colliders + extras
+                newRxn['colliders'] = [colliderM] + colliders
                 newData['reactions'].append(newRxn)
             else: # just append it as-is
                 newData['reactions'].append(mech_rxn)
