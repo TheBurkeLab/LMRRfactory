@@ -114,7 +114,7 @@ generic-colliders: # AR is always reference collider
 
 reactions:
 - equation: H + OH (+M) <=> H2O (+M)
-  reference-collider: N2
+  reference-collider: AR
   colliders:
   # - name: AR
   #   efficiency: [0.39840637450199207, 0.6172839506172839, 0.8333333333333334]
