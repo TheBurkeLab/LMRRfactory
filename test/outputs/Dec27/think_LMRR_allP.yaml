@@ -2911,46 +2911,46 @@ reactions:
     efficiency: {A: 7.0, b: 0, Ea: 0}
     note: present work
   - name: H2O2
-    efficiency: {A: 26.721311475409838, b: 0, Ea: 0}
+    efficiency: {A: 9.943, b: 0, Ea: 0}
     note: Jasper-2022 (generic)
   - name: CO
-    efficiency: {A: 4.501639344262295, b: 0, Ea: 0}
+    efficiency: {A: 1.67506, b: 0, Ea: 0}
     note: Matsugi-2021 (generic)
   - name: O2
-    efficiency: {A: 2.7868852459016393, b: 0, Ea: 0}
+    efficiency: {A: 1.037, b: 0, Ea: 0}
     note: Jasper-2022 (generic)
   - name: KR
-    efficiency: {A: 1.7540983606557379, b: 0, Ea: 0}
+    efficiency: {A: 0.6527000000000001, b: 0, Ea: 0}
     note: JOM-2015 (generic) (300K)
   - name: C2H6
-    efficiency: {A: 9.180327868852459, b: 0, Ea: 0}
+    efficiency: {A: 3.4159999999999995, b: 0, Ea: 0}
     note: Think Mech
   - name: CH2O
-    efficiency: {A: 4.821311475409836, b: 0, Ea: 0}
+    efficiency: {A: 1.7940099999999999, b: 0, Ea: 0}
     note: Glarborg-2018 (generic)
   - name: CH3OH
-    efficiency: {A: 5.786885245901639, b: 0, Ea: 0}
+    efficiency: {A: 2.1532999999999998, b: 0, Ea: 0}
     note: Glarborg-2018 (generic)
   - name: C3H8
-    efficiency: {A: 9.836065573770492, b: 0, Ea: 0}
+    efficiency: {A: 3.6599999999999997, b: 0, Ea: 0}
     note: ThInK 1.0 (generic)
   - name: C2H4
-    efficiency: {A: 9.836065573770492, b: 0, Ea: 0}
+    efficiency: {A: 3.6599999999999997, b: 0, Ea: 0}
     note: ThInK 1.0 (generic)
   - name: CH3CHCH2
-    efficiency: {A: 9.836065573770492, b: 0, Ea: 0}
+    efficiency: {A: 3.6599999999999997, b: 0, Ea: 0}
     note: ThInK 1.0 (generic)
   - name: C2H2
-    efficiency: {A: 9.836065573770492, b: 0, Ea: 0}
+    efficiency: {A: 3.6599999999999997, b: 0, Ea: 0}
     note: ThInK 1.0 (generic)
   - name: CH2CCH2
-    efficiency: {A: 9.836065573770492, b: 0, Ea: 0}
+    efficiency: {A: 3.6599999999999997, b: 0, Ea: 0}
     note: ThInK 1.0 (generic)
   - name: CH3CCH
-    efficiency: {A: 9.836065573770492, b: 0, Ea: 0}
+    efficiency: {A: 3.6599999999999997, b: 0, Ea: 0}
     note: ThInK 1.0 (generic)
   - name: CH3OCHO
-    efficiency: {A: 5.39344262295082, b: 0, Ea: 0}
+    efficiency: {A: 2.0069, b: 0, Ea: 0}
     note: ThInK 1.0 (generic)
 - equation: CO + OH <=> OCOH
   type: linear-Burke
@@ -3602,31 +3602,31 @@ reactions:
     efficiency: {A: 5.0, b: 0, Ea: 0}
     note: present work
   - name: HE
-    efficiency: {A: 3.6571428571428575, b: 0, Ea: 0}
+    efficiency: {A: 1.792, b: 0, Ea: 0}
     note: Jasper-2022 (generic)
   - name: CO2
-    efficiency: {A: 20.42857142857143, b: 0, Ea: 0}
+    efficiency: {A: 10.01, b: 0, Ea: 0}
     note: Jasper-2022 (generic)
   - name: H2O2
-    efficiency: {A: 23.28571428571429, b: 0, Ea: 0}
+    efficiency: {A: 11.41, b: 0, Ea: 0}
     note: Jasper-2022 (generic)
   - name: CO
-    efficiency: {A: 3.922857142857143, b: 0, Ea: 0}
+    efficiency: {A: 1.9222, b: 0, Ea: 0}
     note: Matsugi-2021 (generic)
   - name: O2
-    efficiency: {A: 2.428571428571429, b: 0, Ea: 0}
+    efficiency: {A: 1.19, b: 0, Ea: 0}
     note: Jasper-2022 (generic)
   - name: KR
-    efficiency: {A: 1.5285714285714287, b: 0, Ea: 0}
+    efficiency: {A: 0.749, b: 0, Ea: 0}
     note: JOM-2015 (generic) (300K)
   - name: CH2O
-    efficiency: {A: 4.201428571428571, b: 0, Ea: 0}
+    efficiency: {A: 2.0587, b: 0, Ea: 0}
     note: Glarborg-2018 (generic)
   - name: CH3OH
-    efficiency: {A: 5.042857142857143, b: 0, Ea: 0}
+    efficiency: {A: 2.4709999999999996, b: 0, Ea: 0}
     note: Glarborg-2018 (generic)
   - name: CH3OCHO
-    efficiency: {A: 4.7, b: 0, Ea: 0}
+    efficiency: {A: 2.303, b: 0, Ea: 0}
     note: ThInK 1.0 (generic)
 - equation: CH2OH (+M) <=> H + CH2O (+M)
   type: linear-Burke
@@ -3670,31 +3670,31 @@ reactions:
     efficiency: {A: 5.0, b: 0, Ea: 0}
     note: present work
   - name: HE
-    efficiency: {A: 3.6571428571428575, b: 0, Ea: 0}
+    efficiency: {A: 1.792, b: 0, Ea: 0}
     note: Jasper-2022 (generic)
   - name: CO2
-    efficiency: {A: 20.42857142857143, b: 0, Ea: 0}
+    efficiency: {A: 10.01, b: 0, Ea: 0}
     note: Jasper-2022 (generic)
   - name: H2O2
-    efficiency: {A: 23.28571428571429, b: 0, Ea: 0}
+    efficiency: {A: 11.41, b: 0, Ea: 0}
     note: Jasper-2022 (generic)
   - name: CO
-    efficiency: {A: 3.922857142857143, b: 0, Ea: 0}
+    efficiency: {A: 1.9222, b: 0, Ea: 0}
     note: Matsugi-2021 (generic)
   - name: O2
-    efficiency: {A: 2.428571428571429, b: 0, Ea: 0}
+    efficiency: {A: 1.19, b: 0, Ea: 0}
     note: Jasper-2022 (generic)
   - name: KR
-    efficiency: {A: 1.5285714285714287, b: 0, Ea: 0}
+    efficiency: {A: 0.749, b: 0, Ea: 0}
     note: JOM-2015 (generic) (300K)
   - name: CH2O
-    efficiency: {A: 4.201428571428571, b: 0, Ea: 0}
+    efficiency: {A: 2.0587, b: 0, Ea: 0}
     note: Glarborg-2018 (generic)
   - name: CH3OH
-    efficiency: {A: 5.042857142857143, b: 0, Ea: 0}
+    efficiency: {A: 2.4709999999999996, b: 0, Ea: 0}
     note: Glarborg-2018 (generic)
   - name: CH3OCHO
-    efficiency: {A: 4.7, b: 0, Ea: 0}
+    efficiency: {A: 2.303, b: 0, Ea: 0}
     note: ThInK 1.0 (generic)
 - equation: CH2O + O <=> HCO + OH
   type: linear-Burke
@@ -4011,40 +4011,40 @@ reactions:
     efficiency: {A: 0.7, b: 0, Ea: 0}
     note: present work
   - name: CO2
-    efficiency: {A: 20.42857142857143, b: 0, Ea: 0}
+    efficiency: {A: 10.01, b: 0, Ea: 0}
     note: Jasper-2022 (generic)
   - name: H2O2
-    efficiency: {A: 23.28571428571429, b: 0, Ea: 0}
+    efficiency: {A: 11.41, b: 0, Ea: 0}
     note: Jasper-2022 (generic)
   - name: O2
-    efficiency: {A: 2.428571428571429, b: 0, Ea: 0}
+    efficiency: {A: 1.19, b: 0, Ea: 0}
     note: Jasper-2022 (generic)
   - name: C2H6
-    efficiency: {A: 8.0, b: 0, Ea: 0}
+    efficiency: {A: 3.9199999999999995, b: 0, Ea: 0}
     note: Think Mech
   - name: CH2O
-    efficiency: {A: 4.201428571428571, b: 0, Ea: 0}
+    efficiency: {A: 2.0587, b: 0, Ea: 0}
     note: Glarborg-2018 (generic)
   - name: CH3OH
-    efficiency: {A: 5.042857142857143, b: 0, Ea: 0}
+    efficiency: {A: 2.4709999999999996, b: 0, Ea: 0}
     note: Glarborg-2018 (generic)
   - name: C3H8
-    efficiency: {A: 8.571428571428571, b: 0, Ea: 0}
+    efficiency: {A: 4.2, b: 0, Ea: 0}
     note: ThInK 1.0 (generic)
   - name: C2H4
-    efficiency: {A: 8.571428571428571, b: 0, Ea: 0}
+    efficiency: {A: 4.2, b: 0, Ea: 0}
     note: ThInK 1.0 (generic)
   - name: CH3CHCH2
-    efficiency: {A: 8.571428571428571, b: 0, Ea: 0}
+    efficiency: {A: 4.2, b: 0, Ea: 0}
     note: ThInK 1.0 (generic)
   - name: C2H2
-    efficiency: {A: 8.571428571428571, b: 0, Ea: 0}
+    efficiency: {A: 4.2, b: 0, Ea: 0}
     note: ThInK 1.0 (generic)
   - name: CH2CCH2
-    efficiency: {A: 8.571428571428571, b: 0, Ea: 0}
+    efficiency: {A: 4.2, b: 0, Ea: 0}
     note: ThInK 1.0 (generic)
   - name: CH3CCH
-    efficiency: {A: 8.571428571428571, b: 0, Ea: 0}
+    efficiency: {A: 4.2, b: 0, Ea: 0}
     note: ThInK 1.0 (generic)
 - equation: CH2O + HO2 <=> HCO + H2O2
   type: linear-Burke
@@ -5151,40 +5151,40 @@ reactions:
     efficiency: {A: 0.7, b: 0, Ea: 0}
     note: present work
   - name: CO2
-    efficiency: {A: 20.42857142857143, b: 0, Ea: 0}
+    efficiency: {A: 10.01, b: 0, Ea: 0}
     note: Jasper-2022 (generic)
   - name: H2O2
-    efficiency: {A: 23.28571428571429, b: 0, Ea: 0}
+    efficiency: {A: 11.41, b: 0, Ea: 0}
     note: Jasper-2022 (generic)
   - name: O2
-    efficiency: {A: 2.428571428571429, b: 0, Ea: 0}
+    efficiency: {A: 1.19, b: 0, Ea: 0}
     note: Jasper-2022 (generic)
   - name: C2H6
-    efficiency: {A: 8.0, b: 0, Ea: 0}
+    efficiency: {A: 3.9199999999999995, b: 0, Ea: 0}
     note: Think Mech
   - name: CH2O
-    efficiency: {A: 4.201428571428571, b: 0, Ea: 0}
+    efficiency: {A: 2.0587, b: 0, Ea: 0}
     note: Glarborg-2018 (generic)
   - name: CH3OH
-    efficiency: {A: 5.042857142857143, b: 0, Ea: 0}
+    efficiency: {A: 2.4709999999999996, b: 0, Ea: 0}
     note: Glarborg-2018 (generic)
   - name: C3H8
-    efficiency: {A: 8.571428571428571, b: 0, Ea: 0}
+    efficiency: {A: 4.2, b: 0, Ea: 0}
     note: ThInK 1.0 (generic)
   - name: C2H4
-    efficiency: {A: 8.571428571428571, b: 0, Ea: 0}
+    efficiency: {A: 4.2, b: 0, Ea: 0}
     note: ThInK 1.0 (generic)
   - name: CH3CHCH2
-    efficiency: {A: 8.571428571428571, b: 0, Ea: 0}
+    efficiency: {A: 4.2, b: 0, Ea: 0}
     note: ThInK 1.0 (generic)
   - name: C2H2
-    efficiency: {A: 8.571428571428571, b: 0, Ea: 0}
+    efficiency: {A: 4.2, b: 0, Ea: 0}
     note: ThInK 1.0 (generic)
   - name: CH2CCH2
-    efficiency: {A: 8.571428571428571, b: 0, Ea: 0}
+    efficiency: {A: 4.2, b: 0, Ea: 0}
     note: ThInK 1.0 (generic)
   - name: CH3CCH
-    efficiency: {A: 8.571428571428571, b: 0, Ea: 0}
+    efficiency: {A: 4.2, b: 0, Ea: 0}
     note: ThInK 1.0 (generic)
 - equation: CH3CH2O <=> CH3 + CH2O
   type: linear-Burke
@@ -5903,40 +5903,40 @@ reactions:
     efficiency: {A: 0.7, b: 0, Ea: 0}
     note: present work
   - name: CO2
-    efficiency: {A: 20.42857142857143, b: 0, Ea: 0}
+    efficiency: {A: 10.01, b: 0, Ea: 0}
     note: Jasper-2022 (generic)
   - name: H2O2
-    efficiency: {A: 23.28571428571429, b: 0, Ea: 0}
+    efficiency: {A: 11.41, b: 0, Ea: 0}
     note: Jasper-2022 (generic)
   - name: O2
-    efficiency: {A: 2.428571428571429, b: 0, Ea: 0}
+    efficiency: {A: 1.19, b: 0, Ea: 0}
     note: Jasper-2022 (generic)
   - name: C2H6
-    efficiency: {A: 8.0, b: 0, Ea: 0}
+    efficiency: {A: 3.9199999999999995, b: 0, Ea: 0}
     note: Think Mech
   - name: CH2O
-    efficiency: {A: 4.201428571428571, b: 0, Ea: 0}
+    efficiency: {A: 2.0587, b: 0, Ea: 0}
     note: Glarborg-2018 (generic)
   - name: CH3OH
-    efficiency: {A: 5.042857142857143, b: 0, Ea: 0}
+    efficiency: {A: 2.4709999999999996, b: 0, Ea: 0}
     note: Glarborg-2018 (generic)
   - name: C3H8
-    efficiency: {A: 8.571428571428571, b: 0, Ea: 0}
+    efficiency: {A: 4.2, b: 0, Ea: 0}
     note: ThInK 1.0 (generic)
   - name: C2H4
-    efficiency: {A: 8.571428571428571, b: 0, Ea: 0}
+    efficiency: {A: 4.2, b: 0, Ea: 0}
     note: ThInK 1.0 (generic)
   - name: CH3CHCH2
-    efficiency: {A: 8.571428571428571, b: 0, Ea: 0}
+    efficiency: {A: 4.2, b: 0, Ea: 0}
     note: ThInK 1.0 (generic)
   - name: C2H2
-    efficiency: {A: 8.571428571428571, b: 0, Ea: 0}
+    efficiency: {A: 4.2, b: 0, Ea: 0}
     note: ThInK 1.0 (generic)
   - name: CH2CCH2
-    efficiency: {A: 8.571428571428571, b: 0, Ea: 0}
+    efficiency: {A: 4.2, b: 0, Ea: 0}
     note: ThInK 1.0 (generic)
   - name: CH3CCH
-    efficiency: {A: 8.571428571428571, b: 0, Ea: 0}
+    efficiency: {A: 4.2, b: 0, Ea: 0}
     note: ThInK 1.0 (generic)
 - equation: CH3OCHO (+M) <=> CH3 + H + CO2 (+M)
   type: linear-Burke
@@ -5971,40 +5971,40 @@ reactions:
     efficiency: {A: 0.7, b: 0, Ea: 0}
     note: present work
   - name: CO2
-    efficiency: {A: 20.42857142857143, b: 0, Ea: 0}
+    efficiency: {A: 10.01, b: 0, Ea: 0}
     note: Jasper-2022 (generic)
   - name: H2O2
-    efficiency: {A: 23.28571428571429, b: 0, Ea: 0}
+    efficiency: {A: 11.41, b: 0, Ea: 0}
     note: Jasper-2022 (generic)
   - name: O2
-    efficiency: {A: 2.428571428571429, b: 0, Ea: 0}
+    efficiency: {A: 1.19, b: 0, Ea: 0}
     note: Jasper-2022 (generic)
   - name: C2H6
-    efficiency: {A: 8.0, b: 0, Ea: 0}
+    efficiency: {A: 3.9199999999999995, b: 0, Ea: 0}
     note: Think Mech
   - name: CH2O
-    efficiency: {A: 4.201428571428571, b: 0, Ea: 0}
+    efficiency: {A: 2.0587, b: 0, Ea: 0}
     note: Glarborg-2018 (generic)
   - name: CH3OH
-    efficiency: {A: 5.042857142857143, b: 0, Ea: 0}
+    efficiency: {A: 2.4709999999999996, b: 0, Ea: 0}
     note: Glarborg-2018 (generic)
   - name: C3H8
-    efficiency: {A: 8.571428571428571, b: 0, Ea: 0}
+    efficiency: {A: 4.2, b: 0, Ea: 0}
     note: ThInK 1.0 (generic)
   - name: C2H4
-    efficiency: {A: 8.571428571428571, b: 0, Ea: 0}
+    efficiency: {A: 4.2, b: 0, Ea: 0}
     note: ThInK 1.0 (generic)
   - name: CH3CHCH2
-    efficiency: {A: 8.571428571428571, b: 0, Ea: 0}
+    efficiency: {A: 4.2, b: 0, Ea: 0}
     note: ThInK 1.0 (generic)
   - name: C2H2
-    efficiency: {A: 8.571428571428571, b: 0, Ea: 0}
+    efficiency: {A: 4.2, b: 0, Ea: 0}
     note: ThInK 1.0 (generic)
   - name: CH2CCH2
-    efficiency: {A: 8.571428571428571, b: 0, Ea: 0}
+    efficiency: {A: 4.2, b: 0, Ea: 0}
     note: ThInK 1.0 (generic)
   - name: CH3CCH
-    efficiency: {A: 8.571428571428571, b: 0, Ea: 0}
+    efficiency: {A: 4.2, b: 0, Ea: 0}
     note: ThInK 1.0 (generic)
 - equation: CH3 + CH3 (+M) <=> C2H6 (+M)
   type: linear-Burke
@@ -16186,43 +16186,43 @@ reactions:
     efficiency: {A: 3.0, b: 0, Ea: 0}
     note: present work
   - name: HE
-    efficiency: {A: 3.6571428571428575, b: 0, Ea: 0}
+    efficiency: {A: 1.792, b: 0, Ea: 0}
     note: Jasper-2022 (generic)
   - name: H2O2
-    efficiency: {A: 23.28571428571429, b: 0, Ea: 0}
+    efficiency: {A: 11.41, b: 0, Ea: 0}
     note: Jasper-2022 (generic)
   - name: O2
-    efficiency: {A: 2.428571428571429, b: 0, Ea: 0}
+    efficiency: {A: 1.19, b: 0, Ea: 0}
     note: Jasper-2022 (generic)
   - name: KR
-    efficiency: {A: 1.5285714285714287, b: 0, Ea: 0}
+    efficiency: {A: 0.749, b: 0, Ea: 0}
     note: JOM-2015 (generic) (300K)
   - name: CH2O
-    efficiency: {A: 4.201428571428571, b: 0, Ea: 0}
+    efficiency: {A: 2.0587, b: 0, Ea: 0}
     note: Glarborg-2018 (generic)
   - name: CH3OH
-    efficiency: {A: 5.042857142857143, b: 0, Ea: 0}
+    efficiency: {A: 2.4709999999999996, b: 0, Ea: 0}
     note: Glarborg-2018 (generic)
   - name: C3H8
-    efficiency: {A: 8.571428571428571, b: 0, Ea: 0}
+    efficiency: {A: 4.2, b: 0, Ea: 0}
     note: ThInK 1.0 (generic)
   - name: C2H4
-    efficiency: {A: 8.571428571428571, b: 0, Ea: 0}
+    efficiency: {A: 4.2, b: 0, Ea: 0}
     note: ThInK 1.0 (generic)
   - name: CH3CHCH2
-    efficiency: {A: 8.571428571428571, b: 0, Ea: 0}
+    efficiency: {A: 4.2, b: 0, Ea: 0}
     note: ThInK 1.0 (generic)
   - name: C2H2
-    efficiency: {A: 8.571428571428571, b: 0, Ea: 0}
+    efficiency: {A: 4.2, b: 0, Ea: 0}
     note: ThInK 1.0 (generic)
   - name: CH2CCH2
-    efficiency: {A: 8.571428571428571, b: 0, Ea: 0}
+    efficiency: {A: 4.2, b: 0, Ea: 0}
     note: ThInK 1.0 (generic)
   - name: CH3CCH
-    efficiency: {A: 8.571428571428571, b: 0, Ea: 0}
+    efficiency: {A: 4.2, b: 0, Ea: 0}
     note: ThInK 1.0 (generic)
   - name: CH3OCHO
-    efficiency: {A: 4.7, b: 0, Ea: 0}
+    efficiency: {A: 2.303, b: 0, Ea: 0}
     note: ThInK 1.0 (generic)
 - equation: CH2C <=> C2H2
   rate-constant: {A: 10000000.0, b: 0.0, Ea: 0.0}
@@ -17616,40 +17616,40 @@ reactions:
     efficiency: {A: 0.7, b: 0, Ea: 0}
     note: present work
   - name: CO2
-    efficiency: {A: 20.42857142857143, b: 0, Ea: 0}
+    efficiency: {A: 10.01, b: 0, Ea: 0}
     note: Jasper-2022 (generic)
   - name: H2O2
-    efficiency: {A: 23.28571428571429, b: 0, Ea: 0}
+    efficiency: {A: 11.41, b: 0, Ea: 0}
     note: Jasper-2022 (generic)
   - name: O2
-    efficiency: {A: 2.428571428571429, b: 0, Ea: 0}
+    efficiency: {A: 1.19, b: 0, Ea: 0}
     note: Jasper-2022 (generic)
   - name: C2H6
-    efficiency: {A: 8.0, b: 0, Ea: 0}
+    efficiency: {A: 3.9199999999999995, b: 0, Ea: 0}
     note: Think Mech
   - name: CH2O
-    efficiency: {A: 4.201428571428571, b: 0, Ea: 0}
+    efficiency: {A: 2.0587, b: 0, Ea: 0}
     note: Glarborg-2018 (generic)
   - name: CH3OH
-    efficiency: {A: 5.042857142857143, b: 0, Ea: 0}
+    efficiency: {A: 2.4709999999999996, b: 0, Ea: 0}
     note: Glarborg-2018 (generic)
   - name: C3H8
-    efficiency: {A: 8.571428571428571, b: 0, Ea: 0}
+    efficiency: {A: 4.2, b: 0, Ea: 0}
     note: ThInK 1.0 (generic)
   - name: C2H4
-    efficiency: {A: 8.571428571428571, b: 0, Ea: 0}
+    efficiency: {A: 4.2, b: 0, Ea: 0}
     note: ThInK 1.0 (generic)
   - name: CH3CHCH2
-    efficiency: {A: 8.571428571428571, b: 0, Ea: 0}
+    efficiency: {A: 4.2, b: 0, Ea: 0}
     note: ThInK 1.0 (generic)
   - name: C2H2
-    efficiency: {A: 8.571428571428571, b: 0, Ea: 0}
+    efficiency: {A: 4.2, b: 0, Ea: 0}
     note: ThInK 1.0 (generic)
   - name: CH2CCH2
-    efficiency: {A: 8.571428571428571, b: 0, Ea: 0}
+    efficiency: {A: 4.2, b: 0, Ea: 0}
     note: ThInK 1.0 (generic)
   - name: CH3CCH
-    efficiency: {A: 8.571428571428571, b: 0, Ea: 0}
+    efficiency: {A: 4.2, b: 0, Ea: 0}
     note: ThInK 1.0 (generic)
 - equation: CH3OCHO (+M) <=> CH2O + CH2O (+M)
   type: linear-Burke
@@ -17684,40 +17684,40 @@ reactions:
     efficiency: {A: 0.7, b: 0, Ea: 0}
     note: present work
   - name: CO2
-    efficiency: {A: 20.42857142857143, b: 0, Ea: 0}
+    efficiency: {A: 10.01, b: 0, Ea: 0}
     note: Jasper-2022 (generic)
   - name: H2O2
-    efficiency: {A: 23.28571428571429, b: 0, Ea: 0}
+    efficiency: {A: 11.41, b: 0, Ea: 0}
     note: Jasper-2022 (generic)
   - name: O2
-    efficiency: {A: 2.428571428571429, b: 0, Ea: 0}
+    efficiency: {A: 1.19, b: 0, Ea: 0}
     note: Jasper-2022 (generic)
   - name: C2H6
-    efficiency: {A: 8.0, b: 0, Ea: 0}
+    efficiency: {A: 3.9199999999999995, b: 0, Ea: 0}
     note: Think Mech
   - name: CH2O
-    efficiency: {A: 4.201428571428571, b: 0, Ea: 0}
+    efficiency: {A: 2.0587, b: 0, Ea: 0}
     note: Glarborg-2018 (generic)
   - name: CH3OH
-    efficiency: {A: 5.042857142857143, b: 0, Ea: 0}
+    efficiency: {A: 2.4709999999999996, b: 0, Ea: 0}
     note: Glarborg-2018 (generic)
   - name: C3H8
-    efficiency: {A: 8.571428571428571, b: 0, Ea: 0}
+    efficiency: {A: 4.2, b: 0, Ea: 0}
     note: ThInK 1.0 (generic)
   - name: C2H4
-    efficiency: {A: 8.571428571428571, b: 0, Ea: 0}
+    efficiency: {A: 4.2, b: 0, Ea: 0}
     note: ThInK 1.0 (generic)
   - name: CH3CHCH2
-    efficiency: {A: 8.571428571428571, b: 0, Ea: 0}
+    efficiency: {A: 4.2, b: 0, Ea: 0}
     note: ThInK 1.0 (generic)
   - name: C2H2
-    efficiency: {A: 8.571428571428571, b: 0, Ea: 0}
+    efficiency: {A: 4.2, b: 0, Ea: 0}
     note: ThInK 1.0 (generic)
   - name: CH2CCH2
-    efficiency: {A: 8.571428571428571, b: 0, Ea: 0}
+    efficiency: {A: 4.2, b: 0, Ea: 0}
     note: ThInK 1.0 (generic)
   - name: CH3CCH
-    efficiency: {A: 8.571428571428571, b: 0, Ea: 0}
+    efficiency: {A: 4.2, b: 0, Ea: 0}
     note: ThInK 1.0 (generic)
 - equation: CH3OCHO (+M) <=> CH4 + CO2 (+M)
   type: linear-Burke
@@ -17752,40 +17752,40 @@ reactions:
     efficiency: {A: 0.7, b: 0, Ea: 0}
     note: present work
   - name: CO2
-    efficiency: {A: 20.42857142857143, b: 0, Ea: 0}
+    efficiency: {A: 10.01, b: 0, Ea: 0}
     note: Jasper-2022 (generic)
   - name: H2O2
-    efficiency: {A: 23.28571428571429, b: 0, Ea: 0}
+    efficiency: {A: 11.41, b: 0, Ea: 0}
     note: Jasper-2022 (generic)
   - name: O2
-    efficiency: {A: 2.428571428571429, b: 0, Ea: 0}
+    efficiency: {A: 1.19, b: 0, Ea: 0}
     note: Jasper-2022 (generic)
   - name: C2H6
-    efficiency: {A: 8.0, b: 0, Ea: 0}
+    efficiency: {A: 3.9199999999999995, b: 0, Ea: 0}
     note: Think Mech
   - name: CH2O
-    efficiency: {A: 4.201428571428571, b: 0, Ea: 0}
+    efficiency: {A: 2.0587, b: 0, Ea: 0}
     note: Glarborg-2018 (generic)
   - name: CH3OH
-    efficiency: {A: 5.042857142857143, b: 0, Ea: 0}
+    efficiency: {A: 2.4709999999999996, b: 0, Ea: 0}
     note: Glarborg-2018 (generic)
   - name: C3H8
-    efficiency: {A: 8.571428571428571, b: 0, Ea: 0}
+    efficiency: {A: 4.2, b: 0, Ea: 0}
     note: ThInK 1.0 (generic)
   - name: C2H4
-    efficiency: {A: 8.571428571428571, b: 0, Ea: 0}
+    efficiency: {A: 4.2, b: 0, Ea: 0}
     note: ThInK 1.0 (generic)
   - name: CH3CHCH2
-    efficiency: {A: 8.571428571428571, b: 0, Ea: 0}
+    efficiency: {A: 4.2, b: 0, Ea: 0}
     note: ThInK 1.0 (generic)
   - name: C2H2
-    efficiency: {A: 8.571428571428571, b: 0, Ea: 0}
+    efficiency: {A: 4.2, b: 0, Ea: 0}
     note: ThInK 1.0 (generic)
   - name: CH2CCH2
-    efficiency: {A: 8.571428571428571, b: 0, Ea: 0}
+    efficiency: {A: 4.2, b: 0, Ea: 0}
     note: ThInK 1.0 (generic)
   - name: CH3CCH
-    efficiency: {A: 8.571428571428571, b: 0, Ea: 0}
+    efficiency: {A: 4.2, b: 0, Ea: 0}
     note: ThInK 1.0 (generic)
 - equation: CH2OCHO + H <=> CH3OCHO
   type: linear-Burke
@@ -17893,40 +17893,40 @@ reactions:
     efficiency: {A: 0.7, b: 0, Ea: 0}
     note: present work
   - name: CO2
-    efficiency: {A: 20.42857142857143, b: 0, Ea: 0}
+    efficiency: {A: 10.01, b: 0, Ea: 0}
     note: Jasper-2022 (generic)
   - name: H2O2
-    efficiency: {A: 23.28571428571429, b: 0, Ea: 0}
+    efficiency: {A: 11.41, b: 0, Ea: 0}
     note: Jasper-2022 (generic)
   - name: O2
-    efficiency: {A: 2.428571428571429, b: 0, Ea: 0}
+    efficiency: {A: 1.19, b: 0, Ea: 0}
     note: Jasper-2022 (generic)
   - name: C2H6
-    efficiency: {A: 8.0, b: 0, Ea: 0}
+    efficiency: {A: 3.9199999999999995, b: 0, Ea: 0}
     note: Think Mech
   - name: CH2O
-    efficiency: {A: 4.201428571428571, b: 0, Ea: 0}
+    efficiency: {A: 2.0587, b: 0, Ea: 0}
     note: Glarborg-2018 (generic)
   - name: CH3OH
-    efficiency: {A: 5.042857142857143, b: 0, Ea: 0}
+    efficiency: {A: 2.4709999999999996, b: 0, Ea: 0}
     note: Glarborg-2018 (generic)
   - name: C3H8
-    efficiency: {A: 8.571428571428571, b: 0, Ea: 0}
+    efficiency: {A: 4.2, b: 0, Ea: 0}
     note: ThInK 1.0 (generic)
   - name: C2H4
-    efficiency: {A: 8.571428571428571, b: 0, Ea: 0}
+    efficiency: {A: 4.2, b: 0, Ea: 0}
     note: ThInK 1.0 (generic)
   - name: CH3CHCH2
-    efficiency: {A: 8.571428571428571, b: 0, Ea: 0}
+    efficiency: {A: 4.2, b: 0, Ea: 0}
     note: ThInK 1.0 (generic)
   - name: C2H2
-    efficiency: {A: 8.571428571428571, b: 0, Ea: 0}
+    efficiency: {A: 4.2, b: 0, Ea: 0}
     note: ThInK 1.0 (generic)
   - name: CH2CCH2
-    efficiency: {A: 8.571428571428571, b: 0, Ea: 0}
+    efficiency: {A: 4.2, b: 0, Ea: 0}
     note: ThInK 1.0 (generic)
   - name: CH3CCH
-    efficiency: {A: 8.571428571428571, b: 0, Ea: 0}
+    efficiency: {A: 4.2, b: 0, Ea: 0}
     note: ThInK 1.0 (generic)
 - equation: CH3OCHO + H <=> CH2OCHO + H2
   rate-constant: {A: 7110000.0, b: 2.189, Ea: 8636.0}
@@ -18073,40 +18073,40 @@ reactions:
     efficiency: {A: 0.7, b: 0, Ea: 0}
     note: present work
   - name: CO2
-    efficiency: {A: 20.42857142857143, b: 0, Ea: 0}
+    efficiency: {A: 10.01, b: 0, Ea: 0}
     note: Jasper-2022 (generic)
   - name: H2O2
-    efficiency: {A: 23.28571428571429, b: 0, Ea: 0}
+    efficiency: {A: 11.41, b: 0, Ea: 0}
     note: Jasper-2022 (generic)
   - name: O2
-    efficiency: {A: 2.428571428571429, b: 0, Ea: 0}
+    efficiency: {A: 1.19, b: 0, Ea: 0}
     note: Jasper-2022 (generic)
   - name: C2H6
-    efficiency: {A: 8.0, b: 0, Ea: 0}
+    efficiency: {A: 3.9199999999999995, b: 0, Ea: 0}
     note: Think Mech
   - name: CH2O
-    efficiency: {A: 4.201428571428571, b: 0, Ea: 0}
+    efficiency: {A: 2.0587, b: 0, Ea: 0}
     note: Glarborg-2018 (generic)
   - name: CH3OH
-    efficiency: {A: 5.042857142857143, b: 0, Ea: 0}
+    efficiency: {A: 2.4709999999999996, b: 0, Ea: 0}
     note: Glarborg-2018 (generic)
   - name: C3H8
-    efficiency: {A: 8.571428571428571, b: 0, Ea: 0}
+    efficiency: {A: 4.2, b: 0, Ea: 0}
     note: ThInK 1.0 (generic)
   - name: C2H4
-    efficiency: {A: 8.571428571428571, b: 0, Ea: 0}
+    efficiency: {A: 4.2, b: 0, Ea: 0}
     note: ThInK 1.0 (generic)
   - name: CH3CHCH2
-    efficiency: {A: 8.571428571428571, b: 0, Ea: 0}
+    efficiency: {A: 4.2, b: 0, Ea: 0}
     note: ThInK 1.0 (generic)
   - name: C2H2
-    efficiency: {A: 8.571428571428571, b: 0, Ea: 0}
+    efficiency: {A: 4.2, b: 0, Ea: 0}
     note: ThInK 1.0 (generic)
   - name: CH2CCH2
-    efficiency: {A: 8.571428571428571, b: 0, Ea: 0}
+    efficiency: {A: 4.2, b: 0, Ea: 0}
     note: ThInK 1.0 (generic)
   - name: CH3CCH
-    efficiency: {A: 8.571428571428571, b: 0, Ea: 0}
+    efficiency: {A: 4.2, b: 0, Ea: 0}
     note: ThInK 1.0 (generic)
 - equation: CH3OCHO + HO2 <=> CH2OCHO + H2O2
   rate-constant: {A: 780.0, b: 3.149, Ea: 16737.0}
@@ -30081,43 +30081,43 @@ reactions:
     efficiency: {A: 2.0, b: 0, Ea: 0}
     note: present work
   - name: HE
-    efficiency: {A: 3.6571428571428575, b: 0, Ea: 0}
+    efficiency: {A: 1.792, b: 0, Ea: 0}
     note: Jasper-2022 (generic)
   - name: H2O2
-    efficiency: {A: 23.28571428571429, b: 0, Ea: 0}
+    efficiency: {A: 11.41, b: 0, Ea: 0}
     note: Jasper-2022 (generic)
   - name: O2
-    efficiency: {A: 2.428571428571429, b: 0, Ea: 0}
+    efficiency: {A: 1.19, b: 0, Ea: 0}
     note: Jasper-2022 (generic)
   - name: KR
-    efficiency: {A: 1.5285714285714287, b: 0, Ea: 0}
+    efficiency: {A: 0.749, b: 0, Ea: 0}
     note: JOM-2015 (generic) (300K)
   - name: CH2O
-    efficiency: {A: 4.201428571428571, b: 0, Ea: 0}
+    efficiency: {A: 2.0587, b: 0, Ea: 0}
     note: Glarborg-2018 (generic)
   - name: CH3OH
-    efficiency: {A: 5.042857142857143, b: 0, Ea: 0}
+    efficiency: {A: 2.4709999999999996, b: 0, Ea: 0}
     note: Glarborg-2018 (generic)
   - name: C3H8
-    efficiency: {A: 8.571428571428571, b: 0, Ea: 0}
+    efficiency: {A: 4.2, b: 0, Ea: 0}
     note: ThInK 1.0 (generic)
   - name: C2H4
-    efficiency: {A: 8.571428571428571, b: 0, Ea: 0}
+    efficiency: {A: 4.2, b: 0, Ea: 0}
     note: ThInK 1.0 (generic)
   - name: CH3CHCH2
-    efficiency: {A: 8.571428571428571, b: 0, Ea: 0}
+    efficiency: {A: 4.2, b: 0, Ea: 0}
     note: ThInK 1.0 (generic)
   - name: C2H2
-    efficiency: {A: 8.571428571428571, b: 0, Ea: 0}
+    efficiency: {A: 4.2, b: 0, Ea: 0}
     note: ThInK 1.0 (generic)
   - name: CH2CCH2
-    efficiency: {A: 8.571428571428571, b: 0, Ea: 0}
+    efficiency: {A: 4.2, b: 0, Ea: 0}
     note: ThInK 1.0 (generic)
   - name: CH3CCH
-    efficiency: {A: 8.571428571428571, b: 0, Ea: 0}
+    efficiency: {A: 4.2, b: 0, Ea: 0}
     note: ThInK 1.0 (generic)
   - name: CH3OCHO
-    efficiency: {A: 4.7, b: 0, Ea: 0}
+    efficiency: {A: 2.303, b: 0, Ea: 0}
     note: ThInK 1.0 (generic)
 - equation: CH2CCH + CH2 <=> CH2CHCCH + H
   rate-constant: {A: 80000000000000.0, b: 0.0, Ea: 0.0}
