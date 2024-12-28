@@ -331,7 +331,13 @@ class makeYAML:
                             'name': genericCol['name'],
                             'efficiency': {'A': genericCol['efficiency']/divisor,'b':0,'Ea':0},
                             'note': genericCol['note']
-                        })
+                        })         
+        check_ar = any(col['name'].lower() =='ar' for col in colliders)
+        check_n2 = any(col['name'].lower() =='n2' for col in colliders)
+        if check_ar and check_n2:
+            print(f"Warning: {mech_rxn['equation']} has both Ar and N2 as non-unity colliders!")
+            # warnings.warn(f"Warning: {mech_rxn['equation']} has both Ar and N2 as non-unity colliders!", stacklevel=2)
+
         return colliders
 
     def zippedMech(self, data):
