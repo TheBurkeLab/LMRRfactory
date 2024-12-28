@@ -303,6 +303,10 @@ class makeYAML:
                             col['efficiency'] = np.divide(col['efficiency'],Tdep_divisor_2)
                         print(col['efficiency'])
                         colliders.append(self.arrheniusFit(col))
+                else:
+                    col['name']='Ar'
+                    col['efficiency']=np.divide(1,col['efficiency'])
+                    colliders.append(self.arrheniusFit(col))
         # Add troe efficiencies that haven't already been given a value
         for name, val in mech_rxn.get('efficiencies', {}).items():
             already_given = any(col['name'] == name for col in colliders)
