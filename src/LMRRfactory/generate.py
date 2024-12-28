@@ -10,7 +10,6 @@ import pkg_resources
 import yaml
 import os
 import numpy as np
-import warnings
 
 import warnings
 
@@ -336,7 +335,8 @@ class makeYAML:
         check_ar = any(col['name'].lower() =='ar' for col in colliders)
         check_n2 = any(col['name'].lower() =='n2' for col in colliders)
         if check_ar and check_n2:
-            warnings.warn(f"Warning: {mech_rxn['equation']} has both Ar and N2 as non-unity colliders!", stacklevel=2)
+            print(f"Warning: {mech_rxn['equation']} has both Ar and N2 as non-unity colliders!")
+            # warnings.warn(f"Warning: {mech_rxn['equation']} has both Ar and N2 as non-unity colliders!", stacklevel=2)
 
         return colliders
 
