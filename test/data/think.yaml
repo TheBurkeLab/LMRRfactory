@@ -3590,7 +3590,7 @@ reactions:
   low-P-rate-constant: {A: 5.68e+25, b: -3.358, Ea: 576.0}
   high-P-rate-constant: {A: 5.03e+12, b: 0.058, Ea: -634.0}
   Troe: {A: 0.55, T3: 1.0e-30, T1: 1.0e+30, T2: 1.0e+30}
-  efficiencies: {N2: 2.0, HE: 0.4, H2O: 10.0, CO2: 3.0}
+  efficiencies: {Ar: 0.5, N2: 2.0, HE: 0.4, H2O: 10.0, CO2: 3.0}
   note: |
     JAM/SJK Based on unpublished review of 
     (i) DA Masten, RK Hanson, CT Bowman, JPCA 94:7119 (1990).
