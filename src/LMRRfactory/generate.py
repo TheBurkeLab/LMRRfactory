@@ -274,7 +274,7 @@ class makeYAML:
         for name, val in mech_rxn.get('efficiencies', {}).items():
             if name.lower() =='ar' and val!=0:
                 print(val)
-                divisor = val
+                divisor = 1/val #ratio of N2:Ar
         colliders=[]
         # Get the T-dep values of N2, just in case needed 
         Tdep_divisor_3=[1,1,1]
