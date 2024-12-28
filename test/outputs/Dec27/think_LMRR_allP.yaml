@@ -2684,33 +2684,30 @@ reactions:
     low-P-rate-constant: {A: 5.68e+25, b: -3.358, Ea: 576.0}
     high-P-rate-constant: {A: 5030000000000.0, b: 0.058, Ea: -634.0}
     Troe: {A: 0.55, T3: 1.0e-30, T1: 1.0e+30, T2: 1.0e+30}
+  - name: N2
+    efficiency: {A: 1.14813005, b: 0.04600896, Ea: -2.92412554}
+    note: Jasper-2022
   - name: CO2
-    efficiency: {A: 78.28722586, b: -0.47398263, Ea: 244.3165591}
+    efficiency: {A: 89.88391622, b: -0.42797367, Ea: 241.39243356}
     note: Jasper-2022
   - name: H2O2
-    efficiency: {A: 0.56204037, b: 0.38025695, Ea: 45.8172818}
+    efficiency: {A: 0.64529544, b: 0.42626591, Ea: 42.89315626}
     note: Jasper-2022
   - name: H2O
-    efficiency: {A: 1.18782094, b: 0.26058256, Ea: 213.00274663}
+    efficiency: {A: 1.36377291, b: 0.30659152, Ea: 210.07862109}
     note: Jasper-2022
   - name: HE
-    efficiency: {A: 0.03505396, b: 0.38400716, Ea: 50.01957085}
+    efficiency: {A: 0.22766022, b: 0.19992445, Ea: 50.01878812}
     note: Matsugi-2021
   - name: H2
-    efficiency: {A: 0.6607751, b: 0.08767189, Ea: 50.01792039}
+    efficiency: {A: 4.29127763, b: -0.09640595, Ea: 50.00623894}
     note: Matsugi-2021
   - name: CO
-    efficiency: {A: 0.38625501, b: 0.19874367, Ea: 50.01871081}
+    efficiency: {A: 2.50843065, b: 0.01466739, Ea: 50.00578392}
     note: Matsugi-2021
   - name: CH4
-    efficiency: {A: 29.94722965, b: -0.31993297, Ea: 48.98338457}
+    efficiency: {A: 162.68534241, b: -0.48171024, Ea: 2.90318449}
     note: Matsugi-2021
-  - name: Ar
-    efficiency: {A: 0.5, b: 0, Ea: 0}
-    note: present work
-  - name: N2
-    efficiency: {A: 2.0, b: 0, Ea: 0}
-    note: present work
 - equation: OH + OH <=> O + H2O
   duplicate: true
   rate-constant: {A: 28300000000000.0, b: -0.764, Ea: -460.0}

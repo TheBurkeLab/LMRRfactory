@@ -114,25 +114,25 @@ generic-colliders: # AR is always reference collider
 
 reactions:
 - equation: H + OH (+M) <=> H2O (+M)
-  reference-collider: N2
-  # reference-collider: AR
+  # reference-collider: N2
+  reference-collider: AR
   colliders:
-  - name: AR
-    efficiency: [0.39840637450199207, 0.6172839506172839, 0.8333333333333334]
-    temperatures: [300,1000,2000]
-    note: Jasper-2022
-  - name: H2O
-    efficiency: [3.573705179282869, 5.277777777777778, 7.291666666666667]
-    temperatures: [300,1000,2000]
-    note: Jasper-2022
-  # - name: N2
-  #   efficiency: [2.51,1.62,1.20]
+  # - name: AR
+  #   efficiency: [0.39840637450199207, 0.6172839506172839, 0.8333333333333334]
   #   temperatures: [300,1000,2000]
   #   note: Jasper-2022
   # - name: H2O
-  #   efficiency: [8.97,8.55,8.75]
+  #   efficiency: [3.573705179282869, 5.277777777777778, 7.291666666666667]
   #   temperatures: [300,1000,2000]
   #   note: Jasper-2022
+  - name: N2
+    efficiency: [2.51,1.62,1.20]
+    temperatures: [300,1000,2000]
+    note: Jasper-2022
+  - name: H2O
+    efficiency: [8.97,8.55,8.75]
+    temperatures: [300,1000,2000]
+    note: Jasper-2022
 - equation: H + O2 (+M) <=> HO2 (+M)
   reference-collider: AR
   colliders:
