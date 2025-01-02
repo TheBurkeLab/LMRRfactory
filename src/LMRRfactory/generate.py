@@ -251,97 +251,104 @@ class makeYAML:
         newCol.pop('temperatures', None)
         return newCol
 
-    # def extraColliders(self,mech_rxn,colliders,refCol):
-    #     if mech_rxn.get('efficiencies') is None:
-    #         return []
-    #     divisor=1
-    #     for name, val in mech_rxn['efficiencies'].items():
-    #         if name==refCol and val!=0:
-    #             divisor=val
-    #     extras=[]
-    #     for name, val in mech_rxn['efficiencies'].items():    
-    #         extras.append({
-    #             'name': name,
-    #             'efficiency': {'A':val/divisor,'b':0,'Ea':0 },
-    #             'note': 'present work',
-    #         })
-    #     return extras
-
     def colliders(self,data,mech_rxn,blend_rxn=None,generic=False):
         speciesList = data['mech']['phases'][0]['species']
         divisor = 1
-        # already_given=False
-        for name, val in mech_rxn.get('efficiencies', {}).items():
-            if name.lower() =='ar' and val!=0:
-                print(val)
-                divisor = 1/val #ratio of N2:Ar
         colliders=[]
-        # Get the T-dep values of N2, just in case needed 
-        Tdep_divisor_3=[1,1,1]
-        Tdep_divisor_2=[1,1]
-        if blend_rxn is not None:
-            for col in blend_rxn['colliders']:
-                if col['name'].lower()=='n2' and divisor!=1:
-                    if len(col['efficiency'])==3:
-                        Tdep_divisor_3=col['efficiency']
-                    elif len(col['efficiency'])==2:
-                        Tdep_divisor_2=col['efficiency']
-        # print(Tdep_divisor_3)
-        # print(Tdep_divisor_2)
-                    
-        # Ab initio, reaction-specific T-dependent efficiencies
-        if blend_rxn is not None:
-            for col in blend_rxn['colliders']:
-                already_given = any(col['name'].lower() =='n2' for col in colliders)
-                if not (col['name'].lower()=='n2' and divisor!=1): #exclude N2 entry if the ref colliders is not Ar
-                    if not (col['name'].lower()=='n2' and already_given):
-                        # print(divisor)
+        colliderNames=[]
+        is_M_N2 = False
+        troe_efficiencies = mech_rxn.get('efficiencies', {})
+        # Check if N2 is the reference collider instead of Ar
+        for name, val in troe_efficiencies.items():
+            if name.lower() =='ar' and val!=0:
+                is_M_N2 = True
+                divisor = 1/val #ratio of N2:Ar
+        # Give warning if both Ar and N2 are non-unity colliders
+        if is_M_N2 and any(name.lower() == 'ar' for name in troe_efficiencies):
+            print(f"Warning: {mech_rxn['equation']} has both Ar and N2 as non-unity colliders!")
+
+        if is_M_N2:
+            if blend_rxn:
+                divisors=[]
+                # Extract T-dependent values for N2 if blend_rxn is provided
+                for col in blend_rxn['colliders']:
+                    if col['name'].lower()=='n2':
+                        # divisor_Tdep=np.ones(len(col['efficiency']))
+                        divisors.append(col['efficiency']) #T-dep divisor of length 2 or 3
+                # Make reaction-specific colliders wrt N2 and append to collider list 
+                for col in blend_rxn['colliders']:
+                    #Convert N2:Ar database entry to Ar:N2
+                    if col['name'].lower() == 'n2': 
+                        col['name']='AR'
+                        col['efficiency']=np.divide(1,col['efficiency'])
+                        colliders.append(self.arrheniusFit(col))
+                        colliderNames.append(col['name'].lower())
+                    elif col['name'].lower() in speciesList:
                         print(col['efficiency'])
-                        if len(col['efficiency'])==3:
-                            col['efficiency'] = np.divide(col['efficiency'],Tdep_divisor_3)
-                        if len(col['efficiency'])==2:
-                            col['efficiency'] = np.divide(col['efficiency'],Tdep_divisor_2)
+                        for i in range(len(divisors)):
+                            try:
+                                col['efficiency'] = np.divide(col['efficiency'], divisors[i])
+                                break
+                            except:
+                                pass
                         print(col['efficiency'])
                         colliders.append(self.arrheniusFit(col))
-                else:
-                    col['name']='Ar'
-                    col['efficiency']=np.divide(1,col['efficiency'])
-                    colliders.append(self.arrheniusFit(col))
-        # Add troe efficiencies that haven't already been given a value
-        for name, val in mech_rxn.get('efficiencies', {}).items():
-            already_given = any(col['name'] == name for col in colliders)
-            # for col in blend_rxn['colliders']
-            #     if col[name] == name:
-            if not already_given and not (name.lower()=='ar' and val==1) and not (name.lower()=='n2' and val==1):
-                colliders.append({
-                    'name': name,
-                    'efficiency': {'A':val,'b':0,'Ea':0 },
-                    'note': 'present work',
-                })
-        # Add generic efficiencies if not already covered, and option is selected
-        if generic:
-            for genericCol in data['defaults']['generic-colliders']:
-                already_given = any(col['name'] == genericCol['name'] for col in colliders)
-                exclude_N2 = True if (divisor!=1 and (genericCol['name']=='N2' or genericCol['name']=='n2')) else False
-                if genericCol['name'] in speciesList and not exclude_N2 and not already_given:
-                    if genericCol.get('temperatures') is not None:
-                        if len(genericCol['efficiency'])==3:
-                            genericCol['efficiency'] = np.divide(genericCol['efficiency'],Tdep_divisor_3)
-                        if len(genericCol['efficiency'])==2:
-                            genericCol['efficiency'] = np.divide(genericCol['efficiency'],Tdep_divisor_2)
-                        colliders.append(self.arrheniusFit(genericCol))
-                    else:
-                        colliders.append({
-                            'name': genericCol['name'],
-                            'efficiency': {'A': genericCol['efficiency']/divisor,'b':0,'Ea':0},
-                            'note': genericCol['note']
-                        })         
-        check_ar = any(col['name'].lower() =='ar' for col in colliders)
-        check_n2 = any(col['name'].lower() =='n2' for col in colliders)
-        if check_ar and check_n2:
-            print(f"Warning: {mech_rxn['equation']} has both Ar and N2 as non-unity colliders!")
-            # warnings.warn(f"Warning: {mech_rxn['equation']} has both Ar and N2 as non-unity colliders!", stacklevel=2)
-
+                        colliderNames.append(col['name'].lower())
+            # Add troe efficiencies that haven't already been given a value
+            for name, val in mech_rxn.get('efficiencies', {}).items():
+                # already_given = any(col['name'] == name for col in colliders)
+                already_given = name.lower() in colliderNames
+                if not already_given and not name.lower()=='n2':
+                    colliders.append({
+                        'name': name,
+                        'efficiency': {'A':val,'b':0,'Ea':0 },
+                        'note': 'present work',
+                    })
+                    colliderNames.append(name.lower())
+            if generic:
+                for col in data['defaults']['generic-colliders']:
+                    already_given = str(col['name']).lower() in colliderNames
+                    if col['name'] in speciesList and not already_given and not col['name'].lower()=='n2':
+                        if col.get('temperatures') is not None:
+                            col['efficiency'] = np.divide(col['efficiency'],divisor)
+                            colliders.append(self.arrheniusFit(col))
+                        else:
+                            colliders.append({
+                                'name': col['name'],
+                                'efficiency': {'A': col['efficiency']/divisor,'b':0,'Ea':0},
+                                'note': col['note']
+                            })
+        
+        else:
+            if blend_rxn:
+                # Make reaction-specific colliders wrt Ar and append to collider list 
+                for col in blend_rxn['colliders']:
+                    if col['name'].lower() in speciesList:
+                        colliders.append(self.arrheniusFit(col))
+                        colliderNames.append(col['name'].lower())
+            # Add troe efficiencies that haven't already been given a value
+            for name, val in troe_efficiencies.items():
+                # already_given = any(col['name'] == name for col in colliders)
+                already_given = name.lower() in colliderNames
+                if not already_given and not name.lower()=='ar':
+                    colliders.append({
+                        'name': name,
+                        'efficiency': {'A':val,'b':0,'Ea':0 },
+                        'note': 'present work',
+                    })
+                    colliderNames.append(name.lower())
+            if generic:
+                for col in data['defaults']['generic-colliders']:
+                    already_given = str(col['name']).lower() in colliderNames
+                    if col['name'] in speciesList and not already_given and not col['name'].lower()=='ar':
+                        if col.get('temperatures') is not None:
+                            colliders.append(self.arrheniusFit(col))
+                        else:
+                            colliders.append({
+                                'name': col['name'],
+                                'efficiency': {'A': col['efficiency'],'b':0,'Ea':0},
+                                'note': col['note']
+                            })
         return colliders
 
     def zippedMech(self, data):

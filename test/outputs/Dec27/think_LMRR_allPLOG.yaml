@@ -2569,6 +2569,9 @@ reactions:
   - name: HE
     efficiency: {A: 0.00270228, b: 0.77583052, Ea: -504.68045554}
     note: Jasper-2022
+  - name: Ar
+    efficiency: {A: 0.00800436, b: 0.59326267, Ea: -540.92123387}
+    note: Jasper-2022
   - name: H2
     efficiency: {A: 251.11060145, b: -0.66093197, Ea: 588.31982634}
     note: Jasper-2022
@@ -2646,12 +2649,15 @@ reactions:
     low-P-rate-constant: {A: 4.53e+21, b: -1.81, Ea: 499.0}
     high-P-rate-constant: {A: 25100000000000.0, b: 0.234, Ea: -114.0}
     Troe: {A: 0.73, T3: 1.0e-30, T1: 1.0e+30, T2: 1.0e+30}
-  - name: AR
+  - name: Ar
     efficiency: {A: 0.02206208, b: 0.47403597, Ea: -113.14813345}
     note: Jasper-2022
   - name: H2O
     efficiency: {A: 0.10452866, b: 0.55078681, Ea: -232.67496903}
     note: Jasper-2022
+  - name: AR
+    efficiency: {A: 0.5, b: 0, Ea: 0}
+    note: present work
   - name: CO2
     efficiency: {A: 2.0, b: 0, Ea: 0}
     note: present work
