@@ -258,14 +258,14 @@ class makeYAML:
         colliderNames=[]
         is_M_N2 = False
         troe_efficiencies = mech_rxn.get('efficiencies', {})
-        # Check if N2 is the reference collider instead of Ar
         for name, val in troe_efficiencies.items():
-            if name.lower() =='ar' and val!=0:
+            # Check if N2 is the reference collider instead of Ar
+            if name.lower() =='ar' and val!=0 and val !=1:
                 is_M_N2 = True
                 divisor = 1/val #ratio of N2:Ar
-        # Give warning if both Ar and N2 are non-unity colliders
-        if is_M_N2 and any(name.lower() == 'ar' for name in troe_efficiencies):
-            print(f"Warning: {mech_rxn['equation']} has both Ar and N2 as non-unity colliders!")
+            # Give warning if both Ar and N2 are non-unity colliders
+            if is_M_N2 and name.lower() == 'n2' and val!=0 and val !=1:
+                print(f"Warning: {mech_rxn['equation']} has both Ar and N2 as non-unity colliders!")
 
         if is_M_N2:
             if blend_rxn:
@@ -283,7 +283,7 @@ class makeYAML:
                         col['efficiency']=np.divide(1,col['efficiency'])
                         colliders.append(self.arrheniusFit(col))
                         colliderNames.append(col['name'].lower())
-                    elif col['name'].lower() in speciesList:
+                    elif col['name'] in speciesList:
                         print(col['efficiency'])
                         for i in range(len(divisors)):
                             try:
@@ -298,13 +298,21 @@ class makeYAML:
             for name, val in mech_rxn.get('efficiencies', {}).items():
                 # already_given = any(col['name'] == name for col in colliders)
                 already_given = name.lower() in colliderNames
-                if not already_given and not name.lower()=='n2':
-                    colliders.append({
-                        'name': name,
-                        'efficiency': {'A':val,'b':0,'Ea':0 },
-                        'note': 'present work',
-                    })
-                    colliderNames.append(name.lower())
+                if not already_given:
+                    if name.lower()=='n2':
+                        colliders.append({
+                            'name': 'AR',
+                            'efficiency': {'A':1/val,'b':0,'Ea':0 },
+                            'note': 'present work',
+                        })
+                        colliderNames.append(name.lower())
+                    else:
+                        colliders.append({
+                            'name': name,
+                            'efficiency': {'A':val,'b':0,'Ea':0 },
+                            'note': 'present work',
+                        })
+                        colliderNames.append(name.lower())
             if generic:
                 for col in data['defaults']['generic-colliders']:
                     already_given = str(col['name']).lower() in colliderNames
@@ -323,7 +331,7 @@ class makeYAML:
             if blend_rxn:
                 # Make reaction-specific colliders wrt Ar and append to collider list 
                 for col in blend_rxn['colliders']:
-                    if col['name'].lower() in speciesList:
+                    if col['name'] in speciesList:
                         colliders.append(self.arrheniusFit(col))
                         colliderNames.append(col['name'].lower())
             # Add troe efficiencies that haven't already been given a value
