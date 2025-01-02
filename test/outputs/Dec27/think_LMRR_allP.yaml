@@ -5737,10 +5737,10 @@ reactions:
   - name: C2H6
     efficiency: {A: 4.23, b: 0, Ea: 0}
     note: present work
-  - name: HE
-    efficiency: {A: 1.0, b: 0, Ea: 0}
+  - name: N2
+    efficiency: {A: 1.43, b: 0, Ea: 0}
     note: present work
-  - name: AR
+  - name: HE
     efficiency: {A: 1.0, b: 0, Ea: 0}
     note: present work
   - name: H2O2
@@ -5759,22 +5759,22 @@ reactions:
     efficiency: {A: 3.53, b: 0, Ea: 0}
     note: Glarborg-2018 (generic)
   - name: C3H8
-    efficiency: {A: 6.0, b: 0, Ea: 0}
+    efficiency: {A: 6, b: 0, Ea: 0}
     note: ThInK 1.0 (generic)
   - name: C2H4
-    efficiency: {A: 6.0, b: 0, Ea: 0}
+    efficiency: {A: 6, b: 0, Ea: 0}
     note: ThInK 1.0 (generic)
   - name: CH3CHCH2
-    efficiency: {A: 6.0, b: 0, Ea: 0}
+    efficiency: {A: 6, b: 0, Ea: 0}
     note: ThInK 1.0 (generic)
   - name: C2H2
-    efficiency: {A: 6.0, b: 0, Ea: 0}
+    efficiency: {A: 6, b: 0, Ea: 0}
     note: ThInK 1.0 (generic)
   - name: CH2CCH2
-    efficiency: {A: 6.0, b: 0, Ea: 0}
+    efficiency: {A: 6, b: 0, Ea: 0}
     note: ThInK 1.0 (generic)
   - name: CH3CCH
-    efficiency: {A: 6.0, b: 0, Ea: 0}
+    efficiency: {A: 6, b: 0, Ea: 0}
     note: ThInK 1.0 (generic)
   - name: CH3OCHO
     efficiency: {A: 3.29, b: 0, Ea: 0}

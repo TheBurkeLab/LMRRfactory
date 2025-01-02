@@ -264,7 +264,7 @@ class makeYAML:
                 is_M_N2 = True
                 divisor = 1/val #ratio of N2:Ar
         # Give warning if both Ar and N2 are non-unity colliders
-        if is_M_N2 and any(name.lower() == 'ar' for name in troe_efficiencies):
+        if is_M_N2 and any(name.lower() == 'n2' for name in troe_efficiencies):
             print(f"Warning: {mech_rxn['equation']} has both Ar and N2 as non-unity colliders!")
 
         if is_M_N2:

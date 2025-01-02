@@ -120,7 +120,6 @@ CH4 + O <=> CH3 + OH
 CH4 + O2 <=> CH3 + HO2
 CH3O + OH <=> CH3 + HO2
 CH3CHO <=> CH3 + HCO
-Warning: CH3CHO (+M) <=> CH3 + HCO (+M) has both Ar and N2 as non-unity colliders!
 CH4 + CO <=> CH3 + HCO
 CH3OCHO <=> CH3 + OCOH
 Warning: CH3OCHO (+M) <=> CH3 + OCOH (+M) has both Ar and N2 as non-unity colliders!
