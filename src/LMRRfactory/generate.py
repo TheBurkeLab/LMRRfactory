@@ -260,7 +260,7 @@ class makeYAML:
         troe_efficiencies = mech_rxn.get('efficiencies', {})
         # Check if N2 is the reference collider instead of Ar
         for name, val in troe_efficiencies.items():
-            if name.lower() =='ar' and val!=0:
+            if name.lower() =='ar' and val!=0 and val !=1:
                 is_M_N2 = True
                 divisor = 1/val #ratio of N2:Ar
         # Give warning if both Ar and N2 are non-unity colliders
