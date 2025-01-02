@@ -258,14 +258,14 @@ class makeYAML:
         colliderNames=[]
         is_M_N2 = False
         troe_efficiencies = mech_rxn.get('efficiencies', {})
-        # Check if N2 is the reference collider instead of Ar
         for name, val in troe_efficiencies.items():
+            # Check if N2 is the reference collider instead of Ar
             if name.lower() =='ar' and val!=0 and val !=1:
                 is_M_N2 = True
                 divisor = 1/val #ratio of N2:Ar
-        # Give warning if both Ar and N2 are non-unity colliders
-        if is_M_N2 and any(name.lower() == 'n2' for name in troe_efficiencies):
-            print(f"Warning: {mech_rxn['equation']} has both Ar and N2 as non-unity colliders!")
+            # Give warning if both Ar and N2 are non-unity colliders
+            if is_M_N2 and name.lower() == 'n2' and val!=0 and val !=1:
+                print(f"Warning: {mech_rxn['equation']} has both Ar and N2 as non-unity colliders!")
 
         if is_M_N2:
             if blend_rxn:
