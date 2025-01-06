@@ -298,21 +298,13 @@ class makeYAML:
             for name, val in mech_rxn.get('efficiencies', {}).items():
                 # already_given = any(col['name'] == name for col in colliders)
                 already_given = name.lower() in colliderNames
-                if not already_given:
-                    if name.lower()=='n2':
-                        colliders.append({
-                            'name': 'AR',
-                            'efficiency': {'A':1/val,'b':0,'Ea':0 },
-                            'note': 'present work',
-                        })
-                        colliderNames.append(name.lower())
-                    else:
-                        colliders.append({
-                            'name': name,
-                            'efficiency': {'A':val,'b':0,'Ea':0 },
-                            'note': 'present work',
-                        })
-                        colliderNames.append(name.lower())
+                if not already_given and not name.lower()=='n2': #ignores the redundant n2=1 entry
+                    colliders.append({
+                        'name': name,
+                        'efficiency': {'A':val,'b':0,'Ea':0 },
+                        'note': 'present work',
+                    })
+                    colliderNames.append(name.lower())
             if generic:
                 for col in data['defaults']['generic-colliders']:
                     already_given = str(col['name']).lower() in colliderNames
