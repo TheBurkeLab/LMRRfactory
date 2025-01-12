@@ -399,7 +399,7 @@ class makeYAML:
                     PLOG = True
                     colliderM = {
                         'name': 'M',
-                        'type': 'linear-Burke',
+                        'type': 'pressure-dependent-Arrhenius',
                         'rate-constants': mech_rxn['colliders'][0]['rate-constants']
                     }
             elif mech_rxn.get('type') == 'Chebyshev':
