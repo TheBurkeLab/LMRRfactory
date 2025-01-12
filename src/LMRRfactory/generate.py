@@ -261,8 +261,8 @@ class makeYAML:
         if mech_rxn['type']=='falloff':
             troe_efficiencies = mech_rxn.get('efficiencies', {})
         elif mech_rxn['type']=='linear-Burke': #case where we've used the linear Burke format so that Troe params can be used alongside a PLOG
-            for col in mech_rxn['colliders']:
-                if col['efficiency']['b']==0 and col['efficiency']['Ea']==0:
+            for c, col in enumerate(mech_rxn['colliders']):
+                if c>0 and col['efficiency']['b']==0 and col['efficiency']['Ea']==0:
                     troe_efficiencies[col['name']]=col['efficiency']['A']
             # if mech_rxn['colliders'][0]['type']=='pressure-'
         for name, val in troe_efficiencies.items():
