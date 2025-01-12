@@ -258,9 +258,9 @@ class makeYAML:
         colliderNames=[]
         is_M_N2 = False
         troe_efficiencies={}
-        if mech_rxn['type']=='falloff':
+        if mech_rxn.get('type') == 'falloff' and 'Troe' in mech_rxn and '(+M)' in mech_rxn['equation']:
             troe_efficiencies = mech_rxn.get('efficiencies', {})
-        elif mech_rxn['type']=='linear-Burke': #case where we've used the linear Burke format so that Troe params can be used alongside a PLOG
+        elif mech_rxn.get('type')=='linear-Burke': #case where we've used the linear Burke format so that Troe params can be used alongside a PLOG
             for c, col in enumerate(mech_rxn['colliders']):
                 if c>0 and col['efficiency']['b']==0 and col['efficiency']['Ea']==0:
                     troe_efficiencies[col['name']]=col['efficiency']['A']
@@ -373,7 +373,7 @@ class makeYAML:
             PLOG = False
             # troeEfficiencies={}
             # Create the M-collider entry for the pressure-dependent reactions
-            if mech_rxn.get('type') == 'falloff' and 'Troe' in mech_rxn:
+            if mech_rxn.get('type') == 'falloff' and 'Troe' in mech_rxn and '(+M)' in mech_rxn['equation']:
                 pDep = True
                 colliderM = {
                     'name': 'M',
