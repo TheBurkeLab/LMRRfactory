@@ -375,18 +375,19 @@ class makeYAML:
             # Create the M-collider entry for the pressure-dependent reactions
             if mech_rxn.get('type') == 'falloff' and 'Troe' in mech_rxn:
                 if '(+M)' not in mech_rxn['equation']:
-                    raise ValueError("A reaction contains an explicit collider, e.g. (+AR). Please combine this with the main (+M) expression")
-                pDep = True
-                colliderM = {
-                    'name': 'M',
-                    'type': 'falloff',
-                    'low-P-rate-constant': mech_rxn['low-P-rate-constant'],
-                    'high-P-rate-constant': mech_rxn['high-P-rate-constant'],
-                    'Troe': mech_rxn['Troe'],
-                }
-                # if mech_rxn.get('efficiencies') is not None:
-                #     for key in mech_rxn['efficiencies'].keys():
-                #         troeEfficiencies[key]=mech_rxn['efficiencies'][key]
+                    print("This reaction contains an explicit collider, e.g. (+AR). Please combine this with the main (+M) expression")
+                else:
+                    pDep = True
+                    colliderM = {
+                        'name': 'M',
+                        'type': 'falloff',
+                        'low-P-rate-constant': mech_rxn['low-P-rate-constant'],
+                        'high-P-rate-constant': mech_rxn['high-P-rate-constant'],
+                        'Troe': mech_rxn['Troe'],
+                    }
+                    # if mech_rxn.get('efficiencies') is not None:
+                    #     for key in mech_rxn['efficiencies'].keys():
+                    #         troeEfficiencies[key]=mech_rxn['efficiencies'][key]
             elif mech_rxn.get('type') == 'pressure-dependent-Arrhenius':
                 pDep = True
                 PLOG = True
