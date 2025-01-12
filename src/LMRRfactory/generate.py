@@ -120,9 +120,9 @@ class makeYAML:
                 }
 
     def lookForPdep(self, data):
-        # Raise an error if the input mech has no Troe, PLOG, or Chebyshev reactions
+        # Raise an error if the input mech has no Troe, PLOG, Chebyshev, or linear-Burke reactions
         if not any(
-            reaction.get('type') in ['pressure-dependent-Arrhenius', 'Chebyshev'] or
+            reaction.get('type') in ['pressure-dependent-Arrhenius', 'Chebyshev', 'linear-Burke'] or
             (reaction.get('type') == 'falloff' and 'Troe' in reaction)
             for reaction in data['mech']['reactions']
         ):
@@ -257,7 +257,14 @@ class makeYAML:
         colliders=[]
         colliderNames=[]
         is_M_N2 = False
-        troe_efficiencies = mech_rxn.get('efficiencies', {})
+        troe_efficiencies={}
+        if mech_rxn['type']=='falloff':
+            troe_efficiencies = mech_rxn.get('efficiencies', {})
+        elif mech_rxn['type']=='linear-Burke': #case where we've used the linear Burke format so that Troe params can be used alongside a PLOG
+            for col in mech_rxn['colliders']:
+                if col['efficiency']['b']==0 and col['efficiency']['Ea']==0:
+                    troe_efficiencies[col['name']]=col['efficiency']['A']
+            # if mech_rxn['colliders'][0]['type']=='pressure-'
         for name, val in troe_efficiencies.items():
             # Check if N2 is the reference collider instead of Ar
             if name.lower() =='ar' and val!=0 and val !=1:
@@ -386,6 +393,15 @@ class makeYAML:
                     'type': 'pressure-dependent-Arrhenius',
                     'rate-constants': mech_rxn['rate-constants']
                 }
+            elif mech_rxn.get('type') == 'linear-Burke':
+                if mech_rxn['colliders'][0]['type']=='pressure-dependent-Arrhenius':
+                    pDep = True
+                    PLOG = True
+                    colliderM = {
+                        'name': 'M',
+                        'type': 'linear-Burke',
+                        'rate-constants': mech_rxn['colliders'][0]['rate-constants']
+                    }
             elif mech_rxn.get('type') == 'Chebyshev':
                 pDep = True
                 colliderM = {
