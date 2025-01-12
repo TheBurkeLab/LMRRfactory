@@ -267,9 +267,12 @@ class makeYAML:
             # if mech_rxn['colliders'][0]['type']=='pressure-'
         for name, val in troe_efficiencies.items():
             # Check if N2 is the reference collider instead of Ar
-            if name.lower() =='ar' and val !=1:
+            if name.lower() =='ar' and val!=0 and val !=1:
                 is_M_N2 = True
                 divisor = 1/val #ratio of N2:Ar
+            if name.lower() =='ar' and val==0 :
+                is_M_N2 = True
+                divisor = 1 #imperfect solution, doesn't scale colliders, i.e. 1/val, to avoid dividing by zero but still acknowledges that rxn is w.r.t. N2
             # Give warning if both Ar and N2 are non-unity colliders
             if is_M_N2 and name.lower() == 'n2' and val!=0 and val !=1:
                 print(f"Warning: {mech_rxn['equation']} has both Ar and N2 as non-unity colliders!")
