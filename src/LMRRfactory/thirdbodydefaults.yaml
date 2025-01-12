@@ -200,7 +200,33 @@ reactions:
     efficiency: [6.692,4.797]            #3.48/0.52, 2.83/0.59
     temperatures: [750,1500]
     note: Matsugi-2021
-
+- equation: HNO + H <=> H2NO
+  reference-collider: AR
+  colliders:
+  - name: N2
+    efficiency: [3.15,2.47,2.25]
+    temperatures: [300,1000,2000]
+    note: Jasper-2022
+  - name: O2
+    efficiency: [1.55,1.48,1.70]
+    temperatures: [300,1000,2000]
+    note: Jasper-2022
+  - name: CO2
+    efficiency: [11.2,13.4,14.3]
+    temperatures: [300,1000,2000]
+    note: Jasper-2022
+  - name: NH3
+    efficiency: [13.9,20.0,22.2]
+    temperatures: [300,1000,2000]
+    note: Jasper-2022
+  - name: H2O
+    efficiency: [14.0,23.6,27.9]
+    temperatures: [300,1000,2000]
+    note: Jasper-2022
+  - name: CH4
+    efficiency: [9.94,13.3,14.3]
+    temperatures: [300,1000,2000]
+    note: Jasper-2022
 - equation: NH3 (+M) <=> H + NH2 (+M)
   reference-collider: AR
   colliders:
