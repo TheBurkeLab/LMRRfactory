@@ -376,7 +376,7 @@ class makeYAML:
             PLOG = False
             # troeEfficiencies={}
             # Create the M-collider entry for the pressure-dependent reactions
-            if mech_rxn.get('type') == 'falloff' and 'Troe' in mech_rxn and '(+M)' in mech_rxn['equation']:
+            if mech_rxn.get('type') == 'falloff' and 'Troe' in mech_rxn:# and '(+M)' in mech_rxn['equation']:
                 pDep = True
                 colliderM = {
                     'name': 'M',
@@ -388,7 +388,7 @@ class makeYAML:
                 # if mech_rxn.get('efficiencies') is not None:
                 #     for key in mech_rxn['efficiencies'].keys():
                 #         troeEfficiencies[key]=mech_rxn['efficiencies'][key]
-            elif mech_rxn.get('type') == 'pressure-dependent-Arrhenius':# and mech_rxn['equation'].count('+')<=2:
+            elif mech_rxn.get('type') == 'pressure-dependent-Arrhenius' and mech_rxn['equation'].count(' + ')<=2:
                 pDep = True
                 PLOG = True
                 colliderM = {
