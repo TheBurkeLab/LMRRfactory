@@ -10,7 +10,6 @@ import pkg_resources
 import yaml
 import os
 import numpy as np
-
 import warnings
 
 warnings.filterwarnings("ignore")
@@ -27,16 +26,9 @@ class makeYAML:
         self.T_max = None
         self.rxnIdx = None
         self.colliderInput=None
-        # self.allPdep is option to apply generic 3b-effs to all p-dep reactions in
-        # mechanism that haven't already been explicitly specified in either
-        # "thirdbodydefaults.yaml" or self.colliderInput
+        # self.allPdep is option to apply generic 3b-effs to all p-dep reactions in mechanism that haven't already been explicitly specified in either "thirdbodydefaults.yaml" or self.colliderInput
         self.allPdep = False
         self.allPLOG = False
-
-        # path='USSCI/factory_mechanisms'
-        # path = outputPath
-        # if date!="":
-        #     path+=f'/{date}'
         os.makedirs(outputPath,exist_ok=True)
         path=outputPath+'/'
 
@@ -46,8 +38,6 @@ class makeYAML:
             self.mechInput = mechInput
             self.foutName = os.path.basename(self.mechInput).replace(".yaml","")
             self.foutName = path + self.foutName + "_LMRR"
-            # try:
-            # create a YAML in the LMRR format
             if allPdep:
                 self.allPdep = True
                 self.foutName = self.foutName + "_allP"
@@ -55,9 +45,6 @@ class makeYAML:
                 self.allPLOG = True
                 self.foutName = self.foutName + "_allPLOG"
             self.data = self.generateYAML()
-            # except ValueError:
-            #     print(f"An LMR-R mechanism could not be generated using the "
-            #             "baseInput files.")
         if lmrrInput:
             try:
                 with open(lmrrInput) as f:
@@ -78,7 +65,6 @@ class makeYAML:
             data['input']=self.loadYAML(self.colliderInput)
         else:
             data['input']=None
-        
         self.cleanMechInput(data) # clean up 'NO' parsing errors in 'mech'
         self.lookForPdep(data) # Verify that 'mech' has >=1 relevant p-dep reaction
         if data.get('input') is not None:
@@ -189,8 +175,7 @@ class makeYAML:
     def blendedInput(self, data):
         blendData = {'reactions': []}
         speciesList = data['mech']['phases'][0]['species']
-        # first fill it with all of the default reactions and colliders (which have valid
-        # species)
+        # first fill it with all of the default reactions and colliders (which have valid species)
         for defaultRxn in data['defaults']['reactions']:
             newCollList = []
             for col in defaultRxn['colliders']:
@@ -202,13 +187,11 @@ class makeYAML:
         if data.get('input') is not None:
             if data['input'].get('reactions') is not None:
                 for inputRxn in data['input']['reactions']:
-                    # Check if input reaction also exists in defaults file, otherwise add the entire
-                    # input reaction to the blend as-is
+                    # Check if input reaction also exists in defaults file, otherwise add the entire input reaction to the blend as-is
                     if inputRxn['equation'] in defaultRxnNames:
                         idx = defaultRxnNames.index(inputRxn['equation'])
                         blendRxn = blendData['reactions'][idx]
-                        # If reference colliders match, append new colliders, otherwise override
-                        # with the user inputs
+                        # If reference colliders match, append new colliders, otherwise override with the user inputs
                         if inputRxn['reference-collider'] == blendRxn['reference-collider']:
                             newColliders = [col for col in inputRxn['colliders']
                                             if col['name'] in speciesList]
@@ -228,9 +211,6 @@ class makeYAML:
                     else:
                         if all(col['name'] in speciesList for col in inputRxn['colliders']):
                             blendData['reactions'].append(inputRxn)
-        # # Convert collision efficiencies to arrhenius format and save to blended YAML
-        # for reaction in blendData['reactions']:
-        #     reaction['colliders']=[self.arrheniusFit(col) for col in reaction['colliders']]
         data['blend']=blendData
 
     def arrheniusFit(self, col):
@@ -238,7 +218,6 @@ class makeYAML:
         temps=np.array(newCol['temperatures'])
         eps = np.array(newCol['efficiency'])
         def arrhenius_rate(T, A, beta, Ea):
-            # R = 8.314  # Gas constant in J/(mol K)
             R = 1.987 # cal/molK
             return A * T**beta * np.exp(-Ea / (R * T))
         def fit_function(params, T, ln_eps):
@@ -264,7 +243,6 @@ class makeYAML:
             for c, col in enumerate(mech_rxn['colliders']):
                 if c>0 and col['efficiency']['b']==0 and col['efficiency']['Ea']==0:
                     troe_efficiencies[col['name']]=col['efficiency']['A']
-            # if mech_rxn['colliders'][0]['type']=='pressure-'
         for name, val in troe_efficiencies.items():
             # Check if N2 is the reference collider instead of Ar
             if name.lower() =='ar' and val!=0 and val !=1:
@@ -276,14 +254,12 @@ class makeYAML:
             # Give warning if both Ar and N2 are non-unity colliders
             if is_M_N2 and name.lower() == 'n2' and val!=0 and val !=1:
                 print(f"Warning: {mech_rxn['equation']} has both Ar and N2 as non-unity colliders!")
-
         if is_M_N2:
             if blend_rxn:
                 divisors=[]
                 # Extract T-dependent values for N2 if blend_rxn is provided
                 for col in blend_rxn['colliders']:
                     if col['name'].lower()=='n2':
-                        # divisor_Tdep=np.ones(len(col['efficiency']))
                         divisors.append(col['efficiency']) #T-dep divisor of length 2 or 3
                 # Make reaction-specific colliders wrt N2 and append to collider list 
                 for col in blend_rxn['colliders']:
@@ -306,7 +282,6 @@ class makeYAML:
                         colliderNames.append(col['name'].lower())
             # Add troe efficiencies that haven't already been given a value
             for name, val in mech_rxn.get('efficiencies', {}).items():
-                # already_given = any(col['name'] == name for col in colliders)
                 already_given = name.lower() in colliderNames
                 if not already_given and not name.lower()=='n2': #ignores the redundant n2=1 entry
                     colliders.append({
@@ -328,7 +303,6 @@ class makeYAML:
                                 'efficiency': {'A': col['efficiency']/divisor,'b':0,'Ea':0},
                                 'note': col['note']
                             })
-        
         else:
             if blend_rxn:
                 # Make reaction-specific colliders wrt Ar and append to collider list 
@@ -369,14 +343,11 @@ class makeYAML:
             'reactions': []
             }
         blendRxnNames = [rxn['equation'] for rxn in data['blend']['reactions']]
-        
         for mech_rxn in data['mech']['reactions']:
-            # print(mech_rxn['equation'])
             pDep = False
             PLOG = False
-            # troeEfficiencies={}
             # Create the M-collider entry for the pressure-dependent reactions
-            if mech_rxn.get('type') == 'falloff' and 'Troe' in mech_rxn:# and '(+M)' in mech_rxn['equation']:
+            if mech_rxn.get('type') == 'falloff' and 'Troe' in mech_rxn:
                 pDep = True
                 colliderM = {
                     'name': 'M',
@@ -385,10 +356,7 @@ class makeYAML:
                     'high-P-rate-constant': mech_rxn['high-P-rate-constant'],
                     'Troe': mech_rxn['Troe'],
                 }
-                # if mech_rxn.get('efficiencies') is not None:
-                #     for key in mech_rxn['efficiencies'].keys():
-                #         troeEfficiencies[key]=mech_rxn['efficiencies'][key]
-            elif mech_rxn.get('type') == 'pressure-dependent-Arrhenius':# and mech_rxn['equation'].count(' + ')<=2:
+            elif mech_rxn.get('type') == 'pressure-dependent-Arrhenius':
                 pDep = True
                 PLOG = True
                 colliderM = {
@@ -414,8 +382,6 @@ class makeYAML:
                     'pressure-range': mech_rxn['pressure-range'],
                     'data': mech_rxn['data'],
                 }
-            # print(troeEfficiencies)
-            # print(mech_rxn['equation'])
             print(self.normalize(mech_rxn['equation']))
             if pDep and self.normalize(mech_rxn['equation']) in blendRxnNames:
             # rxn is specifically covered either in defaults or user input
@@ -433,9 +399,7 @@ class makeYAML:
                 newRxn['colliders'] = [colliderM] + colliders
                 newData['reactions'].append(newRxn)
             elif pDep and data['allPdep']:
-                # user has opted to have generic 3b effs applied to all p-dep reactions
-                # which lack a specification in thirdbodydefaults and testinput
-                # print(data['defaults']['allPdep''])
+                # user has opted to have generic 3b effs applied to all p-dep reactions which lack a specification in thirdbodydefaults and testinput
                 newRxn = {
                     'equation': mech_rxn['equation'],
                     'type': 'linear-Burke'
@@ -446,9 +410,7 @@ class makeYAML:
                 newRxn['colliders'] = [colliderM] + colliders
                 newData['reactions'].append(newRxn)
             elif PLOG and data['allPLOG']:
-                # user has opted to have generic 3b effs applied to all PLOG reactions
-                # which lack a specification in thirdbodydefaults and testinput
-                # print(data['defaults']['allPdep''])
+                # user has opted to have generic 3b effs applied to all PLOG reactions which lack a specification in thirdbodydefaults and testinput
                 newRxn = {
                     'equation': mech_rxn['equation'],
                     'type': 'linear-Burke'

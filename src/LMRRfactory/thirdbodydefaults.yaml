@@ -38,10 +38,6 @@ generic-colliders: # AR is always reference collider
 - name: KR
   efficiency: 1.07
   note: JOM-2015 (generic) (300K)
-#highest-available T-independent values found in Troe espressions in mechs
-- name: C2H6 # alternative vals available in ThInK Mech
-  efficiency: 5.6
-  note: Think Mech
 - name: CH2O
   efficiency: 2.941 #2.5/0.85
   note: Glarborg-2018 (generic)
@@ -81,6 +77,9 @@ generic-colliders: # AR is always reference collider
 - name: N2O4
   efficiency: 2.5 #2/0.8
   note: Zhang-2017 (generic)
+- name: C2H6
+  efficiency: 5.6
+  note: Think Mech
 - name: C3H8 
   efficiency: 6 #3/0.5
   note: ThInK 1.0 (generic)
@@ -114,17 +113,8 @@ generic-colliders: # AR is always reference collider
 
 reactions:
 - equation: H + OH (+M) <=> H2O (+M)
-  # reference-collider: N2
   reference-collider: AR
   colliders:
-  # - name: AR
-  #   efficiency: [0.39840637450199207, 0.6172839506172839, 0.8333333333333334]
-  #   temperatures: [300,1000,2000]
-  #   note: Jasper-2022
-  # - name: H2O
-  #   efficiency: [3.573705179282869, 5.277777777777778, 7.291666666666667]
-  #   temperatures: [300,1000,2000]
-  #   note: Jasper-2022
   - name: N2
     efficiency: [2.51,1.62,1.20]
     temperatures: [300,1000,2000]
@@ -160,7 +150,6 @@ reactions:
     efficiency: [23.3,22.2,21.3]
     temperatures: [300,1000,2000]
     note: Jasper-2022
-# - equation: H2O2 (+M) <=> OH + OH (+M)
 - equation: OH + OH <=> H2O2
   reference-collider: AR
   colliders:
@@ -180,10 +169,6 @@ reactions:
     efficiency: [5.51,10.2,13.3]
     temperatures: [300,1000,2000]
     note: Jasper-2022
-  # - name: N2
-  #   efficiency: [1.92,1.69]            #1/0.52, 1/0.59
-  #   temperatures: [750,1500]
-  #   note: Matsugi-2021
   - name: HE
     efficiency: [0.827,0.966]            #0.43/0.52, 0.57/0.59
     temperatures: [750,1500]
@@ -254,7 +239,6 @@ reactions:
     efficiency: [9.94,13.3,14.3]
     temperatures: [300,1000,2000]
     note: Jasper-2022
-
 - equation: NH2 + NH2 (+M) <=> N2H4 (+M)
   reference-collider: AR
   colliders:
@@ -331,7 +315,6 @@ reactions:
     efficiency: [5.60,7.98,8.19]
     temperatures: [300,1000,2000]
     note: Jasper-2022
-
 - equation: HNO (+M) <=> H + NO (+M)
   reference-collider: AR
   colliders:
@@ -354,7 +337,6 @@ reactions:
     efficiency: [4.24,4.87,5.56]
     temperatures: [300,1000,2000]
     note: Jasper-2022
-
 
 #METHYL ISOCYANIDE CH3NC (technically the reactions below are for the n-isomer, CH3CN, not iso-)
 - equation: CH3CN <=> CH2CN + H #couldn't find T-dependent values
@@ -402,7 +384,6 @@ reactions:
   - name: C2H6
     efficiency: 
     note: Matsugi-JPCA2019
-
 - equation: CH3CN <=> CH2CN + H #couldn't find T-dependent values
   reference-collider: AR
   colliders:
@@ -481,8 +462,7 @@ reactions:
     efficiency: [4.17,6.19,6.96]
     temperatures: [300,1000,2000]
     note: Jasper-2022
-
-# - equation: CH4 (+M) <=> CH3 + H (+M) #Ar reference collider
+# - equation: CH4 (+M) <=> CH3 + H (+M)
 #   reference-collider: AR
 #   colliders:
 #   - name: HE
@@ -509,7 +489,6 @@ reactions:
 #     efficiency: [1.19,1.41]
 #     temperatures: [300,2000]
 #     note: JOM-2015
-
 - equation: CH2 + H (+M) <=> CH3 (+M) #methyl
   reference-collider: AR
   colliders:
@@ -1086,8 +1065,6 @@ reactions:
     efficiency: [1.38,1.52]
     temperatures: [300, 2000]
     note: JOM-2015
-
-
 # propyl (same params used for all)
 - equation: C3H6 + H <=> IC3H7
   reference-collider: AR
@@ -1442,7 +1419,7 @@ reactions:
     note: JOM-2015
   
 # BUTANES
-- equation: C4H10 (+M) <=> C2H5 + C2H5 (+M) #Ar reference collider
+- equation: C4H10 (+M) <=> C2H5 + C2H5 (+M)
   reference-collider: AR
   colliders:
   - name: HE
@@ -1603,7 +1580,6 @@ reactions:
 #   efficiency: [1.37,1.24]
 #   temperatures: [300, 2000]
 #   note: JOM-2015
-
 # butene (treating all forms as same)
 - equation: C3H5-A + CH3 (+M) <=> C4H8-1 (+M)
   reference-collider: AR
@@ -1795,7 +1771,7 @@ reactions:
     temperatures: [300, 2000]
     note: JOM-2015
 # butyl
-- equation: IC4H8 <=> IC4H7 + H #this is probably a mistake
+- equation: IC4H8 <=> IC4H7 + H
   reference-collider: AR
   colliders:
   - name: HE  
@@ -2323,7 +2299,6 @@ reactions:
 #   efficiency: [1.34,1.44]
 #   temperatures: [300, 2000]
 #   note: JOM-2015
-
 # pentene
 - equation: IC4H7 + CH3 (+M) <=> AC5H10 (+M)
   reference-collider: AR
@@ -2385,7 +2360,6 @@ reactions:
     efficiency: [1.31,1.2]
     temperatures: [300, 2000]
     note: JOM-2015
-
 # pentyl (using same numbers for all subtypes)
 - equation: C5H11-1 <=> C2H4 + NC3H7
   reference-collider: AR
@@ -2554,7 +2528,7 @@ reactions:
     note: JOM-2015
 
 # HEXANES
-- equation: NC6H14 <=> CH3 + C5H11-1 #Ar reference collider
+- equation: NC6H14 <=> CH3 + C5H11-1
   reference-collider: AR
   colliders:
   - name: HE
@@ -2581,7 +2555,7 @@ reactions:
     efficiency: [1.20,1.08]
     temperatures: [300,2000]
     note: JOM-2015
-- equation: NC6H14 <=> C2H5 + PC4H9 #Ar reference collider
+- equation: NC6H14 <=> C2H5 + PC4H9
   reference-collider: AR
   colliders:
   - name: HE
@@ -2965,7 +2939,6 @@ reactions:
 #   efficiency: [1.26,1.1]
 #   temperatures: [300, 2000]
 #   note: JOM-2015
-
 # heptyl
 - equation: C7H15-1 (+M) <=> C2H4 + C5H11-1 (+M)
   reference-collider: AR
