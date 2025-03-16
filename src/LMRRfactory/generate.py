@@ -15,7 +15,7 @@ import warnings
 warnings.filterwarnings("ignore")
 
 class makeYAML:
-    def __init__(self,mechInput=None, colliderInput=None, lmrrInput=None,outputPath=None,allPdep=False,allPLOG=False):
+    def __init__(self,mechInput=None, colliderInput=None, lmrrInput=None,outputPath=".",allPdep=False,allPLOG=False):
         self.T_ls = None
         self.P_ls = None
         self.n_P= None
