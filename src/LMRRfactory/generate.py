@@ -270,14 +270,14 @@ class makeYAML:
                         colliders.append(self.arrheniusFit(col))
                         colliderNames.append(col['name'].lower())
                     elif col['name'] in speciesList:
-                        print(col['efficiency'])
+                        # print(col['efficiency'])
                         for i in range(len(divisors)):
                             try:
                                 col['efficiency'] = np.divide(col['efficiency'], divisors[i])
                                 break
                             except:
                                 pass
-                        print(col['efficiency'])
+                        # print(col['efficiency'])
                         colliders.append(self.arrheniusFit(col))
                         colliderNames.append(col['name'].lower())
             # Add troe efficiencies that haven't already been given a value
@@ -382,7 +382,6 @@ class makeYAML:
                     'pressure-range': mech_rxn['pressure-range'],
                     'data': mech_rxn['data'],
                 }
-            print(self.normalize(mech_rxn['equation']))
             if pDep and self.normalize(mech_rxn['equation']) in blendRxnNames:
             # rxn is specifically covered either in defaults or user input
                 newRxn = {
@@ -398,6 +397,7 @@ class makeYAML:
                 colliders = self.colliders(data,mech_rxn,blend_rxn=blend_rxn)
                 newRxn['colliders'] = [colliderM] + colliders
                 newData['reactions'].append(newRxn)
+                print(f"{self.normalize(mech_rxn['equation'])} converted to LMR-R with ab initio parameters")
             elif pDep and data['allPdep']:
                 # user has opted to have generic 3b effs applied to all p-dep reactions which lack a specification in thirdbodydefaults and testinput
                 newRxn = {
@@ -409,6 +409,7 @@ class makeYAML:
                 colliders = self.colliders(data,mech_rxn,generic=True)
                 newRxn['colliders'] = [colliderM] + colliders
                 newData['reactions'].append(newRxn)
+                print(f"{self.normalize(mech_rxn['equation'])} converted to LMR-R with generic parameters")
             elif PLOG and data['allPLOG']:
                 # user has opted to have generic 3b effs applied to all PLOG reactions which lack a specification in thirdbodydefaults and testinput
                 newRxn = {
@@ -420,6 +421,7 @@ class makeYAML:
                 colliders = self.colliders(data,mech_rxn,generic=True)
                 newRxn['colliders'] = [colliderM] + colliders
                 newData['reactions'].append(newRxn)
+                print(f"{self.normalize(mech_rxn['equation'])} converted to LMR-R with generic parameters")
             else: # just append it as-is
                 newData['reactions'].append(mech_rxn)
         data['output']=newData
