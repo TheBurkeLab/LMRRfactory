@@ -7,7 +7,9 @@ from collections import Counter
 import re
 import os
 import pkg_resources
-import cantera as ct
+import yaml
+import os
+import numpy as np
 import warnings
 
 warnings.filterwarnings("ignore")
@@ -53,18 +55,26 @@ class makeYAML:
 
     def generateYAML(self):
         data_path = pkg_resources.resource_filename('LMRRfactory', '/')
-        mech_obj = ct.Solution(self.mechInput)
-        self.lookForPdep(mech_obj) # Verify that 'mech' has >=1 relevant p-dep reaction
         data = {
-            'mech_obj': mech_obj,
-            'mech_pes': self.getPES(mech_obj),
-            'defaults': self.loadYAML(data_path+"thirdbodydefaults.yaml"),
-            'input': self.loadYAML(self.colliderInput) if self.colliderInput is not None else None,
+            'mech': self.loadYAML(self.mechInput), # load input mechanism}
+            'defaults': self.loadYAML(data_path+"thirdbodydefaults.yaml"), # load default colliders
             'allPdep': self.allPdep, # True or False
+            'allPLOG': self.allPLOG, # True or False
         }
-
-        # self.cleanMechInput(data) # clean up 'NO' parsing errors in 'mech'
-
+        if self.colliderInput is not None:
+            data['input']=self.loadYAML(self.colliderInput)
+        else:
+            data['input']=None
+        self.cleanMechInput(data) # clean up 'NO' parsing errors in 'mech'
+        self.lookForPdep(data) # Verify that 'mech' has >=1 relevant p-dep reaction
+        if data.get('input') is not None:
+            if data['input'].get('reactions') is not None:
+                for reaction in data['input']['reactions']:
+                    reaction['equation'] = self.normalize(reaction['equation'])
+        if data.get('defaults') is not None:
+            if data['defaults'].get('reactions') is not None:
+                for reaction in data['defaults']['reactions']:
+                    reaction['equation'] = self.normalize(reaction['equation'])
         # Remove defaults colliders and reactions that were explictly provided by user
         self.deleteDuplicates(data)
         # Blend the user inputs and remaining collider defaults into a single YAML
@@ -76,80 +86,66 @@ class makeYAML:
             f"{self.foutName}.yaml")
         return data['output']
 
-    # def cleanMechInput(self, data):
-    #     # Prevent 'NO' from being misinterpreted as bool in species list
-    #     data['mech']['phases'][0]['species'] = [
-    #         "NO" if str(molec).lower() == "false" else molec
-    #         for molec in data['mech']['phases'][0]['species']
-    #     ]
-    #     for species in data['mech']['species']:
-    #         if str(species['name']).lower() == "false":
-    #             species['name']="NO"
-    #     # Prevent 'NO' from being misinterpreted as bool in efficiencies list found in
-    #     # Troe falloff reactions
-    #     for reaction in data['mech']['reactions']:
-    #         effs = reaction.get('efficiencies')
-    #         if effs:
-    #             reaction['efficiencies'] = {
-    #                 "NO" if str(key).lower() == "false" else key: effs[key]
-    #                 for key in effs
-    #             }
+    def cleanMechInput(self, data):
+        # Prevent 'NO' from being misinterpreted as bool in species list
+        data['mech']['phases'][0]['species'] = [
+            "NO" if str(molec).lower() == "false" else molec
+            for molec in data['mech']['phases'][0]['species']
+        ]
+        for species in data['mech']['species']:
+            if str(species['name']).lower() == "false":
+                species['name']="NO"
+        # Prevent 'NO' from being misinterpreted as bool in efficiencies list found in
+        # Troe falloff reactions
+        for reaction in data['mech']['reactions']:
+            effs = reaction.get('efficiencies')
+            if effs:
+                reaction['efficiencies'] = {
+                    "NO" if str(key).lower() == "false" else key: effs[key]
+                    for key in effs
+                }
 
-    def lookForPdep(self, gas):
+    def lookForPdep(self, data):
+        # Raise an error if the input mech has no Troe, PLOG, Chebyshev, or linear-Burke reactions
         if not any(
-            reaction.reaction_type in ['falloff-Troe','pressure-dependent-Arrhenius', 'Chebyshev', 'three-body-linear-Burke']
-            for reaction in gas.reactions()
+            reaction.get('type') in ['pressure-dependent-Arrhenius', 'Chebyshev', 'linear-Burke'] or
+            (reaction.get('type') == 'falloff' and 'Troe' in reaction)
+            for reaction in data['mech']['reactions']
         ):
             raise ValueError("No pressure-dependent reactions found in mechanism."
                             " Please choose another mechanism.")
 
-    # def normalize(self, equation):
-    #     # Split the equation into reactants and products
-    #     reactants, products = equation.split('=')
-    #     reactants = reactants.strip().replace('(+M)', '').replace(' ', '').replace('<','').replace('>','')
-    #     products = products.strip().replace('(+M)', '').replace(' ', '').replace('<','').replace('>','')
-    #     def normalize_side(side):
-    #         # Split into species and their coefficients
-    #         species_list = re.split(r'\s*\+\s*', side)
-    #         species_counter = Counter()
-    #         for species in species_list:
-    #             # Handle cases with coefficients like '2H' and '2 H'
-    #             match = re.match(r'(\d*)\s*([^\d\s]\w*)', species)
-    #             if not match:
-    #                 raise ValueError(f"Incorrect formula for {equation} in input YAML.")
-    #             coeff, name = match.groups()
-    #             coeff = int(coeff) if coeff else 1  # Default to 1 if no coefficient
-    #             species_counter[name] += coeff
-    #         normalized_species = []
-    #         for name in sorted(species_counter.keys()):  # Sort species alphabetically
-    #             count = species_counter[name]
-    #             normalized_species.extend([name]*count)
-    #         normalized_side = ' + '.join(normalized_species)
-    #         return normalized_side
-    #     norm_reactants = normalize_side(reactants)
-    #     norm_products = normalize_side(products)
-    #     # Make it so that equations inputted in reverse directions are still deemed the same
-    #     if norm_reactants > norm_products:
-    #         norm_equation = f"{norm_reactants} <=> {norm_products}"
-    #     else:
-    #         norm_equation = f"{norm_products} <=> {norm_reactants}"
-    #     return norm_equation
-    
-    def getPES(self,gas): #must input an equation that has already been normalized
-        pes=[]
-        for reaction in gas.reactions():
-            compositions = []
-            reactant_species = list(reaction.reactants.keys())
-            reactant_coeffs = list(reaction.reactants.values())
-            for i, reactant in enumerate(reactant_species):
-                spec = gas.species(reactant)
-                c = spec.composition
-                c_scaled = {k: v*reactant_coeffs[i] for k, v in c.items()}
-                compositions.append(c_scaled)
-            counters = [Counter(comp) for comp in compositions]
-            pes.append(sum(counters, Counter()))
-        return pes
-        
+    def normalize(self, equation):
+        # Split the equation into reactants and products
+        reactants, products = equation.split('=')
+        reactants = reactants.strip().replace('(+M)', '').replace(' ', '').replace('<','').replace('>','')
+        products = products.strip().replace('(+M)', '').replace(' ', '').replace('<','').replace('>','')
+        def normalize_side(side):
+            # Split into species and their coefficients
+            species_list = re.split(r'\s*\+\s*', side)
+            species_counter = Counter()
+            for species in species_list:
+                # Handle cases with coefficients like '2H' and '2 H'
+                match = re.match(r'(\d*)\s*([^\d\s]\w*)', species)
+                if not match:
+                    raise ValueError(f"Incorrect formula for {equation} in input YAML.")
+                coeff, name = match.groups()
+                coeff = int(coeff) if coeff else 1  # Default to 1 if no coefficient
+                species_counter[name] += coeff
+            normalized_species = []
+            for name in sorted(species_counter.keys()):  # Sort species alphabetically
+                count = species_counter[name]
+                normalized_species.extend([name]*count)
+            normalized_side = ' + '.join(normalized_species)
+            return normalized_side
+        norm_reactants = normalize_side(reactants)
+        norm_products = normalize_side(products)
+        # Make it so that equations inputted in reverse directions are still deemed the same
+        if norm_reactants > norm_products:
+            norm_equation = f"{norm_reactants} <=> {norm_products}"
+        else:
+            norm_equation = f"{norm_products} <=> {norm_reactants}"
+        return norm_equation
 
     def deleteDuplicates(self, data): # delete duplicates from thirdBodyDefaults
         newData = {'generic-colliders': data['defaults']['generic-colliders'],
@@ -157,19 +153,18 @@ class makeYAML:
         inputRxnNames = None
         if data.get('input') is not None:
             if data['input'].get('reactions') is not None:
-                inputRxnNames = [rxn['pes'] for rxn in data['input']['reactions']]
+                inputRxnNames = [rxn['equation'] for rxn in data['input']['reactions']]
                 inputColliderNames = [[col['name'] for col in rxn['colliders']]
                                     for rxn in data['input']['reactions']]
         for defaultRxn in data['defaults']['reactions']:
-            if inputRxnNames is not None and defaultRxn['pes'] in inputRxnNames:
-                idx = inputRxnNames.index(defaultRxn['pes'])
+            if inputRxnNames is not None and defaultRxn['equation'] in inputRxnNames:
+                idx = inputRxnNames.index(defaultRxn['equation'])
                 inputColliders = inputColliderNames[idx]
                 newColliderList = [col for col in defaultRxn['colliders']
                                 if col['name'] not in inputColliders]
                 if len(newColliderList)>0:
                     newData['reactions'].append({
-                        'name': defaultRxn['name'],
-                        'pes': defaultRxn['pes'],
+                        'equation': defaultRxn['equation'],
                         'reference-collider': defaultRxn['reference-collider'],
                         'colliders': newColliderList
                     })
@@ -179,9 +174,7 @@ class makeYAML:
 
     def blendedInput(self, data):
         blendData = {'reactions': []}
-        # speciesList = data['mech']['phases'][0]['species']
-        speciesList = data['mech_obj'].species()
-
+        speciesList = data['mech']['phases'][0]['species']
         # first fill it with all of the default reactions and colliders (which have valid species)
         for defaultRxn in data['defaults']['reactions']:
             newCollList = []
@@ -190,14 +183,13 @@ class makeYAML:
                     newCollList.append(col)
             defaultRxn['colliders'] = newCollList
             blendData['reactions'].append(defaultRxn)
-        defaultRxnNames = [rxn['pes'] for rxn in blendData['reactions']]
+        defaultRxnNames = [rxn['equation'] for rxn in blendData['reactions']]
         if data.get('input') is not None:
             if data['input'].get('reactions') is not None:
                 for inputRxn in data['input']['reactions']:
                     # Check if input reaction also exists in defaults file, otherwise add the entire input reaction to the blend as-is
-                    
-                    if inputRxn['pes'] in defaultRxnNames:
-                        idx = defaultRxnNames.index(inputRxn['pes'])
+                    if inputRxn['equation'] in defaultRxnNames:
+                        idx = defaultRxnNames.index(inputRxn['equation'])
                         blendRxn = blendData['reactions'][idx]
                         # If reference colliders match, append new colliders, otherwise override with the user inputs
                         if inputRxn['reference-collider'] == blendRxn['reference-collider']:
@@ -234,20 +226,20 @@ class makeYAML:
         initial_guess = [3, 0.5, 50.0]
         result = least_squares(fit_function, initial_guess, args=(temps, np.log(eps)))
         A_fit, beta_fit, Ea_fit = result.x
-        newCol['efficiency'] = {'A': float(round(A_fit.item(),8)),'b': float(round(beta_fit.item(),8)),'Ea': float(round(Ea_fit.item(),8))}
+        newCol['efficiency'] = {'A': round(A_fit.item(),8),'b': round(beta_fit.item(),8),'Ea': round(Ea_fit.item(),8)}
         newCol.pop('temperatures', None)
-        return dict(newCol)
+        return newCol
 
     def colliders(self,data,mech_rxn,blend_rxn=None,generic=False):
-        speciesList=data['mech_obj'].input_data['species']
+        speciesList = data['mech']['phases'][0]['species']
         divisor = 1
         colliders=[]
         colliderNames=[]
         is_M_N2 = False
         troe_efficiencies={}
-        if mech_rxn.reaction_type == 'falloff-Troe':
-            troe_efficiencies = mech_rxn.input_data.get('efficiencies', {})
-        elif mech_rxn.reaction_type == 'three-body-linear-Burke': #case where we've used the linear Burke format so that Troe params can be used alongside a PLOG
+        if mech_rxn.get('type') == 'falloff' and 'Troe' in mech_rxn and '(+M)' in mech_rxn['equation']:
+            troe_efficiencies = mech_rxn.get('efficiencies', {})
+        elif mech_rxn.get('type')=='linear-Burke': #case where we've used the linear Burke format so that Troe params can be used alongside a PLOG
             for c, col in enumerate(mech_rxn['colliders']):
                 if c>0 and col['efficiency']['b']==0 and col['efficiency']['Ea']==0:
                     troe_efficiencies[col['name']]=col['efficiency']['A']
@@ -261,7 +253,7 @@ class makeYAML:
                 divisor = 1 #imperfect solution, doesn't scale colliders, i.e. 1/val, to avoid dividing by zero but still acknowledges that rxn is w.r.t. N2
             # Give warning if both Ar and N2 are non-unity colliders
             if is_M_N2 and name.lower() == 'n2' and val!=0 and val !=1:
-                print(f"Warning: {mech_rxn} has both Ar and N2 as non-unity colliders!")
+                print(f"Warning: {mech_rxn['equation']} has both Ar and N2 as non-unity colliders!")
         if is_M_N2:
             if blend_rxn:
                 divisors=[]
@@ -289,7 +281,7 @@ class makeYAML:
                         colliders.append(self.arrheniusFit(col))
                         colliderNames.append(col['name'].lower())
             # Add troe efficiencies that haven't already been given a value
-            for name, val in mech_rxn.input_data.get('efficiencies', {}).items():
+            for name, val in mech_rxn.get('efficiencies', {}).items():
                 already_given = name.lower() in colliderNames
                 if not already_given and not name.lower()=='n2': #ignores the redundant n2=1 entry
                     colliders.append({
@@ -341,141 +333,105 @@ class makeYAML:
                                 'efficiency': {'A': col['efficiency'],'b':0,'Ea':0},
                                 'note': col['note']
                             })
-        
-        # for collider in colliders:
-        #     for k,v in collider.items():
-        #         print(collider, type(v))
-        
         return colliders
 
-    def to_builtin(self, obj):
-        if isinstance(obj, dict):
-            return {self.to_builtin(k): self.to_builtin(v) for k, v in obj.items()}
-        elif isinstance(obj, list):
-            return [self.to_builtin(i) for i in obj]
-        elif hasattr(obj, 'as_dict'):
-            return self.to_builtin(obj.as_dict())
-        elif hasattr(obj, '__dict__'):
-            return self.to_builtin(vars(obj))
-        elif hasattr(obj, 'tolist'):  # NumPy arrays or similar
-            return obj.tolist()
-        else:
-            return obj
-
     def zippedMech(self, data):
-        # input_data = gas.input_data
-        newReactions = []
-        blendRxnNames = [rxn['pes'] for rxn in data['blend']['reactions']]
-        # for mech_rxn in data['mech']['reactions']:
-        for i, mech_rxn in enumerate(data['mech_obj'].reactions()):
+        newData={
+            'units': data['mech']['units'],
+            'phases': data['mech']['phases'],
+            'species': data['mech']['species'],
+            'reactions': []
+            }
+        blendRxnNames = [rxn['equation'] for rxn in data['blend']['reactions']]
+        for mech_rxn in data['mech']['reactions']:
             pDep = False
             PLOG = False
             # Create the M-collider entry for the pressure-dependent reactions
-            if mech_rxn.reaction_type in ['falloff-Troe','pressure-dependent-Arrhenius','Chebyshev','three-body-linear-Burke']:
+            if mech_rxn.get('type') == 'falloff' and 'Troe' in mech_rxn:
                 pDep = True
-                if mech_rxn.reaction_type == 'three-body-linear-Burke':
-                    d = self.to_builtin(mech_rxn.input_data['colliders'][0]) #use the pdep format given for collider M when rebuilding the reaction
-                    d.pop("name")
-                else:
-                    d = self.to_builtin(mech_rxn.input_data)
-                    d.pop("equation")
-                    d.pop("efficiencies",None) #only applies to Troe reactions
-                d.pop("duplicate", None)
-                d.pop("units", None)
-                if d.get('Troe') is not None:
-                    d['Troe']=dict(d['Troe'])
-                if d.get('low-P-rate-constant') is not None:
-                    d['low-P-rate-constant']=dict(d['low-P-rate-constant'])
-                if d.get('high-P-rate-constant') is not None:
-                    d['high-P-rate-constant']=dict(d['high-P-rate-constant'])
-                colliderM = {'name': 'M'}
-                colliderM.update(dict(d))
-            if pDep and data['mech_pes'][i] in blendRxnNames:
+                colliderM = {
+                    'name': 'M',
+                    'type': 'falloff',
+                    'low-P-rate-constant': mech_rxn['low-P-rate-constant'],
+                    'high-P-rate-constant': mech_rxn['high-P-rate-constant'],
+                    'Troe': mech_rxn['Troe'],
+                }
+            elif mech_rxn.get('type') == 'pressure-dependent-Arrhenius':
+                pDep = True
+                PLOG = True
+                colliderM = {
+                    'name': 'M',
+                    'type': 'pressure-dependent-Arrhenius',
+                    'rate-constants': mech_rxn['rate-constants']
+                }
+            elif mech_rxn.get('type') == 'linear-Burke':
+                if mech_rxn['colliders'][0]['type']=='pressure-dependent-Arrhenius':
+                    pDep = True
+                    PLOG = True
+                    colliderM = {
+                        'name': 'M',
+                        'type': 'pressure-dependent-Arrhenius',
+                        'rate-constants': mech_rxn['colliders'][0]['rate-constants']
+                    }
+            elif mech_rxn.get('type') == 'Chebyshev':
+                pDep = True
+                colliderM = {
+                    'name': 'M',
+                    'type': 'Chebyshev',
+                    'temperature-range': mech_rxn['temperature-range'],
+                    'pressure-range': mech_rxn['pressure-range'],
+                    'data': mech_rxn['data'],
+                }
+            if pDep and self.normalize(mech_rxn['equation']) in blendRxnNames:
             # rxn is specifically covered either in defaults or user input
                 newRxn = {
-                    'equation': mech_rxn.equation,
+                    'equation': mech_rxn['equation'],
                     'type': 'linear-Burke'
                 }
-                d = self.to_builtin(mech_rxn.input_data)
-                if d.get('duplicate') is not None:
+                if mech_rxn.get('duplicate') is not None:
                     newRxn['duplicate'] = True
-                if d.get('units') is not None:
-                    newRxn['units'] = d['units']
-                idx = blendRxnNames.index(data['mech_pes'][i])
+                if mech_rxn.get('units') is not None:
+                    newRxn['units'] = mech_rxn['units']
+                idx = blendRxnNames.index(self.normalize(mech_rxn['equation']))
                 blend_rxn = data['blend']['reactions'][idx]
                 colliders = self.colliders(data,mech_rxn,blend_rxn=blend_rxn)
                 newRxn['colliders'] = [colliderM] + colliders
-                # yaml_str = yaml.dump([newRxn])  # wrap in list if it's a single reaction
-                # for k, v in newRxn.items():
-                #     print(k, type(v))
-                # for i, collider in enumerate(newRxn['colliders']):
-                #     print(f"Collider #{i} type: {type(collider)}")
-                #     for k, v in collider.items():
-                #         print(f"  key: {k}, type: {type(v)}")
-                #         if isinstance(v, dict):
-                #             for sk, sv in v.items():
-                #                 print(f"    subkey: {sk}, type: {type(sv)}")
-                yaml_str = yaml.dump(newRxn)
-                # print("0")
-                # print(yaml_str)
-                newRxn_obj = ct.Reaction.from_yaml(yaml_str,data['mech_obj'])
-                newReactions.append(newRxn_obj)
-                # print("finished")
-                print(f"{mech_rxn} {dict(data['mech_pes'][i])} converted to LMR-R with ab initio parameters")
+                newData['reactions'].append(newRxn)
+                print(f"{self.normalize(mech_rxn['equation'])} converted to LMR-R with ab initio parameters")
             elif pDep and data['allPdep']:
                 # user has opted to have generic 3b effs applied to all p-dep reactions which lack a specification in thirdbodydefaults and testinput
                 newRxn = {
-                    'equation': mech_rxn.equation,
+                    'equation': mech_rxn['equation'],
                     'type': 'linear-Burke'
                 }
-                d = self.to_builtin(mech_rxn.input_data)
-                if d.get('duplicate') is not None:
+                if mech_rxn.get('duplicate') is not None:
                     newRxn['duplicate'] = True
                 colliders = self.colliders(data,mech_rxn,generic=True)
                 newRxn['colliders'] = [colliderM] + colliders
-                # yaml_str = yaml.dump([newRxn])  # wrap in list if it's a single reaction
-                # for k, v in newRxn.items():
-                #     print(k, type(v))
-                yaml_str = yaml.dump(newRxn)
-                # print("1")
-                # print(yaml_str)
-                newRxn_obj = ct.Reaction.from_yaml(yaml_str,data['mech_obj'])
-                newReactions.append(newRxn_obj)
-                print(f"{mech_rxn} {dict(data['mech_pes'][i])} converted to LMR-R with generic parameters")
+                newData['reactions'].append(newRxn)
+                print(f"{self.normalize(mech_rxn['equation'])} converted to LMR-R with generic parameters")
+            elif PLOG and data['allPLOG']:
+                # user has opted to have generic 3b effs applied to all PLOG reactions which lack a specification in thirdbodydefaults and testinput
+                newRxn = {
+                    'equation': mech_rxn['equation'],
+                    'type': 'linear-Burke'
+                }
+                if mech_rxn.get('duplicate') is not None:
+                    newRxn['duplicate'] = True
+                colliders = self.colliders(data,mech_rxn,generic=True)
+                newRxn['colliders'] = [colliderM] + colliders
+                newData['reactions'].append(newRxn)
+                print(f"{self.normalize(mech_rxn['equation'])} converted to LMR-R with generic parameters")
             else: # just append it as-is
-                newReactions.append(mech_rxn)
-
-        output_data = {
-            'species': data['mech_obj'].species(),  # list of ct.Species objects
-            'thermo': data['mech_obj'].thermo_model,
-            'transport': data['mech_obj'].transport_model,
-            'reactions': newReactions,
-            'name': 'outputMech'
-        }
-        data['output'] = ct.Solution(**output_data)
+                newData['reactions'].append(mech_rxn)
+        data['output']=newData
 
     def loadYAML(self, fName):
         with open(fName) as f:
             return yaml.safe_load(f)
-    
-    
 
     def saveYAML(self, dataSet, fName):
-        # print(dataSet)
-        # def to_serializable(obj):
-        #     """Recursively convert Cantera AnyMap and AnyValue to native Python types."""
-        #     if isinstance(obj, dict):
-        #         return {k: to_serializable(v) for k, v in obj.items()}
-        #     elif isinstance(obj, list):
-        #         return [to_serializable(i) for i in obj]
-        #     elif hasattr(obj, 'items') and not isinstance(obj, dict):
-        #         # Likely a ct.AnyMap
-        #         return {k: to_serializable(v) for k, v in dict(obj).items()}
-        #     else:
-        #         return obj
         with open(fName, 'w') as outfile:
-            dataSet.write_yaml(filename=fName)
-            # safe_data = self.to_builtin(dataSet)
-            # yaml.dump(safe_data, outfile,
-            #         default_flow_style=None,
-            #         sort_keys=False)
+            yaml.dump(copy.deepcopy(dataSet), outfile,
+                    default_flow_style=None,
+                    sort_keys=False)

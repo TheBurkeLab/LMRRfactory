@@ -4,18 +4,14 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "LMRRfactory"
-version = '1.0.2'
+version = '0.0.194'
 authors = [
   { name="Patrick Singal", email="p.singal@columbia.edu" },
 ]
 description = 'Auto-generate LMR-R reactions and mechanisms'
 readme = "README.md"
 requires-python = ">=3.8"
-classifiers = [
-    "Programming Language :: Python :: 3",
-    "License :: OSI Approved :: MIT License",
-    "Operating System :: OS Independent",
-]
+license = { text = "MIT" }
 
 [project.urls]
 Homepage = "https://github.com/TheBurkeLab/LMRRfactory"
