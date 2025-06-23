@@ -66,15 +66,13 @@ class makeYAML:
         self.cleanMechInput(data) # clean up 'NO' parsing errors in 'mech'
         self.lookForPdep(data) # Verify that 'mech' has >=1 relevant p-dep reaction
         input_reactions = data.get('input', {}).get('reactions', [])
-        input_species = data.get('input', {}).get('species', [])
         for reaction in input_reactions:
-            # reaction['equation'] = self.normalize(reaction['equation'])
-            reaction['pes'] = self.getPES(reaction['equation'], input_species)
+            reaction['equation'] = self.normalize(reaction['equation'])
+            reaction['pes'] = self.getPES(reaction['equation'])
         default_reactions = data.get('defaults', {}).get('reactions', [])
-        default_species = data.get('defaults', {}).get('species', [])
         for reaction in default_reactions:
-            # reaction['equation'] = self.normalize(reaction['equation'])
-            reaction['pes'] = self.getPES(reaction['equation'], default_species)
+            reaction['equation'] = self.normalize(reaction['equation'])
+            reaction['pes'] = self.getPES(reaction['equation'])
         # Remove defaults colliders and reactions that were explictly provided by user
         self.deleteDuplicates(data)
         # Blend the user inputs and remaining collider defaults into a single YAML
@@ -148,57 +146,45 @@ class makeYAML:
         return norm_equation
     
     def getPES(self,equation, species_defs): #must input an equation that has already been normalized
-        rxn = ct.Reaction.from_equation(equation)
-        reactant_species = list(rxn.reactants.keys())
-        compositions = []
-        for reactant in reactant_species:
-            c = next((s["composition"] for s in species_defs if s["name"] == reactant), None)
-            compositions[reactant]=c
-        
-        counters = [Counter(comp) for comp in compositions]
-        pes = sum(counters, Counter())
-        return pes
-            
-
 
         #Step 1: Identify each individual species on the reactants side
-
+        
         #Step 2: Match each of those species with a species definition in species[idx]['name']
         #Step 3: Identify the composition of that species at species[idx]['composition']
         #Step 4: Add the composition dictionaries of all of the species in reactants to create a grand total
         #Step 5: Do the PES matching procedure
 
-        # for species in data['mech']['species']:
-        #     if str(species['name']).lower() == "false":
-        #         species['name']="NO"
+        for species in data['mech']['species']:
+            if str(species['name']).lower() == "false":
+                species['name']="NO"
 
-        # if inputRxnNames is not None and defaultRxn['pes'] in inputRxnNames:
-        #         idx = inputRxnNames.index(defaultRxn['pes'])
+        if inputRxnNames is not None and defaultRxn['pes'] in inputRxnNames:
+                idx = inputRxnNames.index(defaultRxn['pes'])
 
-        # # Split the equation into reactants and products
-        # reactants, _ = equation.split('=')
-        # reactants = reactants.strip().replace('(+M)', '').replace(' ', '').replace('<','').replace('>','')
-        # # Split into species and their coefficients
-        # species_list = re.split(r'\s*\+\s*', reactants)
-        # species_counter = Counter()
-        # pes = {}
-        # for species in species_list:
-        #     # Handle cases with coefficients like '2H' and '2 H'
-        #     match = re.match(r'(\d*)\s*([^\d\s]\w*)', species)
-        #     if not match:
-        #         raise ValueError(f"Incorrect formula for {equation} in input YAML.")
-        #     coeff, name = match.groups()
-        #     coeff = int(coeff) if coeff else 1  # Default to 1 if no coefficient
-        #     species_counter[name] += coeff
-        #     elems={}
-        #     for species_def in species_defs:
-        #         if str(species_def['name'].lower()) == name.lower():
-        #             elems=species_def['composition']
-        #     elems = {key: value * coeff for key, value in elems.items()}
+        # Split the equation into reactants and products
+        reactants, _ = equation.split('=')
+        reactants = reactants.strip().replace('(+M)', '').replace(' ', '').replace('<','').replace('>','')
+        # Split into species and their coefficients
+        species_list = re.split(r'\s*\+\s*', reactants)
+        species_counter = Counter()
+        pes = {}
+        for species in species_list:
+            # Handle cases with coefficients like '2H' and '2 H'
+            match = re.match(r'(\d*)\s*([^\d\s]\w*)', species)
+            if not match:
+                raise ValueError(f"Incorrect formula for {equation} in input YAML.")
+            coeff, name = match.groups()
+            coeff = int(coeff) if coeff else 1  # Default to 1 if no coefficient
+            species_counter[name] += coeff
+            elems={}
+            for species_def in species_defs:
+                if str(species_def['name'].lower()) == name.lower():
+                    elems=species_def['composition']
+            elems = {key: value * coeff for key, value in elems.items()}
             
-        #     #match name to a species in species_defs, grab its elemental composition, and then multiply each one by the coeff, and then append it to the grand-total dictionary called 'pes'
-        # pes = species_counter
-        # return pes
+            #match name to a species in species_defs, grab its elemental composition, and then multiply each one by the coeff, and then append it to the grand-total dictionary called 'pes'
+        pes = species_counter
+        return pes
         
 
     def deleteDuplicates(self, data): # delete duplicates from thirdBodyDefaults
