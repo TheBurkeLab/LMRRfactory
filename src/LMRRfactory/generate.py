@@ -152,12 +152,14 @@ class makeYAML:
         return norm_equation
     
     def getPES(self,equation, species_defs): #must input an equation that has already been normalized
-        rxn = ct.Reaction.from_equation(equation)
-        reactant_species = list(rxn.reactants.keys())
+        rxn = ct.Reaction.reactants(equation=equation)
+        reactant_species = list(rxn.keys())
+        reactant_coeffs = list(rxn.values())
         compositions = []
-        for reactant in reactant_species:
+        for i, reactant in enumerate(reactant_species):
             c = next((s["composition"] for s in species_defs if s["name"] == reactant), None)
-            compositions[reactant]=c
+            c_scaled = {k: v*reactant_coeffs[i] for k, v in c.items()}
+            compositions[reactant]=c_scaled
         
         counters = [Counter(comp) for comp in compositions]
         pes = sum(counters, Counter())
