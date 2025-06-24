@@ -53,6 +53,7 @@ class makeYAML:
 
     def generateYAML(self):
         data_path = pkg_resources.resource_filename('LMRRfactory', '/')
+        mech_obj = ct.Solution(self.loadYAML(self.mechInput))
         data = {
             'mech': self.loadYAML(self.mechInput), # load input mechanism}
             'defaults': self.loadYAML(data_path+"thirdbodydefaults.yaml"), # load default colliders
@@ -67,6 +68,8 @@ class makeYAML:
         self.lookForPdep(data) # Verify that 'mech' has >=1 relevant p-dep reaction
         if data.get('input') is not None:
             if data['input'].get('reactions') is not None and data['input'].get('species') is not None:
+                reaction['pes'] = self.getPES(reaction, input_species)
+
                 input_reactions = data.get('input', {}).get('reactions', [])
                 input_species = data.get('input', {}).get('species', [])
                 for reaction in input_reactions:
