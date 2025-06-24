@@ -71,14 +71,14 @@ class makeYAML:
                 input_species = data.get('input', {}).get('species', [])
                 for reaction in input_reactions:
                     # reaction['equation'] = self.normalize(reaction['equation'])
-                    reaction['pes'] = self.getPES(reaction['equation'], input_species)
+                    reaction['pes'] = self.getPES(reaction, input_species)
         if data.get('defaults') is not None:
             if data['defaults'].get('reactions') is not None and data['defaults'].get('species') is not None:
                 default_reactions = data.get('defaults', {}).get('reactions', [])
                 default_species = data.get('defaults', {}).get('species', [])
                 for reaction in default_reactions:
                     # reaction['equation'] = self.normalize(reaction['equation'])
-                    reaction['pes'] = self.getPES(reaction['equation'], default_species)
+                    reaction['pes'] = self.getPES(reaction, default_species)
         # Remove defaults colliders and reactions that were explictly provided by user
         self.deleteDuplicates(data)
         # Blend the user inputs and remaining collider defaults into a single YAML
@@ -151,9 +151,8 @@ class makeYAML:
             norm_equation = f"{norm_products} <=> {norm_reactants}"
         return norm_equation
     
-    def getPES(self,equation, species_defs): #must input an equation that has already been normalized
-        rxn = ct.Reaction(equation=equation)
-        
+    def getPES(self,reaction, species_defs): #must input an equation that has already been normalized
+        rxn = ct.Reaction.from_yaml(reaction)
         reactant_species = list(rxn.reactants.keys())
         reactant_coeffs = list(rxn.reactants.values())
         compositions = []
