@@ -65,16 +65,20 @@ class makeYAML:
             data['input']=None
         self.cleanMechInput(data) # clean up 'NO' parsing errors in 'mech'
         self.lookForPdep(data) # Verify that 'mech' has >=1 relevant p-dep reaction
-        input_reactions = data.get('input', {}).get('reactions', [])
-        input_species = data.get('input', {}).get('species', [])
-        for reaction in input_reactions:
-            # reaction['equation'] = self.normalize(reaction['equation'])
-            reaction['pes'] = self.getPES(reaction['equation'], input_species)
-        default_reactions = data.get('defaults', {}).get('reactions', [])
-        default_species = data.get('defaults', {}).get('species', [])
-        for reaction in default_reactions:
-            # reaction['equation'] = self.normalize(reaction['equation'])
-            reaction['pes'] = self.getPES(reaction['equation'], default_species)
+        if data.get('input') is not None:
+            if data['input'].get('reactions') is not None and data['input'].get('species') is not None:
+                input_reactions = data.get('input', {}).get('reactions', [])
+                input_species = data.get('input', {}).get('species', [])
+                for reaction in input_reactions:
+                    # reaction['equation'] = self.normalize(reaction['equation'])
+                    reaction['pes'] = self.getPES(reaction['equation'], input_species)
+        if data.get('defaults') is not None:
+            if data['defaults'].get('reactions') is not None and data['defaults'].get('species') is not None:
+                default_reactions = data.get('defaults', {}).get('reactions', [])
+                default_species = data.get('defaults', {}).get('species', [])
+                for reaction in default_reactions:
+                    # reaction['equation'] = self.normalize(reaction['equation'])
+                    reaction['pes'] = self.getPES(reaction['equation'], default_species)
         # Remove defaults colliders and reactions that were explictly provided by user
         self.deleteDuplicates(data)
         # Blend the user inputs and remaining collider defaults into a single YAML

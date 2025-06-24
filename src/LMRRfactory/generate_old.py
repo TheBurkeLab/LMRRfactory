@@ -7,7 +7,9 @@ from collections import Counter
 import re
 import os
 import pkg_resources
-import cantera as ct
+import yaml
+import os
+import numpy as np
 import warnings
 
 warnings.filterwarnings("ignore")
@@ -65,14 +67,14 @@ class makeYAML:
             data['input']=None
         self.cleanMechInput(data) # clean up 'NO' parsing errors in 'mech'
         self.lookForPdep(data) # Verify that 'mech' has >=1 relevant p-dep reaction
-        input_reactions = data.get('input', {}).get('reactions', [])
-        for reaction in input_reactions:
-            reaction['equation'] = self.normalize(reaction['equation'])
-            reaction['pes'] = self.getPES(reaction['equation'])
-        default_reactions = data.get('defaults', {}).get('reactions', [])
-        for reaction in default_reactions:
-            reaction['equation'] = self.normalize(reaction['equation'])
-            reaction['pes'] = self.getPES(reaction['equation'])
+        if data.get('input') is not None:
+            if data['input'].get('reactions') is not None:
+                for reaction in data['input']['reactions']:
+                    reaction['equation'] = self.normalize(reaction['equation'])
+        if data.get('defaults') is not None:
+            if data['defaults'].get('reactions') is not None:
+                for reaction in data['defaults']['reactions']:
+                    reaction['equation'] = self.normalize(reaction['equation'])
         # Remove defaults colliders and reactions that were explictly provided by user
         self.deleteDuplicates(data)
         # Blend the user inputs and remaining collider defaults into a single YAML
@@ -144,48 +146,6 @@ class makeYAML:
         else:
             norm_equation = f"{norm_products} <=> {norm_reactants}"
         return norm_equation
-    
-    def getPES(self,equation, species_defs): #must input an equation that has already been normalized
-
-        #Step 1: Identify each individual species on the reactants side
-        
-        #Step 2: Match each of those species with a species definition in species[idx]['name']
-        #Step 3: Identify the composition of that species at species[idx]['composition']
-        #Step 4: Add the composition dictionaries of all of the species in reactants to create a grand total
-        #Step 5: Do the PES matching procedure
-
-        for species in data['mech']['species']:
-            if str(species['name']).lower() == "false":
-                species['name']="NO"
-
-        if inputRxnNames is not None and defaultRxn['pes'] in inputRxnNames:
-                idx = inputRxnNames.index(defaultRxn['pes'])
-
-        # Split the equation into reactants and products
-        reactants, _ = equation.split('=')
-        reactants = reactants.strip().replace('(+M)', '').replace(' ', '').replace('<','').replace('>','')
-        # Split into species and their coefficients
-        species_list = re.split(r'\s*\+\s*', reactants)
-        species_counter = Counter()
-        pes = {}
-        for species in species_list:
-            # Handle cases with coefficients like '2H' and '2 H'
-            match = re.match(r'(\d*)\s*([^\d\s]\w*)', species)
-            if not match:
-                raise ValueError(f"Incorrect formula for {equation} in input YAML.")
-            coeff, name = match.groups()
-            coeff = int(coeff) if coeff else 1  # Default to 1 if no coefficient
-            species_counter[name] += coeff
-            elems={}
-            for species_def in species_defs:
-                if str(species_def['name'].lower()) == name.lower():
-                    elems=species_def['composition']
-            elems = {key: value * coeff for key, value in elems.items()}
-            
-            #match name to a species in species_defs, grab its elemental composition, and then multiply each one by the coeff, and then append it to the grand-total dictionary called 'pes'
-        pes = species_counter
-        return pes
-        
 
     def deleteDuplicates(self, data): # delete duplicates from thirdBodyDefaults
         newData = {'generic-colliders': data['defaults']['generic-colliders'],
@@ -193,19 +153,18 @@ class makeYAML:
         inputRxnNames = None
         if data.get('input') is not None:
             if data['input'].get('reactions') is not None:
-                inputRxnNames = [rxn['pes'] for rxn in data['input']['reactions']]
+                inputRxnNames = [rxn['equation'] for rxn in data['input']['reactions']]
                 inputColliderNames = [[col['name'] for col in rxn['colliders']]
                                     for rxn in data['input']['reactions']]
         for defaultRxn in data['defaults']['reactions']:
-            if inputRxnNames is not None and defaultRxn['pes'] in inputRxnNames:
-                idx = inputRxnNames.index(defaultRxn['pes'])
+            if inputRxnNames is not None and defaultRxn['equation'] in inputRxnNames:
+                idx = inputRxnNames.index(defaultRxn['equation'])
                 inputColliders = inputColliderNames[idx]
                 newColliderList = [col for col in defaultRxn['colliders']
                                 if col['name'] not in inputColliders]
                 if len(newColliderList)>0:
                     newData['reactions'].append({
                         'equation': defaultRxn['equation'],
-                        'pes': defaultRxn['pes'],
                         'reference-collider': defaultRxn['reference-collider'],
                         'colliders': newColliderList
                     })
@@ -224,14 +183,13 @@ class makeYAML:
                     newCollList.append(col)
             defaultRxn['colliders'] = newCollList
             blendData['reactions'].append(defaultRxn)
-        defaultRxnNames = [rxn['pes'] for rxn in blendData['reactions']]
+        defaultRxnNames = [rxn['equation'] for rxn in blendData['reactions']]
         if data.get('input') is not None:
             if data['input'].get('reactions') is not None:
                 for inputRxn in data['input']['reactions']:
                     # Check if input reaction also exists in defaults file, otherwise add the entire input reaction to the blend as-is
-                    
-                    if inputRxn['pes'] in defaultRxnNames:
-                        idx = defaultRxnNames.index(inputRxn['pes'])
+                    if inputRxn['equation'] in defaultRxnNames:
+                        idx = defaultRxnNames.index(inputRxn['equation'])
                         blendRxn = blendData['reactions'][idx]
                         # If reference colliders match, append new colliders, otherwise override with the user inputs
                         if inputRxn['reference-collider'] == blendRxn['reference-collider']:
