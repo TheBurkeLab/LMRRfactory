@@ -10,6 +10,7 @@ src/LMRRfactory/thirdbodydefaults_old.yaml
 src/LMRRfactory.egg-info/PKG-INFO
 src/LMRRfactory.egg-info/SOURCES.txt
 src/LMRRfactory.egg-info/dependency_links.txt
+src/LMRRfactory.egg-info/requires.txt
 src/LMRRfactory.egg-info/top_level.txt
 src/LMRRfactory/unfinished_methods/chebyshevFitter.py
 src/LMRRfactory/unfinished_methods/plogFitter.py

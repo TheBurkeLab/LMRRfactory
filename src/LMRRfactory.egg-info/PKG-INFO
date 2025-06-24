@@ -1,12 +1,16 @@
 Metadata-Version: 2.4
 Name: LMRRfactory
-Version: 0.0.116
+Version: 0.0.117
 Summary: Auto-generate LMR-R reactions and mechanisms
 Author-email: Patrick Singal <p.singal@columbia.edu>
 License: MIT
 Project-URL: Homepage, https://github.com/TheBurkeLab/LMRRfactory
 Requires-Python: >=3.8
 Description-Content-Type: text/markdown
+Requires-Dist: pyyaml
+Requires-Dist: numpy
+Requires-Dist: scipy
+Requires-Dist: cantera
 
 ## Installation
 
