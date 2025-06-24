@@ -53,7 +53,7 @@ class makeYAML:
 
     def generateYAML(self):
         data_path = pkg_resources.resource_filename('LMRRfactory', '/')
-        mech_obj = ct.Solution(self.loadYAML(self.mechInput))
+        mech_obj = ct.Solution(self.mechInput)
         data = {
             'mech': self.loadYAML(self.mechInput), # load input mechanism}
             'defaults': self.loadYAML(data_path+"thirdbodydefaults.yaml"), # load default colliders
