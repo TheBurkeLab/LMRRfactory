@@ -31,7 +31,7 @@ species:
 - name: O2
   composition: {O: 2}
 - name: NE
-  composition: {Ne: 1}
+  composition: {NE: 1}
 - name: KR
   composition: {Kr: 1}
 - name: CH2O
