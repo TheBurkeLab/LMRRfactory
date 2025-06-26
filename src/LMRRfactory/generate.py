@@ -151,7 +151,6 @@ class makeYAML:
         
 
     def deleteDuplicates(self, data): # delete duplicates from thirdBodyDefaults
-        # print(data['defaults'])
         newData = {'generic-colliders': data['defaults']['generic-colliders'],
                 'reactions': []}
         inputRxnNames = None
@@ -364,7 +363,7 @@ class makeYAML:
                 d.pop("duplicate", None)
                 d.pop("units", None)
                 colliderM = {'name': 'M'}
-                colliderM.extend(d)
+                colliderM.update(d)
             if pDep and data['mech_pes'][i] in blendRxnNames:
             # rxn is specifically covered either in defaults or user input
                 newRxn = {
@@ -397,7 +396,7 @@ class makeYAML:
             else: # just append it as-is
                 newReactions.append(mech_rxn)
         data['output'] = data['mech_obj'].input_data
-        data['output'].extend({'reactions': newReactions})
+        data['output'].update({'reactions': newReactions})
 
     def loadYAML(self, fName):
         with open(fName) as f:
