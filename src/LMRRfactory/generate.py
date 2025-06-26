@@ -151,7 +151,7 @@ class makeYAML:
         
 
     def deleteDuplicates(self, data): # delete duplicates from thirdBodyDefaults
-        print(data['defaults'])
+        # print(data['defaults'])
         newData = {'generic-colliders': data['defaults']['generic-colliders'],
                 'reactions': []}
         inputRxnNames = None
