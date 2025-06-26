@@ -171,118 +171,118 @@
 # - name: C6H12-1
 #   composition: {C: 6, H: 12}
 
-# # DATABASE OF DEFAULT THIRD-BODY EFFICIENCIES FOR SELECT REACTIONS
-# generic-colliders: # AR is always reference collider
-# # From temperature-dependent ab initio values, taking the highest available value
-# # usually, but not always, at the highest temp
-# - name: HE
-#   efficiency: 2.56
-#   note: Jasper-2022 (generic)
-# - name: N2
-#   efficiency: 3.15
-#   note: Jasper-2022 (generic) (300K)
-# - name: H2
-#   efficiency: 4.47
-#   note: JOM-2015 (generic)
-# - name: CO2
-#   efficiency: 14.3
-#   note: Jasper-2022 (generic)
-# - name: NH3
-#   efficiency: 22.2
-#   note: Jasper-2022 (generic)
-# - name: H2O
-#   efficiency: 27.9
-#   note: Jasper-2022 (generic)
-# - name: H2O2
-#   efficiency: 16.3
-#   note: Jasper-2022 (generic)
-# - name: CO
-#   efficiency: 2.746
-#   note: Matsugi-2021 (generic)
-# - name: CH4
-#   efficiency: 14.3
-#   note: Jasper-2022 (generic)
-# - name: O2
-#   efficiency: 1.70
-#   note: Jasper-2022 (generic)
-# - name: NE
-#   efficiency: 1.13
-#   note: JOM-2015 (generic)
-# - name: KR
-#   efficiency: 1.07
-#   note: JOM-2015 (generic) (300K)
-# - name: CH2O
-#   efficiency: 2.941 #2.5/0.85
-#   note: Glarborg-2018 (generic)
-# - name: CH3OH
-#   efficiency: 3.53 # 3/0.85
-#   note: Glarborg-2018 (generic)
-# - name: CH3OCH3
-#   efficiency: 5
-#   note: Sivaramakrishnan-CNF2011 via Bugler-2016 (generic)
-# - name: CH3F
-#   efficiency: 6
-#   note: Cornell-2024 (generic)
-# - name: CH2F2
-#   efficiency: 6
-#   note: Cornell-2024 (generic)
-# - name: CHF3
-#   efficiency: 6
-#   note: Cornell-2024 (generic)
-# - name: HF
-#   efficiency: 2
-#   note: Cornell-2024 (generic)
-# - name: CF2O
-#   efficiency: 7.14 # 5/0.7
-#   note: Cornell-2024 (generic)
-# - name: CF4
-#   efficiency: 6
-#   note: Cornell-2024 (generic)
-# - name: NO
-#   efficiency: 3
-#   note: Zhang-2017 (generic)
-# - name: NO2
-#   efficiency: 10.33 # 6.2/0.6
-#   note: Zhang-2017 (generic)
-# - name: N2O
-#   efficiency: 6.0
-#   note: Glarborg-2025 (generic)
-# - name: N2O4
-#   efficiency: 2.5 #2/0.8
-#   note: Zhang-2017 (generic)
-# - name: C2H6
-#   efficiency: 5.6
-#   note: Think Mech
-# - name: C3H8 
-#   efficiency: 6 #3/0.5
-#   note: ThInK 1.0 (generic)
-# - name: C2H4
-#   efficiency: 6 #3/0.5
-#   note: ThInK 1.0 (generic)
-# - name: CH3CHCH2 #propene
-#   efficiency: 6 #3/0.5
-#   note: ThInK 1.0 (generic)
-# - name: C3H6 #propene
-#   efficiency: 6 #3/0.5
-#   note: ThInK 1.0 (generic)
-# - name: C2H2
-#   efficiency: 6 #3/0.5
-#   note: ThInK 1.0 (generic)
-# - name: CH2CCH2 #allene
-#   efficiency: 6 #3/0.5
-#   note: ThInK 1.0 (generic)
-# - name: CH3CCH # propyne
-#   efficiency: 6 #3/0.5
-#   note: ThInK 1.0 (generic)
-# - name: C3H4 # propyne
-#   efficiency: 6 #3/0.5
-#   note: ThInK 1.0 (generic)
-# - name: CH3OCHO # methyl-formate
-#   efficiency: 3.29 #2.3/0.7
-#   note: ThInK 1.0 (generic)
-# - name: C2H4O2 # methyl-formate
-#   efficiency: 3.29 #2.3/0.7
-#   note: ThInK 1.0 (generic)
+# DATABASE OF DEFAULT THIRD-BODY EFFICIENCIES FOR SELECT REACTIONS
+generic-colliders: # AR is always reference collider
+# From temperature-dependent ab initio values, taking the highest available value
+# usually, but not always, at the highest temp
+- name: HE
+  efficiency: 2.56
+  note: Jasper-2022 (generic)
+- name: N2
+  efficiency: 3.15
+  note: Jasper-2022 (generic) (300K)
+- name: H2
+  efficiency: 4.47
+  note: JOM-2015 (generic)
+- name: CO2
+  efficiency: 14.3
+  note: Jasper-2022 (generic)
+- name: NH3
+  efficiency: 22.2
+  note: Jasper-2022 (generic)
+- name: H2O
+  efficiency: 27.9
+  note: Jasper-2022 (generic)
+- name: H2O2
+  efficiency: 16.3
+  note: Jasper-2022 (generic)
+- name: CO
+  efficiency: 2.746
+  note: Matsugi-2021 (generic)
+- name: CH4
+  efficiency: 14.3
+  note: Jasper-2022 (generic)
+- name: O2
+  efficiency: 1.70
+  note: Jasper-2022 (generic)
+- name: NE
+  efficiency: 1.13
+  note: JOM-2015 (generic)
+- name: KR
+  efficiency: 1.07
+  note: JOM-2015 (generic) (300K)
+- name: CH2O
+  efficiency: 2.941 #2.5/0.85
+  note: Glarborg-2018 (generic)
+- name: CH3OH
+  efficiency: 3.53 # 3/0.85
+  note: Glarborg-2018 (generic)
+- name: CH3OCH3
+  efficiency: 5
+  note: Sivaramakrishnan-CNF2011 via Bugler-2016 (generic)
+- name: CH3F
+  efficiency: 6
+  note: Cornell-2024 (generic)
+- name: CH2F2
+  efficiency: 6
+  note: Cornell-2024 (generic)
+- name: CHF3
+  efficiency: 6
+  note: Cornell-2024 (generic)
+- name: HF
+  efficiency: 2
+  note: Cornell-2024 (generic)
+- name: CF2O
+  efficiency: 7.14 # 5/0.7
+  note: Cornell-2024 (generic)
+- name: CF4
+  efficiency: 6
+  note: Cornell-2024 (generic)
+- name: NO
+  efficiency: 3
+  note: Zhang-2017 (generic)
+- name: NO2
+  efficiency: 10.33 # 6.2/0.6
+  note: Zhang-2017 (generic)
+- name: N2O
+  efficiency: 6.0
+  note: Glarborg-2025 (generic)
+- name: N2O4
+  efficiency: 2.5 #2/0.8
+  note: Zhang-2017 (generic)
+- name: C2H6
+  efficiency: 5.6
+  note: Think Mech
+- name: C3H8 
+  efficiency: 6 #3/0.5
+  note: ThInK 1.0 (generic)
+- name: C2H4
+  efficiency: 6 #3/0.5
+  note: ThInK 1.0 (generic)
+- name: CH3CHCH2 #propene
+  efficiency: 6 #3/0.5
+  note: ThInK 1.0 (generic)
+- name: C3H6 #propene
+  efficiency: 6 #3/0.5
+  note: ThInK 1.0 (generic)
+- name: C2H2
+  efficiency: 6 #3/0.5
+  note: ThInK 1.0 (generic)
+- name: CH2CCH2 #allene
+  efficiency: 6 #3/0.5
+  note: ThInK 1.0 (generic)
+- name: CH3CCH # propyne
+  efficiency: 6 #3/0.5
+  note: ThInK 1.0 (generic)
+- name: C3H4 # propyne
+  efficiency: 6 #3/0.5
+  note: ThInK 1.0 (generic)
+- name: CH3OCHO # methyl-formate
+  efficiency: 3.29 #2.3/0.7
+  note: ThInK 1.0 (generic)
+- name: C2H4O2 # methyl-formate
+  efficiency: 3.29 #2.3/0.7
+  note: ThInK 1.0 (generic)
 
 reactions:
 - name: H2O (+M)
