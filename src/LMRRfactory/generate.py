@@ -288,7 +288,7 @@ class makeYAML:
                         colliders.append(self.arrheniusFit(col))
                         colliderNames.append(col['name'].lower())
             # Add troe efficiencies that haven't already been given a value
-            for name, val in mech_rxn.get('efficiencies', {}).items():
+            for name, val in mech_rxn.input_data.get('efficiencies', {}).items():
                 already_given = name.lower() in colliderNames
                 if not already_given and not name.lower()=='n2': #ignores the redundant n2=1 entry
                     colliders.append({
