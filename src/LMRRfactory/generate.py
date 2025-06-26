@@ -140,7 +140,7 @@ class makeYAML:
             compositions = []
             reactant_species = list(reaction.reactants.keys())
             reactant_coeffs = list(reaction.reactants.values())
-            for reactant in reactant_species:
+            for i, reactant in enumerate(reactant_species):
                 spec = gas.species(reactant)
                 c = spec.composition
                 c_scaled = {k: v*reactant_coeffs[i] for k, v in c.items()}
