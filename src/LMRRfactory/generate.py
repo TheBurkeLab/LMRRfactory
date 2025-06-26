@@ -54,36 +54,16 @@ class makeYAML:
     def generateYAML(self):
         data_path = pkg_resources.resource_filename('LMRRfactory', '/')
         mech_obj = ct.Solution(self.mechInput)
-        defaults_obj = ct.Solution(data_path+"thirdbodydefaults.yaml")
-        
+        self.lookForPdep(mech_obj) # Verify that 'mech' has >=1 relevant p-dep reaction
         data = {
-            'mech': self.loadYAML(self.mechInput), # load input mechanism}
-            'defaults': self.loadYAML(data_path+"thirdbodydefaults.yaml"), # load default colliders
-            'allPdep': self.allPdep, # True or False
-            'allPLOG': self.allPLOG, # True or False
+            'mech_obj': mech_obj,
+            'mech_pes': self.getPES(mech_obj),
+            'defaults': self.loadYAML(data_path+"thirdbodydefaults.yaml"),
+            'input': self.loadYAML(self.colliderInput) if self.colliderInput is not None else None,
         }
-        if self.colliderInput is not None:
-            data['input']=self.loadYAML(self.colliderInput)
-        else:
-            data['input']=None
-        self.cleanMechInput(data) # clean up 'NO' parsing errors in 'mech'
-        self.lookForPdep(data) # Verify that 'mech' has >=1 relevant p-dep reaction
-        if data.get('input') is not None:
-            if data['input'].get('reactions') is not None and data['input'].get('species') is not None:
-                reaction['pes'] = self.getPES(reaction, input_species)
 
-                input_reactions = data.get('input', {}).get('reactions', [])
-                input_species = data.get('input', {}).get('species', [])
-                for reaction in input_reactions:
-                    # reaction['equation'] = self.normalize(reaction['equation'])
-                    reaction['pes'] = self.getPES(reaction, input_species)
-        if data.get('defaults') is not None:
-            if data['defaults'].get('reactions') is not None and data['defaults'].get('species') is not None:
-                default_reactions = data.get('defaults', {}).get('reactions', [])
-                default_species = data.get('defaults', {}).get('species', [])
-                for reaction in default_reactions:
-                    # reaction['equation'] = self.normalize(reaction['equation'])
-                    reaction['pes'] = self.getPES(reaction, default_species)
+        # self.cleanMechInput(data) # clean up 'NO' parsing errors in 'mech'
+
         # Remove defaults colliders and reactions that were explictly provided by user
         self.deleteDuplicates(data)
         # Blend the user inputs and remaining collider defaults into a single YAML
@@ -114,102 +94,60 @@ class makeYAML:
                     for key in effs
                 }
 
-    def lookForPdep(self, data):
-        # Raise an error if the input mech has no Troe, PLOG, Chebyshev, or linear-Burke reactions
+    def lookForPdep(self, gas):
         if not any(
-            reaction.get('type') in ['pressure-dependent-Arrhenius', 'Chebyshev', 'linear-Burke'] or
-            (reaction.get('type') == 'falloff' and 'Troe' in reaction)
-            for reaction in data['mech']['reactions']
+            reaction.reaction_type in ['falloff-Troe','pressure-dependent-Arrhenius', 'Chebyshev', 'three-body-linear-Burke']
+            for reaction in gas.reactions()
         ):
             raise ValueError("No pressure-dependent reactions found in mechanism."
                             " Please choose another mechanism.")
 
-    def normalize(self, equation):
-        # Split the equation into reactants and products
-        reactants, products = equation.split('=')
-        reactants = reactants.strip().replace('(+M)', '').replace(' ', '').replace('<','').replace('>','')
-        products = products.strip().replace('(+M)', '').replace(' ', '').replace('<','').replace('>','')
-        def normalize_side(side):
-            # Split into species and their coefficients
-            species_list = re.split(r'\s*\+\s*', side)
-            species_counter = Counter()
-            for species in species_list:
-                # Handle cases with coefficients like '2H' and '2 H'
-                match = re.match(r'(\d*)\s*([^\d\s]\w*)', species)
-                if not match:
-                    raise ValueError(f"Incorrect formula for {equation} in input YAML.")
-                coeff, name = match.groups()
-                coeff = int(coeff) if coeff else 1  # Default to 1 if no coefficient
-                species_counter[name] += coeff
-            normalized_species = []
-            for name in sorted(species_counter.keys()):  # Sort species alphabetically
-                count = species_counter[name]
-                normalized_species.extend([name]*count)
-            normalized_side = ' + '.join(normalized_species)
-            return normalized_side
-        norm_reactants = normalize_side(reactants)
-        norm_products = normalize_side(products)
-        # Make it so that equations inputted in reverse directions are still deemed the same
-        if norm_reactants > norm_products:
-            norm_equation = f"{norm_reactants} <=> {norm_products}"
-        else:
-            norm_equation = f"{norm_products} <=> {norm_reactants}"
-        return norm_equation
+    # def normalize(self, equation):
+    #     # Split the equation into reactants and products
+    #     reactants, products = equation.split('=')
+    #     reactants = reactants.strip().replace('(+M)', '').replace(' ', '').replace('<','').replace('>','')
+    #     products = products.strip().replace('(+M)', '').replace(' ', '').replace('<','').replace('>','')
+    #     def normalize_side(side):
+    #         # Split into species and their coefficients
+    #         species_list = re.split(r'\s*\+\s*', side)
+    #         species_counter = Counter()
+    #         for species in species_list:
+    #             # Handle cases with coefficients like '2H' and '2 H'
+    #             match = re.match(r'(\d*)\s*([^\d\s]\w*)', species)
+    #             if not match:
+    #                 raise ValueError(f"Incorrect formula for {equation} in input YAML.")
+    #             coeff, name = match.groups()
+    #             coeff = int(coeff) if coeff else 1  # Default to 1 if no coefficient
+    #             species_counter[name] += coeff
+    #         normalized_species = []
+    #         for name in sorted(species_counter.keys()):  # Sort species alphabetically
+    #             count = species_counter[name]
+    #             normalized_species.extend([name]*count)
+    #         normalized_side = ' + '.join(normalized_species)
+    #         return normalized_side
+    #     norm_reactants = normalize_side(reactants)
+    #     norm_products = normalize_side(products)
+    #     # Make it so that equations inputted in reverse directions are still deemed the same
+    #     if norm_reactants > norm_products:
+    #         norm_equation = f"{norm_reactants} <=> {norm_products}"
+    #     else:
+    #         norm_equation = f"{norm_products} <=> {norm_reactants}"
+    #     return norm_equation
     
-    def getPES(self,reaction, species_defs): #must input an equation that has already been normalized
-        rxn = ct.Reaction.from_yaml(reaction)
-        reactant_species = list(rxn.reactants.keys())
-        reactant_coeffs = list(rxn.reactants.values())
-        compositions = []
-        for i, reactant in enumerate(reactant_species):
-            c = next((s["composition"] for s in species_defs if s["name"] == reactant), None)
-            c_scaled = {k: v*reactant_coeffs[i] for k, v in c.items()}
-            compositions[reactant]=c_scaled
-        
-        counters = [Counter(comp) for comp in compositions]
-        pes = sum(counters, Counter())
+    def getPES(self,gas): #must input an equation that has already been normalized
+        pes=[]
+        for reaction in gas.reactions():
+            compositions = []
+            reactant_species = list(reaction.reactants.keys())
+            reactant_coeffs = list(reaction.reactants.values())
+            for reactant in reactant_species:
+                spec = gas.species(reactant)
+                c = spec.composition
+                c_scaled = {k: v*reactant_coeffs[i] for k, v in c.items()}
+                compositions[reactant]=c_scaled
+            counters = [Counter(comp) for comp in compositions]
+            pes.append(sum(counters, Counter()))
         return pes
-            
-
-
-        #Step 1: Identify each individual species on the reactants side
-
-        #Step 2: Match each of those species with a species definition in species[idx]['name']
-        #Step 3: Identify the composition of that species at species[idx]['composition']
-        #Step 4: Add the composition dictionaries of all of the species in reactants to create a grand total
-        #Step 5: Do the PES matching procedure
-
-        # for species in data['mech']['species']:
-        #     if str(species['name']).lower() == "false":
-        #         species['name']="NO"
-
-        # if inputRxnNames is not None and defaultRxn['pes'] in inputRxnNames:
-        #         idx = inputRxnNames.index(defaultRxn['pes'])
-
-        # # Split the equation into reactants and products
-        # reactants, _ = equation.split('=')
-        # reactants = reactants.strip().replace('(+M)', '').replace(' ', '').replace('<','').replace('>','')
-        # # Split into species and their coefficients
-        # species_list = re.split(r'\s*\+\s*', reactants)
-        # species_counter = Counter()
-        # pes = {}
-        # for species in species_list:
-        #     # Handle cases with coefficients like '2H' and '2 H'
-        #     match = re.match(r'(\d*)\s*([^\d\s]\w*)', species)
-        #     if not match:
-        #         raise ValueError(f"Incorrect formula for {equation} in input YAML.")
-        #     coeff, name = match.groups()
-        #     coeff = int(coeff) if coeff else 1  # Default to 1 if no coefficient
-        #     species_counter[name] += coeff
-        #     elems={}
-        #     for species_def in species_defs:
-        #         if str(species_def['name'].lower()) == name.lower():
-        #             elems=species_def['composition']
-        #     elems = {key: value * coeff for key, value in elems.items()}
-            
-        #     #match name to a species in species_defs, grab its elemental composition, and then multiply each one by the coeff, and then append it to the grand-total dictionary called 'pes'
-        # pes = species_counter
-        # return pes
         
 
     def deleteDuplicates(self, data): # delete duplicates from thirdBodyDefaults
@@ -229,7 +167,7 @@ class makeYAML:
                                 if col['name'] not in inputColliders]
                 if len(newColliderList)>0:
                     newData['reactions'].append({
-                        'equation': defaultRxn['equation'],
+                        'name': defaultRxn['name'],
                         'pes': defaultRxn['pes'],
                         'reference-collider': defaultRxn['reference-collider'],
                         'colliders': newColliderList
@@ -240,7 +178,9 @@ class makeYAML:
 
     def blendedInput(self, data):
         blendData = {'reactions': []}
-        speciesList = data['mech']['phases'][0]['species']
+        # speciesList = data['mech']['phases'][0]['species']
+        speciesList = data['mech_obj'].species()
+
         # first fill it with all of the default reactions and colliders (which have valid species)
         for defaultRxn in data['defaults']['reactions']:
             newCollList = []
@@ -403,67 +343,43 @@ class makeYAML:
         return colliders
 
     def zippedMech(self, data):
-        newData={
-            'units': data['mech']['units'],
-            'phases': data['mech']['phases'],
-            'species': data['mech']['species'],
-            'reactions': []
-            }
-        blendRxnNames = [rxn['equation'] for rxn in data['blend']['reactions']]
-        for mech_rxn in data['mech']['reactions']:
+        # input_data = gas.input_data
+        newReactions = []
+        blendRxnNames = [rxn['pes'] for rxn in data['blend']['reactions']]
+        # for mech_rxn in data['mech']['reactions']:
+        for i, mech_rxn in enumerate(data['mech_obj'].reactions()):
             pDep = False
             PLOG = False
             # Create the M-collider entry for the pressure-dependent reactions
-            if mech_rxn.get('type') == 'falloff' and 'Troe' in mech_rxn:
+            if mech_rxn.reaction_type in ['falloff-Troe','pressure-dependent-Arrhenius','Chebyshev','three-body-linear-Burke']:
                 pDep = True
-                colliderM = {
-                    'name': 'M',
-                    'type': 'falloff',
-                    'low-P-rate-constant': mech_rxn['low-P-rate-constant'],
-                    'high-P-rate-constant': mech_rxn['high-P-rate-constant'],
-                    'Troe': mech_rxn['Troe'],
-                }
-            elif mech_rxn.get('type') == 'pressure-dependent-Arrhenius':
-                pDep = True
-                PLOG = True
-                colliderM = {
-                    'name': 'M',
-                    'type': 'pressure-dependent-Arrhenius',
-                    'rate-constants': mech_rxn['rate-constants']
-                }
-            elif mech_rxn.get('type') == 'linear-Burke':
-                if mech_rxn['colliders'][0]['type']=='pressure-dependent-Arrhenius':
-                    pDep = True
-                    PLOG = True
-                    colliderM = {
-                        'name': 'M',
-                        'type': 'pressure-dependent-Arrhenius',
-                        'rate-constants': mech_rxn['colliders'][0]['rate-constants']
-                    }
-            elif mech_rxn.get('type') == 'Chebyshev':
-                pDep = True
-                colliderM = {
-                    'name': 'M',
-                    'type': 'Chebyshev',
-                    'temperature-range': mech_rxn['temperature-range'],
-                    'pressure-range': mech_rxn['pressure-range'],
-                    'data': mech_rxn['data'],
-                }
-            if pDep and self.normalize(mech_rxn['equation']) in blendRxnNames:
+                if mech_rxn.reaction_type == 'three-body-linear-Burke':
+                    d = mech_rxn.input_data['colliders'][0] #use the pdep format given for collider M when rebuilding the reaction
+                    d.pop("name")
+                else:
+                    d = mech_rxn.input_data
+                    d.pop("equation")
+                    d.pop("efficiencies",None) #only applies to Troe reactions
+                d.pop("duplicate", None)
+                d.pop("units", None)
+                colliderM = {'name': 'M'}
+                colliderM.extend(d)
+            if pDep and data['mech_pes'][i] in blendRxnNames:
             # rxn is specifically covered either in defaults or user input
                 newRxn = {
-                    'equation': mech_rxn['equation'],
+                    'equation': mech_rxn,
                     'type': 'linear-Burke'
                 }
-                if mech_rxn.get('duplicate') is not None:
+                d = mech_rxn.input_data
+                if d.get('duplicate') is not None:
                     newRxn['duplicate'] = True
                 if mech_rxn.get('units') is not None:
-                    newRxn['units'] = mech_rxn['units']
-                idx = blendRxnNames.index(self.normalize(mech_rxn['equation']))
+                    newRxn['units'] = d['units']
+                idx = blendRxnNames.index(data['mech_pes'][i])
                 blend_rxn = data['blend']['reactions'][idx]
                 colliders = self.colliders(data,mech_rxn,blend_rxn=blend_rxn)
                 newRxn['colliders'] = [colliderM] + colliders
-                newData['reactions'].append(newRxn)
+                newReactions.append(newRxn)
                 print(f"{self.normalize(mech_rxn['equation'])} converted to LMR-R with ab initio parameters")
             elif pDep and data['allPdep']:
                 # user has opted to have generic 3b effs applied to all p-dep reactions which lack a specification in thirdbodydefaults and testinput
@@ -475,23 +391,12 @@ class makeYAML:
                     newRxn['duplicate'] = True
                 colliders = self.colliders(data,mech_rxn,generic=True)
                 newRxn['colliders'] = [colliderM] + colliders
-                newData['reactions'].append(newRxn)
-                print(f"{self.normalize(mech_rxn['equation'])} converted to LMR-R with generic parameters")
-            elif PLOG and data['allPLOG']:
-                # user has opted to have generic 3b effs applied to all PLOG reactions which lack a specification in thirdbodydefaults and testinput
-                newRxn = {
-                    'equation': mech_rxn['equation'],
-                    'type': 'linear-Burke'
-                }
-                if mech_rxn.get('duplicate') is not None:
-                    newRxn['duplicate'] = True
-                colliders = self.colliders(data,mech_rxn,generic=True)
-                newRxn['colliders'] = [colliderM] + colliders
-                newData['reactions'].append(newRxn)
+                newReactions.append(newRxn)
                 print(f"{self.normalize(mech_rxn['equation'])} converted to LMR-R with generic parameters")
             else: # just append it as-is
-                newData['reactions'].append(mech_rxn)
-        data['output']=newData
+                newReactions.append(mech_rxn)
+        data['output'] = data['mech_obj'].input_data
+        data['output'].extend({'reactions': newReactions})
 
     def loadYAML(self, fName):
         with open(fName) as f:
