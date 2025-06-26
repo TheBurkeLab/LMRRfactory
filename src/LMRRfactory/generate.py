@@ -60,6 +60,7 @@ class makeYAML:
             'mech_pes': self.getPES(mech_obj),
             'defaults': self.loadYAML(data_path+"thirdbodydefaults.yaml"),
             'input': self.loadYAML(self.colliderInput) if self.colliderInput is not None else None,
+            'allPdep': self.allPdep, # True or False
         }
 
         # self.cleanMechInput(data) # clean up 'NO' parsing errors in 'mech'
