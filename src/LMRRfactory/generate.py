@@ -238,15 +238,16 @@ class makeYAML:
         return newCol
 
     def colliders(self,data,mech_rxn,blend_rxn=None,generic=False):
-        speciesList = data['mech']['phases'][0]['species']
+        d = data['mech_obj'].input_data
+        speciesList=d['phases'][0]['species']
         divisor = 1
         colliders=[]
         colliderNames=[]
         is_M_N2 = False
         troe_efficiencies={}
-        if mech_rxn.get('type') == 'falloff' and 'Troe' in mech_rxn and '(+M)' in mech_rxn['equation']:
+        if mech_rxn.reaction_type == 'falloff-Troe':
             troe_efficiencies = mech_rxn.get('efficiencies', {})
-        elif mech_rxn.get('type')=='linear-Burke': #case where we've used the linear Burke format so that Troe params can be used alongside a PLOG
+        elif mech_rxn.reaction_type == 'three-body-linear-Burke': #case where we've used the linear Burke format so that Troe params can be used alongside a PLOG
             for c, col in enumerate(mech_rxn['colliders']):
                 if c>0 and col['efficiency']['b']==0 and col['efficiency']['Ea']==0:
                     troe_efficiencies[col['name']]=col['efficiency']['A']
@@ -380,19 +381,20 @@ class makeYAML:
                 colliders = self.colliders(data,mech_rxn,blend_rxn=blend_rxn)
                 newRxn['colliders'] = [colliderM] + colliders
                 newReactions.append(newRxn)
-                print(f"{self.normalize(mech_rxn['equation'])} converted to LMR-R with ab initio parameters")
+                print(f"{mech_rxn} ({data['mech_pes'][i]}) converted to LMR-R with ab initio parameters")
             elif pDep and data['allPdep']:
                 # user has opted to have generic 3b effs applied to all p-dep reactions which lack a specification in thirdbodydefaults and testinput
                 newRxn = {
                     'equation': mech_rxn['equation'],
                     'type': 'linear-Burke'
                 }
-                if mech_rxn.get('duplicate') is not None:
+                d = mech_rxn.input_data
+                if d.get('duplicate') is not None:
                     newRxn['duplicate'] = True
                 colliders = self.colliders(data,mech_rxn,generic=True)
                 newRxn['colliders'] = [colliderM] + colliders
                 newReactions.append(newRxn)
-                print(f"{self.normalize(mech_rxn['equation'])} converted to LMR-R with generic parameters")
+                print(f"{mech_rxn} ({data['mech_pes'][i]}) converted to LMR-R with generic parameters")
             else: # just append it as-is
                 newReactions.append(mech_rxn)
         data['output'] = data['mech_obj'].input_data
