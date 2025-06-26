@@ -238,15 +238,14 @@ class makeYAML:
         return newCol
 
     def colliders(self,data,mech_rxn,blend_rxn=None,generic=False):
-        d = data['mech_obj'].input_data
-        speciesList=d['species']
+        speciesList=data['mech_obj'].input_data['species']
         divisor = 1
         colliders=[]
         colliderNames=[]
         is_M_N2 = False
         troe_efficiencies={}
         if mech_rxn.reaction_type == 'falloff-Troe':
-            troe_efficiencies = mech_rxn.get('efficiencies', {})
+            troe_efficiencies = mech_rxn.input_data.get('efficiencies', {})
         elif mech_rxn.reaction_type == 'three-body-linear-Burke': #case where we've used the linear Burke format so that Troe params can be used alongside a PLOG
             for c, col in enumerate(mech_rxn['colliders']):
                 if c>0 and col['efficiency']['b']==0 and col['efficiency']['Ea']==0:
