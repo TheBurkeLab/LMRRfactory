@@ -239,7 +239,7 @@ class makeYAML:
 
     def colliders(self,data,mech_rxn,blend_rxn=None,generic=False):
         d = data['mech_obj'].input_data
-        speciesList=d['phases'][0]['species']
+        speciesList=d['species']
         divisor = 1
         colliders=[]
         colliderNames=[]
