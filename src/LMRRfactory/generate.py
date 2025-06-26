@@ -373,7 +373,7 @@ class makeYAML:
                 d = mech_rxn.input_data
                 if d.get('duplicate') is not None:
                     newRxn['duplicate'] = True
-                if mech_rxn.get('units') is not None:
+                if d.get('units') is not None:
                     newRxn['units'] = d['units']
                 idx = blendRxnNames.index(data['mech_pes'][i])
                 blend_rxn = data['blend']['reactions'][idx]
