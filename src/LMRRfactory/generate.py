@@ -406,6 +406,6 @@ class makeYAML:
 
     def saveYAML(self, dataSet, fName):
         with open(fName, 'w') as outfile:
-            yaml.dump(copy.deepcopy(dict(dataSet)), outfile,
+            yaml.dump(dict(dataSet), outfile,
                     default_flow_style=None,
                     sort_keys=False)
