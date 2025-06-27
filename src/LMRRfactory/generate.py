@@ -261,7 +261,7 @@ class makeYAML:
                 divisor = 1 #imperfect solution, doesn't scale colliders, i.e. 1/val, to avoid dividing by zero but still acknowledges that rxn is w.r.t. N2
             # Give warning if both Ar and N2 are non-unity colliders
             if is_M_N2 and name.lower() == 'n2' and val!=0 and val !=1:
-                print(f"Warning: {mech_rxn['equation']} has both Ar and N2 as non-unity colliders!")
+                print(f"Warning: {mech_rxn} has both Ar and N2 as non-unity colliders!")
         if is_M_N2:
             if blend_rxn:
                 divisors=[]
@@ -385,7 +385,7 @@ class makeYAML:
             elif pDep and data['allPdep']:
                 # user has opted to have generic 3b effs applied to all p-dep reactions which lack a specification in thirdbodydefaults and testinput
                 newRxn = {
-                    'equation': mech_rxn['equation'],
+                    'equation': mech_rxn,
                     'type': 'linear-Burke'
                 }
                 d = mech_rxn.input_data
