@@ -407,19 +407,20 @@ class makeYAML:
     
 
     def saveYAML(self, dataSet, fName):
-        def to_serializable(obj):
-            """Recursively convert Cantera AnyMap and AnyValue to native Python types."""
-            if isinstance(obj, dict):
-                return {k: to_serializable(v) for k, v in obj.items()}
-            elif isinstance(obj, list):
-                return [to_serializable(i) for i in obj]
-            elif hasattr(obj, 'items') and not isinstance(obj, dict):
-                # Likely a ct.AnyMap
-                return {k: to_serializable(v) for k, v in dict(obj).items()}
-            else:
-                return obj
-        with open(fName, 'w') as outfile:
-            safe_data = to_serializable(dataSet)
-            yaml.dump(safe_data, outfile,
-                    default_flow_style=None,
-                    sort_keys=False)
+        print(dataSet)
+        # def to_serializable(obj):
+        #     """Recursively convert Cantera AnyMap and AnyValue to native Python types."""
+        #     if isinstance(obj, dict):
+        #         return {k: to_serializable(v) for k, v in obj.items()}
+        #     elif isinstance(obj, list):
+        #         return [to_serializable(i) for i in obj]
+        #     elif hasattr(obj, 'items') and not isinstance(obj, dict):
+        #         # Likely a ct.AnyMap
+        #         return {k: to_serializable(v) for k, v in dict(obj).items()}
+        #     else:
+        #         return obj
+        # with open(fName, 'w') as outfile:
+        #     safe_data = to_serializable(dataSet)
+        #     yaml.dump(safe_data, outfile,
+        #             default_flow_style=None,
+        #             sort_keys=False)
