@@ -405,11 +405,7 @@ class makeYAML:
             return yaml.safe_load(f)
 
     def saveYAML(self, dataSet, fName):
-        out = ct.YamlWriter()
-        out.add_solution(dataSet)
-        out.to_file(fName)
-        # with open(fName, 'w') as outfile:
-            
-        #     yaml.dump(copy.deepcopy(dataSet), outfile,
-        #             default_flow_style=None,
-        #             sort_keys=False)
+        with open(fName, 'w') as outfile:
+            yaml.dump(copy.deepcopy(dict(dataSet)), outfile,
+                    default_flow_style=None,
+                    sort_keys=False)
