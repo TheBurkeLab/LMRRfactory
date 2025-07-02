@@ -380,7 +380,7 @@ class makeYAML:
                 blend_rxn = data['blend']['reactions'][idx]
                 colliders = self.colliders(data,mech_rxn,blend_rxn=blend_rxn)
                 newRxn['colliders'] = [colliderM] + colliders
-                newRxn_obj = ct.Reaction.from_yaml(newRxn)
+                newRxn_obj = ct.Reaction.from_yaml(newRxn,data['mech_obj'])
                 newReactions.append(newRxn_obj)
                 print(f"{mech_rxn} ({data['mech_pes'][i]}) converted to LMR-R with ab initio parameters")
             elif pDep and data['allPdep']:
