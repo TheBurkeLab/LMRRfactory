@@ -397,7 +397,7 @@ class makeYAML:
                 newReactions.append(newRxn)
                 print(f"{mech_rxn} ({data['mech_pes'][i]}) converted to LMR-R with generic parameters")
             else: # just append it as-is
-                newReactions.append(dict(mech_rxn))
+                newReactions.append(mech_rxn)
         data['output'] = data['mech_obj'].input_data
         data['output'].update({'reactions': newReactions})
 
