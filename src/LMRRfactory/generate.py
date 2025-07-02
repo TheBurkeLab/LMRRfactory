@@ -390,12 +390,14 @@ class makeYAML:
                     'equation': mech_rxn,
                     'type': 'linear-Burke'
                 }
-                d = mech_rxn.input_data
+                d = dict(mech_rxn.input_data)
                 if d.get('duplicate') is not None:
                     newRxn['duplicate'] = True
                 colliders = self.colliders(data,mech_rxn,generic=True)
                 newRxn['colliders'] = [colliderM] + colliders
-                newReactions.append(newRxn)
+                yaml_str = yaml.dump([newRxn])  # wrap in list if it's a single reaction
+                newRxn_obj = ct.Reaction.from_yaml(yaml_str,data['mech_obj'])[0]
+                newReactions.append(newRxn_obj)
                 print(f"{mech_rxn} ({data['mech_pes'][i]}) converted to LMR-R with generic parameters")
             else: # just append it as-is
                 newReactions.append(mech_rxn)
