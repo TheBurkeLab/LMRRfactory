@@ -355,10 +355,10 @@ class makeYAML:
             if mech_rxn.reaction_type in ['falloff-Troe','pressure-dependent-Arrhenius','Chebyshev','three-body-linear-Burke']:
                 pDep = True
                 if mech_rxn.reaction_type == 'three-body-linear-Burke':
-                    d = mech_rxn.input_data['colliders'][0] #use the pdep format given for collider M when rebuilding the reaction
+                    d = dict(mech_rxn.input_data['colliders'][0]) #use the pdep format given for collider M when rebuilding the reaction
                     d.pop("name")
                 else:
-                    d = mech_rxn.input_data
+                    d = dict(mech_rxn.input_data)
                     d.pop("equation")
                     d.pop("efficiencies",None) #only applies to Troe reactions
                 d.pop("duplicate", None)
@@ -371,7 +371,7 @@ class makeYAML:
                     'equation': mech_rxn,
                     'type': 'linear-Burke'
                 }
-                d = mech_rxn.input_data
+                d = dict(mech_rxn.input_data)
                 if d.get('duplicate') is not None:
                     newRxn['duplicate'] = True
                 if d.get('units') is not None:
