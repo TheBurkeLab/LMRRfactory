@@ -392,11 +392,11 @@ class makeYAML:
                 if d.get('duplicate') is not None:
                     newRxn['duplicate'] = True
                 colliders = self.colliders(data,mech_rxn,generic=True)
-                newRxn['colliders'] = ct.AnyMap([ct.AnyMap(colliderM)] + ct.AnyMap(colliders))
+                newRxn['colliders'] = [colliderM] + colliders
                 newReactions.append(newRxn)
                 print(f"{mech_rxn} ({data['mech_pes'][i]}) converted to LMR-R with generic parameters")
             else: # just append it as-is
-                newReactions.append(mech_rxn)
+                newReactions.append(dict(mech_rxn))
         data['output'] = data['mech_obj'].input_data
         data['output'].update({'reactions': newReactions})
 
