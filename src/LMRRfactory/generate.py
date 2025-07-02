@@ -355,10 +355,10 @@ class makeYAML:
             if mech_rxn.reaction_type in ['falloff-Troe','pressure-dependent-Arrhenius','Chebyshev','three-body-linear-Burke']:
                 pDep = True
                 if mech_rxn.reaction_type == 'three-body-linear-Burke':
-                    d = dict(mech_rxn.input_data['colliders'][0]) #use the pdep format given for collider M when rebuilding the reaction
+                    d = mech_rxn.input_data['colliders'][0] #use the pdep format given for collider M when rebuilding the reaction
                     d.pop("name")
                 else:
-                    d = dict(mech_rxn.input_data)
+                    d = mech_rxn.input_data
                     d.pop("equation")
                     d.pop("efficiencies",None) #only applies to Troe reactions
                 d.pop("duplicate", None)
@@ -368,10 +368,10 @@ class makeYAML:
             if pDep and data['mech_pes'][i] in blendRxnNames:
             # rxn is specifically covered either in defaults or user input
                 newRxn = {
-                    'equation': mech_rxn,
+                    'equation': mech_rxn.equation,
                     'type': 'linear-Burke'
                 }
-                d = dict(mech_rxn.input_data)
+                d = mech_rxn.input_data
                 if d.get('duplicate') is not None:
                     newRxn['duplicate'] = True
                 if d.get('units') is not None:
@@ -387,10 +387,10 @@ class makeYAML:
             elif pDep and data['allPdep']:
                 # user has opted to have generic 3b effs applied to all p-dep reactions which lack a specification in thirdbodydefaults and testinput
                 newRxn = {
-                    'equation': mech_rxn,
+                    'equation': mech_rxn.equation,
                     'type': 'linear-Burke'
                 }
-                d = dict(mech_rxn.input_data)
+                d = mech_rxn.input_data
                 if d.get('duplicate') is not None:
                     newRxn['duplicate'] = True
                 colliders = self.colliders(data,mech_rxn,generic=True)
