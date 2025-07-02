@@ -380,7 +380,8 @@ class makeYAML:
                 blend_rxn = data['blend']['reactions'][idx]
                 colliders = self.colliders(data,mech_rxn,blend_rxn=blend_rxn)
                 newRxn['colliders'] = [colliderM] + colliders
-                newReactions.append(newRxn)
+                newRxn_obj = ct.Reaction.from_yaml(newRxn)
+                newReactions.append(newRxn_obj)
                 print(f"{mech_rxn} ({data['mech_pes'][i]}) converted to LMR-R with ab initio parameters")
             elif pDep and data['allPdep']:
                 # user has opted to have generic 3b effs applied to all p-dep reactions which lack a specification in thirdbodydefaults and testinput
