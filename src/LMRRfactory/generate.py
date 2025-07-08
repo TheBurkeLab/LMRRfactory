@@ -13,7 +13,7 @@ import warnings
 warnings.filterwarnings("ignore")
 
 class makeYAML:
-    def __init__(self,mechInput=None, colliderInput=None, lmrrInput=None,outputPath=".",allPdep=False,allPLOG=False):
+    def __init__(self,mechInput=None, colliderInput=None, lmrrInput=None,outputPath=".",allPdep=False):
         self.T_ls = None
         self.P_ls = None
         self.n_P= None
@@ -26,7 +26,6 @@ class makeYAML:
         self.colliderInput=None
         # self.allPdep is option to apply generic 3b-effs to all p-dep reactions in mechanism that haven't already been explicitly specified in either "thirdbodydefaults.yaml" or self.colliderInput
         self.allPdep = False
-        self.allPLOG = False
         os.makedirs(outputPath,exist_ok=True)
         path=outputPath+'/'
 
@@ -39,9 +38,6 @@ class makeYAML:
             if allPdep:
                 self.allPdep = True
                 self.foutName = self.foutName + "_allP"
-            if allPLOG:
-                self.allPLOG = True
-                self.foutName = self.foutName + "_allPLOG"
             self.data = self.generateYAML()
         if lmrrInput:
             try:
@@ -71,6 +67,7 @@ class makeYAML:
         self.blendedInput(data)
         # Sub the colliders into their corresponding reactions in the input mechanism
         self.zippedMech(data)
+        self.validateSolution(data['output'])
         self.saveYAML(data['output'], self.foutName+".yaml")
         print(f"LMR-R mechanism successfully generated and stored at "
             f"{self.foutName}.yaml")
@@ -361,6 +358,23 @@ class makeYAML:
             return obj.tolist()
         else:
             return obj
+        
+    def validateSolution(self, solution):
+        bad_species = []
+        for i, s in enumerate(solution.species()):
+            if not s.name or not isinstance(s.name, str) or s.name.strip() == "":
+                print(f"[ERROR] Invalid or missing species name at index {i}: {s}")
+                bad_species.append(s)
+
+        bad_reactions = []
+        for i, r in enumerate(solution.reactions()):
+            if not hasattr(r, 'equation') or not r.equation or not isinstance(r.equation, str):
+                print(f"[ERROR] Invalid or missing reaction equation at index {i}: {r}")
+                bad_reactions.append(r)
+
+        if bad_species or bad_reactions:
+            raise ValueError("Cannot write YAML: malformed species or reactions found.")
+
 
     def zippedMech(self, data):
         # input_data = gas.input_data
@@ -368,8 +382,8 @@ class makeYAML:
         blendRxnNames = [rxn['pes'] for rxn in data['blend']['reactions']]
         # for mech_rxn in data['mech']['reactions']:
         for i, mech_rxn in enumerate(data['mech_obj'].reactions()):
+            # print(mech_rxn)
             pDep = False
-            PLOG = False
             # Create the M-collider entry for the pressure-dependent reactions
             if mech_rxn.reaction_type in ['falloff-Troe','pressure-dependent-Arrhenius','Chebyshev','three-body-linear-Burke']:
                 pDep = True
@@ -473,9 +487,21 @@ class makeYAML:
         #         return {k: to_serializable(v) for k, v in dict(obj).items()}
         #     else:
         #         return obj
-        with open(fName, 'w') as outfile:
-            dataSet.write_yaml(filename=fName)
+        # with open(fName, 'w') as outfile:
+        # dataSet.write_yaml(filename=fName)
+        dataSet.write_yaml(filename=None)
             # safe_data = self.to_builtin(dataSet)
             # yaml.dump(safe_data, outfile,
             #         default_flow_style=None,
             #         sort_keys=False)
+
+    # def saveYAML(self, dataSet, fName):
+    #     from ruamel.yaml import YAML
+    #     from io import StringIO
+
+    #     yaml_writer = YAML()
+    #     yaml_writer.default_flow_style = False  # Ensures block-style lists
+    #     yaml_writer.indent(mapping=2, sequence=4, offset=2)
+
+    #     with open(fName, 'w') as outfile:
+    #         yaml_writer.dump(dataSet, outfile)
