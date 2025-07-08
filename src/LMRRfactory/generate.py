@@ -13,7 +13,7 @@ import warnings
 warnings.filterwarnings("ignore")
 
 class makeYAML:
-    def __init__(self,mechInput=None, colliderInput=None, lmrrInput=None,outputPath=".",allPdep=False,allPLOG=False):
+    def __init__(self,mechInput=None, colliderInput=None, lmrrInput=None,outputPath=".",allPdep=False):
         self.T_ls = None
         self.P_ls = None
         self.n_P= None
@@ -26,7 +26,6 @@ class makeYAML:
         self.colliderInput=None
         # self.allPdep is option to apply generic 3b-effs to all p-dep reactions in mechanism that haven't already been explicitly specified in either "thirdbodydefaults.yaml" or self.colliderInput
         self.allPdep = False
-        self.allPLOG = False
         os.makedirs(outputPath,exist_ok=True)
         path=outputPath+'/'
 
@@ -39,9 +38,6 @@ class makeYAML:
             if allPdep:
                 self.allPdep = True
                 self.foutName = self.foutName + "_allP"
-            if allPLOG:
-                self.allPLOG = True
-                self.foutName = self.foutName + "_allPLOG"
             self.data = self.generateYAML()
         if lmrrInput:
             try:
@@ -369,7 +365,6 @@ class makeYAML:
         # for mech_rxn in data['mech']['reactions']:
         for i, mech_rxn in enumerate(data['mech_obj'].reactions()):
             pDep = False
-            PLOG = False
             # Create the M-collider entry for the pressure-dependent reactions
             if mech_rxn.reaction_type in ['falloff-Troe','pressure-dependent-Arrhenius','Chebyshev','three-body-linear-Burke']:
                 pDep = True
