@@ -475,13 +475,13 @@ class makeYAML:
     #         #         default_flow_style=None,
     #         #         sort_keys=False)
 
-def saveYAML(self, dataSet, fName):
-    from ruamel.yaml import YAML
-    from io import StringIO
+    def saveYAML(self, dataSet, fName):
+        from ruamel.yaml import YAML
+        from io import StringIO
 
-    yaml_writer = YAML()
-    yaml_writer.default_flow_style = False  # Ensures block-style lists
-    yaml_writer.indent(mapping=2, sequence=4, offset=2)
+        yaml_writer = YAML()
+        yaml_writer.default_flow_style = False  # Ensures block-style lists
+        yaml_writer.indent(mapping=2, sequence=4, offset=2)
 
-    with open(fName, 'w') as outfile:
-        yaml_writer.dump(dataSet, outfile)
+        with open(fName, 'w') as outfile:
+            yaml_writer.dump(dataSet, outfile)
