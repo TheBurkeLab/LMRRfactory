@@ -455,22 +455,33 @@ class makeYAML:
     
     
 
-    def saveYAML(self, dataSet, fName):
-        # print(dataSet)
-        # def to_serializable(obj):
-        #     """Recursively convert Cantera AnyMap and AnyValue to native Python types."""
-        #     if isinstance(obj, dict):
-        #         return {k: to_serializable(v) for k, v in obj.items()}
-        #     elif isinstance(obj, list):
-        #         return [to_serializable(i) for i in obj]
-        #     elif hasattr(obj, 'items') and not isinstance(obj, dict):
-        #         # Likely a ct.AnyMap
-        #         return {k: to_serializable(v) for k, v in dict(obj).items()}
-        #     else:
-        #         return obj
-        with open(fName, 'w') as outfile:
-            dataSet.write_yaml(filename=outfile)
-            # safe_data = self.to_builtin(dataSet)
-            # yaml.dump(safe_data, outfile,
-            #         default_flow_style=None,
-            #         sort_keys=False)
+    # def saveYAML(self, dataSet, fName):
+    #     # print(dataSet)
+    #     # def to_serializable(obj):
+    #     #     """Recursively convert Cantera AnyMap and AnyValue to native Python types."""
+    #     #     if isinstance(obj, dict):
+    #     #         return {k: to_serializable(v) for k, v in obj.items()}
+    #     #     elif isinstance(obj, list):
+    #     #         return [to_serializable(i) for i in obj]
+    #     #     elif hasattr(obj, 'items') and not isinstance(obj, dict):
+    #     #         # Likely a ct.AnyMap
+    #     #         return {k: to_serializable(v) for k, v in dict(obj).items()}
+    #     #     else:
+    #     #         return obj
+    #     with open(fName, 'w') as outfile:
+    #         dataSet.write_yaml(filename=outfile)
+    #         # safe_data = self.to_builtin(dataSet)
+    #         # yaml.dump(safe_data, outfile,
+    #         #         default_flow_style=None,
+    #         #         sort_keys=False)
+
+def saveYAML(self, dataSet, fName):
+    from ruamel.yaml import YAML
+    from io import StringIO
+
+    yaml_writer = YAML()
+    yaml_writer.default_flow_style = False  # Ensures block-style lists
+    yaml_writer.indent(mapping=2, sequence=4, offset=2)
+
+    with open(fName, 'w') as outfile:
+        yaml_writer.dump(dataSet, outfile)
