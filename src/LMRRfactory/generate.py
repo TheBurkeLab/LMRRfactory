@@ -364,6 +364,7 @@ class makeYAML:
         blendRxnNames = [rxn['pes'] for rxn in data['blend']['reactions']]
         # for mech_rxn in data['mech']['reactions']:
         for i, mech_rxn in enumerate(data['mech_obj'].reactions()):
+            print(mech_rxn)
             pDep = False
             # Create the M-collider entry for the pressure-dependent reactions
             if mech_rxn.reaction_type in ['falloff-Troe','pressure-dependent-Arrhenius','Chebyshev','three-body-linear-Burke']:
