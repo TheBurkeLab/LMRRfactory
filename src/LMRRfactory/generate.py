@@ -469,7 +469,7 @@ class makeYAML:
         #     else:
         #         return obj
         with open(fName, 'w') as outfile:
-            dataSet.write_yaml(filename=fName)
+            dataSet.write_yaml(filename=outfile)
             # safe_data = self.to_builtin(dataSet)
             # yaml.dump(safe_data, outfile,
             #         default_flow_style=None,
