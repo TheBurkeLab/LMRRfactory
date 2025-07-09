@@ -67,6 +67,7 @@ class makeYAML:
         self.blendedInput(data)
         # Sub the colliders into their corresponding reactions in the input mechanism
         self.zippedMech(data)
+        self.validateSolution(data['output'])
         self.saveYAML(data['output'], self.foutName+".yaml")
         print(f"LMR-R mechanism successfully generated and stored at "
             f"{self.foutName}.yaml")
@@ -357,6 +358,23 @@ class makeYAML:
             return obj.tolist()
         else:
             return obj
+        
+    def validateSolution(self, solution):
+        bad_species = []
+        for i, s in enumerate(solution.species()):
+            if not s.name or not isinstance(s.name, str) or s.name.strip() == "":
+                print(f"[ERROR] Invalid or missing species name at index {i}: {s}")
+                bad_species.append(s)
+
+        bad_reactions = []
+        for i, r in enumerate(solution.reactions()):
+            if not hasattr(r, 'equation') or not r.equation or not isinstance(r.equation, str):
+                print(f"[ERROR] Invalid or missing reaction equation at index {i}: {r}")
+                bad_reactions.append(r)
+
+        if bad_species or bad_reactions:
+            raise ValueError("Cannot write YAML: malformed species or reactions found.")
+
 
     def zippedMech(self, data):
         # input_data = gas.input_data
