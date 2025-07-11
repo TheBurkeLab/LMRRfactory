@@ -488,8 +488,13 @@ class makeYAML:
         #     else:
         #         return obj
         # with open(fName, 'w') as outfile:
-        # dataSet.write_yaml(filename=fName)
-        dataSet.write_yaml(filename=None)
+        for i, rxn in enumerate(dataSet.reactions()):
+            try:
+                print(f"{i}: {rxn.equation}")
+            except Exception as e:
+                print(f"Error with reaction {i}: {e}")
+        dataSet.write_yaml(filename=fName)
+        # dataSet.write_yaml(filename=None)
             # safe_data = self.to_builtin(dataSet)
             # yaml.dump(safe_data, outfile,
             #         default_flow_style=None,
