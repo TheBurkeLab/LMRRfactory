@@ -6,9 +6,11 @@ import copy
 from collections import Counter
 import re
 import os
-import pkg_resources
+# import pkg_resources
+from importlib.resources import files
 import cantera as ct
 import warnings
+import io
 
 warnings.filterwarnings("ignore")
 
@@ -48,49 +50,28 @@ class makeYAML:
                 print(f"Error: The file '{lmrrInput}' was not found.")
 
     def generateYAML(self):
-        data_path = pkg_resources.resource_filename('LMRRfactory', '/')
+        # data_path = pkg_resources.resource_filename('LMRRfactory', '/')
+        data_path = str(files("LMRRfactory"))
         mech_obj = ct.Solution(self.mechInput)
         self.lookForPdep(mech_obj) # Verify that 'mech' has >=1 relevant p-dep reaction
         data = {
             'mech_obj': mech_obj,
             'mech_pes': self.getPES(mech_obj),
-            'defaults': self.loadYAML(data_path+"thirdbodydefaults.yaml"),
+            'defaults': self.loadYAML(data_path+'/'+"thirdbodydefaults.yaml"),
             'input': self.loadYAML(self.colliderInput) if self.colliderInput is not None else None,
             'allPdep': self.allPdep, # True or False
         }
-
-        # self.cleanMechInput(data) # clean up 'NO' parsing errors in 'mech'
-
         # Remove defaults colliders and reactions that were explictly provided by user
         self.deleteDuplicates(data)
         # Blend the user inputs and remaining collider defaults into a single YAML
         self.blendedInput(data)
         # Sub the colliders into their corresponding reactions in the input mechanism
         self.zippedMech(data)
-        self.validateSolution(data['output'])
+        # self.validate(data['output'])
         self.saveYAML(data['output'], self.foutName+".yaml")
         print(f"LMR-R mechanism successfully generated and stored at "
             f"{self.foutName}.yaml")
         return data['output']
-
-    # def cleanMechInput(self, data):
-    #     # Prevent 'NO' from being misinterpreted as bool in species list
-    #     data['mech']['phases'][0]['species'] = [
-    #         "NO" if str(molec).lower() == "false" else molec
-    #         for molec in data['mech']['phases'][0]['species']
-    #     ]
-    #     for species in data['mech']['species']:
-    #         if str(species['name']).lower() == "false":
-    #             species['name']="NO"
-    #     # Prevent 'NO' from being misinterpreted as bool in efficiencies list found in
-    #     # Troe falloff reactions
-    #     for reaction in data['mech']['reactions']:
-    #         effs = reaction.get('efficiencies')
-    #         if effs:
-    #             reaction['efficiencies'] = {
-    #                 "NO" if str(key).lower() == "false" else key: effs[key]
-    #                 for key in effs
-    #             }
 
     def lookForPdep(self, gas):
         if not any(
@@ -99,38 +80,6 @@ class makeYAML:
         ):
             raise ValueError("No pressure-dependent reactions found in mechanism."
                             " Please choose another mechanism.")
-
-    # def normalize(self, equation):
-    #     # Split the equation into reactants and products
-    #     reactants, products = equation.split('=')
-    #     reactants = reactants.strip().replace('(+M)', '').replace(' ', '').replace('<','').replace('>','')
-    #     products = products.strip().replace('(+M)', '').replace(' ', '').replace('<','').replace('>','')
-    #     def normalize_side(side):
-    #         # Split into species and their coefficients
-    #         species_list = re.split(r'\s*\+\s*', side)
-    #         species_counter = Counter()
-    #         for species in species_list:
-    #             # Handle cases with coefficients like '2H' and '2 H'
-    #             match = re.match(r'(\d*)\s*([^\d\s]\w*)', species)
-    #             if not match:
-    #                 raise ValueError(f"Incorrect formula for {equation} in input YAML.")
-    #             coeff, name = match.groups()
-    #             coeff = int(coeff) if coeff else 1  # Default to 1 if no coefficient
-    #             species_counter[name] += coeff
-    #         normalized_species = []
-    #         for name in sorted(species_counter.keys()):  # Sort species alphabetically
-    #             count = species_counter[name]
-    #             normalized_species.extend([name]*count)
-    #         normalized_side = ' + '.join(normalized_species)
-    #         return normalized_side
-    #     norm_reactants = normalize_side(reactants)
-    #     norm_products = normalize_side(products)
-    #     # Make it so that equations inputted in reverse directions are still deemed the same
-    #     if norm_reactants > norm_products:
-    #         norm_equation = f"{norm_reactants} <=> {norm_products}"
-    #     else:
-    #         norm_equation = f"{norm_products} <=> {norm_reactants}"
-    #     return norm_equation
     
     def getPES(self,gas): #must input an equation that has already been normalized
         pes=[]
@@ -141,12 +90,11 @@ class makeYAML:
             for i, reactant in enumerate(reactant_species):
                 spec = gas.species(reactant)
                 c = spec.composition
-                c_scaled = {k: v*reactant_coeffs[i] for k, v in c.items()}
+                c_scaled = {k.upper(): v*reactant_coeffs[i] for k, v in c.items()}
                 compositions.append(c_scaled)
             counters = [Counter(comp) for comp in compositions]
             pes.append(sum(counters, Counter()))
         return pes
-        
 
     def deleteDuplicates(self, data): # delete duplicates from thirdBodyDefaults
         newData = {'generic-colliders': data['defaults']['generic-colliders'],
@@ -178,7 +126,6 @@ class makeYAML:
         blendData = {'reactions': []}
         # speciesList = data['mech']['phases'][0]['species']
         speciesList = data['mech_obj'].species()
-
         # first fill it with all of the default reactions and colliders (which have valid species)
         for defaultRxn in data['defaults']['reactions']:
             newCollList = []
@@ -192,7 +139,6 @@ class makeYAML:
             if data['input'].get('reactions') is not None:
                 for inputRxn in data['input']['reactions']:
                     # Check if input reaction also exists in defaults file, otherwise add the entire input reaction to the blend as-is
-                    
                     if inputRxn['pes'] in defaultRxnNames:
                         idx = defaultRxnNames.index(inputRxn['pes'])
                         blendRxn = blendData['reactions'][idx]
@@ -242,6 +188,7 @@ class makeYAML:
         colliderNames=[]
         is_M_N2 = False
         troe_efficiencies={}
+        # print(mech_rxn.reaction_type)
         if mech_rxn.reaction_type == 'falloff-Troe':
             troe_efficiencies = mech_rxn.input_data.get('efficiencies', {})
         elif mech_rxn.reaction_type == 'three-body-linear-Burke': #case where we've used the linear Burke format so that Troe params can be used alongside a PLOG
@@ -338,11 +285,6 @@ class makeYAML:
                                 'efficiency': {'A': col['efficiency'],'b':0,'Ea':0},
                                 'note': col['note']
                             })
-        
-        # for collider in colliders:
-        #     for k,v in collider.items():
-        #         print(collider, type(v))
-        
         return colliders
 
     def to_builtin(self, obj):
@@ -359,21 +301,22 @@ class makeYAML:
         else:
             return obj
         
-    def validateSolution(self, solution):
-        bad_species = []
-        for i, s in enumerate(solution.species()):
-            if not s.name or not isinstance(s.name, str) or s.name.strip() == "":
-                print(f"[ERROR] Invalid or missing species name at index {i}: {s}")
-                bad_species.append(s)
-
-        bad_reactions = []
-        for i, r in enumerate(solution.reactions()):
-            if not hasattr(r, 'equation') or not r.equation or not isinstance(r.equation, str):
-                print(f"[ERROR] Invalid or missing reaction equation at index {i}: {r}")
-                bad_reactions.append(r)
-
-        if bad_species or bad_reactions:
-            raise ValueError("Cannot write YAML: malformed species or reactions found.")
+    # def validate(self,soln):
+    #     for rxn in soln.reactions():
+    #         try:
+    #             buf = io.StringIO()
+    #             test_soln = {
+    #                 'species': soln.species(),  # list of ct.Species objects
+    #                 'thermo': soln.thermo_model,
+    #                 'transport': soln.transport_model,
+    #                 'reactions': [rxn],
+    #             }
+    #             testSoln = ct.Solution(**test_soln)
+    #             testSoln.write_yaml(buf)
+    #         except Exception as e:
+    #             print(f"❌ {rxn.equation} could not be scanned, check the input file for errors.")
+    #             print("   Error message:", e)
+    #             print(rxn.input_data)
 
 
     def zippedMech(self, data):
@@ -403,6 +346,7 @@ class makeYAML:
                 if d.get('high-P-rate-constant') is not None:
                     d['high-P-rate-constant']=dict(d['high-P-rate-constant'])
                 colliderM = {'name': 'M'}
+                
                 colliderM.update(dict(d))
             if pDep and data['mech_pes'][i] in blendRxnNames:
             # rxn is specifically covered either in defaults or user input
@@ -415,26 +359,15 @@ class makeYAML:
                     newRxn['duplicate'] = True
                 if d.get('units') is not None:
                     newRxn['units'] = d['units']
+                if 'note' in d and re.fullmatch(r'\n+', d['note']):
+                    newRxn['note'] = ''
                 idx = blendRxnNames.index(data['mech_pes'][i])
                 blend_rxn = data['blend']['reactions'][idx]
                 colliders = self.colliders(data,mech_rxn,blend_rxn=blend_rxn)
                 newRxn['colliders'] = [colliderM] + colliders
-                # yaml_str = yaml.dump([newRxn])  # wrap in list if it's a single reaction
-                # for k, v in newRxn.items():
-                #     print(k, type(v))
-                # for i, collider in enumerate(newRxn['colliders']):
-                #     print(f"Collider #{i} type: {type(collider)}")
-                #     for k, v in collider.items():
-                #         print(f"  key: {k}, type: {type(v)}")
-                #         if isinstance(v, dict):
-                #             for sk, sv in v.items():
-                #                 print(f"    subkey: {sk}, type: {type(sv)}")
-                yaml_str = yaml.dump(newRxn)
-                # print("0")
-                # print(yaml_str)
+                yaml_str = yaml.dump(newRxn, sort_keys=False)
                 newRxn_obj = ct.Reaction.from_yaml(yaml_str,data['mech_obj'])
                 newReactions.append(newRxn_obj)
-                # print("finished")
                 print(f"{mech_rxn} {dict(data['mech_pes'][i])} converted to LMR-R with ab initio parameters")
             elif pDep and data['allPdep']:
                 # user has opted to have generic 3b effs applied to all p-dep reactions which lack a specification in thirdbodydefaults and testinput
@@ -445,20 +378,21 @@ class makeYAML:
                 d = self.to_builtin(mech_rxn.input_data)
                 if d.get('duplicate') is not None:
                     newRxn['duplicate'] = True
+                if d.get('units') is not None:
+                    newRxn['units'] = d['units']
+                if 'note' in d and re.fullmatch(r'\n+', d['note']):
+                    newRxn['note'] = ''
                 colliders = self.colliders(data,mech_rxn,generic=True)
                 newRxn['colliders'] = [colliderM] + colliders
-                # yaml_str = yaml.dump([newRxn])  # wrap in list if it's a single reaction
-                # for k, v in newRxn.items():
-                #     print(k, type(v))
-                yaml_str = yaml.dump(newRxn)
-                # print("1")
-                # print(yaml_str)
+                yaml_str = yaml.dump(newRxn, sort_keys=False)
                 newRxn_obj = ct.Reaction.from_yaml(yaml_str,data['mech_obj'])
                 newReactions.append(newRxn_obj)
                 print(f"{mech_rxn} {dict(data['mech_pes'][i])} converted to LMR-R with generic parameters")
             else: # just append it as-is
+                d = mech_rxn.input_data
+                if 'note' in d and re.fullmatch(r'\n+', d['note']):
+                    mech_rxn.update_user_data({'note': ''})
                 newReactions.append(mech_rxn)
-
         output_data = {
             'species': data['mech_obj'].species(),  # list of ct.Species objects
             'thermo': data['mech_obj'].thermo_model,
@@ -475,33 +409,4 @@ class makeYAML:
     
 
     def saveYAML(self, dataSet, fName):
-        # print(dataSet)
-        # def to_serializable(obj):
-        #     """Recursively convert Cantera AnyMap and AnyValue to native Python types."""
-        #     if isinstance(obj, dict):
-        #         return {k: to_serializable(v) for k, v in obj.items()}
-        #     elif isinstance(obj, list):
-        #         return [to_serializable(i) for i in obj]
-        #     elif hasattr(obj, 'items') and not isinstance(obj, dict):
-        #         # Likely a ct.AnyMap
-        #         return {k: to_serializable(v) for k, v in dict(obj).items()}
-        #     else:
-        #         return obj
-        # with open(fName, 'w') as outfile:
-        # dataSet.write_yaml(filename=fName)
-        dataSet.write_yaml(filename=None)
-            # safe_data = self.to_builtin(dataSet)
-            # yaml.dump(safe_data, outfile,
-            #         default_flow_style=None,
-            #         sort_keys=False)
-
-    # def saveYAML(self, dataSet, fName):
-    #     from ruamel.yaml import YAML
-    #     from io import StringIO
-
-    #     yaml_writer = YAML()
-    #     yaml_writer.default_flow_style = False  # Ensures block-style lists
-    #     yaml_writer.indent(mapping=2, sequence=4, offset=2)
-
-    #     with open(fName, 'w') as outfile:
-    #         yaml_writer.dump(dataSet, outfile)
+        dataSet.write_yaml(filename=fName)

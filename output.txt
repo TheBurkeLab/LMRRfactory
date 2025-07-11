@@ -1,0 +1,61 @@
+/home/pjs/anaconda3/envs/lmrrbuild/lib/python3.13/site-packages/LMRRfactory/generate.py:9: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  import pkg_resources
+falloff-Troe
+H + O2 (+M) <=> HO2 (+M) {'H': 1.0, 'O': 2.0} converted to LMR-R with ab initio parameters
+falloff-Troe
+H2O2 (+M) <=> 2 OH (+M) {'H': 2.0, 'O': 2.0} converted to LMR-R with ab initio parameters
+falloff-Troe
+Warning: CH3 + H (+M) <=> CH4 (+M) has both Ar and N2 as non-unity colliders!
+CH3 + H (+M) <=> CH4 (+M) {'C': 1.0, 'H': 4.0} converted to LMR-R with ab initio parameters
+falloff-Troe
+2 CH3 (+M) <=> C2H6 (+M) {'C': 2.0, 'H': 6.0} converted to LMR-R with ab initio parameters
+falloff-Troe
+C2H4 + H (+M) <=> C2H5 (+M) {'C': 2.0, 'H': 5.0} converted to LMR-R with ab initio parameters
+falloff-Troe
+C2H5 + H (+M) <=> C2H6 (+M) {'C': 2.0, 'H': 6.0} converted to LMR-R with ab initio parameters
+falloff-Troe
+C2H3 + H (+M) <=> C2H4 (+M) {'C': 2.0, 'H': 4.0} converted to LMR-R with ab initio parameters
+falloff-Troe
+C2H4 (+M) <=> H2 + H2CC (+M) {'C': 2.0, 'H': 4.0} converted to LMR-R with ab initio parameters
+pressure-dependent-Arrhenius
+C2H4 + CH2(S) <=> C2H3 + CH3 {'C': 3.0, 'H': 6.0} converted to LMR-R with ab initio parameters
+falloff-Troe
+H + NH2 (+M) <=> NH3 (+M) {'H': 3.0, 'N': 1.0} converted to LMR-R with ab initio parameters
+falloff-Troe
+H + NO (+M) <=> HNO (+M) {'H': 1.0, 'N': 1.0, 'O': 1.0} converted to LMR-R with ab initio parameters
+falloff-Troe
+2 NH2 (+M) <=> N2H4 (+M) {'H': 4.0, 'N': 2.0} converted to LMR-R with ab initio parameters
+❌ Error constructing testSoln with this reaction:
+H2 + O <=> H + OH
+Error message: basic_string::substr: __pos (which is 18446744073709551615) > this->size() (which is 1)
+❌ Error constructing testSoln with this reaction:
+2 OH <=> H2O + O
+Error message: basic_string::substr: __pos (which is 18446744073709551615) > this->size() (which is 1)
+❌ Error constructing testSoln with this reaction:
+2 HO2 <=> H2O2 + O2
+Error message: basic_string::substr: __pos (which is 18446744073709551615) > this->size() (which is 1)
+❌ Error constructing testSoln with this reaction:
+HOCO + OH <=> CO2 + H2O
+Error message: basic_string::substr: __pos (which is 18446744073709551615) > this->size() (which is 1)
+❌ Error constructing testSoln with this reaction:
+HCO (+M) <=> CO + H (+M)
+Error message: basic_string::substr: __pos (which is 18446744073709551615) > this->size() (which is 1)
+Traceback (most recent call last):
+  File "/home/pjs/LMRRfactory/test/runLMRRfactory.py", line 18, in <module>
+    LMRRfactory.makeYAML(mechInput=models[m],
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+                        outputPath=f"test/outputs/{date}")
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/pjs/anaconda3/envs/lmrrbuild/lib/python3.13/site-packages/LMRRfactory/generate.py", line 42, in __init__
+    self.data = self.generateYAML()
+                ~~~~~~~~~~~~~~~~~^^
+  File "/home/pjs/anaconda3/envs/lmrrbuild/lib/python3.13/site-packages/LMRRfactory/generate.py", line 70, in generateYAML
+    self.zippedMech(data)
+    ~~~~~~~~~~~~~~~^^^^^^
+  File "/home/pjs/anaconda3/envs/lmrrbuild/lib/python3.13/site-packages/LMRRfactory/generate.py", line 544, in zippedMech
+    self.validate(data['output'])
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "/home/pjs/anaconda3/envs/lmrrbuild/lib/python3.13/site-packages/LMRRfactory/generate.py", line 390, in validate
+    testSoln.write_yaml(buf)
+    ~~~~~~~~~~~~~~~~~~~^^^^^
+KeyboardInterrupt
