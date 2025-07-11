@@ -488,11 +488,14 @@ class makeYAML:
         #     else:
         #         return obj
         # with open(fName, 'w') as outfile:
-        for i, rxn in enumerate(dataSet.reactions()):
-            try:
-                print(f"{i}: {rxn.equation}")
-            except Exception as e:
-                print(f"Error with reaction {i}: {e}")
+        # for i, rxn in enumerate(dataSet.reactions()):
+        #     try:
+        #         print(f"{i}: {rxn.equation}")
+        #     except Exception as e:
+        #         print(f"Error with reaction {i}: {e}")
+        for i, sp in enumerate(dataSet.species()):
+            if not sp.name:
+                print(f"Species {i} is missing a name")
         dataSet.write_yaml(filename=fName)
         # dataSet.write_yaml(filename=None)
             # safe_data = self.to_builtin(dataSet)
