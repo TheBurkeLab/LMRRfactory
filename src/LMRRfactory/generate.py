@@ -342,7 +342,7 @@ class makeYAML:
         # for collider in colliders:
         #     for k,v in collider.items():
         #         print(collider, type(v))
-        
+        print(colliders)
         return colliders
 
     def to_builtin(self, obj):
