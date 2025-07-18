@@ -343,7 +343,6 @@ class makeYAML:
         # for collider in colliders:
         #     for k,v in collider.items():
         #         print(collider, type(v))
-        print(colliders)
         return colliders
 
     def to_builtin(self, obj):
@@ -406,7 +405,6 @@ class makeYAML:
                 colliderM = {'name': 'M'}
                 
                 colliderM.update(dict(d))
-                print(colliderM)
             if pDep and data['mech_pes'][i] in blendRxnNames:
             # rxn is specifically covered either in defaults or user input
                 newRxn = {
@@ -422,6 +420,7 @@ class makeYAML:
                 blend_rxn = data['blend']['reactions'][idx]
                 colliders = self.colliders(data,mech_rxn,blend_rxn=blend_rxn)
                 newRxn['colliders'] = [colliderM] + colliders
+                print(newRxn['colliders'])
                 # yaml_str = yaml.dump([newRxn])  # wrap in list if it's a single reaction
                 # for k, v in newRxn.items():
                 #     print(k, type(v))
