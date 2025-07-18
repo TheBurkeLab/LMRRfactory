@@ -438,6 +438,15 @@ class makeYAML:
                 newReactions.append(newRxn_obj)
                 # print("finished")
                 print(f"{mech_rxn} {dict(data['mech_pes'][i])} converted to LMR-R with ab initio parameters")
+                test_soln = {
+                    'species': data['mech_obj'].species(),  # list of ct.Species objects
+                    'thermo': data['mech_obj'].thermo_model,
+                    'transport': data['mech_obj'].transport_model,
+                    'reactions': [newRxn_obj],
+                    'name': 'testSolnRxn'
+                }
+                testSoln = ct.Solution(**test_soln)
+                testSoln.write_yaml(filename='tester.yaml')
             elif pDep and data['allPdep']:
                 # user has opted to have generic 3b effs applied to all p-dep reactions which lack a specification in thirdbodydefaults and testinput
                 newRxn = {
@@ -520,8 +529,6 @@ class makeYAML:
         # #     f.write(str)
         
         # dataSet.write_yaml(filename='tester.txt')
-        for r in dataSet.reactions():
-            r.write_yaml(filename='rxntest.yaml')
         # dataSet.write_yaml(filename=None)
             # safe_data = self.to_builtin(dataSet)
             # yaml.dump(safe_data, outfile,
