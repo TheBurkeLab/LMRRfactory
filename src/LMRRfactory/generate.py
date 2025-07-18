@@ -501,10 +501,11 @@ class makeYAML:
                 print(f"Species {i} is missing a name")
         str=""
         for r in dataSet.reactions():
-            str+=r.input_data
-            str+="\n"
-        with open('outlog.txt', 'w') as f:
-            f.write(str)
+            print(r.input_data)
+        #     str+=r.input_data
+        #     str+="\n"
+        # with open('outlog.txt', 'w') as f:
+        #     f.write(str)
         
         # dataSet.write_yaml(filename='tester.txt')
         # dataSet.write_yaml(filename=None)
