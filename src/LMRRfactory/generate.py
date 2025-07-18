@@ -407,25 +407,19 @@ class makeYAML:
                 colliderM.update(dict(d))
             if pDep and data['mech_pes'][i] in blendRxnNames:
             # rxn is specifically covered either in defaults or user input
-                # newRxn = {
-                #     'equation': mech_rxn.equation,
-                #     'type': 'linear-Burke'
-                # }
-                
-                idx = blendRxnNames.index(data['mech_pes'][i])
-                blend_rxn = data['blend']['reactions'][idx]
-                colliders = self.colliders(data,mech_rxn,blend_rxn=blend_rxn)
                 newRxn = {
                     'equation': mech_rxn.equation,
-                    'type': 'linear-Burke',
-                    'colliders': [colliderM] + colliders
+                    'type': 'linear-Burke'
                 }
-                # newRxn['colliders'] = [colliderM] + colliders
                 d = self.to_builtin(mech_rxn.input_data)
                 if d.get('duplicate') is not None:
                     newRxn['duplicate'] = True
                 if d.get('units') is not None:
                     newRxn['units'] = d['units']
+                idx = blendRxnNames.index(data['mech_pes'][i])
+                blend_rxn = data['blend']['reactions'][idx]
+                colliders = self.colliders(data,mech_rxn,blend_rxn=blend_rxn)
+                newRxn['colliders'] = [colliderM] + colliders
                 # yaml_str = yaml.dump([newRxn])  # wrap in list if it's a single reaction
                 # for k, v in newRxn.items():
                 #     print(k, type(v))
@@ -436,7 +430,7 @@ class makeYAML:
                 #         if isinstance(v, dict):
                 #             for sk, sv in v.items():
                 #                 print(f"    subkey: {sk}, type: {type(sv)}")
-                yaml_str = yaml.dump(newRxn)
+                yaml_str = yaml.dump(newRxn, sort_keys=False)
                 # print("0")
                 print(yaml_str)
                 newRxn_obj = ct.Reaction.from_yaml(yaml_str,data['mech_obj'])
@@ -458,7 +452,7 @@ class makeYAML:
                 # yaml_str = yaml.dump([newRxn])  # wrap in list if it's a single reaction
                 # for k, v in newRxn.items():
                 #     print(k, type(v))
-                yaml_str = yaml.dump(newRxn)
+                yaml_str = yaml.dump(newRxn, sort_keys=False)
                 # print("1")
                 # print(yaml_str)
                 newRxn_obj = ct.Reaction.from_yaml(yaml_str,data['mech_obj'])
