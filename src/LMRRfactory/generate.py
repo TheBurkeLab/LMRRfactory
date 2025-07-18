@@ -420,7 +420,6 @@ class makeYAML:
                 blend_rxn = data['blend']['reactions'][idx]
                 colliders = self.colliders(data,mech_rxn,blend_rxn=blend_rxn)
                 newRxn['colliders'] = [colliderM] + colliders
-                print(newRxn['colliders'])
                 # yaml_str = yaml.dump([newRxn])  # wrap in list if it's a single reaction
                 # for k, v in newRxn.items():
                 #     print(k, type(v))
@@ -435,6 +434,7 @@ class makeYAML:
                 # print("0")
                 # print(yaml_str)
                 newRxn_obj = ct.Reaction.from_yaml(yaml_str,data['mech_obj'])
+                print(newRxn_obj)
                 newReactions.append(newRxn_obj)
                 # print("finished")
                 print(f"{mech_rxn} {dict(data['mech_pes'][i])} converted to LMR-R with ab initio parameters")
@@ -456,6 +456,7 @@ class makeYAML:
                 # print("1")
                 # print(yaml_str)
                 newRxn_obj = ct.Reaction.from_yaml(yaml_str,data['mech_obj'])
+                
                 newReactions.append(newRxn_obj)
                 print(f"{mech_rxn} {dict(data['mech_pes'][i])} converted to LMR-R with generic parameters")
             else: # just append it as-is
