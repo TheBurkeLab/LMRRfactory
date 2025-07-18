@@ -475,7 +475,7 @@ class makeYAML:
                         'species': data['mech_obj'].species(),  # list of ct.Species objects
                         'thermo': data['mech_obj'].thermo_model,
                         'transport': data['mech_obj'].transport_model,
-                        'reactions': [mech_rxn],
+                        'reactions': mech_rxn,
                         'name': 'testSolnRxn'
                     }
                 testSoln = ct.Solution(**test_soln)
