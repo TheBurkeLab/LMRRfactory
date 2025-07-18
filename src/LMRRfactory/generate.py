@@ -505,21 +505,23 @@ class makeYAML:
         #         print(f"{i}: {rxn.equation}")
         #     except Exception as e:
         #         print(f"Error with reaction {i}: {e}")
-        for i, sp in enumerate(dataSet.species()):
-            if not sp.name:
-                print(f"Species {i} is missing a name")
-        str=""
+        # for i, sp in enumerate(dataSet.species()):
+        #     if not sp.name:
+        #         print(f"Species {i} is missing a name")
+        # str=""
         
-        print(dataSet.input_data)
-        # for r in dataSet.reactions:
-        #     print
-        print(dataSet.reactions())
-        #     str+=r.input_data
-        #     str+="\n"
-        # with open('outlog.txt', 'w') as f:
-        #     f.write(str)
+        # print(dataSet.input_data)
+        # # for r in dataSet.reactions:
+        # #     print
+        # print(dataSet.reactions())
+        # #     str+=r.input_data
+        # #     str+="\n"
+        # # with open('outlog.txt', 'w') as f:
+        # #     f.write(str)
         
         # dataSet.write_yaml(filename='tester.txt')
+        for r in dataSet.reactions():
+            r.write_yaml(filename='rxntest.yaml')
         # dataSet.write_yaml(filename=None)
             # safe_data = self.to_builtin(dataSet)
             # yaml.dump(safe_data, outfile,
