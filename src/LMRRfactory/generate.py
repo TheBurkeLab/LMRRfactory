@@ -432,9 +432,9 @@ class makeYAML:
                 #                 print(f"    subkey: {sk}, type: {type(sv)}")
                 yaml_str = yaml.dump(newRxn)
                 # print("0")
-                # print(yaml_str)
+                print(yaml_str)
                 newRxn_obj = ct.Reaction.from_yaml(yaml_str,data['mech_obj'])
-                print(newRxn_obj)
+                
                 newReactions.append(newRxn_obj)
                 # print("finished")
                 print(f"{mech_rxn} {dict(data['mech_pes'][i])} converted to LMR-R with ab initio parameters")
