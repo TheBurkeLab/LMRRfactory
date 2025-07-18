@@ -461,6 +461,15 @@ class makeYAML:
                 print(f"{mech_rxn} {dict(data['mech_pes'][i])} converted to LMR-R with generic parameters")
             else: # just append it as-is
                 newReactions.append(mech_rxn)
+            species_names = set([sp.name for sp in data['mech_obj'].species()])
+            for i, r in enumerate(newReactions):
+                reactants = set(r.reactants.keys())
+                products = set(r.products.keys())
+                all_species = reactants.union(products)
+                missing = all_species - species_names
+                if missing:
+                    print(f"❌ Reaction {i} has undefined species: {missing}")
+                    print(r.equation)
 
         output_data = {
             'species': data['mech_obj'].species(),  # list of ct.Species objects
@@ -500,6 +509,8 @@ class makeYAML:
             if not sp.name:
                 print(f"Species {i} is missing a name")
         str=""
+        species_names = set([sp.name for sp in data['mech_obj'].species()])
+        
         print(dataSet.input_data)
         # for r in dataSet.reactions:
         #     print
