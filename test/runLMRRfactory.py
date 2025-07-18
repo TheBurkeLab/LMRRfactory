@@ -11,6 +11,7 @@ date = 'May07'
 
 models = {
     'AramcoMech30': 'test/data/aramco30.yaml',
+    'Klippenstein-2018': 'test/data/klippenstein-CNF2018-original.yaml'
     }
 
 for m in models.keys():
