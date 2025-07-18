@@ -437,6 +437,15 @@ class makeYAML:
                 
                 newReactions.append(newRxn_obj)
                 # print("finished")
+                test_soln = {
+                        'species': data['mech_obj'].species(),  # list of ct.Species objects
+                        'thermo': data['mech_obj'].thermo_model,
+                        'transport': data['mech_obj'].transport_model,
+                        'reactions': [newRxn_obj],
+                        'name': 'testSolnRxn'
+                    }
+                testSoln = ct.Solution(**test_soln)
+                testSoln.write_yaml(filename='tester2.yaml')
                 print(f"{mech_rxn} {dict(data['mech_pes'][i])} converted to LMR-R with ab initio parameters")
             elif pDep and data['allPdep']:
                 # user has opted to have generic 3b effs applied to all p-dep reactions which lack a specification in thirdbodydefaults and testinput
@@ -462,17 +471,17 @@ class makeYAML:
             else: # just append it as-is
                 newReactions.append(mech_rxn)
             
-            # test_soln = {
-            #         'species': data['mech_obj'].species(),  # list of ct.Species objects
-            #         'thermo': data['mech_obj'].thermo_model,
-            #         'transport': data['mech_obj'].transport_model,
-            #         'reactions': [newReactions],
-            #         'name': 'testSolnRxn'
-            #     }
-            # testSoln = ct.Solution(**test_soln)
-            # testSoln.write_yaml(filename='tester.yaml')
-        for reaction in newReactions:
-            print(type(reaction))
+                test_soln = {
+                        'species': data['mech_obj'].species(),  # list of ct.Species objects
+                        'thermo': data['mech_obj'].thermo_model,
+                        'transport': data['mech_obj'].transport_model,
+                        'reactions': [mech_rxn],
+                        'name': 'testSolnRxn'
+                    }
+                testSoln = ct.Solution(**test_soln)
+                testSoln.write_yaml(filename='tester3.yaml')
+        # for reaction in newReactions:
+        #     print(type(reaction))
         species_names = set([sp.name for sp in data['mech_obj'].species()])
         for i, r in enumerate(newReactions):
             reactants = set(r.reactants.keys())
