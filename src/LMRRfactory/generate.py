@@ -501,7 +501,8 @@ class makeYAML:
                 print(f"Species {i} is missing a name")
         str=""
         print(dataSet.input_data)
-        print(dataSet.reactions)
+        for r in dataSet.reactions:
+            print(r.input_data)
         #     str+=r.input_data
         #     str+="\n"
         # with open('outlog.txt', 'w') as f:
