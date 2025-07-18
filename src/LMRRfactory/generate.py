@@ -404,6 +404,7 @@ class makeYAML:
                 if d.get('high-P-rate-constant') is not None:
                     d['high-P-rate-constant']=dict(d['high-P-rate-constant'])
                 colliderM = {'name': 'M'}
+                print(d)
                 colliderM.update(dict(d))
             if pDep and data['mech_pes'][i] in blendRxnNames:
             # rxn is specifically covered either in defaults or user input
