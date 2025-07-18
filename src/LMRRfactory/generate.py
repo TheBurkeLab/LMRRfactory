@@ -518,7 +518,7 @@ class makeYAML:
         #     if not sp.name:
         #         print(f"Species {i} is missing a name")
         # str=""
-        
+        print("s")
         # print(dataSet.input_data)
         # # for r in dataSet.reactions:
         # #     print
