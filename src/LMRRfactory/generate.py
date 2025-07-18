@@ -438,15 +438,6 @@ class makeYAML:
                 newReactions.append(newRxn_obj)
                 # print("finished")
                 print(f"{mech_rxn} {dict(data['mech_pes'][i])} converted to LMR-R with ab initio parameters")
-                test_soln = {
-                    'species': data['mech_obj'].species(),  # list of ct.Species objects
-                    'thermo': data['mech_obj'].thermo_model,
-                    'transport': data['mech_obj'].transport_model,
-                    'reactions': [newRxn_obj],
-                    'name': 'testSolnRxn'
-                }
-                testSoln = ct.Solution(**test_soln)
-                testSoln.write_yaml(filename='tester.yaml')
             elif pDep and data['allPdep']:
                 # user has opted to have generic 3b effs applied to all p-dep reactions which lack a specification in thirdbodydefaults and testinput
                 newRxn = {
@@ -470,6 +461,15 @@ class makeYAML:
                 print(f"{mech_rxn} {dict(data['mech_pes'][i])} converted to LMR-R with generic parameters")
             else: # just append it as-is
                 newReactions.append(mech_rxn)
+            test_soln = {
+                    'species': data['mech_obj'].species(),  # list of ct.Species objects
+                    'thermo': data['mech_obj'].thermo_model,
+                    'transport': data['mech_obj'].transport_model,
+                    'reactions': newReactions,
+                    'name': 'testSolnRxn'
+                }
+            testSoln = ct.Solution(**test_soln)
+            testSoln.write_yaml(filename='tester.yaml')
         species_names = set([sp.name for sp in data['mech_obj'].species()])
         for i, r in enumerate(newReactions):
             reactants = set(r.reactants.keys())
