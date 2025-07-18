@@ -499,8 +499,13 @@ class makeYAML:
         for i, sp in enumerate(dataSet.species()):
             if not sp.name:
                 print(f"Species {i} is missing a name")
+        str=""
         for r in dataSet.reactions():
-            print(r.input_data)
+            str+=r.input_data
+            str+="\n"
+        with open('outlog.txt', 'w') as f:
+            f.write(str)
+        
         # dataSet.write_yaml(filename='tester.txt')
         # dataSet.write_yaml(filename=None)
             # safe_data = self.to_builtin(dataSet)
