@@ -509,7 +509,6 @@ class makeYAML:
             if not sp.name:
                 print(f"Species {i} is missing a name")
         str=""
-        species_names = set([sp.name for sp in data['mech_obj'].species()])
         
         print(dataSet.input_data)
         # for r in dataSet.reactions:
