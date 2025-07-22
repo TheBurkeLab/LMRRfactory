@@ -316,6 +316,7 @@ class makeYAML:
             except Exception as e:
                 print(f"❌ {rxn.equation} could not be scanned, check the input file for errors.")
                 print("   Error message:", e)
+                print(rxn.input_data)
 
 
     def zippedMech(self, data):
