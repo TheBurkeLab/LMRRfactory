@@ -67,7 +67,7 @@ class makeYAML:
         self.blendedInput(data)
         # Sub the colliders into their corresponding reactions in the input mechanism
         self.zippedMech(data)
-        self.validate(data['output'])
+        # self.validate(data['output'])
         self.saveYAML(data['output'], self.foutName+".yaml")
         print(f"LMR-R mechanism successfully generated and stored at "
             f"{self.foutName}.yaml")
@@ -301,22 +301,22 @@ class makeYAML:
         else:
             return obj
         
-    def validate(self,soln):
-        for rxn in soln.reactions():
-            try:
-                buf = io.StringIO()
-                test_soln = {
-                    'species': soln.species(),  # list of ct.Species objects
-                    'thermo': soln.thermo_model,
-                    'transport': soln.transport_model,
-                    'reactions': [rxn],
-                }
-                testSoln = ct.Solution(**test_soln)
-                testSoln.write_yaml(buf)
-            except Exception as e:
-                print(f"❌ {rxn.equation} could not be scanned, check the input file for errors.")
-                print("   Error message:", e)
-                print(rxn.input_data)
+    # def validate(self,soln):
+    #     for rxn in soln.reactions():
+    #         try:
+    #             buf = io.StringIO()
+    #             test_soln = {
+    #                 'species': soln.species(),  # list of ct.Species objects
+    #                 'thermo': soln.thermo_model,
+    #                 'transport': soln.transport_model,
+    #                 'reactions': [rxn],
+    #             }
+    #             testSoln = ct.Solution(**test_soln)
+    #             testSoln.write_yaml(buf)
+    #         except Exception as e:
+    #             print(f"❌ {rxn.equation} could not be scanned, check the input file for errors.")
+    #             print("   Error message:", e)
+    #             print(rxn.input_data)
 
 
     def zippedMech(self, data):
