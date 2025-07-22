@@ -359,7 +359,7 @@ class makeYAML:
                     newRxn['duplicate'] = True
                 if d.get('units') is not None:
                     newRxn['units'] = d['units']
-                if d.get('note') == '\n':
+                if 'note' in d and re.fullmatch(r'\n+', d['note']):
                     newRxn['note'] = ''
                 idx = blendRxnNames.index(data['mech_pes'][i])
                 blend_rxn = data['blend']['reactions'][idx]
@@ -380,7 +380,7 @@ class makeYAML:
                     newRxn['duplicate'] = True
                 if d.get('units') is not None:
                     newRxn['units'] = d['units']
-                if d.get('note') == '\n':
+                if 'note' in d and re.fullmatch(r'\n+', d['note']):
                     newRxn['note'] = ''
                 colliders = self.colliders(data,mech_rxn,generic=True)
                 newRxn['colliders'] = [colliderM] + colliders
@@ -390,7 +390,7 @@ class makeYAML:
                 print(f"{mech_rxn} {dict(data['mech_pes'][i])} converted to LMR-R with generic parameters")
             else: # just append it as-is
                 d = mech_rxn.input_data
-                if d.get('note') == '\n':
+                if 'note' in d and re.fullmatch(r'\n+', d['note']):
                     mech_rxn.update_user_data({'note': ''})
                 newReactions.append(mech_rxn)
         output_data = {
