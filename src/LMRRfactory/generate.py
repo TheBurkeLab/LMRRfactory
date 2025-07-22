@@ -90,7 +90,7 @@ class makeYAML:
             for i, reactant in enumerate(reactant_species):
                 spec = gas.species(reactant)
                 c = spec.composition
-                c_scaled = {k: v*reactant_coeffs[i] for k, v in c.items()}
+                c_scaled = {k.upper(): v*reactant_coeffs[i] for k, v in c.items()}
                 compositions.append(c_scaled)
             counters = [Counter(comp) for comp in compositions]
             pes.append(sum(counters, Counter()))
