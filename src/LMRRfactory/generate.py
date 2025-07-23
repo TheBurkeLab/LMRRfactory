@@ -61,6 +61,8 @@ class makeYAML:
             'input': self.loadYAML(self.colliderInput) if self.colliderInput is not None else None,
             'allPdep': self.allPdep, # True or False
         }
+        # yml = self.loadYAML(self.mechInput)
+        # data['extras'] = [yml[]]
         # Remove defaults colliders and reactions that were explictly provided by user
         self.deleteDuplicates(data)
         # Blend the user inputs and remaining collider defaults into a single YAML
@@ -125,7 +127,11 @@ class makeYAML:
     def blendedInput(self, data):
         blendData = {'reactions': []}
         # speciesList = data['mech']['phases'][0]['species']
-        speciesList = data['mech_obj'].species()
+        # speciesList = [sp.composition for sp in data['mech_obj'].species()]
+        speciesList = [sp.name for sp in data['mech_obj'].species()]
+        # speciesList = data['mech_obj'].species()
+        # print(speciesList)
+
         # first fill it with all of the default reactions and colliders (which have valid species)
         for defaultRxn in data['defaults']['reactions']:
             newCollList = []
@@ -163,6 +169,7 @@ class makeYAML:
                         if all(col['name'] in speciesList for col in inputRxn['colliders']):
                             blendData['reactions'].append(inputRxn)
         data['blend']=blendData
+        # print(blendData)
 
     def arrheniusFit(self, col):
         newCol = copy.deepcopy(col)
@@ -182,7 +189,7 @@ class makeYAML:
         return dict(newCol)
 
     def colliders(self,data,mech_rxn,blend_rxn=None,generic=False):
-        speciesList=data['mech_obj'].input_data['species']
+        speciesList=data['mech_obj'].species_names
         divisor = 1
         colliders=[]
         colliderNames=[]
@@ -191,6 +198,7 @@ class makeYAML:
         # print(mech_rxn.reaction_type)
         if mech_rxn.reaction_type == 'falloff-Troe':
             troe_efficiencies = mech_rxn.input_data.get('efficiencies', {})
+            # print(troe_efficiencies)
         elif mech_rxn.reaction_type == 'three-body-linear-Burke': #case where we've used the linear Burke format so that Troe params can be used alongside a PLOG
             for c, col in enumerate(mech_rxn['colliders']):
                 if c>0 and col['efficiency']['b']==0 and col['efficiency']['Ea']==0:
@@ -285,6 +293,8 @@ class makeYAML:
                                 'efficiency': {'A': col['efficiency'],'b':0,'Ea':0},
                                 'note': col['note']
                             })
+        # for col in colliders:
+        #     col['name']=col['name']+ str(mech_rxn.equation)
         return colliders
 
     def to_builtin(self, obj):
@@ -352,6 +362,7 @@ class makeYAML:
             # rxn is specifically covered either in defaults or user input
                 newRxn = {
                     'equation': mech_rxn.equation,
+                    # 'pes': data['mech_pes'][i],
                     'type': 'linear-Burke'
                 }
                 d = self.to_builtin(mech_rxn.input_data)
@@ -393,12 +404,22 @@ class makeYAML:
                 if 'note' in d and re.fullmatch(r'\n+', d['note']):
                     mech_rxn.update_user_data({'note': ''})
                 newReactions.append(mech_rxn)
+        # output_data = {
+        #     'species': data['mech_obj'].species(),  # list of ct.Species objects
+        #     'thermo': data['mech_obj'].thermo_model,
+        #     'transport': data['mech_obj'].transport_model,
+        #     'reactions': newReactions,
+        #     'name': 'outputMech'
+        # }
+        # print(data['mech_obj'].composite)
+        # print(data['mech_obj'].kinetics_model)
         output_data = {
-            'species': data['mech_obj'].species(),  # list of ct.Species objects
             'thermo': data['mech_obj'].thermo_model,
+            'kinetics': data['mech_obj'].kinetics_model,
             'transport': data['mech_obj'].transport_model,
+            'species': data['mech_obj'].species(),
             'reactions': newReactions,
-            'name': 'outputMech'
+            'name': 'outputMech',
         }
         data['output'] = ct.Solution(**output_data)
 
@@ -407,6 +428,6 @@ class makeYAML:
             return yaml.safe_load(f)
     
     
-
     def saveYAML(self, dataSet, fName):
-        dataSet.write_yaml(filename=fName)
+        dataSet.write_yaml(filename=fName,
+                units={'length': 'cm', 'time': 's', 'quantity': 'mol', 'activation-energy': 'cal/mol'})

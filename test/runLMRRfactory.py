@@ -7,7 +7,7 @@ args = parser.parse_args()
 
 allPdep = 'True'
 allPLOG = 'True'
-date = 'May07'
+date = 'July29'
 
 models = {
     # 'AramcoMech30': 'test/data/aramco30.yaml',
@@ -18,7 +18,7 @@ models = {
 for m in models.keys():
     LMRRfactory.makeYAML(mechInput=models[m],
                         outputPath=f"test/outputs/{date}")
-    if allPdep == 'True':
-        LMRRfactory.makeYAML(mechInput=models[m],
-                            outputPath=f"test/outputs/{date}",
-                            allPdep=True)
+    # if allPdep == 'True':
+    #     LMRRfactory.makeYAML(mechInput=models[m],
+    #                         outputPath=f"test/outputs/{date}",
+    #                         allPdep=True)

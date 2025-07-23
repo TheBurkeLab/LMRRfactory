@@ -476,9 +476,9 @@ reactions:
   - name: C2H4
     efficiency: 3.71
     note: Matsugi-JPCA2019
-  - name: C2H6
-    efficiency: 
-    note: Matsugi-JPCA2019
+  # - name: C2H6
+  #   efficiency: 
+  #   note: Matsugi-JPCA2019
 - name: CH4 (+M) #methane
   pes: {C: 1, H: 4}
   reference-collider: AR
