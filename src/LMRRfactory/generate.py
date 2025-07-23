@@ -352,6 +352,7 @@ class makeYAML:
             # rxn is specifically covered either in defaults or user input
                 newRxn = {
                     'equation': mech_rxn.equation,
+                    'pes': data['mech_pes'][i],
                     'type': 'linear-Burke'
                 }
                 d = self.to_builtin(mech_rxn.input_data)
@@ -407,6 +408,5 @@ class makeYAML:
             return yaml.safe_load(f)
     
     
-
     def saveYAML(self, dataSet, fName):
         dataSet.write_yaml(filename=fName)
