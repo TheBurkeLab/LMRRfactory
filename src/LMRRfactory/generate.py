@@ -185,6 +185,9 @@ class makeYAML:
 
     def colliders(self,data,mech_rxn,blend_rxn=None,generic=False):
         speciesList=data['mech_obj'].input_data['species']
+        print(speciesList)
+        speciesList=data['mech_obj'].species_names
+        print(speciesList)
         divisor = 1
         colliders=[]
         colliderNames=[]
@@ -409,8 +412,6 @@ class makeYAML:
             'thermo': data['mech_obj'].thermo_model,
             'kinetics': data['mech_obj'].kinetics_model,
             'transport': data['mech_obj'].transport_model,
-            # 'state': data['mech_obj'].state,
-            # 'elements': data['mech_obj'].element_names,
             'species': data['mech_obj'].species(),
             'reactions': newReactions,
             'name': 'outputMech',
