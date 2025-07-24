@@ -1,7 +1,7 @@
 generator: YamlWriter
 cantera-version: 3.1.0
 git-commit: '6e00275'
-date: Thu Jul 24 15:11:53 2025
+date: Thu Jul 24 15:20:37 2025
 phases:
   - name: outputMech
     thermo: ideal-gas
@@ -22,6 +22,7 @@ phases:
     CH3CNH, CH3CHN, CHCHNH2, CH3CN, CHCNH2, CH2CNH, CH2CHN, CH2CHN(S),
     c-C2H3N, CH2CN, CHCNH, H2NCHO, H2NCO, CH3NHCH3, CH3NHCH2, CH3NCH3,
     CH3NCH2, CH2NCH2, CH3NCH, AR, HE, N2]
+    kinetics: bulk
     state:
       T: 1.0e-03
       density: 1.0e-03

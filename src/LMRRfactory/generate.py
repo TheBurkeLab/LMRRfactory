@@ -401,6 +401,8 @@ class makeYAML:
         #     'reactions': newReactions,
         #     'name': 'outputMech'
         # }
+        print(data['mech_obj'].state)
+        print(data['mech_obj'].kinetics_model)
         output_data = {
             'thermo': data['mech_obj'].thermo_model,
             'kinetics': data['mech_obj'].kinetics_model,
