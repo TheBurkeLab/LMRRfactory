@@ -394,12 +394,22 @@ class makeYAML:
                 if 'note' in d and re.fullmatch(r'\n+', d['note']):
                     mech_rxn.update_user_data({'note': ''})
                 newReactions.append(mech_rxn)
+        # output_data = {
+        #     'species': data['mech_obj'].species(),  # list of ct.Species objects
+        #     'thermo': data['mech_obj'].thermo_model,
+        #     'transport': data['mech_obj'].transport_model,
+        #     'reactions': newReactions,
+        #     'name': 'outputMech'
+        # }
         output_data = {
-            'species': data['mech_obj'].species(),  # list of ct.Species objects
             'thermo': data['mech_obj'].thermo_model,
+            'kinetics': data['mech_obj'].kinetics_model,
             'transport': data['mech_obj'].transport_model,
+            'state': data['mech_obj'].state,
+            'elements': data['mech_obj'].element_names,
+            'species': data['mech_obj'].species(),
             'reactions': newReactions,
-            'name': 'outputMech'
+            'name': 'outputMech',
         }
         data['output'] = ct.Solution(**output_data)
 
