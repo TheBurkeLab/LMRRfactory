@@ -61,6 +61,8 @@ class makeYAML:
             'input': self.loadYAML(self.colliderInput) if self.colliderInput is not None else None,
             'allPdep': self.allPdep, # True or False
         }
+        # yml = self.loadYAML(self.mechInput)
+        # data['extras'] = [yml[]]
         # Remove defaults colliders and reactions that were explictly provided by user
         self.deleteDuplicates(data)
         # Blend the user inputs and remaining collider defaults into a single YAML
@@ -352,7 +354,7 @@ class makeYAML:
             # rxn is specifically covered either in defaults or user input
                 newRxn = {
                     'equation': mech_rxn.equation,
-                    'pes': data['mech_pes'][i],
+                    # 'pes': data['mech_pes'][i],
                     'type': 'linear-Burke'
                 }
                 d = self.to_builtin(mech_rxn.input_data)
