@@ -1,7 +1,7 @@
 generator: YamlWriter
 cantera-version: 3.1.0
 git-commit: '6e00275'
-date: Thu Jul 24 16:20:22 2025
+date: Thu Jul 24 16:30:06 2025
 units: {length: cm, quantity: mol, activation-energy: cal/mol}
 phases:
   - name: outputMech
@@ -3359,9 +3359,6 @@ reactions:
         efficiency: {A: 14.0, b: 0.0, Ea: 0.0}
       - name: O2
         efficiency: {A: 0.78, b: 0.0, Ea: 0.0}
-    pes:
-      - H: 1.0
-        O: 2.0
   - equation: H + HO2 <=> H2 + O2
     rate-constant: {A: 2.8e+06, b: 2.09, Ea: -1451.0}
     note: |
@@ -3428,9 +3425,6 @@ reactions:
         efficiency: {A: 1.5, b: 0.0, Ea: 0.0}
       - name: O2
         efficiency: {A: 1.2, b: 0.0, Ea: 0.0}
-    pes:
-      - H: 2.0
-        O: 2.0
   - equation: H + H2O2 <=> H2O + OH
     rate-constant: {A: 2.4e+13, b: 0.0, Ea: 3970.0}
     note: |
@@ -3964,9 +3958,6 @@ reactions:
         efficiency: {A: 10.0, b: 0.0, Ea: 0.0}
       - name: HE
         efficiency: {A: 2.0, b: 0.0, Ea: 0.0}
-    pes:
-      - C: 1.0
-        H: 4.0
   - equation: CH4 + H <=> CH3 + H2
     rate-constant: {A: 4100.0, b: 3.156, Ea: 8755.0}
     note: |
@@ -5316,9 +5307,6 @@ reactions:
         low-P-rate-constant: {A: 1.269e+41, b: -7.0, Ea: 2762.0}
         high-P-rate-constant: {A: 9.5e+14, b: -0.538, Ea: 179.0}
         Troe: {A: 0.62, T3: 73.0, T1: 1180.0, T2: 1.0e+30}
-    pes:
-      - C: 2.0
-        H: 6.0
   - equation: C2H6 + H <=> C2H5 + H2
     rate-constant: {A: 7400.0, b: 3.1, Ea: 5340.0}
     duplicate: true
@@ -5375,9 +5363,6 @@ reactions:
         efficiency: {A: 10.0, b: 0.0, Ea: 0.0}
       - name: N2
         efficiency: {A: 1.2, b: 0.0, Ea: 0.0}
-    pes:
-      - C: 2.0
-        H: 5.0
   - equation: C2H5 + H (+M) <=> C2H6 (+M)
     type: linear-Burke
     colliders:
@@ -5400,9 +5385,6 @@ reactions:
         efficiency: {A: 2.0, b: 0.0, Ea: 0.0}
       - name: H2O
         efficiency: {A: 6.0, b: 0.0, Ea: 0.0}
-    pes:
-      - C: 2.0
-        H: 6.0
   - equation: C2H5 + O <=> CH2O + CH3
     rate-constant: {A: 4.2e+13, b: 0.0, Ea: 0.0}
     note: |
@@ -5801,9 +5783,6 @@ reactions:
         low-P-rate-constant: {A: 2.1e+24, b: -1.3, Ea: 0.0}
         high-P-rate-constant: {A: 3.9e+13, b: 0.2, Ea: 0.0}
         Troe: {A: 0.5, T3: 1.0e-30, T1: 1.0e+30, T2: 1.0e+30}
-    pes:
-      - C: 2.0
-        H: 4.0
   - equation: C2H4 (+M) <=> H2 + H2CC (+M)
     type: linear-Burke
     colliders:
@@ -5816,9 +5795,6 @@ reactions:
         efficiency: {A: 0.7, b: 0.0, Ea: 0.0}
       - name: H2O
         efficiency: {A: 6.0, b: 0.0, Ea: 0.0}
-    pes:
-      - C: 2.0
-        H: 4.0
   - equation: C2H4 + H <=> C2H3 + H2
     rate-constant: {A: 240.0, b: 3.62, Ea: 1.1266e+04}
     note: |
@@ -6174,9 +6150,6 @@ reactions:
           - {P: 1.01325e+06, A: 1.5e+08, b: 1.33, Ea: 1228.0}
           - {P: 1.01325e+07, A: 7.4e+29, b: -4.28, Ea: 2.3849e+04}
           - {P: 1.01325e+07, A: 8.1e+10, b: 0.55, Ea: 5507.0}
-    pes:
-      - C: 3.0
-        H: 6.0
   - equation: C2H2 + H (+M) <=> C2H3 (+M)
     type: linear-Burke
     colliders:
@@ -11787,9 +11760,6 @@ reactions:
         low-P-rate-constant: {A: 3.6e+22, b: -1.76, Ea: 0.0}
         high-P-rate-constant: {A: 1.6e+14, b: 0.0, Ea: 0.0}
         Troe: {A: 0.5, T3: 1.0e-30, T1: 1.0e+30, T2: 1.0e+30}
-    pes:
-      - H: 3.0
-        N: 1.0
   - equation: H + NH3 <=> H2 + NH2
     rate-constant: {A: 6.4e+05, b: 2.39, Ea: 1.0171e+04}
     note: |
@@ -12215,10 +12185,6 @@ reactions:
         Troe: {A: 0.82, T3: 1.0e-30, T1: 1.0e+30, T2: 1.0e+30}
       - name: N2
         efficiency: {A: 1.6, b: 0.0, Ea: 0.0}
-    pes:
-      - H: 1.0
-        N: 1.0
-        O: 1.0
   - equation: H + HNO <=> H2 + NO
     rate-constant: {A: 6.6e+10, b: 0.94, Ea: 495.0}
     note: |
@@ -12643,9 +12609,6 @@ reactions:
         low-P-rate-constant: {A: 1.6e+34, b: -5.49, Ea: 1987.0}
         high-P-rate-constant: {A: 5.6e+14, b: -0.414, Ea: 66.0}
         Troe: {A: 0.31, T3: 1.0e-30, T1: 1.0e+30, T2: 1.0e+30}
-    pes:
-      - H: 4.0
-        N: 2.0
   - equation: N2H4 <=> H2 + H2NN
     rate-constant: {A: 1.4e+14, b: 0.0, Ea: 7.4911e+04}
     note: |
