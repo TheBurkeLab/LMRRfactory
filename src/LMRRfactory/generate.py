@@ -404,9 +404,9 @@ class makeYAML:
         # print(data['mech_obj'].composite)
         # print(data['mech_obj'].kinetics_model)
         output_data = {
-            # 'thermo': data['mech_obj'].thermo_model,
-            # 'kinetics': data['mech_obj'].kinetics_model,
-            # 'transport': data['mech_obj'].transport_model,
+            'thermo': data['mech_obj'].thermo_model,
+            'kinetics': data['mech_obj'].kinetics_model,
+            'transport': data['mech_obj'].transport_model,
             # 'state': data['mech_obj'].state,
             # 'elements': data['mech_obj'].element_names,
             'species': data['mech_obj'].species(),
