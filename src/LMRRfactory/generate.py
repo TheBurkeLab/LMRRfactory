@@ -140,7 +140,7 @@ class makeYAML:
         for defaultRxn in data['defaults']['reactions']:
             newCollList = []
             for col in defaultRxn['colliders']:
-                print(list(col.keys()))
+                print(col)
                 if col['composition'] in list(speciesDict.values()):
                     newCollList.append(col)
             defaultRxn['colliders'] = newCollList
