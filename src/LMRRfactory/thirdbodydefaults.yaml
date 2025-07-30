@@ -505,6 +505,7 @@ reactions:
   colliders: #no T-dependent values available
   - name: CH3NC
     efficiency: 7.27
+    composition: {C: 2, H: 3, N: 1}
     note: Matsugi-JPCA2019
   - name: HE
     composition: {He: 1}
