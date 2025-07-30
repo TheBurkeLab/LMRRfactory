@@ -384,7 +384,7 @@ reactions:
     temperatures: [300,1000,2000]
     note: Jasper-2022
   - name: H2O
-    composition: {H: 2, O: 1}2
+    composition: {H: 2, O: 1}
     efficiency: [6.83,12.0,16.3]
     temperatures: [300,1000,2000]
     note: Jasper-2022
