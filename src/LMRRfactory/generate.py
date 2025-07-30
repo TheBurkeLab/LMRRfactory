@@ -132,6 +132,7 @@ class makeYAML:
         speciesDict = {}
         for sp in data['mech_obj'].species():
             speciesDict[sp.name] = sp.composition
+        print(speciesDict)
         # speciesList = data['mech_obj'].species()
         # print(speciesList)
 
