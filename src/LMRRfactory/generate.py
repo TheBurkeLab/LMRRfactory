@@ -210,6 +210,7 @@ class makeYAML:
             for sp_name in list(troe_efficiencies_raw.keys()):
                 #make the keys the compositions instead of species names
                 troe_efficiencies[speciesDict1[sp_name]] = troe_efficiencies_raw[sp_name]
+                print(troe_efficiencies)
 
             # print(troe_efficiencies)
         elif mech_rxn.reaction_type == 'three-body-linear-Burke': #case where we've used the linear Burke format so that Troe params can be used alongside a PLOG
