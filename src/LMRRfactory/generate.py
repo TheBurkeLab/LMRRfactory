@@ -132,7 +132,7 @@ class makeYAML:
         speciesDict = {}
         for sp in data['mech_obj'].species():
             speciesDict[sp.name] = sp.composition
-        print(speciesDict)
+        # print(speciesDict)
         # speciesList = data['mech_obj'].species()
         # print(speciesList)
 
@@ -140,6 +140,7 @@ class makeYAML:
         for defaultRxn in data['defaults']['reactions']:
             newCollList = []
             for col in defaultRxn['colliders']:
+                print(list(col.keys()))
                 if col['composition'] in list(speciesDict.values()):
                     newCollList.append(col)
             defaultRxn['colliders'] = newCollList
