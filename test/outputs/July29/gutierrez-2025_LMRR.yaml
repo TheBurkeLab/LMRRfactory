@@ -1,8 +1,8 @@
 generator: YamlWriter
 cantera-version: 3.1.0
 git-commit: '6e00275'
-date: Fri Aug 22 17:41:50 2025
 units: {length: cm, quantity: mol, activation-energy: cal/mol}
+date: Fri Aug 22 18:00:57 2025
 phases:
   - name: outputMech
     thermo: ideal-gas
@@ -1747,7 +1747,7 @@ reactions:
         Troe: {A: 0.5, T3: 1.0e-30, T1: 1.0e+30}
       - name: HE
         efficiency: {A: 2.70228e-03, b: 0.77583052, Ea: -0.1206215237906310}
-      - name: N2
+      - name: AR
         efficiency: {A: 8.00436e-03, b: 0.59326267, Ea: -0.1292832776935947}
       - name: H2
         efficiency: {A: 251.11060145, b: -0.66093197, Ea: 0.1406118131787763}
@@ -1757,8 +1757,6 @@ reactions:
         efficiency: {A: 0.03984175, b: 0.75811797, Ea: -0.1962886557911090}
       - name: H2O
         efficiency: {A: 0.29547759, b: 0.52197251, Ea: -0.1216569208508604}
-      - name: AR
-        efficiency: {A: 0.67, b: 0.0, Ea: 0.0}
       - name: CO
         efficiency: {A: 1.9, b: 0.0, Ea: 0.0}
       - name: O2

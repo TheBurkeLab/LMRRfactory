@@ -1,7 +1,7 @@
 generator: YamlWriter
 cantera-version: 3.1.0
 git-commit: '6e00275'
-date: Fri Aug 22 17:41:49 2025
+date: Fri Aug 22 18:00:57 2025
 units: {length: cm, quantity: mol, activation-energy: cal/mol}
 phases:
   - name: outputMech
@@ -3349,7 +3349,7 @@ reactions:
         Troe: {A: 0.5, T3: 1.0e-30, T1: 1.0e+30}
       - name: HE
         efficiency: {A: 2.70228e-03, b: 0.77583052, Ea: -0.1206215237906310}
-      - name: N2
+      - name: AR
         efficiency: {A: 8.00436e-03, b: 0.59326267, Ea: -0.1292832776935947}
       - name: H2
         efficiency: {A: 251.11060145, b: -0.66093197, Ea: 0.1406118131787763}
@@ -3359,8 +3359,6 @@ reactions:
         efficiency: {A: 0.03984175, b: 0.75811797, Ea: -0.1962886557911090}
       - name: H2O
         efficiency: {A: 0.29547759, b: 0.52197251, Ea: -0.1216569208508604}
-      - name: AR
-        efficiency: {A: 0.67, b: 0.0, Ea: 0.0}
       - name: CO
         efficiency: {A: 1.9, b: 0.0, Ea: 0.0}
       - name: O2
@@ -3684,7 +3682,7 @@ reactions:
         Troe: {A: 0.395, T3: 163.5, T1: 4250.3, T2: 1.253676e+06}
       - name: HE
         efficiency: {A: 0.11706148, b: 0.37328355, Ea: -8.655892017208414e-04}
-      - name: N2
+      - name: AR
         efficiency: {A: 8.86177448, b: -0.31108531, Ea: 0.06086185480640536}
       - name: O2
         efficiency: {A: 2.26298468, b: -0.09870811, Ea: 0.02668486650573614}
@@ -3696,8 +3694,6 @@ reactions:
         efficiency: {A: 53.205221, b: -0.31940768, Ea: 0.1538980797084130}
       - name: H2O
         efficiency: {A: 37.25778922, b: -0.236175, Ea: 0.1229038546606118}
-      - name: AR
-        efficiency: {A: 0.61, b: 0.0, Ea: 0.0}
       - name: C2H6
         efficiency: {A: 4.5, b: 0.0, Ea: 0.0}
       - name: CO
@@ -4558,12 +4554,10 @@ reactions:
         efficiency: {A: 0.809712, b: 0.07513144, Ea: 0.01195694955305928}
       - name: H2
         efficiency: {A: 7.23915536, b: -0.15922203, Ea: 0.01214839349426386}
-      - name: N2
+      - name: AR
         efficiency: {A: 1.47731014, b: -0.08420053, Ea: 0.01195543976577438}
       - name: O2
         efficiency: {A: 1.89872206, b: -0.08889629, Ea: 0.01210233026290631}
-      - name: AR
-        efficiency: {A: 0.7, b: 0.0, Ea: 0.0}
       - name: C2H6
         efficiency: {A: 3.0, b: 0.0, Ea: 0.0}
       - name: CH4
@@ -4753,12 +4747,10 @@ reactions:
         efficiency: {A: 1.05713722, b: 0.05200416, Ea: 0.01195633193594646}
       - name: H2
         efficiency: {A: 5.69149741, b: -0.12210456, Ea: 0.01207978892447419}
-      - name: N2
+      - name: AR
         efficiency: {A: 3.16690917, b: -0.19427231, Ea: 0.01195189495458891}
       - name: O2
         efficiency: {A: 2.62985593, b: -0.11301754, Ea: 0.01195199560229446}
-      - name: AR
-        efficiency: {A: 0.7, b: 0.0, Ea: 0.0}
       - name: tomato
         efficiency: {A: 6.0, b: 0.0, Ea: 0.0}
   - equation: C2H4 + H <=> C2H3 + H2
