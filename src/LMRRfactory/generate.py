@@ -181,7 +181,8 @@ class makeYAML:
         temps=np.array(newCol['temperatures'])
         eps = np.array(newCol['efficiency'])
         def arrhenius_rate(T, A, beta, Ea):
-            R = 1.987 # cal/molK
+            # R = 1.987 # cal/molK
+            R = 8314 # J/kmolK
             return A * T**beta * np.exp(-Ea / (R * T))
         def fit_function(params, T, ln_eps):
             A, beta, Ea = params
