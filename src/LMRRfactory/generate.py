@@ -447,5 +447,6 @@ class makeYAML:
     
     
     def saveYAML(self, dataSet, fName):
-        dataSet.write_yaml(filename=fName,
-                units={'length': 'cm', 'time': 's', 'quantity': 'mol', 'activation-energy': 'cal/mol'})
+        # dataSet.write_yaml(filename=fName,
+        #         units={'length': 'cm', 'time': 's', 'quantity': 'mol', 'activation-energy': 'cal/mol'})
+        dataSet.write_yaml(filename=fName)
