@@ -1,8 +1,8 @@
 generator: YamlWriter
 cantera-version: 3.1.0
 git-commit: '6e00275'
-date: Wed Jul 30 19:25:37 2025
 units: {length: cm, quantity: mol, activation-energy: cal/mol}
+date: Fri Aug 22 16:37:27 2025
 phases:
   - name: outputMech
     thermo: ideal-gas
@@ -3349,7 +3349,7 @@ reactions:
         Troe: {A: 0.5, T3: 1.0e-30, T1: 1.0e+30}
       - name: HE
         efficiency: {A: 2.70228e-03, b: 0.77583052, Ea: -0.1206215237906310}
-      - name: AR
+      - name: N2
         efficiency: {A: 8.00436e-03, b: 0.59326267, Ea: -0.1292832776935947}
       - name: H2
         efficiency: {A: 251.11060145, b: -0.66093197, Ea: 0.1406118131787763}
@@ -3357,12 +3357,14 @@ reactions:
         efficiency: {A: 1.300010328574910e+06, b: -1.68295489, Ea: 0.3416136987356597}
       - name: NH3
         efficiency: {A: 0.03984175, b: 0.75811797, Ea: -0.1962886557911090}
+      - name: H2O
+        efficiency: {A: 0.29547759, b: 0.52197251, Ea: -0.1216569208508604}
+      - name: AR
+        efficiency: {A: 0.67, b: 0.0, Ea: 0.0}
       - name: CO
         efficiency: {A: 1.9, b: 0.0, Ea: 0.0}
       - name: O2
         efficiency: {A: 0.78, b: 0.0, Ea: 0.0}
-      - name: tomato
-        efficiency: {A: 14.0, b: 0.0, Ea: 0.0}
   - equation: H + HO2 <=> H2 + O2
     rate-constant: {A: 2.8e+06, b: 2.09, Ea: -1451.0}
     note: |
@@ -3421,6 +3423,8 @@ reactions:
         efficiency: {A: 89.88391622, b: -0.42797367, Ea: 0.05769417628107075}
       - name: H2O2
         efficiency: {A: 0.64529544, b: 0.42626591, Ea: 0.01025171038718929}
+      - name: H2O
+        efficiency: {A: 1.36377291, b: 0.30659152, Ea: 0.05020999548040154}
       - name: HE
         efficiency: {A: 0.22766022, b: 0.19992445, Ea: 0.01195477727533461}
       - name: H2
@@ -3431,8 +3435,6 @@ reactions:
         efficiency: {A: 162.68535619, b: -0.48171025, Ea: 6.938817829827916e-04}
       - name: O2
         efficiency: {A: 1.2, b: 0.0, Ea: 0.0}
-      - name: tomato
-        efficiency: {A: 7.5, b: 0.0, Ea: 0.0}
   - equation: H + H2O2 <=> OH + tomato
     rate-constant: {A: 2.4e+13, b: 0.0, Ea: 3970.0}
     note: |
@@ -3682,7 +3684,7 @@ reactions:
         Troe: {A: 0.395, T3: 163.5, T1: 4250.3, T2: 1.253676e+06}
       - name: HE
         efficiency: {A: 0.11706148, b: 0.37328355, Ea: -8.655892017208414e-04}
-      - name: AR
+      - name: N2
         efficiency: {A: 8.86177448, b: -0.31108531, Ea: 0.06086185480640536}
       - name: O2
         efficiency: {A: 2.26298468, b: -0.09870811, Ea: 0.02668486650573614}
@@ -3692,12 +3694,14 @@ reactions:
         efficiency: {A: 4.52519625, b: -0.15274651, Ea: 0.02329897289674953}
       - name: CH4
         efficiency: {A: 53.205221, b: -0.31940768, Ea: 0.1538980797084130}
+      - name: H2O
+        efficiency: {A: 37.25778922, b: -0.236175, Ea: 0.1229038546606118}
+      - name: AR
+        efficiency: {A: 0.61, b: 0.0, Ea: 0.0}
       - name: C2H6
         efficiency: {A: 4.5, b: 0.0, Ea: 0.0}
       - name: CO
         efficiency: {A: 1.4, b: 0.0, Ea: 0.0}
-      - name: tomato
-        efficiency: {A: 10.0, b: 0.0, Ea: 0.0}
   - equation: CH4 + H <=> CH3 + H2
     rate-constant: {A: 4100.0, b: 3.156, Ea: 8755.0}
     note: |
@@ -4554,10 +4558,12 @@ reactions:
         efficiency: {A: 0.809712, b: 0.07513144, Ea: 0.01195694955305928}
       - name: H2
         efficiency: {A: 7.23915536, b: -0.15922203, Ea: 0.01214839349426386}
-      - name: AR
+      - name: N2
         efficiency: {A: 1.47731014, b: -0.08420053, Ea: 0.01195543976577438}
       - name: O2
         efficiency: {A: 1.89872206, b: -0.08889629, Ea: 0.01210233026290631}
+      - name: AR
+        efficiency: {A: 0.7, b: 0.0, Ea: 0.0}
       - name: C2H6
         efficiency: {A: 3.0, b: 0.0, Ea: 0.0}
       - name: CH4
@@ -4747,10 +4753,12 @@ reactions:
         efficiency: {A: 1.05713722, b: 0.05200416, Ea: 0.01195633193594646}
       - name: H2
         efficiency: {A: 5.69149741, b: -0.12210456, Ea: 0.01207978892447419}
-      - name: AR
+      - name: N2
         efficiency: {A: 3.16690917, b: -0.19427231, Ea: 0.01195189495458891}
       - name: O2
         efficiency: {A: 2.62985593, b: -0.11301754, Ea: 0.01195199560229446}
+      - name: AR
+        efficiency: {A: 0.7, b: 0.0, Ea: 0.0}
       - name: tomato
         efficiency: {A: 6.0, b: 0.0, Ea: 0.0}
   - equation: C2H4 + H <=> C2H3 + H2
@@ -7483,6 +7491,8 @@ reactions:
         efficiency: {A: 9.19582761, b: 0.06106963, Ea: 0.02153652641252390}
       - name: NH3
         efficiency: {A: 14.90041298, b: 0.06065353, Ea: 0.05919036799474188}
+      - name: H2O
+        efficiency: {A: 11.45596662, b: 0.12750056, Ea: 0.07503805152007648}
       - name: CH4
         efficiency: {A: 12.683752, b: 0.02320136, Ea: 0.05358208073374761}
   - equation: H + NH3 <=> H2 + NH2
@@ -7875,6 +7885,8 @@ reactions:
         Troe: {A: 0.82, T3: 1.0e-30, T1: 1.0e+30, T2: 1.0e+30}
       - name: N2
         efficiency: {A: 7.56770814, b: -0.19687796, Ea: 0.06050856776290631}
+      - name: H2O
+        efficiency: {A: 3.35450824, b: 0.13335183, Ea: 0.01588511082217973}
   - equation: H + HNO <=> H2 + NO
     rate-constant: {A: 6.6e+10, b: 0.94, Ea: 495.0}
     note: |
@@ -8130,6 +8142,8 @@ reactions:
         efficiency: {A: 1.53607628, b: -0.03908567, Ea: 1.060592817877629e-03}
       - name: NH3
         efficiency: {A: 16.41958948, b: -0.07296362, Ea: 0.08749974021988528}
+      - name: H2O
+        efficiency: {A: 21.76578656, b: -0.11471476, Ea: 0.1001950449880497}
   - equation: N2H4 <=> H2 + H2NN
     rate-constant: {A: 1.4e+14, b: 0.0, Ea: 7.4911e+04}
     note: |
