@@ -140,7 +140,7 @@ class makeYAML:
         for defaultRxn in data['defaults']['reactions']:
             newCollList = []
             for col in defaultRxn['colliders']:
-                print(col)
+                # print(col)
                 if col['composition'] in list(speciesDict.values()):
                     newCollList.append(col)
             defaultRxn['colliders'] = newCollList
@@ -181,7 +181,8 @@ class makeYAML:
         temps=np.array(newCol['temperatures'])
         eps = np.array(newCol['efficiency'])
         def arrhenius_rate(T, A, beta, Ea):
-            R = 1.987 # cal/molK
+            # R = 1.987 # cal/molK
+            R = ct.gas_constant # J/kmolK
             return A * T**beta * np.exp(-Ea / (R * T))
         def fit_function(params, T, ln_eps):
             A, beta, Ea = params
@@ -214,7 +215,7 @@ class makeYAML:
 
             # print(troe_efficiencies)
         elif mech_rxn.reaction_type == 'three-body-linear-Burke': #case where we've used the linear Burke format so that Troe params can be used alongside a PLOG 
-            for c, col in enumerate(mech_rxn['colliders']):
+            for c, col in enumerate(mech_rxn.input_data.get('colliders', {})):
                 if c>0 and col['efficiency']['b']==0 and col['efficiency']['Ea']==0:
 
                     troe_efficiencies[col['name']]=col['efficiency']['A'] ## WHY ARE WE USING TROE EFFICIENCIES HERE
@@ -241,7 +242,7 @@ class makeYAML:
                 for col in blend_rxn['colliders']:
                     #Convert N2:Ar database entry to Ar:N2
                     if col['composition']=={'N': 2}:
-                        col['composition']=={'Ar': 1}
+                        col['composition']={'Ar': 1}
                         col['name']=next(k for k, v in speciesDict.items() if v == col['composition'])
                         col['efficiency']=np.divide(1,col['efficiency'])
                         colliders.append(self.arrheniusFit(col))
@@ -312,6 +313,7 @@ class makeYAML:
                                 'efficiency': {'A': col['efficiency'],'b':0,'Ea':0},
                                 'note': col['note']
                             })
+        # print(colliderNames)
         return colliders
 
     def to_builtin(self, obj):
@@ -352,10 +354,12 @@ class makeYAML:
         blendRxnNames = [rxn['pes'] for rxn in data['blend']['reactions']]
         # for mech_rxn in data['mech']['reactions']:
         for i, mech_rxn in enumerate(data['mech_obj'].reactions()):
-            # print(mech_rxn)
+            print(mech_rxn)
+            # print(blendRxnNames)
             pDep = False
             # Create the M-collider entry for the pressure-dependent reactions
             if mech_rxn.reaction_type in ['falloff-Troe','pressure-dependent-Arrhenius','Chebyshev','three-body-linear-Burke']:
+                
                 pDep = True
                 if mech_rxn.reaction_type == 'three-body-linear-Burke':
                     d = self.to_builtin(mech_rxn.input_data['colliders'][0]) #use the pdep format given for collider M when rebuilding the reaction
@@ -373,49 +377,31 @@ class makeYAML:
                 if d.get('high-P-rate-constant') is not None:
                     d['high-P-rate-constant']=dict(d['high-P-rate-constant'])
                 colliderM = {'name': 'M'}
-                
                 colliderM.update(dict(d))
-            if pDep and data['mech_pes'][i] in blendRxnNames:
-            # rxn is specifically covered either in defaults or user input
+            if pDep and (data['mech_pes'][i] in blendRxnNames or data ['allPdep']):
+                if data['mech_pes'][i] in blendRxnNames:
+                    # rxn is specifically covered either in defaults or user input
+                    idx = blendRxnNames.index(data['mech_pes'][i])
+                    blend_rxn = data['blend']['reactions'][idx]
+                    colliders = self.colliders(data,mech_rxn,blend_rxn=blend_rxn)
+                    param_type = "ab initio"
+                elif data ['allPdep']:
+                    colliders = self.colliders(data,mech_rxn,generic=True)
+                    param_type = "generic"
+                d = self.to_builtin(mech_rxn.input_data)
                 newRxn = {
                     'equation': mech_rxn.equation,
-                    # 'pes': data['mech_pes'][i],
-                    'type': 'linear-Burke'
+                    **({'duplicate': True} if d.get('duplicate') else {}),
+                    **({'units': d['units']} if d.get('units') else {}),
+                    'type': 'linear-Burke',
+                    'colliders': [colliderM] + colliders
                 }
-                d = self.to_builtin(mech_rxn.input_data)
-                if d.get('duplicate') is not None:
-                    newRxn['duplicate'] = True
-                if d.get('units') is not None:
-                    newRxn['units'] = d['units']
                 if 'note' in d and re.fullmatch(r'\n+', d['note']):
                     newRxn['note'] = ''
-                idx = blendRxnNames.index(data['mech_pes'][i])
-                blend_rxn = data['blend']['reactions'][idx]
-                colliders = self.colliders(data,mech_rxn,blend_rxn=blend_rxn)
-                newRxn['colliders'] = [colliderM] + colliders
                 yaml_str = yaml.dump(newRxn, sort_keys=False)
                 newRxn_obj = ct.Reaction.from_yaml(yaml_str,data['mech_obj'])
                 newReactions.append(newRxn_obj)
-                print(f"{mech_rxn} {dict(data['mech_pes'][i])} converted to LMR-R with ab initio parameters")
-            elif pDep and data['allPdep']:
-                # user has opted to have generic 3b effs applied to all p-dep reactions which lack a specification in thirdbodydefaults and testinput
-                newRxn = {
-                    'equation': mech_rxn.equation,
-                    'type': 'linear-Burke'
-                }
-                d = self.to_builtin(mech_rxn.input_data)
-                if d.get('duplicate') is not None:
-                    newRxn['duplicate'] = True
-                if d.get('units') is not None:
-                    newRxn['units'] = d['units']
-                if 'note' in d and re.fullmatch(r'\n+', d['note']):
-                    newRxn['note'] = ''
-                colliders = self.colliders(data,mech_rxn,generic=True)
-                newRxn['colliders'] = [colliderM] + colliders
-                yaml_str = yaml.dump(newRxn, sort_keys=False)
-                newRxn_obj = ct.Reaction.from_yaml(yaml_str,data['mech_obj'])
-                newReactions.append(newRxn_obj)
-                print(f"{mech_rxn} {dict(data['mech_pes'][i])} converted to LMR-R with generic parameters")
+                print(f"{mech_rxn} {dict(data['mech_pes'][i])} converted to LMR-R with {param_type} parameters")
             else: # just append it as-is
                 d = mech_rxn.input_data
                 if 'note' in d and re.fullmatch(r'\n+', d['note']):
@@ -444,7 +430,13 @@ class makeYAML:
         with open(fName) as f:
             return yaml.safe_load(f)
     
-    
     def saveYAML(self, dataSet, fName):
         dataSet.write_yaml(filename=fName,
                 units={'length': 'cm', 'time': 's', 'quantity': 'mol', 'activation-energy': 'cal/mol'})
+        # Resave it to remove formatting inconsistencies
+        dat = self.loadYAML(fName)
+        with open(fName, 'w') as outfile:
+            yaml.dump(copy.deepcopy(dat), outfile,
+                    default_flow_style=None,
+                    sort_keys=False)
+       
