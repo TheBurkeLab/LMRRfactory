@@ -241,7 +241,7 @@ class makeYAML:
                 for col in blend_rxn['colliders']:
                     #Convert N2:Ar database entry to Ar:N2
                     if col['composition']=={'N': 2}:
-                        col['composition']=={'Ar': 1}
+                        col['composition']={'Ar': 1}
                         col['name']=next(k for k, v in speciesDict.items() if v == col['composition'])
                         col['efficiency']=np.divide(1,col['efficiency'])
                         colliders.append(self.arrheniusFit(col))

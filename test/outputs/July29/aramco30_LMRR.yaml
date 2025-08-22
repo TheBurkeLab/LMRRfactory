@@ -1,7 +1,7 @@
 generator: YamlWriter
 cantera-version: 3.1.0
 git-commit: '6e00275'
-date: Fri Aug 22 16:37:25 2025
+date: Fri Aug 22 17:41:48 2025
 units: {length: cm, quantity: mol, activation-energy: cal/mol}
 phases:
   - name: outputMech
@@ -16024,23 +16024,45 @@ reactions:
   - equation: IC4H8 <=> H + IC4H7-I1
     rate-constant: {A: 7.71e+69, b: -16.09, Ea: 1.4e+05}
   - equation: IC4H8 <=> C3H5-T + CH3
-    type: pressure-dependent-Arrhenius
-    rate-constants:
-      - {P: 1.01325e+04, A: 1.26e+94, b: -22.99, Ea: 1.34024e+05}
-      - {P: 1.01325e+05, A: 6.76e+93, b: -22.51, Ea: 1.37933e+05}
-      - {P: 3.546375e+05, A: 3.14e+90, b: -21.37, Ea: 1.37866e+05}
-      - {P: 1.01325e+06, A: 9.2e+85, b: -19.94, Ea: 1.36498e+05}
-      - {P: 3.546375e+06, A: 6.05e+78, b: -17.76, Ea: 1.33437e+05}
-      - {P: 1.01325e+07, A: 4.87e+71, b: -15.65, Ea: 1.29919e+05}
+    type: linear-Burke
+    colliders:
+      - name: M
+        type: pressure-dependent-Arrhenius
+        rate-constants:
+          - {P: 1.01325e+04, A: 1.26e+94, b: -22.99, Ea: 1.34024e+05}
+          - {P: 1.01325e+05, A: 6.76e+93, b: -22.51, Ea: 1.37933e+05}
+          - {P: 3.546375e+05, A: 3.14e+90, b: -21.37, Ea: 1.37866e+05}
+          - {P: 1.01325e+06, A: 9.2e+85, b: -19.94, Ea: 1.36498e+05}
+          - {P: 3.546375e+06, A: 6.05e+78, b: -17.76, Ea: 1.33437e+05}
+          - {P: 1.01325e+07, A: 4.87e+71, b: -15.65, Ea: 1.29919e+05}
+      - name: HE
+        efficiency: {A: 2.61540764, b: -0.12483206, Ea: 0.01195202402246654}
+      - name: H2
+        efficiency: {A: 19.83369234, b: -0.3548507, Ea: 0.01193402797562142}
+      - name: N2
+        efficiency: {A: 1.04879401, b: 0.014915, Ea: 0.01195657329110899}
+      - name: O2
+        efficiency: {A: 2.78619378, b: -0.11362748, Ea: 0.01195339454110899}
   - equation: IC4H8 <=> H + IC4H7
-    type: pressure-dependent-Arrhenius
-    rate-constants:
-      - {P: 1.01325e+04, A: 7.51e+95, b: -23.38, Ea: 1.29214e+05}
-      - {P: 1.01325e+05, A: 3.59e+88, b: -20.99, Ea: 1.27813e+05}
-      - {P: 3.546375e+05, A: 2.96e+82, b: -19.12, Ea: 1.25456e+05}
-      - {P: 1.01325e+06, A: 2.13e+76, b: -17.27, Ea: 1.22629e+05}
-      - {P: 3.546375e+06, A: 1.13e+68, b: -14.82, Ea: 1.18416e+05}
-      - {P: 1.01325e+07, A: 4.73e+60, b: -12.66, Ea: 1.14404e+05}
+    type: linear-Burke
+    colliders:
+      - name: M
+        type: pressure-dependent-Arrhenius
+        rate-constants:
+          - {P: 1.01325e+04, A: 7.51e+95, b: -23.38, Ea: 1.29214e+05}
+          - {P: 1.01325e+05, A: 3.59e+88, b: -20.99, Ea: 1.27813e+05}
+          - {P: 3.546375e+05, A: 2.96e+82, b: -19.12, Ea: 1.25456e+05}
+          - {P: 1.01325e+06, A: 2.13e+76, b: -17.27, Ea: 1.22629e+05}
+          - {P: 3.546375e+06, A: 1.13e+68, b: -14.82, Ea: 1.18416e+05}
+          - {P: 1.01325e+07, A: 4.73e+60, b: -12.66, Ea: 1.14404e+05}
+      - name: HE
+        efficiency: {A: 2.61540764, b: -0.12483206, Ea: 0.01195202402246654}
+      - name: H2
+        efficiency: {A: 19.83369234, b: -0.3548507, Ea: 0.01193402797562142}
+      - name: N2
+        efficiency: {A: 1.04879401, b: 0.014915, Ea: 0.01195657329110899}
+      - name: O2
+        efficiency: {A: 2.78619378, b: -0.11362748, Ea: 0.01195339454110899}
   - equation: IC4H8 + OH <=> H2O + IC4H7
     rate-constant: {A: 4.3950169e+04, b: 2.67841, Ea: -827.103}
   - equation: IC4H8 + O2 <=> HO2 + IC4H7
@@ -16601,23 +16623,89 @@ reactions:
       - {P: 1.01325e+07, A: 7.65e+31, b: -6.31, Ea: 6088.0}
       - {P: 1.01325e+07, A: 4.78e+47, b: -10.23, Ea: 2.3772e+04}
   - equation: C3H5-A + CH3 (+M) <=> C4H8-1 (+M)
-    type: falloff
-    low-P-rate-constant: {A: 3.91e+60, b: -12.81, Ea: 6250.0}
-    high-P-rate-constant: {A: 1.0e+14, b: -0.32, Ea: -262.3}
-    Troe: {A: 0.104, T3: 1606.0, T1: 6.0e+04, T2: 6118.4}
-    efficiencies: {AR: 0.7, C2H6: 3.0, CH4: 2.0, CO: 1.5, CO2: 2.0, H2: 2.0, H2O: 6.0}
+    type: linear-Burke
+    colliders:
+      - name: M
+        type: falloff
+        low-P-rate-constant: {A: 3.91e+60, b: -12.81, Ea: 6250.0}
+        high-P-rate-constant: {A: 1.0e+14, b: -0.32, Ea: -262.3}
+        Troe: {A: 0.104, T3: 1606.0, T1: 6.0e+04, T2: 6118.4}
+      - name: HE
+        efficiency: {A: 3.36049412, b: -0.17733788, Ea: 0.01194865033938815}
+      - name: H2
+        efficiency: {A: 25.37284616, b: -0.40680578, Ea: 0.01175551197657744}
+      - name: N2
+        efficiency: {A: 1.73813316, b: -0.09057985, Ea: 0.01210350638623327}
+      - name: O2
+        efficiency: {A: 3.5797273, b: -0.166126, Ea: 0.01194772570984704}
+      - name: AR
+        efficiency: {A: 0.7, b: 0.0, Ea: 0.0}
+      - name: C2H6
+        efficiency: {A: 3.0, b: 0.0, Ea: 0.0}
+      - name: CH4
+        efficiency: {A: 2.0, b: 0.0, Ea: 0.0}
+      - name: CO
+        efficiency: {A: 1.5, b: 0.0, Ea: 0.0}
+      - name: CO2
+        efficiency: {A: 2.0, b: 0.0, Ea: 0.0}
+      - name: H2O
+        efficiency: {A: 6.0, b: 0.0, Ea: 0.0}
   - equation: C2H3 + C2H5 (+M) <=> C4H8-1 (+M)
-    type: falloff
-    low-P-rate-constant: {A: 1.55e+56, b: -11.79, Ea: 8984.5}
-    high-P-rate-constant: {A: 1.5e+13, b: 0.0, Ea: 0.0}
-    Troe: {A: 0.198, T3: 2277.9, T1: 6.0e+04, T2: 5723.2}
-    efficiencies: {AR: 0.7, C2H6: 3.0, CH4: 2.0, CO: 1.5, CO2: 2.0, H2: 2.0, H2O: 6.0}
+    type: linear-Burke
+    colliders:
+      - name: M
+        type: falloff
+        low-P-rate-constant: {A: 1.55e+56, b: -11.79, Ea: 8984.5}
+        high-P-rate-constant: {A: 1.5e+13, b: 0.0, Ea: 0.0}
+        Troe: {A: 0.198, T3: 2277.9, T1: 6.0e+04, T2: 5723.2}
+      - name: HE
+        efficiency: {A: 2.61540772, b: -0.12483206, Ea: 0.01195202402246654}
+      - name: H2
+        efficiency: {A: 19.83369234, b: -0.3548507, Ea: 0.01193402797562142}
+      - name: N2
+        efficiency: {A: 1.04879401, b: 0.014915, Ea: 0.01195657329110899}
+      - name: O2
+        efficiency: {A: 2.78619378, b: -0.11362748, Ea: 0.01195339454110899}
+      - name: AR
+        efficiency: {A: 0.7, b: 0.0, Ea: 0.0}
+      - name: C2H6
+        efficiency: {A: 3.0, b: 0.0, Ea: 0.0}
+      - name: CH4
+        efficiency: {A: 2.0, b: 0.0, Ea: 0.0}
+      - name: CO
+        efficiency: {A: 1.5, b: 0.0, Ea: 0.0}
+      - name: CO2
+        efficiency: {A: 2.0, b: 0.0, Ea: 0.0}
+      - name: H2O
+        efficiency: {A: 6.0, b: 0.0, Ea: 0.0}
   - equation: C4H71-4 + H (+M) <=> C4H8-1 (+M)
-    type: falloff
-    low-P-rate-constant: {A: 3.01e+48, b: -9.32, Ea: 5833.6}
-    high-P-rate-constant: {A: 3.6e+13, b: 0.0, Ea: 0.0}
-    Troe: {A: 0.498, T3: 1314.0, T1: 1314.0, T2: 5.0e+04}
-    efficiencies: {AR: 0.7, C2H6: 3.0, CH4: 2.0, CO: 1.5, CO2: 2.0, H2: 2.0, H2O: 6.0}
+    type: linear-Burke
+    colliders:
+      - name: M
+        type: falloff
+        low-P-rate-constant: {A: 3.01e+48, b: -9.32, Ea: 5833.6}
+        high-P-rate-constant: {A: 3.6e+13, b: 0.0, Ea: 0.0}
+        Troe: {A: 0.498, T3: 1314.0, T1: 1314.0, T2: 5.0e+04}
+      - name: HE
+        efficiency: {A: 3.36049412, b: -0.17733788, Ea: 0.01194865033938815}
+      - name: H2
+        efficiency: {A: 25.37284616, b: -0.40680578, Ea: 0.01175551197657744}
+      - name: N2
+        efficiency: {A: 1.73813316, b: -0.09057985, Ea: 0.01210350638623327}
+      - name: O2
+        efficiency: {A: 3.5797273, b: -0.166126, Ea: 0.01194772570984704}
+      - name: AR
+        efficiency: {A: 0.7, b: 0.0, Ea: 0.0}
+      - name: C2H6
+        efficiency: {A: 3.0, b: 0.0, Ea: 0.0}
+      - name: CH4
+        efficiency: {A: 2.0, b: 0.0, Ea: 0.0}
+      - name: CO
+        efficiency: {A: 1.5, b: 0.0, Ea: 0.0}
+      - name: CO2
+        efficiency: {A: 2.0, b: 0.0, Ea: 0.0}
+      - name: H2O
+        efficiency: {A: 6.0, b: 0.0, Ea: 0.0}
   - equation: C4H71-3 + H <=> C4H8-1
     rate-constant: {A: 5.0e+13, b: 0.0, Ea: 5000.0}
   - equation: C4H8-1 + OH <=> C4H71-1 + H2O
@@ -17317,12 +17405,37 @@ reactions:
   - equation: C4H71-3 + CH3O <=> C4H8-1 + CH2O
     rate-constant: {A: 2.41e+13, b: 0.0, Ea: 0.0}
   - equation: C3H5-S + CH3 (+M) <=> C4H8-2 (+M)
-    type: falloff
-    low-P-rate-constant: {A: 8.54e+58, b: -11.94, Ea: 9769.8}
-    high-P-rate-constant: {A: 5.0e+13, b: 0.0, Ea: 0.0}
-    Troe: {A: 0.175, T3: 1340.6, T1: 6.0e+04, T2: 1.01398e+04}
-    efficiencies: {AR: 0.7, C2H2: 3.0, C2H4: 3.0, C2H6: 3.0, CH4: 2.0, CO: 1.5, CO2: 2.0,
-    H2: 2.0, H2O: 6.0}
+    type: linear-Burke
+    colliders:
+      - name: M
+        type: falloff
+        low-P-rate-constant: {A: 8.54e+58, b: -11.94, Ea: 9769.8}
+        high-P-rate-constant: {A: 5.0e+13, b: 0.0, Ea: 0.0}
+        Troe: {A: 0.175, T3: 1340.6, T1: 6.0e+04, T2: 1.01398e+04}
+      - name: HE
+        efficiency: {A: 2.61540772, b: -0.12483206, Ea: 0.01195202402246654}
+      - name: H2
+        efficiency: {A: 19.83369234, b: -0.3548507, Ea: 0.01193402797562142}
+      - name: N2
+        efficiency: {A: 1.04879401, b: 0.014915, Ea: 0.01195657329110899}
+      - name: O2
+        efficiency: {A: 2.78619378, b: -0.11362748, Ea: 0.01195339454110899}
+      - name: AR
+        efficiency: {A: 0.7, b: 0.0, Ea: 0.0}
+      - name: C2H2
+        efficiency: {A: 3.0, b: 0.0, Ea: 0.0}
+      - name: C2H4
+        efficiency: {A: 3.0, b: 0.0, Ea: 0.0}
+      - name: C2H6
+        efficiency: {A: 3.0, b: 0.0, Ea: 0.0}
+      - name: CH4
+        efficiency: {A: 2.0, b: 0.0, Ea: 0.0}
+      - name: CO
+        efficiency: {A: 1.5, b: 0.0, Ea: 0.0}
+      - name: CO2
+        efficiency: {A: 2.0, b: 0.0, Ea: 0.0}
+      - name: H2O
+        efficiency: {A: 6.0, b: 0.0, Ea: 0.0}
   - equation: C4H8-2 <=> C3H5-A + CH3
     rate-constant: {A: 7.5e+65, b: -15.6, Ea: 9.73e+04}
   - equation: C4H8-2 <=> C4H71-3 + H
