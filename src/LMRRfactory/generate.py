@@ -58,6 +58,9 @@ class makeYAML:
         data_path = str(files("LMRRfactory"))
         mech_obj = ct.Solution(self.mechInput)
         self._lookForPdep(mech_obj) # Verify that 'mech' has >=1 relevant p-dep reaction
+        sp_dict = {}
+        for sp in mech_obj.species():
+            sp_dict[sp.name] = sp.composition
         data = {
             'mech_obj': mech_obj,
             'mech_pes': self._getPES(mech_obj),
