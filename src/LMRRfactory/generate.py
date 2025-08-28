@@ -141,7 +141,7 @@ class makeYAML:
             newCollList = []
             for col in defaultRxn['colliders']:
                 # print(col)
-                if col['composition'] in set(data['species_dict'].values()):
+                if col['composition'] in list(data['species_dict'].values()):
                     newCollList.append(col)
             defaultRxn['colliders'] = newCollList
             blendData['reactions'].append(defaultRxn)
@@ -156,7 +156,7 @@ class makeYAML:
                         # If reference colliders match, append new colliders, otherwise override with the user inputs
                         if inputRxn['reference-collider'] == blendRxn['reference-collider']:
                             newColliders = [col for col in inputRxn['colliders']
-                                            if col['composition'] in set(data['species_dict'].values())]
+                                            if col['composition'] in list(data['species_dict'].values())]
                             blendRxn['colliders'].extend(newColliders)
                         else:
                             print(f"User-provided reference collider for {inputRxn['equation']}, "
@@ -167,11 +167,11 @@ class makeYAML:
                                 f"the user's custom input values.")
                             blendRxn['reference-collider'] = inputRxn['reference-collider']
                             newColliders = [col for col in inputRxn['colliders']
-                                            if col['composition'] in set(data['species_dict'].values())]
+                                            if col['composition'] in list(data['species_dict'].values())]
                             blendRxn['colliders'] = newColliders
                             # blendRxn['colliders'] = inputRxn['colliders']
                     else:
-                        if all(col['composition'] in set(data['species_dict'].values()) for col in inputRxn['colliders']):
+                        if all(col['composition'] in list(data['species_dict'].values()) for col in inputRxn['colliders']):
                             blendData['reactions'].append(inputRxn)
         data['blend']=blendData
         # print(blendData)
@@ -243,7 +243,7 @@ class makeYAML:
                         col['efficiency']=np.divide(1,col['efficiency'])
                         colliders.append(self._arrheniusFit(col))
                         colliderNames.append(col['composition'])
-                    elif col['composition'] in set(data['species_dict'].values()):
+                    elif col['composition'] in list(data['species_dict'].values()):
                         # print(col['efficiency'])
                         for i in range(len(divisors)):
                             try:
@@ -269,7 +269,7 @@ class makeYAML:
             if generic:
                 for col in data['defaults']['generic-colliders']:
                     already_given = col['composition'] in colliderNames
-                    if col['composition'] in set(data['species_dict'].keys()) and not already_given and not col['composition']=={'N': 2}:
+                    if col['composition'] in list(data['species_dict'].keys()) and not already_given and not col['composition']=={'N': 2}:
                         if col.get('temperatures') is not None:
                             col['efficiency'] = np.divide(col['efficiency'],divisor)
                             colliders.append(self._arrheniusFit(col))
@@ -283,7 +283,7 @@ class makeYAML:
             if blend_rxn:
                 # Make reaction-specific colliders wrt Ar and append to collider list 
                 for col in blend_rxn['colliders']:
-                    if col['composition'] in set(data['species_dict'].values()):
+                    if col['composition'] in list(data['species_dict'].values()):
                         colliders.append(self._arrheniusFit(col))
                         colliderNames.append(col['composition'])
             # Add troe efficiencies that haven't already been given a value
@@ -301,7 +301,7 @@ class makeYAML:
             if generic:
                 for col in data['defaults']['generic-colliders']:
                     already_given = col['composition'] in colliderNames
-                    if col['composition'] in set(data['species_dict'].values()) and not already_given and not col['composition']=={'Ar': 1}:
+                    if col['composition'] in list(data['species_dict'].values()) and not already_given and not col['composition']=={'Ar': 1}:
                         if col.get('temperatures') is not None:
                             colliders.append(self._arrheniusFit(col))
                         else:
