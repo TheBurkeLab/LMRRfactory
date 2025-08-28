@@ -41,7 +41,7 @@ class makeYAML:
             if allPdep:
                 self.allPdep = True
                 self.foutName = self.foutName + "_allP"
-            self.data = self.generateYAML()
+            self.data = self._generateYAML()
         if lmrrInput:
             try:
                 with open(lmrrInput) as f:
@@ -53,16 +53,16 @@ class makeYAML:
 
         
 
-    def generateYAML(self):
+    def _generateYAML(self):
         # data_path = pkg_resources.resource_filename('LMRRfactory', '/')
         data_path = str(files("LMRRfactory"))
         mech_obj = ct.Solution(self.mechInput)
-        self.lookForPdep(mech_obj) # Verify that 'mech' has >=1 relevant p-dep reaction
+        self._lookForPdep(mech_obj) # Verify that 'mech' has >=1 relevant p-dep reaction
         data = {
             'mech_obj': mech_obj,
-            'mech_pes': self.getPES(mech_obj),
-            'defaults': self.loadYAML(data_path+'/'+"thirdbodydefaults.yaml"),
-            'input': self.loadYAML(self.colliderInput) if self.colliderInput is not None else None,
+            'mech_pes': self._getPES(mech_obj),
+            'defaults': self._loadYAML(data_path+'/'+"thirdbodydefaults.yaml"),
+            'input': self._loadYAML(self.colliderInput) if self.colliderInput is not None else None,
             'allPdep': self.allPdep, # True or False
             'species_dict': sp_dict,
         }
@@ -70,13 +70,13 @@ class makeYAML:
         # yml = self.loadYAML(self.mechInput)
         # data['extras'] = [yml[]]
         # Remove defaults colliders and reactions that were explictly provided by user
-        self.deleteDuplicates(data)
+        self._deleteDuplicates(data)
         # Blend the user inputs and remaining collider defaults into a single YAML
-        self.blendedInput(data)
+        self._blendedInput(data)
         # Sub the colliders into their corresponding reactions in the input mechanism
-        self.zippedMech(data)
+        self._zippedMech(data)
         # self.validate(data['output'])
-        self.saveYAML(data['output'], self.foutName+".yaml")
+        self._saveYAML(data['output'], self.foutName+".yaml")
         print(f"LMR-R mechanism successfully generated and stored at "
             f"{self.foutName}.yaml")
         return data['output']
@@ -238,7 +238,7 @@ class makeYAML:
                         col['composition']={'Ar': 1}
                         col['name']=next(k for k, v in data['species_dict'].items() if v == col['composition'])
                         col['efficiency']=np.divide(1,col['efficiency'])
-                        colliders.append(self.arrheniusFit(col))
+                        colliders.append(self._arrheniusFit(col))
                         colliderNames.append(col['composition'])
                     elif col['composition'] in set(data['species_dict'].values()):
                         # print(col['efficiency'])
@@ -249,7 +249,7 @@ class makeYAML:
                             except:
                                 pass
                         # print(col['efficiency'])
-                        colliders.append(self.arrheniusFit(col))
+                        colliders.append(self._arrheniusFit(col))
                         colliderNames.append(col['composition'])
             colliderNames=set(colliderNames)
             # Add troe efficiencies that haven't already been given a value
@@ -269,7 +269,7 @@ class makeYAML:
                     if col['composition'] in set(data['species_dict'].keys()) and not already_given and not col['composition']=={'N': 2}:
                         if col.get('temperatures') is not None:
                             col['efficiency'] = np.divide(col['efficiency'],divisor)
-                            colliders.append(self.arrheniusFit(col))
+                            colliders.append(self._arrheniusFit(col))
                         else:
                             colliders.append({
                                 'name': next(k for k, v in data['species_dict'].items() if v == col['composition']),
@@ -281,7 +281,7 @@ class makeYAML:
                 # Make reaction-specific colliders wrt Ar and append to collider list 
                 for col in blend_rxn['colliders']:
                     if col['composition'] in set(data['species_dict'].values()):
-                        colliders.append(self.arrheniusFit(col))
+                        colliders.append(self._arrheniusFit(col))
                         colliderNames.append(col['composition'])
             # Add troe efficiencies that haven't already been given a value
             for name, val in troe_efficiencies.items():
@@ -300,7 +300,7 @@ class makeYAML:
                     already_given = col['composition'] in colliderNames
                     if col['composition'] in set(data['species_dict'].values()) and not already_given and not col['composition']=={'Ar': 1}:
                         if col.get('temperatures') is not None:
-                            colliders.append(self.arrheniusFit(col))
+                            colliders.append(self._arrheniusFit(col))
                         else:
                             colliders.append({
                                 'name': next(k for k, v in data['species_dict'].items() if v == col['composition']),
@@ -312,13 +312,13 @@ class makeYAML:
 
     def _to_builtin(self, obj):
         if isinstance(obj, dict):
-            return {self.to_builtin(k): self.to_builtin(v) for k, v in obj.items()}
+            return {self._to_builtin(k): self._to_builtin(v) for k, v in obj.items()}
         elif isinstance(obj, list):
-            return [self.to_builtin(i) for i in obj]
+            return [self._to_builtin(i) for i in obj]
         elif hasattr(obj, 'as_dict'):
-            return self.to_builtin(obj.as_dict())
+            return self._to_builtin(obj.as_dict())
         elif hasattr(obj, '__dict__'):
-            return self.to_builtin(vars(obj))
+            return self._to_builtin(vars(obj))
         elif hasattr(obj, 'tolist'):  # NumPy arrays or similar
             return obj.tolist()
         else:
@@ -356,10 +356,10 @@ class makeYAML:
                 
                 pDep = True
                 if mech_rxn.reaction_type == 'three-body-linear-Burke':
-                    d = self.to_builtin(mech_rxn.input_data['colliders'][0]) #use the pdep format given for collider M when rebuilding the reaction
+                    d = self._to_builtin(mech_rxn.input_data['colliders'][0]) #use the pdep format given for collider M when rebuilding the reaction
                     d.pop("name")
                 else:
-                    d = self.to_builtin(mech_rxn.input_data)
+                    d = self._to_builtin(mech_rxn.input_data)
                     d.pop("equation")
                     d.pop("efficiencies",None) #only applies to Troe reactions
                 d.pop("duplicate", None)
@@ -377,12 +377,12 @@ class makeYAML:
                     # rxn is specifically covered either in defaults or user input
                     idx = blendRxnNames.index(data['mech_pes'][i])
                     blend_rxn = data['blend']['reactions'][idx]
-                    colliders = self.colliders(data,mech_rxn,blend_rxn=blend_rxn)
+                    colliders = self._colliders(data,mech_rxn,blend_rxn=blend_rxn)
                     param_type = "ab initio"
                 elif data ['allPdep']:
-                    colliders = self.colliders(data,mech_rxn,generic=True)
+                    colliders = self._colliders(data,mech_rxn,generic=True)
                     param_type = "generic"
-                d = self.to_builtin(mech_rxn.input_data)
+                d = self._to_builtin(mech_rxn.input_data)
                 newRxn = {
                     'equation': mech_rxn.equation,
                     **({'duplicate': True} if d.get('duplicate') else {}),
@@ -428,7 +428,7 @@ class makeYAML:
         dataSet.write_yaml(filename=fName,
                 units={'length': 'cm', 'time': 's', 'quantity': 'mol', 'activation-energy': 'cal/mol'})
         # Resave it to remove formatting inconsistencies
-        dat = self.loadYAML(fName)
+        dat = self._loadYAML(fName)
         with open(fName, 'w') as outfile:
             yaml.dump(copy.deepcopy(dat), outfile,
                     default_flow_style=None,
