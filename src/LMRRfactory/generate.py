@@ -1,4 +1,3 @@
-# datapath = pkg_resources.resource_filename('LMRRfactory', 'data') + "/"
 import yaml
 import numpy as np
 from scipy.optimize import least_squares
@@ -6,7 +5,6 @@ import copy
 from collections import Counter
 import re
 import os
-# import pkg_resources
 from importlib.resources import files
 import cantera as ct
 import warnings
@@ -49,26 +47,20 @@ class makeYAML:
                 self.foutName = path + lmrrInput.replace(".yaml","")
             except FileNotFoundError:
                 print(f"Error: The file '{lmrrInput}' was not found.")
-
-
-        
-
     def _generateYAML(self):
         # data_path = pkg_resources.resource_filename('LMRRfactory', '/')
         data_path = str(files("LMRRfactory"))
         mech_obj = ct.Solution(self.mechInput)
         self._lookForPdep(mech_obj) # Verify that 'mech' has >=1 relevant p-dep reaction
-        sp_dict = {}
-        for sp in mech_obj.species():
-            sp_dict[sp.name] = sp.composition
         data = {
             'mech_obj': mech_obj,
             'mech_pes': self._getPES(mech_obj),
             'defaults': self._loadYAML(data_path+'/'+"thirdbodydefaults.yaml"),
             'input': self._loadYAML(self.colliderInput) if self.colliderInput is not None else None,
             'allPdep': self.allPdep, # True or False
-            'species_dict': sp_dict,
         }
+        # normalize species as uppercase
+        self._normalizedKeys(data)
 
         # yml = self.loadYAML(self.mechInput)
         # data['extras'] = [yml[]]
@@ -83,6 +75,27 @@ class makeYAML:
         print(f"LMR-R mechanism successfully generated and stored at "
             f"{self.foutName}.yaml")
         return data['output']
+
+    def _normalizedKeys(self,data):
+        def capitalize(dict):
+            return {k.capitalize(): v for k, v in dict.items()}
+        for defaultRxn in data['defaults']['reactions']:
+            # print(defaultRxn)
+            for col in defaultRxn['colliders']:
+                col['composition'] = capitalize(col['composition'])
+            defaultRxn['reference-collider'] = defaultRxn['reference-collider'].upper()
+            defaultRxn['pes'] = capitalize(defaultRxn['pes'])
+            # print(defaultRxn)
+        if data.get('input') is not None and data['input'].get('reactions') is not None:
+            for inputRxn in data['input']['reactions']:
+                for col in inputRxn['colliders']:
+                    col['composition'] = capitalize(col['composition'])
+                inputRxn['reference-collider'] = inputRxn['reference-collider'].upper()
+                inputRxn['pes'] = capitalize(inputRxn['pes'])
+        sp_dict = {}
+        for sp in data['mech_obj'].species():
+            sp_dict[sp.name.upper()] = dict(sp.composition.items())
+        data['species_dict']=sp_dict
 
     def _lookForPdep(self, gas):
         if not any(
@@ -133,6 +146,8 @@ class makeYAML:
                 newData['reactions'].append(defaultRxn)
         data['defaults']=newData
 
+    
+
     def _blendedInput(self, data):
         blendData = {'reactions': []}
         
@@ -140,7 +155,6 @@ class makeYAML:
         for defaultRxn in data['defaults']['reactions']:
             newCollList = []
             for col in defaultRxn['colliders']:
-                # print(col)
                 if col['composition'] in list(data['species_dict'].values()):
                     newCollList.append(col)
             defaultRxn['colliders'] = newCollList
@@ -201,9 +215,11 @@ class makeYAML:
         colliderNames=[]
         is_M_N2 = False
         troe_efficiencies={}
+
         # print(mech_rxn.reaction_type)
         if mech_rxn.reaction_type == 'falloff-Troe':
             troe_efficiencies= mech_rxn.input_data.get('efficiencies', {})
+            print(troe_efficiencies)
             # for sp_name in list(troe_efficiencies_raw.keys()):
             #     # [disregard] make the keys the compositions instead of species names
             #     troe_efficiencies[sp_name] = troe_efficiencies_raw[sp_name]
@@ -211,19 +227,28 @@ class makeYAML:
 
             # print(troe_efficiencies)
         elif mech_rxn.reaction_type == 'three-body-linear-Burke': #case where we've used the linear Burke format so that Troe params can be used alongside a PLOG 
+            # for c, col in enumerate(mech_rxn.input_data.get('colliders', {})):
+            #     if col['name'].upper() == 'AR':
+
             for c, col in enumerate(mech_rxn.input_data.get('colliders', {})):
                 if c>0 and col['efficiency']['b']==0 and col['efficiency']['Ea']==0:
 
                     troe_efficiencies[col['name']]=col['efficiency']['A'] ## WHY ARE WE USING TROE EFFICIENCIES HERE
+        
         for name, val in troe_efficiencies.items():
+            # print(name)
             comp = data['species_dict'][name]
+            # print(comp)
+            # comp = self._normalizedKeys(data['species_dict'][name])
+            # comp = {k.upper(): v for k, v in data['species_dict'][name].items()}
             # Check if N2 is the reference collider instead of Ar
-            if comp=={'Ar': 1} and val!=0 and val !=1:
+            if comp=={'AR': 1} and val!=0 and val !=1:
                 is_M_N2 = True
                 divisor = 1/val #ratio of N2:Ar
-            if comp=={'Ar': 1} and val==0 :
+            if comp=={'AR': 1} and val==0 :
                 is_M_N2 = True
                 divisor = 1 #imperfect solution, doesn't scale colliders, i.e. 1/val, to avoid dividing by zero but still acknowledges that rxn is w.r.t. N2
+
             # Give warning if both Ar and N2 are non-unity colliders
             if is_M_N2 and comp=={'N': 2} and val!=0 and val !=1:
                 print(f"Warning: {mech_rxn} has both Ar and N2 as non-unity colliders!")
@@ -232,13 +257,14 @@ class makeYAML:
                 divisors=[]
                 # Extract T-dependent values for N2 if blend_rxn is provided
                 for col in blend_rxn['colliders']:
+                    
                     if col['composition']=={'N': 2}:
                         divisors.append(col['efficiency']) #T-dep divisor of length 2 or 3
                 # Make reaction-specific colliders wrt N2 and append to collider list 
                 for col in blend_rxn['colliders']:
                     #Convert N2:Ar database entry to Ar:N2
                     if col['composition']=={'N': 2}:
-                        col['composition']={'Ar': 1}
+                        col['composition']={'AR': 1}
                         col['name']=next(k for k, v in data['species_dict'].items() if v == col['composition'])
                         col['efficiency']=np.divide(1,col['efficiency'])
                         colliders.append(self._arrheniusFit(col))
@@ -291,7 +317,7 @@ class makeYAML:
                 comp = data['species_dict'][name]
                 # already_given = any(col['name'] == name for col in colliders)
                 already_given = comp in colliderNames
-                if not already_given and not comp=={'Ar': 1}:
+                if not already_given and not comp=={'AR': 1}:
                     colliders.append({
                         'name': next(k for k, v in data['species_dict'].items() if v == comp),
                         'efficiency': {'A':val,'b':0,'Ea':0 },
@@ -301,7 +327,7 @@ class makeYAML:
             if generic:
                 for col in data['defaults']['generic-colliders']:
                     already_given = col['composition'] in colliderNames
-                    if col['composition'] in list(data['species_dict'].values()) and not already_given and not col['composition']=={'Ar': 1}:
+                    if col['composition'] in list(data['species_dict'].values()) and not already_given and not col['composition']=={'AR': 1}:
                         if col.get('temperatures') is not None:
                             colliders.append(self._arrheniusFit(col))
                         else:
@@ -351,7 +377,7 @@ class makeYAML:
         blendRxnNames = [rxn['pes'] for rxn in data['blend']['reactions']]
         # for mech_rxn in data['mech']['reactions']:
         for i, mech_rxn in enumerate(data['mech_obj'].reactions()):
-            print(mech_rxn)
+            # print(mech_rxn)
             # print(blendRxnNames)
             pDep = False
             # Create the M-collider entry for the pressure-dependent reactions
