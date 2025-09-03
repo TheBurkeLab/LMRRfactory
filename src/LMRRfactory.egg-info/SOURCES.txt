@@ -2,6 +2,7 @@ README.md
 pyproject.toml
 src/LMRRfactory/Untitled-1.yaml
 src/LMRRfactory/__init__.py
+src/LMRRfactory/compareArrhenius.py
 src/LMRRfactory/generate.py
 src/LMRRfactory/generate_old.py
 src/LMRRfactory/removeduplicates.py

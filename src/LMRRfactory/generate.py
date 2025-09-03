@@ -24,6 +24,8 @@ class makeYAML:
         self.T_max = None
         self.rxnIdx = None
         self.colliderInput=None
+        self.units = self._loadYAML(mechInput).get("units",{})
+        self.R = self._gas_constant()
         # self.allPdep is option to apply generic 3b-effs to all p-dep reactions in mechanism that haven't already been explicitly specified in either "thirdbodydefaults.yaml" or self.colliderInput
         self.allPdep = False
         os.makedirs(outputPath,exist_ok=True)
@@ -47,6 +49,26 @@ class makeYAML:
                 self.foutName = path + lmrrInput.replace(".yaml","")
             except FileNotFoundError:
                 print(f"Error: The file '{lmrrInput}' was not found.")
+
+    def _gas_constant(self):
+        ## WARNING: IF SOME REACTIONS HAVE THEIR OWN UNIT SYSTEM GIVEN IT WILL NOT BE ACCOUNTED FOR HERE AT THIS STEP
+        if not self.units or self.units.get("activation-energy") == "J/kmol":
+            R = ct.gas_constant # J/kmolK
+        elif self.units.get("activation-energy") == "J/mol" or self.units.get("activation-energy") == "kJ/kmol":
+            R = ct.gas_constant/1000   # J/molK or kJ/kmolK
+        elif self.units.get("activation-energy") == "kJ/mol":
+            R = ct.gas_constant/1e6   # kJ/molK
+        elif self.units.get("activation-energy") == "cal/mol" or self.units.get("activation-energy") == "kcal/kmol":
+            R = ct.gas_constant/4184   # cal/molK
+        elif self.units.get("activation-energy") == "cal/kmol":
+            R = ct.gas_constant/4184*1000   # cal/kmolK
+        elif self.units.get("activation-energy") == "kcal/mol":
+            R = ct.gas_constant/4184/1000   # kcal/molK
+        else: 
+            raise ValueError("Invalid unit system provided for activation-energy.")
+        return R
+
+
     def _generateYAML(self):
         # data_path = pkg_resources.resource_filename('LMRRfactory', '/')
         data_path = str(files("LMRRfactory"))
@@ -80,12 +102,10 @@ class makeYAML:
         def capitalize(dict):
             return {k.capitalize(): v for k, v in dict.items()}
         for defaultRxn in data['defaults']['reactions']:
-            # print(defaultRxn)
             for col in defaultRxn['colliders']:
                 col['composition'] = capitalize(col['composition'])
             defaultRxn['reference-collider'] = defaultRxn['reference-collider'].upper()
             defaultRxn['pes'] = capitalize(defaultRxn['pes'])
-            # print(defaultRxn)
         if data.get('input') is not None and data['input'].get('reactions') is not None:
             for inputRxn in data['input']['reactions']:
                 for col in inputRxn['colliders']:
@@ -188,23 +208,36 @@ class makeYAML:
                         if all(col['composition'] in list(data['species_dict'].values()) for col in inputRxn['colliders']):
                             blendData['reactions'].append(inputRxn)
         data['blend']=blendData
-        # print(blendData)
+    
+    
 
     def _arrheniusFit(self, col):
         newCol = copy.deepcopy(col)
         temps=np.array(newCol['temperatures'])
         eps = np.array(newCol['efficiency'])
-        def arrhenius_rate(T, A, beta, Ea):
-            # R = 1.987 # cal/molK
-            R = ct.gas_constant # J/kmolK
-            return A * T**beta * np.exp(-Ea / (R * T))
-        def fit_function(params, T, ln_eps):
-            A, beta, Ea = params
-            return np.log(arrhenius_rate(T, A, beta, Ea)) - ln_eps
-        initial_guess = [3, 0.5, 50.0]
-        result = least_squares(fit_function, initial_guess, args=(temps, np.log(eps)))
-        A_fit, beta_fit, Ea_fit = result.x
-        newCol['efficiency'] = {'A': float(round(A_fit.item(),8)),'b': float(round(beta_fit.item(),8)),'Ea': float(round(Ea_fit.item(),8))}
+        # print(temps)
+        # print(eps)
+        if len(temps) == 3 and len(eps) == 3:
+            def arrhenius_rate(T, A, beta, Ea):
+                # print(self.R)
+                return A * T**beta * np.exp(-Ea / (self.R * T))
+            def fit_function(params, T, ln_eps):
+                A, beta, Ea = params
+                return np.log(arrhenius_rate(T, A, beta, Ea)) - ln_eps
+            initial_guess = [3, 0.5, 5000]
+            result = least_squares(fit_function, initial_guess, args=(temps, np.log(eps)))
+            A_fit, beta_fit, Ea_fit = result.x
+            newCol['efficiency'] = {'A': float(round(A_fit.item(),8)),'b': float(round(beta_fit.item(),8)),'Ea': float(round(Ea_fit.item(),8))}
+        elif len(temps) == 2 and len (eps) == 2:
+            def arrhenius_rate(T, A, beta):
+                return A * T**beta
+            def fit_function(params, T, ln_eps):
+                A, beta = params
+                return np.log(arrhenius_rate(T, A, beta)) - ln_eps
+            initial_guess = [3, 0.5]
+            result = least_squares(fit_function, initial_guess, args=(temps, np.log(eps)))
+            A_fit, beta_fit = result.x
+            newCol['efficiency'] = {'A': float(round(A_fit.item(),8)),'b': float(round(beta_fit.item(),8)),'Ea': 0}
         newCol.pop('temperatures', None)
         newCol.pop('composition')
         return dict(newCol)
@@ -215,17 +248,12 @@ class makeYAML:
         colliderNames=[]
         is_M_N2 = False
         troe_efficiencies={}
-
-        # print(mech_rxn.reaction_type)
+        
         if mech_rxn.reaction_type == 'falloff-Troe':
             troe_efficiencies= mech_rxn.input_data.get('efficiencies', {})
-            print(troe_efficiencies)
             # for sp_name in list(troe_efficiencies_raw.keys()):
             #     # [disregard] make the keys the compositions instead of species names
             #     troe_efficiencies[sp_name] = troe_efficiencies_raw[sp_name]
-            #     print(troe_efficiencies)
-
-            # print(troe_efficiencies)
         elif mech_rxn.reaction_type == 'three-body-linear-Burke': #case where we've used the linear Burke format so that Troe params can be used alongside a PLOG 
             # for c, col in enumerate(mech_rxn.input_data.get('colliders', {})):
             #     if col['name'].upper() == 'AR':
@@ -236,16 +264,14 @@ class makeYAML:
                     troe_efficiencies[col['name']]=col['efficiency']['A'] ## WHY ARE WE USING TROE EFFICIENCIES HERE
         
         for name, val in troe_efficiencies.items():
-            # print(name)
             comp = data['species_dict'][name]
-            # print(comp)
             # comp = self._normalizedKeys(data['species_dict'][name])
             # comp = {k.upper(): v for k, v in data['species_dict'][name].items()}
             # Check if N2 is the reference collider instead of Ar
-            if comp=={'AR': 1} and val!=0 and val !=1:
+            if comp=={'Ar': 1} and val!=0 and val !=1:
                 is_M_N2 = True
                 divisor = 1/val #ratio of N2:Ar
-            if comp=={'AR': 1} and val==0 :
+            if comp=={'Ar': 1} and val==0 :
                 is_M_N2 = True
                 divisor = 1 #imperfect solution, doesn't scale colliders, i.e. 1/val, to avoid dividing by zero but still acknowledges that rxn is w.r.t. N2
 
@@ -259,28 +285,27 @@ class makeYAML:
                 for col in blend_rxn['colliders']:
                     
                     if col['composition']=={'N': 2}:
-                        divisors.append(col['efficiency']) #T-dep divisor of length 2 or 3
+                        divisors.extend(col['efficiency']) #T-dep divisor of length 2 or 3
                 # Make reaction-specific colliders wrt N2 and append to collider list 
                 for col in blend_rxn['colliders']:
                     #Convert N2:Ar database entry to Ar:N2
                     if col['composition']=={'N': 2}:
-                        col['composition']={'AR': 1}
+                        col['composition']={'Ar': 1}
                         col['name']=next(k for k, v in data['species_dict'].items() if v == col['composition'])
                         col['efficiency']=np.divide(1,col['efficiency'])
                         colliders.append(self._arrheniusFit(col))
                         colliderNames.append(col['composition'])
                     elif col['composition'] in list(data['species_dict'].values()):
-                        # print(col['efficiency'])
                         for i in range(len(divisors)):
                             try:
                                 col['efficiency'] = np.divide(col['efficiency'], divisors[i])
                                 break
                             except:
                                 pass
-                        # print(col['efficiency'])
                         colliders.append(self._arrheniusFit(col))
                         colliderNames.append(col['composition'])
-            colliderNames=set(colliderNames)
+                # print(divisors)
+            # colliderNames=set(colliderNames)
             # Add troe efficiencies that haven't already been given a value
             for name, val in troe_efficiencies.items():
                 comp = data['species_dict'][name]
@@ -317,7 +342,7 @@ class makeYAML:
                 comp = data['species_dict'][name]
                 # already_given = any(col['name'] == name for col in colliders)
                 already_given = comp in colliderNames
-                if not already_given and not comp=={'AR': 1}:
+                if not already_given and not comp=={'Ar': 1}:
                     colliders.append({
                         'name': next(k for k, v in data['species_dict'].items() if v == comp),
                         'efficiency': {'A':val,'b':0,'Ea':0 },
@@ -327,7 +352,7 @@ class makeYAML:
             if generic:
                 for col in data['defaults']['generic-colliders']:
                     already_given = col['composition'] in colliderNames
-                    if col['composition'] in list(data['species_dict'].values()) and not already_given and not col['composition']=={'AR': 1}:
+                    if col['composition'] in list(data['species_dict'].values()) and not already_given and not col['composition']=={'Ar': 1}:
                         if col.get('temperatures') is not None:
                             colliders.append(self._arrheniusFit(col))
                         else:
@@ -336,7 +361,8 @@ class makeYAML:
                                 'efficiency': {'A': col['efficiency'],'b':0,'Ea':0},
                                 'note': col['note']
                             })
-        # print(colliderNames)
+        print(colliders)
+        print(colliderNames)
         return colliders
 
     def _to_builtin(self, obj):
@@ -377,8 +403,6 @@ class makeYAML:
         blendRxnNames = [rxn['pes'] for rxn in data['blend']['reactions']]
         # for mech_rxn in data['mech']['reactions']:
         for i, mech_rxn in enumerate(data['mech_obj'].reactions()):
-            # print(mech_rxn)
-            # print(blendRxnNames)
             pDep = False
             # Create the M-collider entry for the pressure-dependent reactions
             if mech_rxn.reaction_type in ['falloff-Troe','pressure-dependent-Arrhenius','Chebyshev','three-body-linear-Burke']:
@@ -437,8 +461,6 @@ class makeYAML:
         #     'reactions': newReactions,
         #     'name': 'outputMech'
         # }
-        # print(data['mech_obj'].composite)
-        # print(data['mech_obj'].kinetics_model)
         output_data = {
             'thermo': data['mech_obj'].thermo_model,
             'kinetics': data['mech_obj'].kinetics_model,
@@ -455,7 +477,7 @@ class makeYAML:
     
     def _saveYAML(self, dataSet, fName):
         dataSet.write_yaml(filename=fName,
-                units={'length': 'cm', 'time': 's', 'quantity': 'mol', 'activation-energy': 'cal/mol'})
+                units=self.units)
         # Resave it to remove formatting inconsistencies
         dat = self._loadYAML(fName)
         with open(fName, 'w') as outfile:
