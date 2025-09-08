@@ -1,28 +1,58 @@
 import matplotlib.pyplot as plt
 import numpy as np
+import yaml
 import cantera as ct
 
-def compare(params,eps,temps):
-    Trange = np.linspace(temps[0],temps[-1])
-    A=params['A']
-    beta = params['b']
-    Ea=params['Ea']
-    ylist=[]
-    for T in Trange:
-        R = ct.gas_constant
-        # R=1.987
-        yval = A*T**(beta)*np.exp(-Ea/R/T)
-        ylist.append(yval)
-    plt.figure()
-    plt.plot(Trange,ylist)
-    plt.plot(temps,eps,linestyle="None",marker="o")
-    plt.savefig("comparison.png")
+def loadYAML(fName):
+    with open(fName) as f:
+        return yaml.safe_load(f)
+
+def compare(rxn,collider):
+    def arrhenius_rate(T, A, beta, Ea):
+        # R = 8314  # Gas constant in J/(mol K)
+        R = 1.987 # cal/molK
+        return A * T**beta * np.exp(-Ea / (R * T))
+    eps=False
+    defaults = loadYAML("/home/pjs/LMRRfactory/src/LMRRfactory/testdefaults.yaml")
+    for default_rxn in defaults['reactions']:
+        if default_rxn['name']==rxn['equation']:
+            for default_col in default_rxn['colliders']:
+                if default_col['name']==collider['name']:
+                    eps = default_col['efficiency']
+                    temps = default_col['temperatures']
+    params = collider['efficiency']
+    if eps:
+        print(rxn['equation'])
+        print(collider['name'])
+        print(eps)
+        print(temps)
+        print(params)
+        # Trange = np.linspace(temps[0],temps[-1])
+        Trange=np.linspace(200, 2000, 100)
+        A=params['A']
+        beta = params['b']
+        Ea=params['Ea']
+        print(A)
+        print(beta)
+        print(Ea)
+        fit_curve = np.exp(np.log(arrhenius_rate(Trange, A, beta, Ea)))
+        plt.figure()
+        plt.plot(Trange,fit_curve)
+        plt.plot(temps,eps,linestyle="None",marker="o")
+        plt.savefig(f"comparison_{rxn['equation']}_{collider['name']}.png")
             
+data = loadYAML("/home/pjs/LMRRfactory/test/outputs/Aug27/test_mech_LMRR.yaml")
+for rxn in data['reactions']:
+    if rxn.get('type')=="linear-Burke":
+        for collider in rxn['colliders']:
+            if collider['name']!='M':
+                # print(collider)
+                # print(collider['efficiency'])
+                compare(rxn,collider)
 
+# # compare({'A': 0.50157049, 'b': 0.45864512, 'Ea': 1.195280919474187},[6.83,12.0,16.3],[300,1000,2000])
 
-# compare({'A': 0.50157049, 'b': 0.45864512, 'Ea': 1.195280919474187},[6.83,12.0,16.3],[300,1000,2000])
-
-compare({'A': 0.64529544, 'b': 0.42626591, 'Ea': 42.89315626},[6.83,12.0,16.3],[300,1000,2000])
+# compare({'A': 0.64529544, 'b': 0.42626591, 'Ea': 42.89315626},[6.83,12.0,16.3],[300,1000,2000])
 
 
 

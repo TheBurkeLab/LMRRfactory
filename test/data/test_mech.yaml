@@ -10486,52 +10486,52 @@ reactions:
   low-P-rate-constant: {A: 2.49e+24, b: -2.3, Ea: 4.8749e+04}
   high-P-rate-constant: {A: 2.0e+12, b: 0.9, Ea: 4.8749e+04}
   Troe: {A: 0.43, T3: 1.0e-30, T1: 1.0e+30}
-  efficiencies: {H2O: 7.65, CO2: 1.6, AR: 0.5, O2: 1.2, HE: 0.65, H2O2: 7.7,
+  efficiencies: {H2O: 7.65, CO2: 1.6, AR: 1, O2: 1.2, HE: 0.65, H2O2: 7.7,
     H2: 3.7, CO: 2.8} #replaced N2 with AR=0.5 for the sake of this example (fake nums)
-- equation: H2O2 <=> 2 OH
-  type: Chebyshev
-  temperature-range: [200.0, 2000.0]
-  pressure-range: [1.000e-06 atm, 1.000e+12 atm]
-  data:  # H2O
-  - [-1.6277e+01, 2.7758e+00, -1.5044e+00, 3.8564e-01, 9.9066e-02, -1.2269e-01, 1.7862e-02]
-  - [2.3605e+01, 1.1186e+00, -3.0215e-01, -2.1508e-01, 1.7867e-01, 8.7804e-03, -9.6014e-02]
-  - [-1.2976e-01, 3.1303e-01, -3.0027e-02, -9.2806e-02, 2.5293e-02, 5.2097e-02, -3.8719e-02]
-  - [-5.1630e-02, 1.1301e-01, 2.1608e-03, -3.3707e-02, -1.5222e-03, 2.7843e-02, -5.4308e-03]
-  - [-2.1713e-02, 4.4744e-02, 4.5174e-03, -1.2882e-02, -3.2894e-03, 1.1651e-02, 1.9539e-03]
-  - [-7.0705e-03, 1.4278e-02, 1.9228e-03, -4.0470e-03, -1.3790e-03, 3.7883e-03, 1.2652e-03]
-  - [-6.7411e-03, 1.2488e-02, 2.8718e-03, -3.3437e-03, -1.9341e-03, 2.5131e-03, 2.4481e-03]
-- equation: H + O2 (+M) <=> HO2 (+M)
-  type: linear-Burke
-  colliders:
-  - name: M
-    type: falloff
-    low-P-rate-constant: {A: 1.737e+19, b: -1.23, Ea: 0.0}
-    high-P-rate-constant: {A: 4650000000000.0, b: 0.44, Ea: 0.0}
-    Troe: {A: 0.67, T3: 1.0e-30, T1: 1.0e+30, T2: 1.0e+30}
-  - name: HE
-    efficiency: {A: 0.00270228, b: 0.77583052, Ea: -504.68045554}
-    note: Jasper-2022
-  - name: AR
-    efficiency: {A: 0.00800436, b: 0.59326267, Ea: -540.92123387}
-    note: Jasper-2022
-  - name: H2
-    efficiency: {A: 251.11060145, b: -0.66093197, Ea: 588.31982634}
-    note: Jasper-2022
-  - name: CO2
-    efficiency: {A: 1300010.32857491, b: -1.68295489, Ea: 1429.31171551}
-    note: Jasper-2022
-  - name: H2O
-    efficiency: {A: 0.29547759, b: 0.52197251, Ea: -509.01255684}
-    note: Jasper-2022
-  - name: CO
-    efficiency: {A: 1.9, b: 0, Ea: 0}
-    note: present work
-  - name: CH4
-    efficiency: {A: 2.0, b: 0, Ea: 0}
-    note: present work
-  - name: C2H6
-    efficiency: {A: 3.0, b: 0, Ea: 0}
-    note: present work
+# - equation: H2O2 <=> 2 OH
+#   type: Chebyshev
+#   temperature-range: [200.0, 2000.0]
+#   pressure-range: [1.000e-06 atm, 1.000e+12 atm]
+#   data:  # H2O
+#   - [-1.6277e+01, 2.7758e+00, -1.5044e+00, 3.8564e-01, 9.9066e-02, -1.2269e-01, 1.7862e-02]
+#   - [2.3605e+01, 1.1186e+00, -3.0215e-01, -2.1508e-01, 1.7867e-01, 8.7804e-03, -9.6014e-02]
+#   - [-1.2976e-01, 3.1303e-01, -3.0027e-02, -9.2806e-02, 2.5293e-02, 5.2097e-02, -3.8719e-02]
+#   - [-5.1630e-02, 1.1301e-01, 2.1608e-03, -3.3707e-02, -1.5222e-03, 2.7843e-02, -5.4308e-03]
+#   - [-2.1713e-02, 4.4744e-02, 4.5174e-03, -1.2882e-02, -3.2894e-03, 1.1651e-02, 1.9539e-03]
+#   - [-7.0705e-03, 1.4278e-02, 1.9228e-03, -4.0470e-03, -1.3790e-03, 3.7883e-03, 1.2652e-03]
+#   - [-6.7411e-03, 1.2488e-02, 2.8718e-03, -3.3437e-03, -1.9341e-03, 2.5131e-03, 2.4481e-03]
+# - equation: H + O2 (+M) <=> HO2 (+M)
+#   type: linear-Burke
+#   colliders:
+#   - name: M
+#     type: falloff
+#     low-P-rate-constant: {A: 1.737e+19, b: -1.23, Ea: 0.0}
+#     high-P-rate-constant: {A: 4650000000000.0, b: 0.44, Ea: 0.0}
+#     Troe: {A: 0.67, T3: 1.0e-30, T1: 1.0e+30, T2: 1.0e+30}
+#   - name: HE
+#     efficiency: {A: 0.00270228, b: 0.77583052, Ea: -504.68045554}
+#     note: Jasper-2022
+#   - name: AR
+#     efficiency: {A: 0.00800436, b: 0.59326267, Ea: -540.92123387}
+#     note: Jasper-2022
+#   - name: H2
+#     efficiency: {A: 251.11060145, b: -0.66093197, Ea: 588.31982634}
+#     note: Jasper-2022
+#   - name: CO2
+#     efficiency: {A: 1300010.32857491, b: -1.68295489, Ea: 1429.31171551}
+#     note: Jasper-2022
+#   - name: H2O
+#     efficiency: {A: 0.29547759, b: 0.52197251, Ea: -509.01255684}
+#     note: Jasper-2022
+#   - name: CO
+#     efficiency: {A: 1.9, b: 0, Ea: 0}
+#     note: present work
+#   - name: CH4
+#     efficiency: {A: 2.0, b: 0, Ea: 0}
+#     note: present work
+#   - name: C2H6
+#     efficiency: {A: 3.0, b: 0, Ea: 0}
+#     note: present work
 - equation: AC3H5OCH2 <=> C2H3COCH3 + H  # Reaction 1764
   rate-constant: {A: 3.98e+18, b: -1.62, Ea: 3.01298e+04}
 - equation: AC3H5OCH2 <=> C3H6 + HCO  # Reaction 1765

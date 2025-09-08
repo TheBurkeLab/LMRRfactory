@@ -1,6 +1,7 @@
 import yaml
 import numpy as np
 from scipy.optimize import least_squares
+from scipy.optimize import curve_fit
 import copy
 from collections import Counter
 import re
@@ -25,7 +26,6 @@ class makeYAML:
         self.rxnIdx = None
         self.colliderInput=None
         self.units = self._loadYAML(mechInput).get("units",{})
-        self.R = self._gas_constant()
         # self.allPdep is option to apply generic 3b-effs to all p-dep reactions in mechanism that haven't already been explicitly specified in either "thirdbodydefaults.yaml" or self.colliderInput
         self.allPdep = False
         os.makedirs(outputPath,exist_ok=True)
@@ -49,25 +49,6 @@ class makeYAML:
                 self.foutName = path + lmrrInput.replace(".yaml","")
             except FileNotFoundError:
                 print(f"Error: The file '{lmrrInput}' was not found.")
-
-    def _gas_constant(self):
-        ## WARNING: IF SOME REACTIONS HAVE THEIR OWN UNIT SYSTEM GIVEN IT WILL NOT BE ACCOUNTED FOR HERE AT THIS STEP
-        if not self.units or self.units.get("activation-energy") == "J/kmol":
-            R = ct.gas_constant # J/kmolK
-        elif self.units.get("activation-energy") == "J/mol" or self.units.get("activation-energy") == "kJ/kmol":
-            R = ct.gas_constant/1000   # J/molK or kJ/kmolK
-        elif self.units.get("activation-energy") == "kJ/mol":
-            R = ct.gas_constant/1e6   # kJ/molK
-        elif self.units.get("activation-energy") == "cal/mol" or self.units.get("activation-energy") == "kcal/kmol":
-            R = ct.gas_constant/4184   # cal/molK
-        elif self.units.get("activation-energy") == "cal/kmol":
-            R = ct.gas_constant/4184*1000   # cal/kmolK
-        elif self.units.get("activation-energy") == "kcal/mol":
-            R = ct.gas_constant/4184/1000   # kcal/molK
-        else: 
-            raise ValueError("Invalid unit system provided for activation-energy.")
-        return R
-
 
     def _generateYAML(self):
         # data_path = pkg_resources.resource_filename('LMRRfactory', '/')
@@ -209,35 +190,22 @@ class makeYAML:
                             blendData['reactions'].append(inputRxn)
         data['blend']=blendData
     
-    
-
     def _arrheniusFit(self, col):
         newCol = copy.deepcopy(col)
         temps=np.array(newCol['temperatures'])
         eps = np.array(newCol['efficiency'])
-        # print(temps)
-        # print(eps)
         if len(temps) == 3 and len(eps) == 3:
             def arrhenius_rate(T, A, beta, Ea):
-                # print(self.R)
-                return A * T**beta * np.exp(-Ea / (self.R * T))
-            def fit_function(params, T, ln_eps):
-                A, beta, Ea = params
-                return np.log(arrhenius_rate(T, A, beta, Ea)) - ln_eps
-            initial_guess = [3, 0.5, 5000]
-            result = least_squares(fit_function, initial_guess, args=(temps, np.log(eps)))
-            A_fit, beta_fit, Ea_fit = result.x
-            newCol['efficiency'] = {'A': float(round(A_fit.item(),8)),'b': float(round(beta_fit.item(),8)),'Ea': float(round(Ea_fit.item(),8))}
+                return np.log(A) + beta*np.log(T)+ (-Ea/(ct.gas_constant*T))
+            popt, pcov = curve_fit(arrhenius_rate, temps, np.log(eps),maxfev = 3000000)
+            fits = [popt[0],popt[1],popt[2]]
         elif len(temps) == 2 and len (eps) == 2:
             def arrhenius_rate(T, A, beta):
-                return A * T**beta
-            def fit_function(params, T, ln_eps):
-                A, beta = params
-                return np.log(arrhenius_rate(T, A, beta)) - ln_eps
-            initial_guess = [3, 0.5]
-            result = least_squares(fit_function, initial_guess, args=(temps, np.log(eps)))
-            A_fit, beta_fit = result.x
-            newCol['efficiency'] = {'A': float(round(A_fit.item(),8)),'b': float(round(beta_fit.item(),8)),'Ea': 0}
+                return np.log(A) + beta*np.log(T)
+            popt, pcov = curve_fit(arrhenius_rate, temps, np.log(eps),maxfev = 3000000)
+            fits = [popt[0],popt[1],0.0]
+        fits = [float(fit) for fit in fits]
+        newCol['efficiency'] = {'A': fits[0],'b': fits[1],'Ea': fits[2]}
         newCol.pop('temperatures', None)
         newCol.pop('composition')
         return dict(newCol)
@@ -248,6 +216,7 @@ class makeYAML:
         colliderNames=[]
         is_M_N2 = False
         troe_efficiencies={}
+        # print(mech_rxn.input_data['equation'])
         
         if mech_rxn.reaction_type == 'falloff-Troe':
             troe_efficiencies= mech_rxn.input_data.get('efficiencies', {})
@@ -285,7 +254,7 @@ class makeYAML:
                 for col in blend_rxn['colliders']:
                     
                     if col['composition']=={'N': 2}:
-                        divisors.extend(col['efficiency']) #T-dep divisor of length 2 or 3
+                        divisors.extend(col['efficiency']) #T-dep divisor of length 2 or 39p^;
                 # Make reaction-specific colliders wrt N2 and append to collider list 
                 for col in blend_rxn['colliders']:
                     #Convert N2:Ar database entry to Ar:N2
@@ -361,8 +330,8 @@ class makeYAML:
                                 'efficiency': {'A': col['efficiency'],'b':0,'Ea':0},
                                 'note': col['note']
                             })
-        print(colliders)
-        print(colliderNames)
+        # print(colliders)
+        # print(colliderNames)
         return colliders
 
     def _to_builtin(self, obj):
