@@ -1,10 +1,10 @@
 generator: YamlWriter
 cantera-version: 3.1.0
 git-commit: 6e00275
-date: Tue Sep  9 18:09:37 2025
+date: Tue Sep  9 19:59:29 2025
 units: {length: cm, quantity: mol, activation-energy: cal/mol}
 phases:
-- name: outputMech
+- name: gas
   thermo: ideal-gas
   elements: [Ar, N, He, H, O, C]
   species: [AR, N2, HE, H2, H, O2, O, H2O, OH, OHV, H2O2, HO2, CO, CO2, HOCO, CH4,
@@ -7519,21 +7519,21 @@ reactions:
     high-P-rate-constant: {A: 2000000000000.0, b: 0.9, Ea: 48749.0}
     Troe: {A: 0.43, T3: 1.0e-30, T1: 1.0e+30}
   - name: N2
-    efficiency: {A: 1.14813005, b: 0.04600896, Ea: -2.924426131869025}
+    efficiency: {A: 1.148130045895506, b: 0.04600896151802571, Ea: -2.924426131867919}
   - name: CO2
-    efficiency: {A: 89.88391622, b: -0.42797367, Ea: 241.4172480999881}
+    efficiency: {A: 89.88391622414728, b: -0.4279736666780277, Ea: 241.417248099988}
   - name: H2O2
-    efficiency: {A: 0.64529544, b: 0.42626591, Ea: 42.89756557418977}
+    efficiency: {A: 0.6452954364079226, b: 0.4262659069287318, Ea: 42.89756557418883}
   - name: H2O
-    efficiency: {A: 1.36377291, b: 0.30659152, Ea: 210.1002166444647}
+    efficiency: {A: 1.363772906784677, b: 0.3065915210993134, Ea: 210.1002166444651}
   - name: HE
-    efficiency: {A: 0.18754314, b: 0.22413586, Ea: 0.0}
+    efficiency: {A: 0.1875431394167365, b: 0.2241358596644983, Ea: 0.0}
   - name: H2
-    efficiency: {A: 3.53525842, b: -0.07220041, Ea: 0.0}
+    efficiency: {A: 3.535258418368424, b: -0.07220041462850092, Ea: 0.0}
   - name: CO
-    efficiency: {A: 2.06652273, b: 0.03887179, Ea: 0.0}
+    efficiency: {A: 2.066522732852087, b: 0.03887178790402251, Ea: 0.0}
   - name: CH4
-    efficiency: {A: 160.86525406, b: -0.48030501, Ea: 0.0}
+    efficiency: {A: 160.8652540551794, b: -0.4803050058368646, Ea: 0.0}
   - name: O2
     efficiency: {A: 1.2, b: 0.0, Ea: 0.0}
 - equation: H + H2O2 <=> H2O + OH
@@ -7571,15 +7571,15 @@ reactions:
     high-P-rate-constant: {A: 4650000000000.0, b: 0.44, Ea: 0.0}
     Troe: {A: 0.67, T3: 1.0e-30, T1: 1.0e+30, T2: 1.0e+30}
   - name: HE
-    efficiency: {A: 0.19742732, b: 0.18256786, Ea: 36.24450379114723}
+    efficiency: {A: 0.1974273236061293, b: 0.1825678550781802, Ea: 36.24450379114794}
   - name: AR
-    efficiency: {A: 0.00800436, b: 0.59326267, Ea: -540.976839219338}
+    efficiency: {A: 0.008004364723914229, b: 0.5932626693302305, Ea: -540.9768392193379}
   - name: H2
-    efficiency: {A: 18346.02869921, b: -1.25419464, Ea: 1129.357143366035}
+    efficiency: {A: 18346.02869920795, b: -1.254194639876243, Ea: 1129.357143366035}
   - name: CO2
-    efficiency: {A: 94978175.58963102, b: -2.27621756, Ea: 1970.435484405954}
+    efficiency: {A: 94978175.58963102, b: -2.276217557453928, Ea: 1970.435484405953}
   - name: H2O
-    efficiency: {A: 21.5874612, b: -0.07129016, Ea: 31.91195715908222}
+    efficiency: {A: 21.58746119892811, b: -0.07129016411817347, Ea: 31.91195715908163}
   - name: C2H6
     efficiency: {A: 3.0, b: 0.0, Ea: 0.0}
   - name: CH4
@@ -7725,19 +7725,19 @@ reactions:
     high-P-rate-constant: {A: 1.27e+16, b: -0.63, Ea: 383.0}
     Troe: {A: 0.783, T3: 74.0, T1: 2941.0, T2: 6964.0}
   - name: HE
-    efficiency: {A: 0.0129507, b: 0.68436886, Ea: -258.2941749931334}
+    efficiency: {A: 0.01295069733844924, b: 0.6843688582399464, Ea: -258.2941749931345}
   - name: AR
-    efficiency: {A: 8.86177448, b: -0.31108531, Ea: 254.6721774784895}
+    efficiency: {A: 8.86177448037854, b: -0.3110853096537599, Ea: 254.6721774784897}
   - name: O2
-    efficiency: {A: 0.25035758, b: 0.2123772, Ea: -143.0112187338982}
+    efficiency: {A: 0.2503575821374613, b: 0.2123771958207863, Ea: -143.0112187338979}
   - name: H2
-    efficiency: {A: 0.39531608, b: 0.30484611, Ea: 1.166728616818834}
+    efficiency: {A: 0.395316080630637, b: 0.3048461081236808, Ea: 1.166728616817896}
   - name: CO2
-    efficiency: {A: 0.50062963, b: 0.1583388, Ea: -157.1792538762548}
+    efficiency: {A: 0.5006296340989723, b: 0.1583388018548014, Ea: -157.179253876256}
   - name: CH4
-    efficiency: {A: 5.88617793, b: -0.00832237, Ea: 389.3035803131262}
+    efficiency: {A: 5.886177930577425, b: -0.00832236950681411, Ea: 389.3035803131253}
   - name: H2O
-    efficiency: {A: 4.12188828, b: 0.07491031, Ea: 259.6104119522276}
+    efficiency: {A: 4.121888275681219, b: 0.07491031329142386, Ea: 259.6104119522269}
   - name: C2H6
     efficiency: {A: 3.0, b: 0.0, Ea: 0.0}
   - name: CO
@@ -7791,13 +7791,13 @@ reactions:
     high-P-rate-constant: {A: 2.5e+16, b: -0.8, Ea: 0.0}
     Troe: {A: 0.68, T3: 78.0, T1: 1995.0, T2: 5590.0}
   - name: HE
-    efficiency: {A: 0.17269033, b: 0.33854241, Ea: 0.0}
+    efficiency: {A: 0.1726903258896645, b: 0.3385424108018081, Ea: 0.0}
   - name: H2
-    efficiency: {A: 0.99984268, b: 0.18448277, Ea: 0.0}
+    efficiency: {A: 0.9998426771072535, b: 0.184482773138352, Ea: 0.0}
   - name: AR
-    efficiency: {A: 1.60888177, b: -0.10008263, Ea: 0.0}
+    efficiency: {A: 1.608881771770991, b: -0.1000826325915062, Ea: 0.0}
   - name: O2
-    efficiency: {A: 0.88494419, b: 0.05862868, Ea: 0.0}
+    efficiency: {A: 0.8849441871754078, b: 0.0586286771508102, Ea: 0.0}
   - name: C2H6
     efficiency: {A: 3.0, b: 0.0, Ea: 0.0}
   - name: CH4
@@ -8674,13 +8674,13 @@ reactions:
     high-P-rate-constant: {A: 2277000000000000.0, b: -0.69, Ea: 174.9}
     Troe: {A: 0.0, T3: 570.0, T1: 1.0e+30, T2: 1.0e+30}
   - name: HE
-    efficiency: {A: 0.54807821, b: 0.15933672, Ea: 0.0}
+    efficiency: {A: 0.5480782120847932, b: 0.1593367179098673, Ea: 0.0}
   - name: H2
-    efficiency: {A: 4.87668714, b: -0.07441469, Ea: 0.0}
+    efficiency: {A: 4.876687139964807, b: -0.07441469054262177, Ea: 0.0}
   - name: N2
-    efficiency: {A: 0.91223423, b: 0.04660272, Ea: 0.0}
+    efficiency: {A: 0.9122342323485488, b: 0.04660272310049555, Ea: 0.0}
   - name: O2
-    efficiency: {A: 1.28055383, b: -0.00423388, Ea: 0.0}
+    efficiency: {A: 1.280553827158673, b: -0.004233876487125533, Ea: 0.0}
   - name: CO
     efficiency: {A: 2.0, b: 0.0, Ea: 0.0}
   - name: CO2
@@ -8696,13 +8696,13 @@ reactions:
     high-P-rate-constant: {A: 5.21e+17, b: -0.99, Ea: 1580.0}
     Troe: {A: 0.842, T3: 125.0, T1: 2219.0, T2: 6882.0}
   - name: HE
-    efficiency: {A: 0.46056993, b: 0.15933672, Ea: 0.0}
+    efficiency: {A: 0.4605699261216751, b: 0.1593367179098673, Ea: 0.0}
   - name: H2
-    efficiency: {A: 4.09805642, b: -0.07441469, Ea: 0.0}
+    efficiency: {A: 4.098056420138494, b: -0.0744146905426218, Ea: 0.0}
   - name: AR
-    efficiency: {A: 1.09620968, b: -0.04660272, Ea: 0.0}
+    efficiency: {A: 1.096209684463932, b: -0.04660272310049561, Ea: 0.0}
   - name: O2
-    efficiency: {A: 1.07609565, b: -0.00423388, Ea: 0.0}
+    efficiency: {A: 1.076095653074515, b: -0.004233876487125506, Ea: 0.0}
   - name: C2H6
     efficiency: {A: 3.0, b: 0.0, Ea: 0.0}
   - name: CH4
@@ -8725,13 +8725,13 @@ reactions:
     - {P: 1013250.0, A: 21500000000.0, b: 0.885, Ea: 13532.5}
     - {P: 10132500.0, A: 103.2, b: 3.23, Ea: 11236.1}
   - name: HE
-    efficiency: {A: 0.46056993, b: 0.15933672, Ea: 0.0}
+    efficiency: {A: 0.4605699261216751, b: 0.1593367179098673, Ea: 0.0}
   - name: H2
-    efficiency: {A: 4.09805642, b: -0.07441469, Ea: 0.0}
+    efficiency: {A: 4.098056420138494, b: -0.0744146905426218, Ea: 0.0}
   - name: AR
-    efficiency: {A: 1.09620968, b: -0.04660272, Ea: 0.0}
+    efficiency: {A: 1.096209684463932, b: -0.04660272310049561, Ea: 0.0}
   - name: O2
-    efficiency: {A: 1.07609565, b: -0.00423388, Ea: 0.0}
+    efficiency: {A: 1.076095653074515, b: -0.004233876487125506, Ea: 0.0}
 - equation: C2H6 + O2 <=> C2H5 + HO2
   rate-constant: {A: 60300000000000.0, b: 0.0, Ea: 51870.0}
 - equation: C2H6 + O <=> C2H5 + OH
@@ -8763,13 +8763,13 @@ reactions:
     high-P-rate-constant: {A: 956900000.0, b: 1.463, Ea: 1355.0}
     Troe: {A: -0.569, T3: 299.0, T1: -9147.0, T2: 152.4}
   - name: HE
-    efficiency: {A: 1.04161758, b: 0.0395972, Ea: 0.0}
+    efficiency: {A: 1.041617584884906, b: 0.0395971952573295, Ea: 0.0}
   - name: H2
-    efficiency: {A: 7.57687727, b: -0.16028289, Ea: 0.0}
+    efficiency: {A: 7.576877272190479, b: -0.1602828944136333, Ea: 0.0}
   - name: AR
-    efficiency: {A: 1.47182097, b: -0.0812551, Ea: 0.0}
+    efficiency: {A: 1.471820973266506, b: -0.08125510302740867, Ea: 0.0}
   - name: O2
-    efficiency: {A: 1.70583301, b: -0.04688554, Ea: 0.0}
+    efficiency: {A: 1.7058330056737, b: -0.04688553529830985, Ea: 0.0}
   - name: C2H6
     efficiency: {A: 3.0, b: 0.0, Ea: 0.0}
   - name: CH4
@@ -9399,13 +9399,13 @@ reactions:
     high-P-rate-constant: {A: 6080000000000.0, b: 0.27, Ea: 280.0}
     Troe: {A: 0.782, T3: 207.5, T1: 2663.0, T2: 6095.0}
   - name: HE
-    efficiency: {A: 0.32093298, b: 0.24629041, Ea: 0.0}
+    efficiency: {A: 0.3209329794470112, b: 0.2462904146953645, Ea: 0.0}
   - name: H2
-    efficiency: {A: 1.72254723, b: 0.07257005, Ea: 0.0}
+    efficiency: {A: 1.722547233392884, b: 0.07257004954687392, Ea: 0.0}
   - name: AR
-    efficiency: {A: 2.35015266, b: -0.15668567, Ea: 0.0}
+    efficiency: {A: 2.35015266098904, b: -0.1566856739879909, Ea: 0.0}
   - name: O2
-    efficiency: {A: 0.79847597, b: 0.0812551, Ea: 0.0}
+    efficiency: {A: 0.7984759672268075, b: 0.08125510302740872, Ea: 0.0}
   - name: C2H6
     efficiency: {A: 3.0, b: 0.0, Ea: 0.0}
   - name: CH4
@@ -9425,13 +9425,13 @@ reactions:
     high-P-rate-constant: {A: 8000000000000.0, b: 0.44, Ea: 88770.0}
     Troe: {A: 0.7345, T3: 180.0, T1: 1035.0, T2: 5417.0}
   - name: HE
-    efficiency: {A: 0.32093298, b: 0.24629041, Ea: 0.0}
+    efficiency: {A: 0.3209329794470112, b: 0.2462904146953645, Ea: 0.0}
   - name: H2
-    efficiency: {A: 1.72254723, b: 0.07257005, Ea: 0.0}
+    efficiency: {A: 1.722547233392884, b: 0.07257004954687392, Ea: 0.0}
   - name: AR
-    efficiency: {A: 2.35015266, b: -0.15668567, Ea: 0.0}
+    efficiency: {A: 2.35015266098904, b: -0.1566856739879909, Ea: 0.0}
   - name: O2
-    efficiency: {A: 0.79847597, b: 0.0812551, Ea: 0.0}
+    efficiency: {A: 0.7984759672268075, b: 0.08125510302740872, Ea: 0.0}
   - name: C2H6
     efficiency: {A: 3.0, b: 0.0, Ea: 0.0}
   - name: CH4
@@ -13334,13 +13334,13 @@ reactions:
     high-P-rate-constant: {A: 1.29e+37, b: -5.84, Ea: 97380.0}
     Troe: {A: 0.31, T3: 50.0, T1: 3000.0, T2: 9000.0}
   - name: HE
-    efficiency: {A: 0.85862727, b: 0.02964479, Ea: 0.0}
+    efficiency: {A: 0.8586272676336096, b: 0.02964478724115034, Ea: 0.0}
   - name: H2
-    efficiency: {A: 5.0301162, b: -0.15448307, Ea: 0.0}
+    efficiency: {A: 5.030116200575263, b: -0.1544830708766619, Ea: 0.0}
   - name: AR
-    efficiency: {A: 0.81928344, b: 0.00444825, Ea: 0.0}
+    efficiency: {A: 0.8192834423340108, b: 0.004448252463258053, Ea: 0.0}
   - name: O2
-    efficiency: {A: 1.34172756, b: -0.04432145, Ea: 0.0}
+    efficiency: {A: 1.341727561037039, b: -0.04432145456292764, Ea: 0.0}
   - name: C2H6
     efficiency: {A: 3.0, b: 0.0, Ea: 0.0}
   - name: CH4
@@ -17155,11 +17155,11 @@ reactions:
     - {P: 10132500.0, A: 2.71e+50, b: -11.2, Ea: 16700.0}
     - {P: 10132500.0, A: 4.68e+35, b: -7.37, Ea: 4689.1}
   - name: HE
-    efficiency: {A: 1.13466303, b: 0.03932849, Ea: 0.0}
+    efficiency: {A: 1.134663034884489, b: 0.0393284897031238, Ea: 0.0}
   - name: H2
-    efficiency: {A: 8.7207933, b: -0.19242619, Ea: 0.0}
+    efficiency: {A: 8.720793301119349, b: -0.1924261895286751, Ea: 0.0}
   - name: O2
-    efficiency: {A: 1.0320739, b: 0.05093343, Ea: 0.0}
+    efficiency: {A: 1.032073897394765, b: 0.05093343407843775, Ea: 0.0}
 - equation: C2H4 + CH2(S) <=> C3H6
   type: linear-Burke
   colliders:
@@ -17177,11 +17177,11 @@ reactions:
     - {P: 10132500.0, A: 6.07e+47, b: -9.85, Ea: 22100.0}
     - {P: 10132500.0, A: 1.28e+24, b: -3.49, Ea: 2529.9}
   - name: HE
-    efficiency: {A: 1.13466303, b: 0.03932849, Ea: 0.0}
+    efficiency: {A: 1.134663034884489, b: 0.0393284897031238, Ea: 0.0}
   - name: H2
-    efficiency: {A: 8.7207933, b: -0.19242619, Ea: 0.0}
+    efficiency: {A: 8.720793301119349, b: -0.1924261895286751, Ea: 0.0}
   - name: O2
-    efficiency: {A: 1.0320739, b: 0.05093343, Ea: 0.0}
+    efficiency: {A: 1.032073897394765, b: 0.05093343407843775, Ea: 0.0}
 - equation: C2H4 + CH2(S) <=> C3H5-A + H
   type: linear-Burke
   colliders:
@@ -17199,11 +17199,11 @@ reactions:
     - {P: 10132500.0, A: 6.51e+26, b: -3.58, Ea: 18900.0}
     - {P: 10132500.0, A: 181.0, b: 2.97, Ea: -746.03}
   - name: HE
-    efficiency: {A: 1.13466303, b: 0.03932849, Ea: 0.0}
+    efficiency: {A: 1.134663034884489, b: 0.0393284897031238, Ea: 0.0}
   - name: H2
-    efficiency: {A: 8.7207933, b: -0.19242619, Ea: 0.0}
+    efficiency: {A: 8.720793301119349, b: -0.1924261895286751, Ea: 0.0}
   - name: O2
-    efficiency: {A: 1.0320739, b: 0.05093343, Ea: 0.0}
+    efficiency: {A: 1.032073897394765, b: 0.05093343407843775, Ea: 0.0}
 - equation: C2H4 + CH2(S) <=> C2H3 + CH3
   type: linear-Burke
   colliders:
@@ -17221,11 +17221,11 @@ reactions:
     - {P: 10132500.0, A: 7.36e+29, b: -4.28, Ea: 23800.0}
     - {P: 10132500.0, A: 81100000000.0, b: 0.55, Ea: 5506.5}
   - name: HE
-    efficiency: {A: 1.13466303, b: 0.03932849, Ea: 0.0}
+    efficiency: {A: 1.134663034884489, b: 0.0393284897031238, Ea: 0.0}
   - name: H2
-    efficiency: {A: 8.7207933, b: -0.19242619, Ea: 0.0}
+    efficiency: {A: 8.720793301119349, b: -0.1924261895286751, Ea: 0.0}
   - name: O2
-    efficiency: {A: 1.0320739, b: 0.05093343, Ea: 0.0}
+    efficiency: {A: 1.032073897394765, b: 0.05093343407843775, Ea: 0.0}
 - equation: C2H3 + CH3 <=> C3H5-A + H
   type: linear-Burke
   colliders:
@@ -17243,11 +17243,11 @@ reactions:
     - {P: 10132500.0, A: 5.16e+28, b: -4.03, Ea: 23800.0}
     - {P: 10132500.0, A: 0.137, b: 3.91, Ea: -353.55}
   - name: HE
-    efficiency: {A: 1.13466303, b: 0.03932849, Ea: 0.0}
+    efficiency: {A: 1.134663034884489, b: 0.0393284897031238, Ea: 0.0}
   - name: H2
-    efficiency: {A: 8.7207933, b: -0.19242619, Ea: 0.0}
+    efficiency: {A: 8.720793301119349, b: -0.1924261895286751, Ea: 0.0}
   - name: O2
-    efficiency: {A: 1.0320739, b: 0.05093343, Ea: 0.0}
+    efficiency: {A: 1.032073897394765, b: 0.05093343407843775, Ea: 0.0}
 - equation: C3H6 <=> C2H3 + CH3
   type: linear-Burke
   colliders:
@@ -17265,11 +17265,11 @@ reactions:
     - {P: 10132500.0, A: 2.15e+64, b: -13.4, Ea: 135000.0}
     - {P: 10132500.0, A: 7.29e+38, b: -6.7, Ea: 108740.0}
   - name: HE
-    efficiency: {A: 1.13466303, b: 0.03932849, Ea: 0.0}
+    efficiency: {A: 1.134663034884489, b: 0.0393284897031238, Ea: 0.0}
   - name: H2
-    efficiency: {A: 8.7207933, b: -0.19242619, Ea: 0.0}
+    efficiency: {A: 8.720793301119349, b: -0.1924261895286751, Ea: 0.0}
   - name: O2
-    efficiency: {A: 1.0320739, b: 0.05093343, Ea: 0.0}
+    efficiency: {A: 1.032073897394765, b: 0.05093343407843775, Ea: 0.0}
 - equation: C3H6 <=> C3H5-A + H
   type: linear-Burke
   colliders:
@@ -17287,11 +17287,11 @@ reactions:
     - {P: 10132500.0, A: 8.05e+56, b: -11.5, Ea: 122000.0}
     - {P: 10132500.0, A: 4.34e+28, b: -4.06, Ea: 93114.0}
   - name: HE
-    efficiency: {A: 1.13466303, b: 0.03932849, Ea: 0.0}
+    efficiency: {A: 1.134663034884489, b: 0.0393284897031238, Ea: 0.0}
   - name: H2
-    efficiency: {A: 8.7207933, b: -0.19242619, Ea: 0.0}
+    efficiency: {A: 8.720793301119349, b: -0.1924261895286751, Ea: 0.0}
   - name: O2
-    efficiency: {A: 1.0320739, b: 0.05093343, Ea: 0.0}
+    efficiency: {A: 1.032073897394765, b: 0.05093343407843775, Ea: 0.0}
 - equation: C3H6 <=> CC3H6
   type: linear-Burke
   colliders:
@@ -17309,11 +17309,11 @@ reactions:
     - {P: 10132500.0, A: 1.45e+62, b: -13.6, Ea: 110000.0}
     - {P: 10132500.0, A: 4.97e+31, b: -5.6, Ea: 80987.0}
   - name: HE
-    efficiency: {A: 1.13466303, b: 0.03932849, Ea: 0.0}
+    efficiency: {A: 1.134663034884489, b: 0.0393284897031238, Ea: 0.0}
   - name: H2
-    efficiency: {A: 8.7207933, b: -0.19242619, Ea: 0.0}
+    efficiency: {A: 8.720793301119349, b: -0.1924261895286751, Ea: 0.0}
   - name: O2
-    efficiency: {A: 1.0320739, b: 0.05093343, Ea: 0.0}
+    efficiency: {A: 1.032073897394765, b: 0.05093343407843775, Ea: 0.0}
 - equation: CC3H6 <=> C3H5-A + H
   type: linear-Burke
   colliders:
@@ -17331,11 +17331,11 @@ reactions:
     - {P: 10132500.0, A: 4.82e+57, b: -11.7, Ea: 118000.0}
     - {P: 10132500.0, A: 1.45e+28, b: -4.02, Ea: 90995.0}
   - name: HE
-    efficiency: {A: 1.13466303, b: 0.03932849, Ea: 0.0}
+    efficiency: {A: 1.134663034884489, b: 0.0393284897031238, Ea: 0.0}
   - name: H2
-    efficiency: {A: 8.7207933, b: -0.19242619, Ea: 0.0}
+    efficiency: {A: 8.720793301119349, b: -0.1924261895286751, Ea: 0.0}
   - name: O2
-    efficiency: {A: 1.0320739, b: 0.05093343, Ea: 0.0}
+    efficiency: {A: 1.032073897394765, b: 0.05093343407843775, Ea: 0.0}
 - equation: CC3H6 <=> C2H3 + CH3
   type: linear-Burke
   colliders:
@@ -17353,11 +17353,11 @@ reactions:
     - {P: 10132500.0, A: 7.87e+62, b: -13.1, Ea: 127000.0}
     - {P: 10132500.0, A: 1.88e+39, b: -6.93, Ea: 103980.0}
   - name: HE
-    efficiency: {A: 1.13466303, b: 0.03932849, Ea: 0.0}
+    efficiency: {A: 1.134663034884489, b: 0.0393284897031238, Ea: 0.0}
   - name: H2
-    efficiency: {A: 8.7207933, b: -0.19242619, Ea: 0.0}
+    efficiency: {A: 8.720793301119349, b: -0.1924261895286751, Ea: 0.0}
   - name: O2
-    efficiency: {A: 1.0320739, b: 0.05093343, Ea: 0.0}
+    efficiency: {A: 1.032073897394765, b: 0.05093343407843775, Ea: 0.0}
 - equation: C3H5-T + H <=> C3H6
   type: linear-Burke
   colliders:
@@ -17375,11 +17375,11 @@ reactions:
     - {P: 10132500.0, A: 1.15e+50, b: -10.4, Ea: 23300.0}
     - {P: 10132500.0, A: 5.69e+25, b: -3.83, Ea: 3250.4}
   - name: HE
-    efficiency: {A: 1.13466303, b: 0.03932849, Ea: 0.0}
+    efficiency: {A: 1.134663034884489, b: 0.0393284897031238, Ea: 0.0}
   - name: H2
-    efficiency: {A: 8.7207933, b: -0.19242619, Ea: 0.0}
+    efficiency: {A: 8.720793301119349, b: -0.1924261895286751, Ea: 0.0}
   - name: O2
-    efficiency: {A: 1.0320739, b: 0.05093343, Ea: 0.0}
+    efficiency: {A: 1.032073897394765, b: 0.05093343407843775, Ea: 0.0}
 - equation: C3H5-T + H <=> C3H5-A + H
   type: linear-Burke
   colliders:
@@ -17397,11 +17397,11 @@ reactions:
     - {P: 10132500.0, A: 2.28e+29, b: -4.12, Ea: 20900.0}
     - {P: 10132500.0, A: 6750.0, b: 2.7, Ea: 373.8}
   - name: HE
-    efficiency: {A: 1.13466303, b: 0.03932849, Ea: 0.0}
+    efficiency: {A: 1.134663034884489, b: 0.0393284897031238, Ea: 0.0}
   - name: H2
-    efficiency: {A: 8.7207933, b: -0.19242619, Ea: 0.0}
+    efficiency: {A: 8.720793301119349, b: -0.1924261895286751, Ea: 0.0}
   - name: O2
-    efficiency: {A: 1.0320739, b: 0.05093343, Ea: 0.0}
+    efficiency: {A: 1.032073897394765, b: 0.05093343407843775, Ea: 0.0}
 - equation: C3H5-T + H <=> C2H3 + CH3
   type: linear-Burke
   colliders:
@@ -17419,11 +17419,11 @@ reactions:
     - {P: 10132500.0, A: 3.15e+32, b: -4.83, Ea: 26000.0}
     - {P: 10132500.0, A: 2700000000000.0, b: 0.32, Ea: 6791.8}
   - name: HE
-    efficiency: {A: 1.13466303, b: 0.03932849, Ea: 0.0}
+    efficiency: {A: 1.134663034884489, b: 0.0393284897031238, Ea: 0.0}
   - name: H2
-    efficiency: {A: 8.7207933, b: -0.19242619, Ea: 0.0}
+    efficiency: {A: 8.720793301119349, b: -0.1924261895286751, Ea: 0.0}
   - name: O2
-    efficiency: {A: 1.0320739, b: 0.05093343, Ea: 0.0}
+    efficiency: {A: 1.032073897394765, b: 0.05093343407843775, Ea: 0.0}
 - equation: C3H6 <=> C3H5-S + H
   rate-constant: {A: 7.71e+69, b: -16.09, Ea: 140000.0}
 - equation: C3H6 + H <=> C3H5-A + H2
@@ -17989,13 +17989,13 @@ reactions:
     - {P: 10132500.0, A: 4.22e+27, b: -4.39, Ea: 9345.8}
     - {P: 10132500.0, A: 1.0e-10, b: 0.0, Ea: 0.0}
   - name: HE
-    efficiency: {A: 2.41810377, b: -0.1243088, Ea: 0.0}
+    efficiency: {A: 2.418103773170189, b: -0.124308801088146, Ea: 0.0}
   - name: H2
-    efficiency: {A: 34.10763971, b: -0.44596802, Ea: 0.0}
+    efficiency: {A: 34.10763971195251, b: -0.4459680246310303, Ea: 0.0}
   - name: N2
-    efficiency: {A: 0.72124453, b: 0.06915335, Ea: 0.0}
+    efficiency: {A: 0.7212445328693381, b: 0.069153354198228, Ea: 0.0}
   - name: O2
-    efficiency: {A: 2.27001848, b: -0.09772878, Ea: 0.0}
+    efficiency: {A: 2.270018479471823, b: -0.09772878089337894, Ea: 0.0}
 - equation: C3H6 + H <=> C2H4 + CH3
   type: linear-Burke
   colliders:
@@ -18013,13 +18013,13 @@ reactions:
     - {P: 10132500.0, A: 1.32e+23, b: -2.42, Ea: 16500.0}
     - {P: 10132500.0, A: 2510.0, b: 2.91, Ea: 3980.9}
   - name: HE
-    efficiency: {A: 2.41810377, b: -0.1243088, Ea: 0.0}
+    efficiency: {A: 2.418103773170189, b: -0.124308801088146, Ea: 0.0}
   - name: H2
-    efficiency: {A: 34.10763971, b: -0.44596802, Ea: 0.0}
+    efficiency: {A: 34.10763971195251, b: -0.4459680246310303, Ea: 0.0}
   - name: N2
-    efficiency: {A: 0.72124453, b: 0.06915335, Ea: 0.0}
+    efficiency: {A: 0.7212445328693381, b: 0.069153354198228, Ea: 0.0}
   - name: O2
-    efficiency: {A: 2.27001848, b: -0.09772878, Ea: 0.0}
+    efficiency: {A: 2.270018479471823, b: -0.09772878089337894, Ea: 0.0}
 - equation: C3H6 + H <=> IC3H7
   type: linear-Burke
   colliders:
@@ -18037,13 +18037,13 @@ reactions:
     - {P: 10132500.0, A: 1.11e+50, b: -10.8, Ea: 20202.0}
     - {P: 10132500.0, A: 2.73e+23, b: -3.26, Ea: 4597.0}
   - name: HE
-    efficiency: {A: 2.41810377, b: -0.1243088, Ea: 0.0}
+    efficiency: {A: 2.418103773170189, b: -0.124308801088146, Ea: 0.0}
   - name: H2
-    efficiency: {A: 34.10763971, b: -0.44596802, Ea: 0.0}
+    efficiency: {A: 34.10763971195251, b: -0.4459680246310303, Ea: 0.0}
   - name: N2
-    efficiency: {A: 0.72124453, b: 0.06915335, Ea: 0.0}
+    efficiency: {A: 0.7212445328693381, b: 0.069153354198228, Ea: 0.0}
   - name: O2
-    efficiency: {A: 2.27001848, b: -0.09772878, Ea: 0.0}
+    efficiency: {A: 2.270018479471823, b: -0.09772878089337894, Ea: 0.0}
 - equation: C2H4 + CH3 <=> NC3H7
   type: linear-Burke
   colliders:
@@ -18061,13 +18061,13 @@ reactions:
     - {P: 10132500.0, A: 2.04e+40, b: -8.25, Ea: 24214.0}
     - {P: 10132500.0, A: 1.66e+21, b: -3.17, Ea: 10241.0}
   - name: HE
-    efficiency: {A: 2.41810377, b: -0.1243088, Ea: 0.0}
+    efficiency: {A: 2.418103773170189, b: -0.124308801088146, Ea: 0.0}
   - name: H2
-    efficiency: {A: 34.10763971, b: -0.44596802, Ea: 0.0}
+    efficiency: {A: 34.10763971195251, b: -0.4459680246310303, Ea: 0.0}
   - name: N2
-    efficiency: {A: 0.72124453, b: 0.06915335, Ea: 0.0}
+    efficiency: {A: 0.7212445328693381, b: 0.069153354198228, Ea: 0.0}
   - name: O2
-    efficiency: {A: 2.27001848, b: -0.09772878, Ea: 0.0}
+    efficiency: {A: 2.270018479471823, b: -0.09772878089337894, Ea: 0.0}
 - equation: C3H6 + HO2 <=> C3H6O1-2 + OH
   type: linear-Burke
   colliders:
@@ -22440,13 +22440,13 @@ reactions:
     high-P-rate-constant: {A: 1.355e+37, b: -6.036, Ea: 92929.0}
     Troe: {A: 0.07998, T3: 1.0e-20, T1: 32430.0, T2: 4858.0}
   - name: HE
-    efficiency: {A: 1.36955045, b: -0.03370832, Ea: 0.0}
+    efficiency: {A: 1.369550452027738, b: -0.03370831845626256, Ea: 0.0}
   - name: H2
-    efficiency: {A: 8.39455001, b: -0.22396222, Ea: 0.0}
+    efficiency: {A: 8.394550005060939, b: -0.2239622150155274, Ea: 0.0}
   - name: N2
-    efficiency: {A: 0.83717354, b: 0.04626782, Ea: 0.0}
+    efficiency: {A: 0.8371735357333211, b: 0.04626782258459295, Ea: 0.0}
   - name: O2
-    efficiency: {A: 1.32876269, b: -0.01787001, Ea: 0.0}
+    efficiency: {A: 1.328762691874341, b: -0.0178700092486352, Ea: 0.0}
 - equation: C4H10 (+M) <=> CH3 + NC3H7 (+M)
   type: linear-Burke
   colliders:
@@ -22456,13 +22456,13 @@ reactions:
     high-P-rate-constant: {A: 6.6e+52, b: -10.626, Ea: 100330.0}
     Troe: {A: 0.09502, T3: 1.0e-20, T1: 5348.0, T2: 4326.0}
   - name: HE
-    efficiency: {A: 1.36955045, b: -0.03370832, Ea: 0.0}
+    efficiency: {A: 1.369550452027738, b: -0.03370831845626256, Ea: 0.0}
   - name: H2
-    efficiency: {A: 8.39455001, b: -0.22396222, Ea: 0.0}
+    efficiency: {A: 8.394550005060939, b: -0.2239622150155274, Ea: 0.0}
   - name: N2
-    efficiency: {A: 0.83717354, b: 0.04626782, Ea: 0.0}
+    efficiency: {A: 0.8371735357333211, b: 0.04626782258459295, Ea: 0.0}
   - name: O2
-    efficiency: {A: 1.32876269, b: -0.01787001, Ea: 0.0}
+    efficiency: {A: 1.328762691874341, b: -0.0178700092486352, Ea: 0.0}
 - equation: C4H10 <=> H + PC4H9
   type: linear-Burke
   colliders:
@@ -22475,13 +22475,13 @@ reactions:
     - {P: 1013250.0, A: 4.8e+40, b: -7.06, Ea: 115302.0}
     - {P: 10132500.0, A: 1.49e+27, b: -3.15, Ea: 107323.0}
   - name: HE
-    efficiency: {A: 1.36955045, b: -0.03370832, Ea: 0.0}
+    efficiency: {A: 1.369550452027738, b: -0.03370831845626256, Ea: 0.0}
   - name: H2
-    efficiency: {A: 8.39455001, b: -0.22396222, Ea: 0.0}
+    efficiency: {A: 8.394550005060939, b: -0.2239622150155274, Ea: 0.0}
   - name: N2
-    efficiency: {A: 0.83717354, b: 0.04626782, Ea: 0.0}
+    efficiency: {A: 0.8371735357333211, b: 0.04626782258459295, Ea: 0.0}
   - name: O2
-    efficiency: {A: 1.32876269, b: -0.01787001, Ea: 0.0}
+    efficiency: {A: 1.328762691874341, b: -0.0178700092486352, Ea: 0.0}
 - equation: C4H10 <=> H + SC4H9
   type: linear-Burke
   colliders:
@@ -22494,13 +22494,13 @@ reactions:
     - {P: 1013250.0, A: 8.52e+38, b: -6.58, Ea: 110556.0}
     - {P: 10132500.0, A: 5.4e+26, b: -3.05, Ea: 103313.0}
   - name: HE
-    efficiency: {A: 1.36955045, b: -0.03370832, Ea: 0.0}
+    efficiency: {A: 1.369550452027738, b: -0.03370831845626256, Ea: 0.0}
   - name: H2
-    efficiency: {A: 8.39455001, b: -0.22396222, Ea: 0.0}
+    efficiency: {A: 8.394550005060939, b: -0.2239622150155274, Ea: 0.0}
   - name: N2
-    efficiency: {A: 0.83717354, b: 0.04626782, Ea: 0.0}
+    efficiency: {A: 0.8371735357333211, b: 0.04626782258459295, Ea: 0.0}
   - name: O2
-    efficiency: {A: 1.32876269, b: -0.01787001, Ea: 0.0}
+    efficiency: {A: 1.328762691874341, b: -0.0178700092486352, Ea: 0.0}
 - equation: C4H10 + H <=> H2 + PC4H9
   rate-constant: {A: 349000.0, b: 2.69, Ea: 6450.0}
 - equation: C4H10 + O2 <=> HO2 + PC4H9
@@ -22950,13 +22950,13 @@ reactions:
     high-P-rate-constant: {A: 2.52e+31, b: -4.102, Ea: 91495.0}
     Troe: {A: 0.3662, T3: 815.3, T1: 60.79, T2: 1.0e+20}
   - name: HE
-    efficiency: {A: 1.36955045, b: -0.03370832, Ea: 0.0}
+    efficiency: {A: 1.369550452027738, b: -0.03370831845626256, Ea: 0.0}
   - name: H2
-    efficiency: {A: 8.39455001, b: -0.22396222, Ea: 0.0}
+    efficiency: {A: 8.394550005060939, b: -0.2239622150155274, Ea: 0.0}
   - name: N2
-    efficiency: {A: 0.83717354, b: 0.04626782, Ea: 0.0}
+    efficiency: {A: 0.8371735357333211, b: 0.04626782258459295, Ea: 0.0}
   - name: O2
-    efficiency: {A: 1.32876269, b: -0.01787001, Ea: 0.0}
+    efficiency: {A: 1.328762691874341, b: -0.0178700092486352, Ea: 0.0}
 - equation: IC4H10 <=> H + TC4H9
   rate-constant: {A: 2.51e+98, b: -23.81, Ea: 145300.0}
 - equation: IC4H10 <=> H + IC4H9
@@ -23048,11 +23048,11 @@ reactions:
     - {P: 1013250.0, A: 7.79e+44, b: -9.7, Ea: 39751.0}
     - {P: 10132500.0, A: 3.61e+39, b: -7.78, Ea: 39583.0}
   - name: HE
-    efficiency: {A: 4.10242558, b: -0.23077111, Ea: 0.0}
+    efficiency: {A: 4.102425584734134, b: -0.2307711121273313, Ea: 0.0}
   - name: H2
-    efficiency: {A: 32.72469289, b: -0.4670505, Ea: 0.0}
+    efficiency: {A: 32.72469289238318, b: -0.4670505048407553, Ea: 0.0}
   - name: O2
-    efficiency: {A: 1.5361086, b: -0.04039451, Ea: 0.0}
+    efficiency: {A: 1.536108604646148, b: -0.04039450674255894, Ea: 0.0}
 - equation: HO2 + TC4H9 <=> OH + TC4H9O
   rate-constant: {A: 7000000000000.0, b: 0.0, Ea: -1000.0}
 - equation: CH3O2 + TC4H9 <=> CH3O + TC4H9O
@@ -23450,13 +23450,13 @@ reactions:
     - {P: 3546375.0, A: 6.05e+78, b: -17.76, Ea: 133437.0}
     - {P: 10132500.0, A: 4.87e+71, b: -15.65, Ea: 129919.0}
   - name: HE
-    efficiency: {A: 1.94088015, b: -0.08724511, Ea: 0.0}
+    efficiency: {A: 1.940880154375625, b: -0.087245108267377, Ea: 0.0}
   - name: H2
-    efficiency: {A: 14.72510264, b: -0.31732047, Ea: 0.0}
+    efficiency: {A: 14.72510264243264, b: -0.317320472980256, Ea: 0.0}
   - name: N2
-    efficiency: {A: 0.77821554, b: 0.05251636, Ea: 0.0}
+    efficiency: {A: 0.7782155440702254, b: 0.05251636256145088, Ea: 0.0}
   - name: O2
-    efficiency: {A: 2.06754725, b: -0.0760361, Ea: 0.0}
+    efficiency: {A: 2.067547248248101, b: -0.07603610208830518, Ea: 0.0}
 - equation: IC4H8 <=> H + IC4H7
   type: linear-Burke
   colliders:
@@ -23470,13 +23470,13 @@ reactions:
     - {P: 3546375.0, A: 1.13e+68, b: -14.82, Ea: 118416.0}
     - {P: 10132500.0, A: 4.73e+60, b: -12.66, Ea: 114404.0}
   - name: HE
-    efficiency: {A: 1.94088015, b: -0.08724511, Ea: 0.0}
+    efficiency: {A: 1.940880154375625, b: -0.087245108267377, Ea: 0.0}
   - name: H2
-    efficiency: {A: 14.72510264, b: -0.31732047, Ea: 0.0}
+    efficiency: {A: 14.72510264243264, b: -0.317320472980256, Ea: 0.0}
   - name: N2
-    efficiency: {A: 0.77821554, b: 0.05251636, Ea: 0.0}
+    efficiency: {A: 0.7782155440702254, b: 0.05251636256145088, Ea: 0.0}
   - name: O2
-    efficiency: {A: 2.06754725, b: -0.0760361, Ea: 0.0}
+    efficiency: {A: 2.067547248248101, b: -0.07603610208830518, Ea: 0.0}
 - equation: IC4H8 + OH <=> H2O + IC4H7
   rate-constant: {A: 43950.169, b: 2.67841, Ea: -827.103}
 - equation: IC4H8 + O2 <=> HO2 + IC4H7
@@ -24920,11 +24920,11 @@ reactions:
     - {P: 1013250.0, A: 1.46e+25, b: -4.28, Ea: 5247.8}
     - {P: 10132500.0, A: 4.22e+27, b: -4.39, Ea: 9345.8}
   - name: HE
-    efficiency: {A: 4.10242558, b: -0.23077111, Ea: 0.0}
+    efficiency: {A: 4.102425584734134, b: -0.2307711121273313, Ea: 0.0}
   - name: H2
-    efficiency: {A: 32.72469289, b: -0.4670505, Ea: 0.0}
+    efficiency: {A: 32.72469289238318, b: -0.4670505048407553, Ea: 0.0}
   - name: O2
-    efficiency: {A: 1.5361086, b: -0.04039451, Ea: 0.0}
+    efficiency: {A: 1.536108604646148, b: -0.04039450674255894, Ea: 0.0}
 - equation: H + IC4H8 <=> TC4H9
   type: linear-Burke
   colliders:
@@ -24942,11 +24942,11 @@ reactions:
     - {P: 10132500.0, A: 1.11e+50, b: -10.8, Ea: 20202.0}
     - {P: 10132500.0, A: 2.73e+23, b: -3.26, Ea: 4597.0}
   - name: HE
-    efficiency: {A: 4.10242558, b: -0.23077111, Ea: 0.0}
+    efficiency: {A: 4.102425584734134, b: -0.2307711121273313, Ea: 0.0}
   - name: H2
-    efficiency: {A: 32.72469289, b: -0.4670505, Ea: 0.0}
+    efficiency: {A: 32.72469289238318, b: -0.4670505048407553, Ea: 0.0}
   - name: O2
-    efficiency: {A: 1.5361086, b: -0.04039451, Ea: 0.0}
+    efficiency: {A: 1.536108604646148, b: -0.04039450674255894, Ea: 0.0}
 - equation: H + IC4H8 <=> C3H6 + CH3
   type: linear-Burke
   colliders:
@@ -24964,11 +24964,11 @@ reactions:
     - {P: 10132500.0, A: 4.4e+22, b: -2.42, Ea: 16500.0}
     - {P: 10132500.0, A: 837.0, b: 2.91, Ea: 3980.9}
   - name: HE
-    efficiency: {A: 4.10242558, b: -0.23077111, Ea: 0.0}
+    efficiency: {A: 4.102425584734134, b: -0.2307711121273313, Ea: 0.0}
   - name: H2
-    efficiency: {A: 32.72469289, b: -0.4670505, Ea: 0.0}
+    efficiency: {A: 32.72469289238318, b: -0.4670505048407553, Ea: 0.0}
   - name: O2
-    efficiency: {A: 1.5361086, b: -0.04039451, Ea: 0.0}
+    efficiency: {A: 1.536108604646148, b: -0.04039450674255894, Ea: 0.0}
 - equation: HO2 + IC4H8 <=> TC4H9O2
   rate-constant: {A: 0.104, b: 3.45, Ea: 4338.0}
 - equation: HO2 + IC4H8 <=> IC4H8O2H-T
@@ -25521,13 +25521,13 @@ reactions:
     high-P-rate-constant: {A: 100000000000000.0, b: -0.32, Ea: -262.3}
     Troe: {A: 0.104, T3: 1606.0, T1: 60000.0, T2: 6118.4}
   - name: HE
-    efficiency: {A: 1.84845729, b: -0.08724511, Ea: 0.0}
+    efficiency: {A: 1.848457289881548, b: -0.08724510826737705, Ea: 0.0}
   - name: H2
-    efficiency: {A: 14.02390728, b: -0.31732047, Ea: 0.0}
+    efficiency: {A: 14.02390727850727, b: -0.317320472980256, Ea: 0.0}
   - name: AR
-    efficiency: {A: 1.28499104, b: -0.05251636, Ea: 0.0}
+    efficiency: {A: 1.284991038305142, b: -0.05251636256145088, Ea: 0.0}
   - name: O2
-    efficiency: {A: 1.96909262, b: -0.0760361, Ea: 0.0}
+    efficiency: {A: 1.969092617379145, b: -0.07603610208830522, Ea: 0.0}
   - name: C2H6
     efficiency: {A: 3.0, b: 0.0, Ea: 0.0}
   - name: CH4
@@ -25547,13 +25547,13 @@ reactions:
     high-P-rate-constant: {A: 15000000000000.0, b: 0.0, Ea: 0.0}
     Troe: {A: 0.198, T3: 2277.9, T1: 60000.0, T2: 5723.2}
   - name: HE
-    efficiency: {A: 1.84845729, b: -0.08724511, Ea: 0.0}
+    efficiency: {A: 1.848457289881548, b: -0.08724510826737705, Ea: 0.0}
   - name: H2
-    efficiency: {A: 14.02390728, b: -0.31732047, Ea: 0.0}
+    efficiency: {A: 14.02390727850727, b: -0.317320472980256, Ea: 0.0}
   - name: AR
-    efficiency: {A: 1.28499104, b: -0.05251636, Ea: 0.0}
+    efficiency: {A: 1.284991038305142, b: -0.05251636256145088, Ea: 0.0}
   - name: O2
-    efficiency: {A: 1.96909262, b: -0.0760361, Ea: 0.0}
+    efficiency: {A: 1.969092617379145, b: -0.07603610208830522, Ea: 0.0}
   - name: C2H6
     efficiency: {A: 3.0, b: 0.0, Ea: 0.0}
   - name: CH4
@@ -25573,13 +25573,13 @@ reactions:
     high-P-rate-constant: {A: 36000000000000.0, b: 0.0, Ea: 0.0}
     Troe: {A: 0.498, T3: 1314.0, T1: 1314.0, T2: 50000.0}
   - name: HE
-    efficiency: {A: 1.84845729, b: -0.08724511, Ea: 0.0}
+    efficiency: {A: 1.848457289881548, b: -0.08724510826737705, Ea: 0.0}
   - name: H2
-    efficiency: {A: 14.02390728, b: -0.31732047, Ea: 0.0}
+    efficiency: {A: 14.02390727850727, b: -0.317320472980256, Ea: 0.0}
   - name: AR
-    efficiency: {A: 1.28499104, b: -0.05251636, Ea: 0.0}
+    efficiency: {A: 1.284991038305142, b: -0.05251636256145088, Ea: 0.0}
   - name: O2
-    efficiency: {A: 1.96909262, b: -0.0760361, Ea: 0.0}
+    efficiency: {A: 1.969092617379145, b: -0.07603610208830522, Ea: 0.0}
   - name: C2H6
     efficiency: {A: 3.0, b: 0.0, Ea: 0.0}
   - name: CH4
@@ -25691,11 +25691,11 @@ reactions:
     - {P: 10132500.0, A: 7.02e+32, b: -5.22, Ea: 31754.0}
     - {P: 10132500.0, A: 2.29e+21, b: -1.87, Ea: 17243.0}
   - name: HE
-    efficiency: {A: 4.10242558, b: -0.23077111, Ea: 0.0}
+    efficiency: {A: 4.102425584734134, b: -0.2307711121273313, Ea: 0.0}
   - name: H2
-    efficiency: {A: 32.72469289, b: -0.4670505, Ea: 0.0}
+    efficiency: {A: 32.72469289238318, b: -0.4670505048407553, Ea: 0.0}
   - name: O2
-    efficiency: {A: 1.5361086, b: -0.04039451, Ea: 0.0}
+    efficiency: {A: 1.536108604646148, b: -0.04039450674255894, Ea: 0.0}
 - equation: C4H8-1 + H <=> C3H6 + CH3
   type: linear-Burke
   colliders:
@@ -25715,11 +25715,11 @@ reactions:
     - {P: 10132500.0, A: 1.32e+20, b: -1.46, Ea: 15383.0}
     - {P: 10132500.0, A: 1.0e+33, b: -5.49, Ea: 31922.0}
   - name: HE
-    efficiency: {A: 4.10242558, b: -0.23077111, Ea: 0.0}
+    efficiency: {A: 4.102425584734134, b: -0.2307711121273313, Ea: 0.0}
   - name: H2
-    efficiency: {A: 32.72469289, b: -0.4670505, Ea: 0.0}
+    efficiency: {A: 32.72469289238318, b: -0.4670505048407553, Ea: 0.0}
   - name: O2
-    efficiency: {A: 1.5361086, b: -0.04039451, Ea: 0.0}
+    efficiency: {A: 1.536108604646148, b: -0.04039450674255894, Ea: 0.0}
 - equation: C4H8-1 + H <=> PC4H9
   type: linear-Burke
   colliders:
@@ -25739,11 +25739,11 @@ reactions:
     - {P: 10132500.0, A: 1.44e+37, b: -7.21, Ea: 24896.0}
     - {P: 10132500.0, A: 7.8e+28, b: -4.79, Ea: 10355.0}
   - name: HE
-    efficiency: {A: 4.10242558, b: -0.23077111, Ea: 0.0}
+    efficiency: {A: 4.102425584734134, b: -0.2307711121273313, Ea: 0.0}
   - name: H2
-    efficiency: {A: 32.72469289, b: -0.4670505, Ea: 0.0}
+    efficiency: {A: 32.72469289238318, b: -0.4670505048407553, Ea: 0.0}
   - name: O2
-    efficiency: {A: 1.5361086, b: -0.04039451, Ea: 0.0}
+    efficiency: {A: 1.536108604646148, b: -0.04039450674255894, Ea: 0.0}
 - equation: C4H8-1 + H <=> SC4H9
   type: linear-Burke
   colliders:
@@ -25763,11 +25763,11 @@ reactions:
     - {P: 10132500.0, A: 1.37e+26, b: -3.79, Ea: 8012.0}
     - {P: 10132500.0, A: 2.22e+36, b: -7.06, Ea: 25203.0}
   - name: HE
-    efficiency: {A: 4.10242558, b: -0.23077111, Ea: 0.0}
+    efficiency: {A: 4.102425584734134, b: -0.2307711121273313, Ea: 0.0}
   - name: H2
-    efficiency: {A: 32.72469289, b: -0.4670505, Ea: 0.0}
+    efficiency: {A: 32.72469289238318, b: -0.4670505048407553, Ea: 0.0}
   - name: O2
-    efficiency: {A: 1.5361086, b: -0.04039451, Ea: 0.0}
+    efficiency: {A: 1.536108604646148, b: -0.04039450674255894, Ea: 0.0}
 - equation: C4H8-2 + H <=> C2H4 + C2H5
   type: linear-Burke
   colliders:
@@ -25781,11 +25781,11 @@ reactions:
     - {P: 1013250.0, A: 1.88e+29, b: -4.33, Ea: 24297.0}
     - {P: 10132500.0, A: 5.15e+33, b: -5.39, Ea: 32601.0}
   - name: HE
-    efficiency: {A: 4.10242558, b: -0.23077111, Ea: 0.0}
+    efficiency: {A: 4.102425584734134, b: -0.2307711121273313, Ea: 0.0}
   - name: H2
-    efficiency: {A: 32.72469289, b: -0.4670505, Ea: 0.0}
+    efficiency: {A: 32.72469289238318, b: -0.4670505048407553, Ea: 0.0}
   - name: O2
-    efficiency: {A: 1.5361086, b: -0.04039451, Ea: 0.0}
+    efficiency: {A: 1.536108604646148, b: -0.04039450674255894, Ea: 0.0}
 - equation: C4H8-2 + H <=> C3H6 + CH3
   type: linear-Burke
   colliders:
@@ -25799,11 +25799,11 @@ reactions:
     - {P: 1013250.0, A: 6.13e+23, b: -2.53, Ea: 14463.0}
     - {P: 10132500.0, A: 1.23e+20, b: -1.35, Ea: 15762.0}
   - name: HE
-    efficiency: {A: 4.10242558, b: -0.23077111, Ea: 0.0}
+    efficiency: {A: 4.102425584734134, b: -0.2307711121273313, Ea: 0.0}
   - name: H2
-    efficiency: {A: 32.72469289, b: -0.4670505, Ea: 0.0}
+    efficiency: {A: 32.72469289238318, b: -0.4670505048407553, Ea: 0.0}
   - name: O2
-    efficiency: {A: 1.5361086, b: -0.04039451, Ea: 0.0}
+    efficiency: {A: 1.536108604646148, b: -0.04039450674255894, Ea: 0.0}
 - equation: C4H8-2 + H <=> PC4H9
   type: linear-Burke
   colliders:
@@ -25817,11 +25817,11 @@ reactions:
     - {P: 1013250.0, A: 5.19e+39, b: -8.33, Ea: 21137.0}
     - {P: 10132500.0, A: 5.17e+36, b: -6.98, Ea: 25063.0}
   - name: HE
-    efficiency: {A: 4.10242558, b: -0.23077111, Ea: 0.0}
+    efficiency: {A: 4.102425584734134, b: -0.2307711121273313, Ea: 0.0}
   - name: H2
-    efficiency: {A: 32.72469289, b: -0.4670505, Ea: 0.0}
+    efficiency: {A: 32.72469289238318, b: -0.4670505048407553, Ea: 0.0}
   - name: O2
-    efficiency: {A: 1.5361086, b: -0.04039451, Ea: 0.0}
+    efficiency: {A: 1.536108604646148, b: -0.04039450674255894, Ea: 0.0}
 - equation: C4H8-2 + H <=> SC4H9
   type: linear-Burke
   colliders:
@@ -25835,11 +25835,11 @@ reactions:
     - {P: 1013250.0, A: 2.33e+33, b: -6.11, Ea: 9893.0}
     - {P: 10132500.0, A: 3.27e+25, b: -3.51, Ea: 8145.0}
   - name: HE
-    efficiency: {A: 4.10242558, b: -0.23077111, Ea: 0.0}
+    efficiency: {A: 4.102425584734134, b: -0.2307711121273313, Ea: 0.0}
   - name: H2
-    efficiency: {A: 32.72469289, b: -0.4670505, Ea: 0.0}
+    efficiency: {A: 32.72469289238318, b: -0.4670505048407553, Ea: 0.0}
   - name: O2
-    efficiency: {A: 1.5361086, b: -0.04039451, Ea: 0.0}
+    efficiency: {A: 1.536108604646148, b: -0.04039450674255894, Ea: 0.0}
 - equation: C4H8-1 + H <=> C4H8-2 + H
   type: linear-Burke
   colliders:
@@ -25859,11 +25859,11 @@ reactions:
     - {P: 10132500.0, A: 4.44e+19, b: -1.37, Ea: 17409.0}
     - {P: 10132500.0, A: 3.72e+31, b: -5.16, Ea: 32234.0}
   - name: HE
-    efficiency: {A: 4.10242558, b: -0.23077111, Ea: 0.0}
+    efficiency: {A: 4.102425584734134, b: -0.2307711121273313, Ea: 0.0}
   - name: H2
-    efficiency: {A: 32.72469289, b: -0.4670505, Ea: 0.0}
+    efficiency: {A: 32.72469289238318, b: -0.4670505048407553, Ea: 0.0}
   - name: O2
-    efficiency: {A: 1.5361086, b: -0.04039451, Ea: 0.0}
+    efficiency: {A: 1.536108604646148, b: -0.04039450674255894, Ea: 0.0}
 - equation: SC4H9 <=> PC4H9
   type: linear-Burke
   colliders:
@@ -25877,11 +25877,11 @@ reactions:
     - {P: 1013250.0, A: 2.13e+56, b: -13.71, Ea: 54866.0}
     - {P: 10132500.0, A: 6.02e+45, b: -10.07, Ea: 53399.0}
   - name: HE
-    efficiency: {A: 4.10242558, b: -0.23077111, Ea: 0.0}
+    efficiency: {A: 4.102425584734134, b: -0.2307711121273313, Ea: 0.0}
   - name: H2
-    efficiency: {A: 32.72469289, b: -0.4670505, Ea: 0.0}
+    efficiency: {A: 32.72469289238318, b: -0.4670505048407553, Ea: 0.0}
   - name: O2
-    efficiency: {A: 1.5361086, b: -0.04039451, Ea: 0.0}
+    efficiency: {A: 1.536108604646148, b: -0.04039450674255894, Ea: 0.0}
 - equation: PC4H9 <=> C2H4 + C2H5
   type: linear-Burke
   colliders:
@@ -25895,11 +25895,11 @@ reactions:
     - {P: 1013250.0, A: 2.06e+39, b: -7.97, Ea: 38955.0}
     - {P: 10132500.0, A: 1.48e+29, b: -4.71, Ea: 35950.0}
   - name: HE
-    efficiency: {A: 4.10242558, b: -0.23077111, Ea: 0.0}
+    efficiency: {A: 4.102425584734134, b: -0.2307711121273313, Ea: 0.0}
   - name: H2
-    efficiency: {A: 32.72469289, b: -0.4670505, Ea: 0.0}
+    efficiency: {A: 32.72469289238318, b: -0.4670505048407553, Ea: 0.0}
   - name: O2
-    efficiency: {A: 1.5361086, b: -0.04039451, Ea: 0.0}
+    efficiency: {A: 1.536108604646148, b: -0.04039450674255894, Ea: 0.0}
 - equation: PC4H9 <=> C3H6 + CH3
   type: linear-Burke
   colliders:
@@ -25913,11 +25913,11 @@ reactions:
     - {P: 1013250.0, A: 4.98e+48, b: -10.97, Ea: 54456.0}
     - {P: 10132500.0, A: 2.23e+42, b: -8.68, Ea: 56601.0}
   - name: HE
-    efficiency: {A: 4.10242558, b: -0.23077111, Ea: 0.0}
+    efficiency: {A: 4.102425584734134, b: -0.2307711121273313, Ea: 0.0}
   - name: H2
-    efficiency: {A: 32.72469289, b: -0.4670505, Ea: 0.0}
+    efficiency: {A: 32.72469289238318, b: -0.4670505048407553, Ea: 0.0}
   - name: O2
-    efficiency: {A: 1.5361086, b: -0.04039451, Ea: 0.0}
+    efficiency: {A: 1.536108604646148, b: -0.04039450674255894, Ea: 0.0}
 - equation: SC4H9 <=> C2H4 + C2H5
   type: linear-Burke
   colliders:
@@ -25931,11 +25931,11 @@ reactions:
     - {P: 1013250.0, A: 1.06e+49, b: -10.9, Ea: 58899.0}
     - {P: 10132500.0, A: 9.94e+42, b: -8.7, Ea: 61203.0}
   - name: HE
-    efficiency: {A: 4.10242558, b: -0.23077111, Ea: 0.0}
+    efficiency: {A: 4.102425584734134, b: -0.2307711121273313, Ea: 0.0}
   - name: H2
-    efficiency: {A: 32.72469289, b: -0.4670505, Ea: 0.0}
+    efficiency: {A: 32.72469289238318, b: -0.4670505048407553, Ea: 0.0}
   - name: O2
-    efficiency: {A: 1.5361086, b: -0.04039451, Ea: 0.0}
+    efficiency: {A: 1.536108604646148, b: -0.04039450674255894, Ea: 0.0}
 - equation: SC4H9 <=> C3H6 + CH3
   type: linear-Burke
   colliders:
@@ -25949,11 +25949,11 @@ reactions:
     - {P: 1013250.0, A: 3.79e+37, b: -7.44, Ea: 40604.0}
     - {P: 10132500.0, A: 4.79e+26, b: -4.01, Ea: 36898.0}
   - name: HE
-    efficiency: {A: 4.10242558, b: -0.23077111, Ea: 0.0}
+    efficiency: {A: 4.102425584734134, b: -0.2307711121273313, Ea: 0.0}
   - name: H2
-    efficiency: {A: 32.72469289, b: -0.4670505, Ea: 0.0}
+    efficiency: {A: 32.72469289238318, b: -0.4670505048407553, Ea: 0.0}
   - name: O2
-    efficiency: {A: 1.5361086, b: -0.04039451, Ea: 0.0}
+    efficiency: {A: 1.536108604646148, b: -0.04039450674255894, Ea: 0.0}
 - equation: C4H8-1 + O <=> HCO + NC3H7
   rate-constant: {A: 7450000.0, b: 1.88, Ea: 183.0}
 - equation: C4H8-1 + O => C2H5 + CH2CO + H
@@ -26953,13 +26953,13 @@ reactions:
     high-P-rate-constant: {A: 50000000000000.0, b: 0.0, Ea: 0.0}
     Troe: {A: 0.175, T3: 1340.6, T1: 60000.0, T2: 10139.8}
   - name: HE
-    efficiency: {A: 1.84845729, b: -0.08724511, Ea: 0.0}
+    efficiency: {A: 1.848457289881548, b: -0.08724510826737705, Ea: 0.0}
   - name: H2
-    efficiency: {A: 14.02390728, b: -0.31732047, Ea: 0.0}
+    efficiency: {A: 14.02390727850727, b: -0.317320472980256, Ea: 0.0}
   - name: AR
-    efficiency: {A: 1.28499104, b: -0.05251636, Ea: 0.0}
+    efficiency: {A: 1.284991038305142, b: -0.05251636256145088, Ea: 0.0}
   - name: O2
-    efficiency: {A: 1.96909262, b: -0.0760361, Ea: 0.0}
+    efficiency: {A: 1.969092617379145, b: -0.07603610208830522, Ea: 0.0}
   - name: C2H2
     efficiency: {A: 3.0, b: 0.0, Ea: 0.0}
   - name: C2H4
@@ -33585,11 +33585,11 @@ reactions:
     high-P-rate-constant: {A: 100000000000000.0, b: -0.32, Ea: -262.3}
     Troe: {A: 0.104, T3: 1606.0, T1: 60000.0, T2: 6118.0}
   - name: HE
-    efficiency: {A: 1.33475107, b: -0.01290958, Ea: 0.0}
+    efficiency: {A: 1.334751068794751, b: -0.01290957883708605, Ea: 0.0}
   - name: H2
-    efficiency: {A: 13.82713348, b: -0.31833308, Ea: 0.0}
+    efficiency: {A: 13.82713347753192, b: -0.3183330794274093, Ea: 0.0}
   - name: O2
-    efficiency: {A: 1.70526101, b: -0.04623091, Ea: 0.0}
+    efficiency: {A: 1.705261007940929, b: -0.04623090849173751, Ea: 0.0}
   - name: AR
     efficiency: {A: 0.7, b: 0.0, Ea: 0.0}
   - name: C2H6
@@ -33743,11 +33743,11 @@ reactions:
     high-P-rate-constant: {A: 100000000000000.0, b: -0.32, Ea: -262.3}
     Troe: {A: 0.104, T3: 1606.0, T1: 60000.0, T2: 6118.0}
   - name: HE
-    efficiency: {A: 1.33475107, b: -0.01290958, Ea: 0.0}
+    efficiency: {A: 1.334751068794751, b: -0.01290957883708605, Ea: 0.0}
   - name: H2
-    efficiency: {A: 13.82713348, b: -0.31833308, Ea: 0.0}
+    efficiency: {A: 13.82713347753192, b: -0.3183330794274093, Ea: 0.0}
   - name: O2
-    efficiency: {A: 1.70526101, b: -0.04623091, Ea: 0.0}
+    efficiency: {A: 1.705261007940929, b: -0.04623090849173751, Ea: 0.0}
   - name: AR
     efficiency: {A: 0.7, b: 0.0, Ea: 0.0}
   - name: C2H6
@@ -33831,11 +33831,11 @@ reactions:
     high-P-rate-constant: {A: 150000000000000.0, b: -0.32, Ea: -262.3}
     Troe: {A: 0.104, T3: 1606.0, T1: 60000.0, T2: 6118.0}
   - name: HE
-    efficiency: {A: 1.33475107, b: -0.01290958, Ea: 0.0}
+    efficiency: {A: 1.334751068794751, b: -0.01290957883708605, Ea: 0.0}
   - name: H2
-    efficiency: {A: 13.82713348, b: -0.31833308, Ea: 0.0}
+    efficiency: {A: 13.82713347753192, b: -0.3183330794274093, Ea: 0.0}
   - name: O2
-    efficiency: {A: 1.70526101, b: -0.04623091, Ea: 0.0}
+    efficiency: {A: 1.705261007940929, b: -0.04623090849173751, Ea: 0.0}
   - name: AR
     efficiency: {A: 0.7, b: 0.0, Ea: 0.0}
   - name: C2H6

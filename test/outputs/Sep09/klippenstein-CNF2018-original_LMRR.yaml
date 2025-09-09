@@ -1,10 +1,10 @@
 generator: YamlWriter
 cantera-version: 3.1.0
 git-commit: 6e00275
-date: Tue Sep  9 18:00:17 2025
+date: Tue Sep  9 20:35:46 2025
 units: {length: cm, quantity: mol, activation-energy: cal/mol}
 phases:
-- name: outputMech
+- name: gas
   thermo: ideal-gas
   elements: [H, O, C, N, Ar, He]
   species: [H2, O2, O3, H, O, OH, HO2, H2O, H2O2, CO, CO2, CH4, CH3, CH2, CH2(S),
@@ -12,7 +12,7 @@ phases:
     CH3OO, CH2OOH, C2H6, C2H5, C2H4, C2H3, C2H2, H2CC, C2H, C2, CH3CH2OH, CH3CHOH,
     CH3CH2O, CH2CH2OH, CH3CHO, CH2CHOH, cC2H4O, CHCHOH, cC2H3O, CH2CHO, CH3CO, CH2CO,
     CHCHO, HCCOH, HCCO, C2O, CH3CH2OOH, CH3CH2OO, CH3CHOOH, CH2CH2OOH, CH2CHOOH, HOCH2CH2OO,
-    CH2CHOO, OCHCHO, OCHCO, CH3C(O)OOH, CH3C(O)OO, CH3C(O)O, false, HCN, NH3, NH2,
+    CH2CHOO, OCHCHO, OCHCO, CH3C(O)OOH, CH3C(O)OO, CH3C(O)O, 'NO', HCN, NH3, NH2,
     NH, N, NNH, N2H4, N2H3, N2H2, H2NN, NH2OH, H2NO, HNOH, HNO, HON, NO2, HONO, HNO2,
     NO3, HONO2, N2O, HNC, CN, HNCO, HOCN, HCNO, NCO, NCN, HNCN, NCNO, NCNOH, HNCNH,
     NCCN, CH3NO, CH2NO, C2H5NO, CH3CHNO, CH2CHNO, CHCHNO, CH3NO2, CH2NO2, C2H5NO2,
@@ -1051,7 +1051,7 @@ species:
     note: "1508  \n Bozzelli 2015; PM\n Bozzelli 2015; PM\n"
   transport: {model: gas, geometry: nonlinear, diameter: 4.037, well-depth: 395.0,
     dipole: 1.3, rotational-relaxation: 1.0, note: =CH3OCO => CH3OCH3}
-- name: false
+- name: 'NO'
   composition: {N: 1.0, O: 1.0}
   thermo:
     model: NASA7
@@ -2397,17 +2397,17 @@ reactions:
     high-P-rate-constant: {A: 4700000000000.0, b: 0.44, Ea: 0.0}
     Troe: {A: 0.5, T3: 1.0e-30, T1: 1.0e+30}
   - name: HE
-    efficiency: {A: 0.19742732, b: 0.18256786, Ea: 36.24450379114723}
+    efficiency: {A: 0.1974273236061293, b: 0.1825678550781802, Ea: 36.24450379114794}
   - name: AR
-    efficiency: {A: 0.00800436, b: 0.59326267, Ea: -540.976839219338}
+    efficiency: {A: 0.008004364723914229, b: 0.5932626693302305, Ea: -540.9768392193379}
   - name: H2
-    efficiency: {A: 18346.02869921, b: -1.25419464, Ea: 1129.357143366035}
+    efficiency: {A: 18346.02869920795, b: -1.254194639876243, Ea: 1129.357143366035}
   - name: CO2
-    efficiency: {A: 94978175.58963102, b: -2.27621756, Ea: 1970.435484405952}
+    efficiency: {A: 94978175.58963102, b: -2.276217557453928, Ea: 1970.435484405953}
   - name: NH3
-    efficiency: {A: 2.91082027, b: 0.1648553, Ea: -280.3793213000383}
+    efficiency: {A: 2.910820265695488, b: 0.1648553003637341, Ea: -280.379321300039}
   - name: H2O
-    efficiency: {A: 21.5874612, b: -0.07129016, Ea: 31.91195715908222}
+    efficiency: {A: 21.58746119892811, b: -0.07129016411817347, Ea: 31.91195715908163}
   - name: CO
     efficiency: {A: 1.9, b: 0.0, Ea: 0.0}
   - name: O2
@@ -2465,21 +2465,21 @@ reactions:
     high-P-rate-constant: {A: 2000000000000.0, b: 0.9, Ea: 48749.0}
     Troe: {A: 0.43, T3: 1.0e-30, T1: 1.0e+30}
   - name: N2
-    efficiency: {A: 1.14813005, b: 0.04600896, Ea: -2.924426131869025}
+    efficiency: {A: 1.148130045895506, b: 0.04600896151802571, Ea: -2.924426131867919}
   - name: CO2
-    efficiency: {A: 89.88391622, b: -0.42797367, Ea: 241.4172480999881}
+    efficiency: {A: 89.88391622414728, b: -0.4279736666780277, Ea: 241.417248099988}
   - name: H2O2
-    efficiency: {A: 0.64529544, b: 0.42626591, Ea: 42.89756557418977}
+    efficiency: {A: 0.6452954364079226, b: 0.4262659069287318, Ea: 42.89756557418883}
   - name: H2O
-    efficiency: {A: 1.36377291, b: 0.30659152, Ea: 210.1002166444647}
+    efficiency: {A: 1.363772906784677, b: 0.3065915210993134, Ea: 210.1002166444651}
   - name: HE
-    efficiency: {A: 0.18754314, b: 0.22413586, Ea: 0.0}
+    efficiency: {A: 0.1875431394167365, b: 0.2241358596644983, Ea: 0.0}
   - name: H2
-    efficiency: {A: 3.53525842, b: -0.07220041, Ea: 0.0}
+    efficiency: {A: 3.535258418368424, b: -0.07220041462850092, Ea: 0.0}
   - name: CO
-    efficiency: {A: 2.06652273, b: 0.03887179, Ea: 0.0}
+    efficiency: {A: 2.066522732852087, b: 0.03887178790402251, Ea: 0.0}
   - name: CH4
-    efficiency: {A: 160.86525406, b: -0.48030501, Ea: 0.0}
+    efficiency: {A: 160.8652540551794, b: -0.4803050058368646, Ea: 0.0}
   - name: O2
     efficiency: {A: 1.2, b: 0.0, Ea: 0.0}
 - equation: H + H2O2 <=> H2O + OH
@@ -2751,19 +2751,19 @@ reactions:
     high-P-rate-constant: {A: 230000000000000.0, b: 0.032, Ea: 144.0}
     Troe: {A: 0.395, T3: 163.5, T1: 4250.3, T2: 1253676.0}
   - name: HE
-    efficiency: {A: 0.0129507, b: 0.68436886, Ea: -258.2941749931334}
+    efficiency: {A: 0.01295069733844924, b: 0.6843688582399464, Ea: -258.2941749931345}
   - name: AR
-    efficiency: {A: 8.86177448, b: -0.31108531, Ea: 254.6721774784895}
+    efficiency: {A: 8.86177448037854, b: -0.3110853096537599, Ea: 254.6721774784897}
   - name: O2
-    efficiency: {A: 0.25035758, b: 0.2123772, Ea: -143.0112187338982}
+    efficiency: {A: 0.2503575821374613, b: 0.2123771958207863, Ea: -143.0112187338979}
   - name: H2
-    efficiency: {A: 0.39531608, b: 0.30484611, Ea: 1.166728616818834}
+    efficiency: {A: 0.395316080630637, b: 0.3048461081236808, Ea: 1.166728616817896}
   - name: CO2
-    efficiency: {A: 0.50062963, b: 0.1583388, Ea: -157.1792538762548}
+    efficiency: {A: 0.5006296340989723, b: 0.1583388018548014, Ea: -157.179253876256}
   - name: CH4
-    efficiency: {A: 5.88617793, b: -0.00832237, Ea: 389.3035803131262}
+    efficiency: {A: 5.886177930577425, b: -0.00832236950681411, Ea: 389.3035803131253}
   - name: H2O
-    efficiency: {A: 4.12188828, b: 0.07491031, Ea: 259.6104119522276}
+    efficiency: {A: 4.121888275681219, b: 0.07491031329142386, Ea: 259.6104119522269}
   - name: C2H6
     efficiency: {A: 4.5, b: 0.0, Ea: 0.0}
   - name: CO
@@ -3709,13 +3709,13 @@ reactions:
     high-P-rate-constant: {A: 950000000000000.0, b: -0.538, Ea: 179.0}
     Troe: {A: 0.62, T3: 73.0, T1: 1180.0, T2: 1.0e+30}
   - name: HE
-    efficiency: {A: 0.54807821, b: 0.15933672, Ea: 0.0}
+    efficiency: {A: 0.5480782120847932, b: 0.1593367179098673, Ea: 0.0}
   - name: H2
-    efficiency: {A: 4.87668714, b: -0.07441469, Ea: 0.0}
+    efficiency: {A: 4.876687139964807, b: -0.07441469054262177, Ea: 0.0}
   - name: N2
-    efficiency: {A: 0.91223423, b: 0.04660272, Ea: 0.0}
+    efficiency: {A: 0.9122342323485488, b: 0.04660272310049555, Ea: 0.0}
   - name: O2
-    efficiency: {A: 1.28055383, b: -0.00423388, Ea: 0.0}
+    efficiency: {A: 1.280553827158673, b: -0.004233876487125533, Ea: 0.0}
 - equation: C2H6 + H <=> C2H5 + H2
   rate-constant: {A: 7400.0, b: 3.1, Ea: 5340.0}
   duplicate: true
@@ -3765,13 +3765,13 @@ reactions:
     high-P-rate-constant: {A: 1400000000.0, b: 1.463, Ea: 1355.0}
     Troe: {A: -0.569, T3: 299.0, T1: 9147.0, T2: 152.4}
   - name: HE
-    efficiency: {A: 1.12494699, b: 0.0395972, Ea: 0.0}
+    efficiency: {A: 1.124946991675698, b: 0.03959719525732949, Ea: 0.0}
   - name: H2
-    efficiency: {A: 8.18302745, b: -0.16028289, Ea: 0.0}
+    efficiency: {A: 8.183027453965714, b: -0.1602828944136332, Ea: 0.0}
   - name: N2
-    efficiency: {A: 0.67943046, b: 0.0812551, Ea: 0.0}
+    efficiency: {A: 0.67943045938572, b: 0.08125510302740868, Ea: 0.0}
   - name: O2
-    efficiency: {A: 1.84229965, b: -0.04688554, Ea: 0.0}
+    efficiency: {A: 1.842299646127596, b: -0.04688553529830989, Ea: 0.0}
   - name: CO
     efficiency: {A: 1.5, b: 0.0, Ea: 0.0}
   - name: CO2
@@ -3787,13 +3787,13 @@ reactions:
     high-P-rate-constant: {A: 5.2e+17, b: -0.99, Ea: 1580.0}
     Troe: {A: 0.8422, T3: 125.0, T1: 2219.0, T2: 6882.0}
   - name: HE
-    efficiency: {A: 0.46056993, b: 0.15933672, Ea: 0.0}
+    efficiency: {A: 0.4605699261216751, b: 0.1593367179098673, Ea: 0.0}
   - name: H2
-    efficiency: {A: 4.09805642, b: -0.07441469, Ea: 0.0}
+    efficiency: {A: 4.098056420138494, b: -0.0744146905426218, Ea: 0.0}
   - name: AR
-    efficiency: {A: 1.09620968, b: -0.04660272, Ea: 0.0}
+    efficiency: {A: 1.096209684463932, b: -0.04660272310049561, Ea: 0.0}
   - name: O2
-    efficiency: {A: 1.07609565, b: -0.00423388, Ea: 0.0}
+    efficiency: {A: 1.076095653074515, b: -0.004233876487125506, Ea: 0.0}
   - name: C2H6
     efficiency: {A: 3.0, b: 0.0, Ea: 0.0}
   - name: CH4
@@ -3991,13 +3991,13 @@ reactions:
     high-P-rate-constant: {A: 39000000000000.0, b: 0.2, Ea: 0.0}
     Troe: {A: 0.5, T3: 1.0e-30, T1: 1.0e+30, T2: 1.0e+30}
   - name: HE
-    efficiency: {A: 0.3337703, b: 0.24629041, Ea: 0.0}
+    efficiency: {A: 0.3337702986248914, b: 0.2462904146953646, Ea: 0.0}
   - name: H2
-    efficiency: {A: 1.79144912, b: 0.07257005, Ea: 0.0}
+    efficiency: {A: 1.791449122728599, b: 0.07257004954687397, Ea: 0.0}
   - name: N2
-    efficiency: {A: 0.42550427, b: 0.15668567, Ea: 0.0}
+    efficiency: {A: 0.4255042732326839, b: 0.1566856739879909, Ea: 0.0}
   - name: O2
-    efficiency: {A: 0.83041501, b: 0.0812551, Ea: 0.0}
+    efficiency: {A: 0.8304150059158802, b: 0.08125510302740864, Ea: 0.0}
 - equation: C2H4 (+M) <=> H2 + H2CC (+M)
   type: linear-Burke
   colliders:
@@ -4007,13 +4007,13 @@ reactions:
     high-P-rate-constant: {A: 8000000000000.0, b: 0.44, Ea: 88800.0}
     Troe: {A: 0.735, T3: 180.0, T1: 1035.0, T2: 5417.0}
   - name: HE
-    efficiency: {A: 0.32093298, b: 0.24629041, Ea: 0.0}
+    efficiency: {A: 0.3209329794470112, b: 0.2462904146953645, Ea: 0.0}
   - name: H2
-    efficiency: {A: 1.72254723, b: 0.07257005, Ea: 0.0}
+    efficiency: {A: 1.722547233392884, b: 0.07257004954687392, Ea: 0.0}
   - name: AR
-    efficiency: {A: 2.35015266, b: -0.15668567, Ea: 0.0}
+    efficiency: {A: 2.35015266098904, b: -0.1566856739879909, Ea: 0.0}
   - name: O2
-    efficiency: {A: 0.79847597, b: 0.0812551, Ea: 0.0}
+    efficiency: {A: 0.7984759672268075, b: 0.08125510302740872, Ea: 0.0}
   - name: H2O
     efficiency: {A: 6.0, b: 0.0, Ea: 0.0}
 - equation: C2H4 + H <=> C2H3 + H2
@@ -4193,11 +4193,11 @@ reactions:
     - {P: 10132500.0, A: 7.4e+29, b: -4.28, Ea: 23849.0}
     - {P: 10132500.0, A: 81000000000.0, b: 0.55, Ea: 5507.0}
   - name: HE
-    efficiency: {A: 1.13466303, b: 0.03932849, Ea: 0.0}
+    efficiency: {A: 1.134663034884489, b: 0.0393284897031238, Ea: 0.0}
   - name: H2
-    efficiency: {A: 8.7207933, b: -0.19242619, Ea: 0.0}
+    efficiency: {A: 8.720793301119349, b: -0.1924261895286751, Ea: 0.0}
   - name: O2
-    efficiency: {A: 1.0320739, b: 0.05093343, Ea: 0.0}
+    efficiency: {A: 1.032073897394765, b: 0.05093343407843775, Ea: 0.0}
 - equation: C2H2 + H (+M) <=> C2H3 (+M)
   type: falloff
   low-P-rate-constant: {A: 6.3e+31, b: -4.664, Ea: 3780.0}
@@ -7124,17 +7124,17 @@ reactions:
     high-P-rate-constant: {A: 160000000000000.0, b: 0.0, Ea: 0.0}
     Troe: {A: 0.5, T3: 1.0e-30, T1: 1.0e+30, T2: 1.0e+30}
   - name: N2
-    efficiency: {A: 4.49281427, b: -0.09462651, Ea: -110.0825016314603}
+    efficiency: {A: 4.492814271436019, b: -0.09462651469186, Ea: -110.0825016314602}
   - name: O2
-    efficiency: {A: 0.11521035, b: 0.3412338, Ea: -389.2499312199259}
+    efficiency: {A: 0.1152103515724151, b: 0.3412338018839425, Ea: -389.2499312199271}
   - name: CO2
-    efficiency: {A: 9.19582761, b: 0.06106963, Ea: 90.11808947281071}
+    efficiency: {A: 9.195827613712853, b: 0.06106962564955747, Ea: 90.11808947281}
   - name: NH3
-    efficiency: {A: 14.90041298, b: 0.06065353, Ea: 247.6779577517734}
+    efficiency: {A: 14.90041298195473, b: 0.06065352831904052, Ea: 247.6779577517736}
   - name: H2O
-    efficiency: {A: 11.45596662, b: 0.12750056, Ea: 313.9914817857625}
+    efficiency: {A: 11.45596661942455, b: 0.1275005594496584, Ea: 313.9914817857635}
   - name: CH4
-    efficiency: {A: 12.683752, b: 0.02320136, Ea: 224.2104716992256}
+    efficiency: {A: 12.68375200099875, b: 0.02320136040681905, Ea: 224.2104716992245}
 - equation: H + NH3 <=> H2 + NH2
   rate-constant: {A: 640000.0, b: 2.39, Ea: 10171.0}
   note: 'Altinay, G. Macdonald, R.G. J Phys Chem A 119 7593-7610 2015
@@ -7642,9 +7642,9 @@ reactions:
     high-P-rate-constant: {A: 1500000000000000.0, b: -0.41, Ea: 0.0}
     Troe: {A: 0.82, T3: 1.0e-30, T1: 1.0e+30, T2: 1.0e+30}
   - name: N2
-    efficiency: {A: 7.56770814, b: -0.19687796, Ea: 253.1938725392974}
+    efficiency: {A: 7.567708143174288, b: -0.1968779637596924, Ea: 253.193872539298}
   - name: H2O
-    efficiency: {A: 3.35450824, b: 0.13335183, Ea: 66.47013594471797}
+    efficiency: {A: 3.354508241749781, b: 0.1333518307916879, Ea: 66.47013594471882}
 - equation: H + HNO <=> H2 + NO
   rate-constant: {A: 66000000000.0, b: 0.94, Ea: 495.0}
   note: 'Tsang W JPCRD 20:221 1991
@@ -7950,13 +7950,13 @@ reactions:
     high-P-rate-constant: {A: 560000000000000.0, b: -0.414, Ea: 66.0}
     Troe: {A: 0.31, T3: 1.0e-30, T1: 1.0e+30, T2: 1.0e+30}
   - name: N2
-    efficiency: {A: 14.68477648, b: -0.30096166, Ea: 165.1630816316491}
+    efficiency: {A: 14.68477648031528, b: -0.3009616643605083, Ea: 165.1630816316488}
   - name: O2
-    efficiency: {A: 1.53607628, b: -0.03908567, Ea: 4.437976517361378}
+    efficiency: {A: 1.536076280466119, b: -0.03908567386474444, Ea: 4.437976517361084}
   - name: NH3
-    efficiency: {A: 16.41958948, b: -0.07296362, Ea: 366.1365471341372}
+    efficiency: {A: 16.41958947563691, b: -0.07296362118809512, Ea: 366.1365471341363}
   - name: H2O
-    efficiency: {A: 21.76578656, b: -0.11471476, Ea: 419.2591625977869}
+    efficiency: {A: 21.76578655840543, b: -0.1147147617931246, Ea: 419.259162597787}
 - equation: N2H4 <=> H2 + H2NN
   rate-constant: {A: 140000000000000.0, b: 0.0, Ea: 74911.0}
   note: 'Fc=0.31

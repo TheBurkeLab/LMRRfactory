@@ -11,8 +11,9 @@ date = 'Sep09'
 
 models = {
     # 'testmech': 'test/data/test_mech.yaml',
-    'AramcoMech30': 'test/data/aramco30.yaml',
+    # 'AramcoMech30': 'test/data/aramco30.yaml',
     # 'Klippenstein-2018': 'test/data/klippenstein-CNF2018-original.yaml',
+    'Alzueta': 'test/data/alzuetamechanism.yaml',
     # 'Gutierrez-2025': 'test/data/gutierrez-2025.yaml',
     }
 
