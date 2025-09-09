@@ -385,14 +385,14 @@ class makeYAML:
                     d['high-P-rate-constant']=dict(d['high-P-rate-constant'])
                 colliderM = {'name': 'M'}
                 colliderM.update(dict(d))
-            if pDep and (self.mech_pes[i] in blendRxnNames or data ['allPdep']):
+            if pDep and (self.mech_pes[i] in blendRxnNames or self.allPdep):
                 if self.mech_pes[i] in blendRxnNames:
                     # rxn is specifically covered either in defaults or user input
                     idx = blendRxnNames.index(self.mech_pes[i])
                     blend_rxn = self.blend['reactions'][idx]
                     colliders = self._colliders(mech_rxn,blend_rxn=blend_rxn)
                     param_type = "ab initio"
-                elif data ['allPdep']:
+                elif self.allPdep:
                     colliders = self._colliders(mech_rxn,generic=True)
                     param_type = "generic"
                 d = self._to_builtin(mech_rxn.input_data)
