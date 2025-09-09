@@ -436,7 +436,7 @@ class makeYAML:
             'transport': data['mech_obj'].transport_model,
             'species': data['mech_obj'].species(),
             'reactions': newReactions,
-            'name': 'outputMech',
+            'name': 'gas',
         }
         data['output'] = ct.Solution(**output_data)
 
