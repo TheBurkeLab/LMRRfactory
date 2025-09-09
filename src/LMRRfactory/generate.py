@@ -60,7 +60,6 @@ class makeYAML:
         self._saveYAML(output, self.foutName+".yaml")
         print(f"LMR-R mechanism successfully generated and stored at "
             f"{self.foutName}.yaml")
-        return output
         
         
         # ### WHAT IS THE POINT OF THIS?
