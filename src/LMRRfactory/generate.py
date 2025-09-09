@@ -334,8 +334,8 @@ class makeYAML:
                 if self.mech_pes[i] in blendRxnNames:
                     # rxn is specifically covered either in defaults or user input
                     idx = blendRxnNames.index(self.mech_pes[i])
-                    blend_rxn = self.blend['reactions'][idx]
-                    colliders = colliders(mech_rxn,blend_rxn=blend_rxn)
+                    # blend_rxn = 
+                    colliders = colliders(mech_rxn,blend_rxn=self.blend['reactions'][idx])
                     param_type = "ab initio"
                 elif self.allPdep:
                     colliders = colliders(mech_rxn,generic=True)
