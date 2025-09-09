@@ -47,7 +47,7 @@ class makeYAML:
         # normalize species as uppercase
         self._normalizedKeys()
 
-        self.species_dict=self.speciesDict()
+        self.species_dict=self._speciesDict()
 
         # yml = self.loadYAML(self.mechInput)
         # Remove defaults colliders and reactions that were explictly provided by user
