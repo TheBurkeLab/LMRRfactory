@@ -94,22 +94,22 @@ class makeYAML:
             sp_dict[sp.name.upper()] = dict(sp.composition.items())
         return sp_dict
 
-    def _lookForPdep(self, gas):
+    def _lookForPdep(self):
         if not any(
             reaction.reaction_type in ['falloff-Troe','pressure-dependent-Arrhenius', 'Chebyshev', 'three-body-linear-Burke']
-            for reaction in gas.reactions()
+            for reaction in self.mech_obj.reactions()
         ):
             raise ValueError("No pressure-dependent reactions found in mechanism."
                             " Please choose another mechanism.")
     
-    def _getPES(self,gas): #must input an equation that has already been normalized
+    def _getPES(self): #must input an equation that has already been normalized
         pes=[]
-        for reaction in gas.reactions():
+        for reaction in self.mech_obj.reactions():
             compositions = []
             reactant_species = list(reaction.reactants.keys())
             reactant_coeffs = list(reaction.reactants.values())
             for i, reactant in enumerate(reactant_species):
-                spec = gas.species(reactant)
+                spec = self.mech_obj.species(reactant)
                 c = spec.composition
                 c_scaled = {k.upper(): v*reactant_coeffs[i] for k, v in c.items()}
                 compositions.append(c_scaled)
