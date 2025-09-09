@@ -14,7 +14,7 @@ import io
 warnings.filterwarnings("ignore")
 
 class makeYAML:
-    def __init__(self,mechInput=None, colliderInput=None, lmrrInput=None,outputPath=".",allPdep=False):
+    def __init__(self,mechInput, colliderInput=None, lmrrInput=None,outputPath=".",allPdep=False):
         self.T_ls = None
         self.P_ls = None
         self.n_P= None
@@ -31,72 +31,68 @@ class makeYAML:
         os.makedirs(outputPath,exist_ok=True)
         path=outputPath+'/'
 
-        if mechInput:
-            if colliderInput:
-                self.colliderInput = colliderInput
-            self.mechInput = mechInput
-            
-            self.foutName = os.path.basename(self.mechInput).replace(".yaml","")
-            self.foutName = path + self.foutName + "_LMRR"
-            if allPdep:
-                self.allPdep = True
-                self.foutName = self.foutName + "_allP"
-            self.data = self._generateYAML()
-        if lmrrInput:
-            try:
-                with open(lmrrInput) as f:
-                    self.data = yaml.safe_load(f)
-                self.foutName = path + lmrrInput.replace(".yaml","")
-            except FileNotFoundError:
-                print(f"Error: The file '{lmrrInput}' was not found.")
-
-    def _generateYAML(self):
-        # data_path = pkg_resources.resource_filename('LMRRfactory', '/')
-        data_path = str(files("LMRRfactory"))
-        mech_obj = ct.Solution(self.mechInput)
-        self._lookForPdep(mech_obj) # Verify that 'mech' has >=1 relevant p-dep reaction
-        data = {
-            'mech_obj': mech_obj,
-            'mech_pes': self._getPES(mech_obj),
-            'defaults': self._loadYAML(data_path+'/'+"thirdbodydefaults.yaml"),
-            'input': self._loadYAML(self.colliderInput) if self.colliderInput is not None else None,
-            'allPdep': self.allPdep, # True or False
-        }
+        # if mechInput:
+        if colliderInput:
+            self.input = self._loadYAML(colliderInput)
+        self.mechInput = mechInput
+        
+        self.foutName = os.path.basename(self.mechInput).replace(".yaml","")
+        self.foutName = path + self.foutName + "_LMRR"
+        if allPdep:
+            self.allPdep = True
+            self.foutName = self.foutName + "_allP"
+        self.mech_obj = ct.Solution(mechInput)
+        self._lookForPdep() # Verify that 'mech' has >=1 relevant p-dep reaction
+        self.mech_pes = self._getPES()
+        self.defaults = self._loadYAML(f"{str(files("LMRRfactory"))}/thirdbodydefaults.yaml")
         # normalize species as uppercase
-        self._normalizedKeys(data)
+        self._normalizedKeys()
+
+        self.species_dict=self.speciesDict()
 
         # yml = self.loadYAML(self.mechInput)
-        # data['extras'] = [yml[]]
         # Remove defaults colliders and reactions that were explictly provided by user
-        self._deleteDuplicates(data)
+        self._deleteDuplicates()
         # Blend the user inputs and remaining collider defaults into a single YAML
-        self._blendedInput(data)
+        self.blend = self._blendedInput()
         # Sub the colliders into their corresponding reactions in the input mechanism
-        self._zippedMech(data)
-        # self.validate(data['output'])
-        self._saveYAML(data['output'], self.foutName+".yaml")
+        output = self._zippedMech()
+        # self.validate()
+        self._saveYAML(output, self.foutName+".yaml")
         print(f"LMR-R mechanism successfully generated and stored at "
             f"{self.foutName}.yaml")
-        return data['output']
+        return output
+        
+        
+        # ### WHAT IS THE POINT OF THIS?
+        # if lmrrInput:
+        #     try:
+        #         with open(lmrrInput) as f:
+        #             self.data = yaml.safe_load(f)
+        #         self.foutName = path + lmrrInput.replace(".yaml","")
+        #     except FileNotFoundError:
+        #         print(f"Error: The file '{lmrrInput}' was not found.")
 
-    def _normalizedKeys(self,data):
+    def _normalizedKeys(self):
         def capitalize(dict):
             return {k.capitalize(): v for k, v in dict.items()}
-        for defaultRxn in data['defaults']['reactions']:
+        for defaultRxn in self.defaults['reactions']:
             for col in defaultRxn['colliders']:
                 col['composition'] = capitalize(col['composition'])
             defaultRxn['reference-collider'] = defaultRxn['reference-collider'].upper()
             defaultRxn['pes'] = capitalize(defaultRxn['pes'])
-        if data.get('input') is not None and data['input'].get('reactions') is not None:
-            for inputRxn in data['input']['reactions']:
+        if data.get('input') is not None and self.input.get('reactions') is not None:
+            for inputRxn in self.input['reactions']:
                 for col in inputRxn['colliders']:
                     col['composition'] = capitalize(col['composition'])
                 inputRxn['reference-collider'] = inputRxn['reference-collider'].upper()
                 inputRxn['pes'] = capitalize(inputRxn['pes'])
+
+    def _speciesDict(self):
         sp_dict = {}
-        for sp in data['mech_obj'].species():
+        for sp in self.mech_obj.species():
             sp_dict[sp.name.upper()] = dict(sp.composition.items())
-        data['species_dict']=sp_dict
+        return sp_dict
 
     def _lookForPdep(self, gas):
         if not any(
@@ -121,16 +117,16 @@ class makeYAML:
             pes.append(sum(counters, Counter()))
         return pes
 
-    def _deleteDuplicates(self, data): # delete duplicates from thirdBodyDefaults
-        newData = {'generic-colliders': data['defaults']['generic-colliders'],
+    def _deleteDuplicates(self): # delete duplicates from thirdBodyDefaults
+        newData = {'generic-colliders': self.defaults['generic-colliders'],
                 'reactions': []}
         inputRxnNames = None
         if data.get('input') is not None:
-            if data['input'].get('reactions') is not None:
-                inputRxnNames = [rxn['pes'] for rxn in data['input']['reactions']]
+            if self.input.get('reactions') is not None:
+                inputRxnNames = [rxn['pes'] for rxn in self.input['reactions']]
                 inputColliderNames = [[col['composition'] for col in rxn['colliders']]
-                                    for rxn in data['input']['reactions']]
-        for defaultRxn in data['defaults']['reactions']:
+                                    for rxn in self.input['reactions']]
+        for defaultRxn in self.defaults['reactions']:
             if inputRxnNames is not None and defaultRxn['pes'] in inputRxnNames:
                 idx = inputRxnNames.index(defaultRxn['pes'])
                 inputColliders = inputColliderNames[idx]
@@ -145,25 +141,25 @@ class makeYAML:
                     })
             else: # reaction isn't in input, so keep the entire default rxn
                 newData['reactions'].append(defaultRxn)
-        data['defaults']=newData
+        self.defaults=newData
 
     
 
-    def _blendedInput(self, data):
+    def _blendedInput(self):
         blendData = {'reactions': []}
         
         # first fill it with all of the default reactions and colliders (which have valid species)
-        for defaultRxn in data['defaults']['reactions']:
+        for defaultRxn in self.defaults['reactions']:
             newCollList = []
             for col in defaultRxn['colliders']:
-                if col['composition'] in list(data['species_dict'].values()):
+                if col['composition'] in list(self.species_dict.values()):
                     newCollList.append(col)
             defaultRxn['colliders'] = newCollList
             blendData['reactions'].append(defaultRxn)
         defaultRxnNames = [rxn['pes'] for rxn in blendData['reactions']]
         if data.get('input') is not None:
-            if data['input'].get('reactions') is not None:
-                for inputRxn in data['input']['reactions']:
+            if self.input.get('reactions') is not None:
+                for inputRxn in self.input['reactions']:
                     # Check if input reaction also exists in defaults file, otherwise add the entire input reaction to the blend as-is
                     if inputRxn['pes'] in defaultRxnNames:
                         idx = defaultRxnNames.index(inputRxn['pes'])
@@ -171,7 +167,7 @@ class makeYAML:
                         # If reference colliders match, append new colliders, otherwise override with the user inputs
                         if inputRxn['reference-collider'] == blendRxn['reference-collider']:
                             newColliders = [col for col in inputRxn['colliders']
-                                            if col['composition'] in list(data['species_dict'].values())]
+                                            if col['composition'] in list(self.species_dict.values())]
                             blendRxn['colliders'].extend(newColliders)
                         else:
                             print(f"User-provided reference collider for {inputRxn['equation']}, "
@@ -182,13 +178,13 @@ class makeYAML:
                                 f"the user's custom input values.")
                             blendRxn['reference-collider'] = inputRxn['reference-collider']
                             newColliders = [col for col in inputRxn['colliders']
-                                            if col['composition'] in list(data['species_dict'].values())]
+                                            if col['composition'] in list(self.species_dict.values())]
                             blendRxn['colliders'] = newColliders
                             # blendRxn['colliders'] = inputRxn['colliders']
                     else:
-                        if all(col['composition'] in list(data['species_dict'].values()) for col in inputRxn['colliders']):
+                        if all(col['composition'] in list(self.species_dict.values()) for col in inputRxn['colliders']):
                             blendData['reactions'].append(inputRxn)
-        data['blend']=blendData
+        return blendData
     
     def _arrheniusFit(self, col):
         newCol = copy.deepcopy(col)
@@ -210,13 +206,12 @@ class makeYAML:
         newCol.pop('composition')
         return dict(newCol)
 
-    def _colliders(self,data,mech_rxn,blend_rxn=None,generic=False):
+    def _colliders(self,mech_rxn,blend_rxn=None,generic=False):
         divisor = 1
         colliders=[]
         colliderNames=[]
         is_M_N2 = False
         troe_efficiencies={}
-        # print(mech_rxn.input_data['equation'])
         
         if mech_rxn.reaction_type == 'falloff-Troe':
             troe_efficiencies= mech_rxn.input_data.get('efficiencies', {})
@@ -233,9 +228,7 @@ class makeYAML:
                     troe_efficiencies[col['name']]=col['efficiency']['A'] ## WHY ARE WE USING TROE EFFICIENCIES HERE
         
         for name, val in troe_efficiencies.items():
-            comp = data['species_dict'][name]
-            # comp = self._normalizedKeys(data['species_dict'][name])
-            # comp = {k.upper(): v for k, v in data['species_dict'][name].items()}
+            comp = self.species_dict[name]
             # Check if N2 is the reference collider instead of Ar
             if comp=={'Ar': 1} and val!=0 and val !=1:
                 is_M_N2 = True
@@ -260,11 +253,11 @@ class makeYAML:
                     #Convert N2:Ar database entry to Ar:N2
                     if col['composition']=={'N': 2}:
                         col['composition']={'Ar': 1}
-                        col['name']=next(k for k, v in data['species_dict'].items() if v == col['composition'])
+                        col['name']=next(k for k, v in self.species_dict.items() if v == col['composition'])
                         col['efficiency']=np.divide(1,col['efficiency'])
                         colliders.append(self._arrheniusFit(col))
                         colliderNames.append(col['composition'])
-                    elif col['composition'] in list(data['species_dict'].values()):
+                    elif col['composition'] in list(self.species_dict.values()):
                         for i in range(len(divisors)):
                             try:
                                 col['efficiency'] = np.divide(col['efficiency'], divisors[i])
@@ -277,25 +270,25 @@ class makeYAML:
             # colliderNames=set(colliderNames)
             # Add troe efficiencies that haven't already been given a value
             for name, val in troe_efficiencies.items():
-                comp = data['species_dict'][name]
+                comp = self.species_dict[name]
                 already_given = comp in colliderNames
                 if not already_given and not comp=={'N': 2}: #ignores the redundant n2=1 entry
                     colliders.append({
-                        'name': next(k for k, v in data['species_dict'].items() if v == comp),
+                        'name': next(k for k, v in self.species_dict.items() if v == comp),
                         'efficiency': {'A':val,'b':0,'Ea':0 },
                         'note': 'present work',
                     })
-                    colliderNames.append(data['species_dict'][name])
+                    colliderNames.append(self.species_dict[name])
             if generic:
-                for col in data['defaults']['generic-colliders']:
+                for col in self.defaults['generic-colliders']:
                     already_given = col['composition'] in colliderNames
-                    if col['composition'] in list(data['species_dict'].keys()) and not already_given and not col['composition']=={'N': 2}:
+                    if col['composition'] in list(self.species_dict.keys()) and not already_given and not col['composition']=={'N': 2}:
                         if col.get('temperatures') is not None:
                             col['efficiency'] = np.divide(col['efficiency'],divisor)
                             colliders.append(self._arrheniusFit(col))
                         else:
                             colliders.append({
-                                'name': next(k for k, v in data['species_dict'].items() if v == col['composition']),
+                                'name': next(k for k, v in self.species_dict.items() if v == col['composition']),
                                 'efficiency': {'A': col['efficiency']/divisor,'b':0,'Ea':0},
                                 'note': col['note']
                             })
@@ -303,30 +296,30 @@ class makeYAML:
             if blend_rxn:
                 # Make reaction-specific colliders wrt Ar and append to collider list 
                 for col in blend_rxn['colliders']:
-                    if col['composition'] in list(data['species_dict'].values()):
+                    if col['composition'] in list(self.species_dict.values()):
                         colliders.append(self._arrheniusFit(col))
                         colliderNames.append(col['composition'])
             # Add troe efficiencies that haven't already been given a value
             for name, val in troe_efficiencies.items():
-                comp = data['species_dict'][name]
+                comp = self.species_dict[name]
                 # already_given = any(col['name'] == name for col in colliders)
                 already_given = comp in colliderNames
                 if not already_given and not comp=={'Ar': 1}:
                     colliders.append({
-                        'name': next(k for k, v in data['species_dict'].items() if v == comp),
+                        'name': next(k for k, v in self.species_dict.items() if v == comp),
                         'efficiency': {'A':val,'b':0,'Ea':0 },
                         'note': 'present work',
                     })
                     colliderNames.append(comp)
             if generic:
-                for col in data['defaults']['generic-colliders']:
+                for col in self.defaults['generic-colliders']:
                     already_given = col['composition'] in colliderNames
-                    if col['composition'] in list(data['species_dict'].values()) and not already_given and not col['composition']=={'Ar': 1}:
+                    if col['composition'] in list(self.species_dict.values()) and not already_given and not col['composition']=={'Ar': 1}:
                         if col.get('temperatures') is not None:
                             colliders.append(self._arrheniusFit(col))
                         else:
                             colliders.append({
-                                'name': next(k for k, v in data['species_dict'].items() if v == col['composition']),
+                                'name': next(k for k, v in self.species_dict.items() if v == col['composition']),
                                 'efficiency': {'A': col['efficiency'],'b':0,'Ea':0},
                                 'note': col['note']
                             })
@@ -366,12 +359,11 @@ class makeYAML:
     #             print(rxn.input_data)
 
 
-    def _zippedMech(self, data):
+    def _zippedMech(self):
         # input_data = gas.input_data
         newReactions = []
-        blendRxnNames = [rxn['pes'] for rxn in data['blend']['reactions']]
-        # for mech_rxn in data['mech']['reactions']:
-        for i, mech_rxn in enumerate(data['mech_obj'].reactions()):
+        blendRxnNames = [rxn['pes'] for rxn in self.blend['reactions']]
+        for i, mech_rxn in enumerate(self.mech_obj.reactions()):
             pDep = False
             # Create the M-collider entry for the pressure-dependent reactions
             if mech_rxn.reaction_type in ['falloff-Troe','pressure-dependent-Arrhenius','Chebyshev','three-body-linear-Burke']:
@@ -394,11 +386,11 @@ class makeYAML:
                     d['high-P-rate-constant']=dict(d['high-P-rate-constant'])
                 colliderM = {'name': 'M'}
                 colliderM.update(dict(d))
-            if pDep and (data['mech_pes'][i] in blendRxnNames or data ['allPdep']):
-                if data['mech_pes'][i] in blendRxnNames:
+            if pDep and (self.mech_pes[i] in blendRxnNames or data ['allPdep']):
+                if self.mech_pes[i] in blendRxnNames:
                     # rxn is specifically covered either in defaults or user input
-                    idx = blendRxnNames.index(data['mech_pes'][i])
-                    blend_rxn = data['blend']['reactions'][idx]
+                    idx = blendRxnNames.index(self.mech_pes[i])
+                    blend_rxn = self.blend['reactions'][idx]
                     colliders = self._colliders(data,mech_rxn,blend_rxn=blend_rxn)
                     param_type = "ab initio"
                 elif data ['allPdep']:
@@ -415,30 +407,23 @@ class makeYAML:
                 if 'note' in d and re.fullmatch(r'\n+', d['note']):
                     newRxn['note'] = ''
                 yaml_str = yaml.dump(newRxn, sort_keys=False)
-                newRxn_obj = ct.Reaction.from_yaml(yaml_str,data['mech_obj'])
+                newRxn_obj = ct.Reaction.from_yaml(yaml_str,self.mech_obj)
                 newReactions.append(newRxn_obj)
-                print(f"{mech_rxn} {dict(data['mech_pes'][i])} converted to LMR-R with {param_type} parameters")
+                print(f"{mech_rxn} {dict(self.mech_pes[i])} converted to LMR-R with {param_type} parameters")
             else: # just append it as-is
                 d = mech_rxn.input_data
                 if 'note' in d and re.fullmatch(r'\n+', d['note']):
                     mech_rxn.update_user_data({'note': ''})
                 newReactions.append(mech_rxn)
-        # output_data = {
-        #     'species': data['mech_obj'].species(),  # list of ct.Species objects
-        #     'thermo': data['mech_obj'].thermo_model,
-        #     'transport': data['mech_obj'].transport_model,
-        #     'reactions': newReactions,
-        #     'name': 'outputMech'
-        # }
         output_data = {
-            'thermo': data['mech_obj'].thermo_model,
-            'kinetics': data['mech_obj'].kinetics_model,
-            'transport': data['mech_obj'].transport_model,
-            'species': data['mech_obj'].species(),
+            'thermo': self.mech_obj.thermo_model,
+            'kinetics': self.mech_obj.kinetics_model,
+            'transport': self.mech_obj.transport_model,
+            'species': self.mech_obj.species(),
             'reactions': newReactions,
             'name': 'gas',
         }
-        data['output'] = ct.Solution(**output_data)
+        return ct.Solution(**output_data)
 
     def _loadYAML(self, fName):
         with open(fName) as f:
