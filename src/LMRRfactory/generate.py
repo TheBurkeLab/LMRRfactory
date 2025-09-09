@@ -443,12 +443,33 @@ class makeYAML:
     def _loadYAML(self, fName):
         with open(fName) as f:
             return yaml.safe_load(f)
+
+    def _cleanUp(self, mech):
+        # Prevent 'NO' from being misinterpreted as bool in species list
+        mech['phases'][0]['species'] = [
+            "NO" if str(molec).lower() == "false" else molec
+            for molec in mech['phases'][0]['species']
+        ]
+        for species in mech['species']:
+            if str(species['name']).lower() == "false":
+                species['name']="NO"
+        # Prevent 'NO' from being misinterpreted as bool in efficiencies list found in
+        # Troe falloff reactions
+        for reaction in mech['reactions']:
+            effs = reaction.get('efficiencies')
+            if effs:
+                reaction['efficiencies'] = {
+                    "NO" if str(key).lower() == "false" else key: effs[key]
+                    for key in effs
+                }
     
     def _saveYAML(self, dataSet, fName):
         dataSet.write_yaml(filename=fName,
                 units=self.units)
         # Resave it to remove formatting inconsistencies
+        
         dat = self._loadYAML(fName)
+        self._cleanUp(dat)
         with open(fName, 'w') as outfile:
             yaml.dump(copy.deepcopy(dat), outfile,
                     default_flow_style=None,
