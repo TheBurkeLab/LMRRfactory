@@ -31,9 +31,8 @@ class makeYAML:
         os.makedirs(outputPath,exist_ok=True)
         path=outputPath+'/'
 
-        # if mechInput:
-        if colliderInput:
-            self.input = self._loadYAML(colliderInput)
+        self.input = self._loadYAML(colliderInput) if colliderInput else None
+
         self.mechInput = mechInput
         
         self.foutName = os.path.basename(self.mechInput).replace(".yaml","")
@@ -81,7 +80,7 @@ class makeYAML:
                 col['composition'] = capitalize(col['composition'])
             defaultRxn['reference-collider'] = defaultRxn['reference-collider'].upper()
             defaultRxn['pes'] = capitalize(defaultRxn['pes'])
-        if data.get('input') is not None and self.input.get('reactions') is not None:
+        if self.input and self.input.get('reactions'):
             for inputRxn in self.input['reactions']:
                 for col in inputRxn['colliders']:
                     col['composition'] = capitalize(col['composition'])
@@ -121,13 +120,13 @@ class makeYAML:
         newData = {'generic-colliders': self.defaults['generic-colliders'],
                 'reactions': []}
         inputRxnNames = None
-        if data.get('input') is not None:
-            if self.input.get('reactions') is not None:
+        if self.input:
+            if self.input.get('reactions'):
                 inputRxnNames = [rxn['pes'] for rxn in self.input['reactions']]
                 inputColliderNames = [[col['composition'] for col in rxn['colliders']]
                                     for rxn in self.input['reactions']]
         for defaultRxn in self.defaults['reactions']:
-            if inputRxnNames is not None and defaultRxn['pes'] in inputRxnNames:
+            if inputRxnNames and defaultRxn['pes'] in inputRxnNames:
                 idx = inputRxnNames.index(defaultRxn['pes'])
                 inputColliders = inputColliderNames[idx]
                 newColliderList = [col for col in defaultRxn['colliders']
@@ -157,8 +156,8 @@ class makeYAML:
             defaultRxn['colliders'] = newCollList
             blendData['reactions'].append(defaultRxn)
         defaultRxnNames = [rxn['pes'] for rxn in blendData['reactions']]
-        if data.get('input') is not None:
-            if self.input.get('reactions') is not None:
+        if self.input:
+            if self.input.get('reactions'):
                 for inputRxn in self.input['reactions']:
                     # Check if input reaction also exists in defaults file, otherwise add the entire input reaction to the blend as-is
                     if inputRxn['pes'] in defaultRxnNames:
@@ -283,7 +282,7 @@ class makeYAML:
                 for col in self.defaults['generic-colliders']:
                     already_given = col['composition'] in colliderNames
                     if col['composition'] in list(self.species_dict.keys()) and not already_given and not col['composition']=={'N': 2}:
-                        if col.get('temperatures') is not None:
+                        if col.get('temperatures'):
                             col['efficiency'] = np.divide(col['efficiency'],divisor)
                             colliders.append(self._arrheniusFit(col))
                         else:
@@ -315,7 +314,7 @@ class makeYAML:
                 for col in self.defaults['generic-colliders']:
                     already_given = col['composition'] in colliderNames
                     if col['composition'] in list(self.species_dict.values()) and not already_given and not col['composition']=={'Ar': 1}:
-                        if col.get('temperatures') is not None:
+                        if col.get('temperatures'):
                             colliders.append(self._arrheniusFit(col))
                         else:
                             colliders.append({
@@ -378,11 +377,11 @@ class makeYAML:
                     d.pop("efficiencies",None) #only applies to Troe reactions
                 d.pop("duplicate", None)
                 d.pop("units", None)
-                if d.get('Troe') is not None:
+                if d.get('Troe'):
                     d['Troe']=dict(d['Troe'])
-                if d.get('low-P-rate-constant') is not None:
+                if d.get('low-P-rate-constant'):
                     d['low-P-rate-constant']=dict(d['low-P-rate-constant'])
-                if d.get('high-P-rate-constant') is not None:
+                if d.get('high-P-rate-constant'):
                     d['high-P-rate-constant']=dict(d['high-P-rate-constant'])
                 colliderM = {'name': 'M'}
                 colliderM.update(dict(d))
