@@ -287,9 +287,10 @@ class makeYAML:
                         colliderNames.append(col['composition'])
                     elif col['composition'] in list(self.species_dict.values()):
                         print(col['name'])
-                        print(col['efficiency'])
+                        print(col['efficiency'][0])
                         print(divisors)
                         for i, div in enumerate(divisors[col['name']]):
+                            print(col['efficiency'])
                             col['efficiency'] = np.divide(col['efficiency'][i], div)
                             print(col['efficiency'])
                         colliders.append(self._arrheniusFit(col))
