@@ -264,7 +264,8 @@ class makeYAML:
         if is_M_N2:
             if blend_rxn:
                 divisors = self._divisors(blend_rxn)
-                print(divisors)
+                print(divisors['H2O'])
+                print(type(divisors['H2O']))
                 # divisors=[]
                 # # Extract T-dependent values for N2 if blend_rxn is provided
                 # for col in blend_rxn['colliders']:
