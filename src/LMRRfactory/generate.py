@@ -160,152 +160,155 @@ class makeYAML:
                             blendData['reactions'].append(inputRxn)
         return blendData
 
-    def _zippedMech(self):
-        def to_builtin(obj):
-            if isinstance(obj, dict):
-                return {to_builtin(k): to_builtin(v) for k, v in obj.items()}
-            elif isinstance(obj, list):
-                return [to_builtin(i) for i in obj]
-            elif hasattr(obj, 'as_dict'):
-                return to_builtin(obj.as_dict())
-            elif hasattr(obj, '__dict__'):
-                return to_builtin(vars(obj))
-            elif hasattr(obj, 'tolist'):  # NumPy arrays or similar
-                return obj.tolist()
-            else:
-                return obj
-        def colliders(mech_rxn,blend_rxn=None,generic=False):
-            def arrheniusFit(col):
-                newCol = copy.deepcopy(col)
-                temps=np.array(newCol['temperatures'])
-                eps = np.array(newCol['efficiency'])
-                if len(temps) == 3 and len(eps) == 3:
-                    def arrhenius_rate(T, A, beta, Ea):
-                        return np.log(A) + beta*np.log(T)+ (-Ea/(ct.gas_constant*T))
-                    popt, pcov = curve_fit(arrhenius_rate, temps, np.log(eps),maxfev = 3000000)
-                    fits = [popt[0],popt[1],popt[2]]
-                elif len(temps) == 2 and len (eps) == 2:
-                    def arrhenius_rate(T, A, beta):
-                        return np.log(A) + beta*np.log(T)
-                    popt, pcov = curve_fit(arrhenius_rate, temps, np.log(eps),maxfev = 3000000)
-                    fits = [popt[0],popt[1],0.0]
-                fits = [float(fit) for fit in fits]
-                newCol['efficiency'] = {'A': fits[0],'b': fits[1],'Ea': fits[2]}
-                newCol.pop('temperatures', None)
-                newCol.pop('composition')
-                return dict(newCol)
-            divisor = 1
-            colliders=[]
-            colliderNames=[]
-            is_M_N2 = False
-            troe_efficiencies={}
-            if mech_rxn.reaction_type == 'falloff-Troe':
-                troe_efficiencies= mech_rxn.input_data.get('efficiencies', {})
-                # for sp_name in list(troe_efficiencies_raw.keys()):
-                #     # [disregard] make the keys the compositions instead of species names
-                #     troe_efficiencies[sp_name] = troe_efficiencies_raw[sp_name]
-            elif mech_rxn.reaction_type == 'three-body-linear-Burke': #case where we've used the linear Burke format so that Troe params can be used alongside a PLOG 
-                # for c, col in enumerate(mech_rxn.input_data.get('colliders', {})):
-                #     if col['name'].upper() == 'AR':
-                for c, col in enumerate(mech_rxn.input_data.get('colliders', {})):
-                    if c>0 and col['efficiency']['b']==0 and col['efficiency']['Ea']==0:
-                        troe_efficiencies[col['name']]=col['efficiency']['A'] ## WHY ARE WE USING TROE EFFICIENCIES HERE
+    def _to_builtin(self,obj):
+        if isinstance(obj, dict):
+            return {self._to_builtin(k): self._to_builtin(v) for k, v in obj.items()}
+        elif isinstance(obj, list):
+            return [self._to_builtin(i) for i in obj]
+        elif hasattr(obj, 'as_dict'):
+            return self._to_builtin(obj.as_dict())
+        elif hasattr(obj, '__dict__'):
+            return self._to_builtin(vars(obj))
+        elif hasattr(obj, 'tolist'):  # NumPy arrays or similar
+            return obj.tolist()
+        else:
+            return obj
+    def _colliders(self,mech_rxn,blend_rxn=None,generic=False):
+        def arrheniusFit(col):
+            newCol = copy.deepcopy(col)
+            temps=np.array(newCol['temperatures'])
+            eps = np.array(newCol['efficiency'])
+            if len(temps) == 3 and len(eps) == 3:
+                def arrhenius_rate(T, A, beta, Ea):
+                    return np.log(A) + beta*np.log(T)+ (-Ea/(ct.gas_constant*T))
+                popt, pcov = curve_fit(arrhenius_rate, temps, np.log(eps),maxfev = 3000000)
+                fits = [popt[0],popt[1],popt[2]]
+            elif len(temps) == 2 and len (eps) == 2:
+                def arrhenius_rate(T, A, beta):
+                    return np.log(A) + beta*np.log(T)
+                popt, pcov = curve_fit(arrhenius_rate, temps, np.log(eps),maxfev = 3000000)
+                fits = [popt[0],popt[1],0.0]
+            fits = [float(fit) for fit in fits]
+            newCol['efficiency'] = {'A': fits[0],'b': fits[1],'Ea': fits[2]}
+            newCol.pop('temperatures', None)
+            newCol.pop('composition')
+            return dict(newCol)
+        divisor = 1
+        colliders=[]
+        colliderNames=[]
+        is_M_N2 = False
+        troe_efficiencies={}
+        if mech_rxn.reaction_type == 'falloff-Troe':
+            troe_efficiencies= mech_rxn.input_data.get('efficiencies', {})
+            # for sp_name in list(troe_efficiencies_raw.keys()):
+            #     # [disregard] make the keys the compositions instead of species names
+            #     troe_efficiencies[sp_name] = troe_efficiencies_raw[sp_name]
+        elif mech_rxn.reaction_type == 'three-body-linear-Burke': #case where we've used the linear Burke format so that Troe params can be used alongside a PLOG 
+            # for c, col in enumerate(mech_rxn.input_data.get('colliders', {})):
+            #     if col['name'].upper() == 'AR':
+            for c, col in enumerate(mech_rxn.input_data.get('colliders', {})):
+                if c>0 and col['efficiency']['b']==0 and col['efficiency']['Ea']==0:
+                    troe_efficiencies[col['name']]=col['efficiency']['A'] ## WHY ARE WE USING TROE EFFICIENCIES HERE
+        for name, val in troe_efficiencies.items():
+            comp = self.species_dict[name]
+            # Check if N2 is the reference collider instead of Ar
+            if comp=={'Ar': 1} and val!=0 and val !=1:
+                is_M_N2 = True
+                divisor = 1/val #ratio of N2:Ar
+            if comp=={'Ar': 1} and val==0 :
+                is_M_N2 = True
+                divisor = 1 #imperfect solution, doesn't scale colliders, i.e. 1/val, to avoid dividing by zero but still acknowledges that rxn is w.r.t. N2
+            # Give warning if both Ar and N2 are non-unity colliders
+            if is_M_N2 and comp=={'N': 2} and val!=0 and val !=1:
+                print(f"Warning: {mech_rxn} has both Ar and N2 as non-unity colliders!")
+        if is_M_N2:
+            if blend_rxn:
+                divisors=[]
+                # Extract T-dependent values for N2 if blend_rxn is provided
+                for col in blend_rxn['colliders']:
+                    
+                    if col['composition']=={'N': 2}:
+                        divisors.extend(col['efficiency']) #T-dep divisor of length 2 or 39p^;
+                # Make reaction-specific colliders wrt N2 and append to collider list 
+                for col in blend_rxn['colliders']:
+                    #Convert N2:Ar database entry to Ar:N2
+                    if col['composition']=={'N': 2}:
+                        col['composition']={'Ar': 1}
+                        col['name']=next(k for k, v in self.species_dict.items() if v == col['composition'])
+                        col['efficiency']=np.divide(1,col['efficiency']) 
+                        #maybe divide by divisors, not efficiency )I think it{s the same thing}=
+                        colliders.append(arrheniusFit(col))
+                        colliderNames.append(col['composition'])
+                    elif col['composition'] in list(self.species_dict.values()):
+                        for i in range(len(divisors)):
+                            try:
+                                col['efficiency'] = np.divide(col['efficiency'], divisors[i])
+                                break
+                            except:
+                                pass
+                        colliders.append(arrheniusFit(col))
+                        colliderNames.append(col['composition'])
+                # print(divisors)
+            # colliderNames=set(colliderNames)
+            # Add troe efficiencies that haven't already been given a value
             for name, val in troe_efficiencies.items():
                 comp = self.species_dict[name]
-                # Check if N2 is the reference collider instead of Ar
-                if comp=={'Ar': 1} and val!=0 and val !=1:
-                    is_M_N2 = True
-                    divisor = 1/val #ratio of N2:Ar
-                if comp=={'Ar': 1} and val==0 :
-                    is_M_N2 = True
-                    divisor = 1 #imperfect solution, doesn't scale colliders, i.e. 1/val, to avoid dividing by zero but still acknowledges that rxn is w.r.t. N2
-                # Give warning if both Ar and N2 are non-unity colliders
-                if is_M_N2 and comp=={'N': 2} and val!=0 and val !=1:
-                    print(f"Warning: {mech_rxn} has both Ar and N2 as non-unity colliders!")
-            if is_M_N2:
-                if blend_rxn:
-                    divisors=[]
-                    # Extract T-dependent values for N2 if blend_rxn is provided
-                    for col in blend_rxn['colliders']:
-                        
-                        if col['composition']=={'N': 2}:
-                            divisors.extend(col['efficiency']) #T-dep divisor of length 2 or 39p^;
-                    # Make reaction-specific colliders wrt N2 and append to collider list 
-                    for col in blend_rxn['colliders']:
-                        #Convert N2:Ar database entry to Ar:N2
-                        if col['composition']=={'N': 2}:
-                            col['composition']={'Ar': 1}
-                            col['name']=next(k for k, v in self.species_dict.items() if v == col['composition'])
-                            col['efficiency']=np.divide(1,col['efficiency'])
+                already_given = comp in colliderNames
+                if not already_given and not comp=={'N': 2}: #ignores the redundant n2=1 entry
+                    colliders.append({
+                        'name': next(k for k, v in self.species_dict.items() if v == comp),
+                        'efficiency': {'A':val,'b':0,'Ea':0 },
+                        'note': 'present work',
+                    })
+                    colliderNames.append(self.species_dict[name])
+            if generic:
+                for col in self.defaults['generic-colliders']:
+                    already_given = col['composition'] in colliderNames
+                    if col['composition'] in list(self.species_dict.keys()) and not already_given and not col['composition']=={'N': 2}:
+                        if col.get('temperatures'):
+                            col['efficiency'] = np.divide(col['efficiency'],divisor)
                             colliders.append(arrheniusFit(col))
-                            colliderNames.append(col['composition'])
-                        elif col['composition'] in list(self.species_dict.values()):
-                            for i in range(len(divisors)):
-                                try:
-                                    col['efficiency'] = np.divide(col['efficiency'], divisors[i])
-                                    break
-                                except:
-                                    pass
+                        else:
+                            colliders.append({
+                                'name': next(k for k, v in self.species_dict.items() if v == col['composition']),
+                                'efficiency': {'A': col['efficiency']/divisor,'b':0,'Ea':0},
+                                'note': col['note']
+                            })
+        else:
+            if blend_rxn:
+                # Make reaction-specific colliders wrt Ar and append to collider list 
+                for col in blend_rxn['colliders']:
+                    if col['composition'] in list(self.species_dict.values()):
+                        colliders.append(arrheniusFit(col))
+                        colliderNames.append(col['composition'])
+            # Add troe efficiencies that haven't already been given a value
+            for name, val in troe_efficiencies.items():
+                comp = self.species_dict[name]
+                # already_given = any(col['name'] == name for col in colliders)
+                already_given = comp in colliderNames
+                if not already_given and not comp=={'Ar': 1}:
+                    colliders.append({
+                        'name': next(k for k, v in self.species_dict.items() if v == comp),
+                        'efficiency': {'A':val,'b':0,'Ea':0 },
+                        'note': 'present work',
+                    })
+                    colliderNames.append(comp)
+            if generic:
+                for col in self.defaults['generic-colliders']:
+                    already_given = col['composition'] in colliderNames
+                    if col['composition'] in list(self.species_dict.values()) and not already_given and not col['composition']=={'Ar': 1}:
+                        if col.get('temperatures'):
                             colliders.append(arrheniusFit(col))
-                            colliderNames.append(col['composition'])
-                    # print(divisors)
-                # colliderNames=set(colliderNames)
-                # Add troe efficiencies that haven't already been given a value
-                for name, val in troe_efficiencies.items():
-                    comp = self.species_dict[name]
-                    already_given = comp in colliderNames
-                    if not already_given and not comp=={'N': 2}: #ignores the redundant n2=1 entry
-                        colliders.append({
-                            'name': next(k for k, v in self.species_dict.items() if v == comp),
-                            'efficiency': {'A':val,'b':0,'Ea':0 },
-                            'note': 'present work',
-                        })
-                        colliderNames.append(self.species_dict[name])
-                if generic:
-                    for col in self.defaults['generic-colliders']:
-                        already_given = col['composition'] in colliderNames
-                        if col['composition'] in list(self.species_dict.keys()) and not already_given and not col['composition']=={'N': 2}:
-                            if col.get('temperatures'):
-                                col['efficiency'] = np.divide(col['efficiency'],divisor)
-                                colliders.append(arrheniusFit(col))
-                            else:
-                                colliders.append({
-                                    'name': next(k for k, v in self.species_dict.items() if v == col['composition']),
-                                    'efficiency': {'A': col['efficiency']/divisor,'b':0,'Ea':0},
-                                    'note': col['note']
-                                })
-            else:
-                if blend_rxn:
-                    # Make reaction-specific colliders wrt Ar and append to collider list 
-                    for col in blend_rxn['colliders']:
-                        if col['composition'] in list(self.species_dict.values()):
-                            colliders.append(arrheniusFit(col))
-                            colliderNames.append(col['composition'])
-                # Add troe efficiencies that haven't already been given a value
-                for name, val in troe_efficiencies.items():
-                    comp = self.species_dict[name]
-                    # already_given = any(col['name'] == name for col in colliders)
-                    already_given = comp in colliderNames
-                    if not already_given and not comp=={'Ar': 1}:
-                        colliders.append({
-                            'name': next(k for k, v in self.species_dict.items() if v == comp),
-                            'efficiency': {'A':val,'b':0,'Ea':0 },
-                            'note': 'present work',
-                        })
-                        colliderNames.append(comp)
-                if generic:
-                    for col in self.defaults['generic-colliders']:
-                        already_given = col['composition'] in colliderNames
-                        if col['composition'] in list(self.species_dict.values()) and not already_given and not col['composition']=={'Ar': 1}:
-                            if col.get('temperatures'):
-                                colliders.append(arrheniusFit(col))
-                            else:
-                                colliders.append({
-                                    'name': next(k for k, v in self.species_dict.items() if v == col['composition']),
-                                    'efficiency': {'A': col['efficiency'],'b':0,'Ea':0},
-                                    'note': col['note']
-                                })
-            return colliders
+                        else:
+                            colliders.append({
+                                'name': next(k for k, v in self.species_dict.items() if v == col['composition']),
+                                'efficiency': {'A': col['efficiency'],'b':0,'Ea':0},
+                                'note': col['note']
+                            })
+        return colliders
+
+    def _zippedMech(self):
+        
         newReactions = []
         blendRxnNames = [rxn['pes'] for rxn in self.blend['reactions']]
         for i, mech_rxn in enumerate(self.mech_obj.reactions()):
@@ -314,10 +317,10 @@ class makeYAML:
             if mech_rxn.reaction_type in ['falloff-Troe','pressure-dependent-Arrhenius','Chebyshev','three-body-linear-Burke']:     
                 pDep = True
                 if mech_rxn.reaction_type == 'three-body-linear-Burke':
-                    d = to_builtin(mech_rxn.input_data['colliders'][0]) #use the pdep format given for collider M when rebuilding the reaction
+                    d = self._to_builtin(mech_rxn.input_data['colliders'][0]) #use the pdep format given for collider M when rebuilding the reaction
                     d.pop("name")
                 else:
-                    d = to_builtin(mech_rxn.input_data)
+                    d = self._to_builtin(mech_rxn.input_data)
                     d.pop("equation")
                     d.pop("efficiencies",None) #only applies to Troe reactions
                 d.pop("duplicate", None)
@@ -335,12 +338,12 @@ class makeYAML:
                     # rxn is specifically covered either in defaults or user input
                     idx = blendRxnNames.index(self.mech_pes[i])
                     # blend_rxn = 
-                    colliders = colliders(mech_rxn,blend_rxn=self.blend['reactions'][idx])
+                    colliders = self._colliders(mech_rxn,blend_rxn=self.blend['reactions'][idx])
                     param_type = "ab initio"
                 elif self.allPdep:
-                    colliders = colliders(mech_rxn,generic=True)
+                    colliders = self._colliders(mech_rxn,generic=True)
                     param_type = "generic"
-                d = to_builtin(mech_rxn.input_data)
+                d = self._to_builtin(mech_rxn.input_data)
                 newRxn = {
                     'equation': mech_rxn.equation,
                     **({'duplicate': True} if d.get('duplicate') else {}),
