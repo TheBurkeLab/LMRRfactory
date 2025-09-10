@@ -247,6 +247,7 @@ class makeYAML:
                         for i in range(len(divisors)):
                             try:
                                 col['efficiency'] = np.divide(col['efficiency'], divisors[i])
+                                print(col['efficiency'])
                                 break
                             except:
                                 pass
