@@ -264,8 +264,7 @@ class makeYAML:
         if is_M_N2:
             if blend_rxn:
                 divisors = self._divisors(blend_rxn)
-                print(divisors['H2O'])
-                print(type(divisors['H2O']))
+                
                 # divisors=[]
                 # # Extract T-dependent values for N2 if blend_rxn is provided
                 # for col in blend_rxn['colliders']:
@@ -274,6 +273,8 @@ class makeYAML:
                 #         divisors.extend(col['efficiency']) #T-dep divisor of length 2 or 3
                 # Make reaction-specific colliders wrt N2 and append to collider list 
                 for col in blend_rxn['colliders']:
+                    print(divisors[col['name']])
+                    print(type(divisors[col['name']]))
                     #Convert N2:Ar database entry to Ar:N2
                     if col['composition']=={'N': 2}:
                         col['composition']={'Ar': 1}
