@@ -7,6 +7,7 @@ src/LMRRfactory/compareArrhenius.py
 src/LMRRfactory/generate.py
 src/LMRRfactory/generate_old.py
 src/LMRRfactory/removeduplicates.py
+src/LMRRfactory/testbin.py
 src/LMRRfactory/testdefaults.yaml
 src/LMRRfactory/thirdbodydefaults.yaml
 src/LMRRfactory/thirdbodydefaults_old.yaml

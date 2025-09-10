@@ -41,7 +41,8 @@ def compare(rxn,collider):
         plt.plot(temps,eps,linestyle="None",marker="o")
         plt.savefig(f"comparison_{rxn['equation']}_{collider['name']}.png")
             
-data = loadYAML("/home/pjs/LMRRfactory/test/outputs/Aug27/test_mech_LMRR.yaml")
+# data = loadYAML("/home/pjs/LMRRfactory/test/outputs/Aug27/test_mech_LMRR.yaml")
+data = loadYAML("/home/pjs/LMRRfactory/test/outputs/Sep11/glarborg_H2NNO_B_LMRR.yaml")
 for rxn in data['reactions']:
     if rxn.get('type')=="linear-Burke":
         for collider in rxn['colliders']:

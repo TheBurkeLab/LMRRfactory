@@ -1,0 +1,3161 @@
+description: |-
+  ************************************************************************
+  ************************************************************************
+  ******************* For further documentation of mechanism:  ***********
+  ******************* see references below and their citations ***********
+  ************************************************************************
+  ************************************************************************
+
+  ECK - differs from the original Glarborg '25 mechanism in that the pressure dependent channels from the HNNO+H PES are added
+  able to be found by searching 'ECK'
+
+  Nitrogen subset
+
+  P. Glarborg, J.A. Miller, B. Ruscic, S.J. Klippenstein,
+  "Modeling Nitrogen Chemistry in Combustion",
+  Prog. Energy Combust. Sci. 67 (2018) 31-68.
+
+  J. Jian, H. Hashemi, H. Wu, P. Glarborg, A.W. Jasper, S.J. Klippenstein
+  "An experimental, theoretical, and kinetic modeling study of post-flame oxidation of ammonia",
+  Combust. Flame (2024)
+
+  Previous updates compared to the review marked by # and properly referenced
+
+  Present updates compared to the review marked by ##
+
+generator: ck2yaml
+input-files: [mech.inp, thermo.dat, trans.dat]
+cantera-version: 3.0.0
+date: Mon, 02 Jun 2025 14:37:22 -0400
+
+units: {length: cm, time: s, quantity: mol, activation-energy: cal/mol}
+
+phases:
+- name: gas
+  thermo: ideal-gas
+  elements: [O, H, C, N, He, Ar]
+  species: [NH3, H2, NO2, NO, N2O, tHNNO, cHNNO, NHNO, H2NNO2, tHNN(O)OH,
+    cHNN(O)OH, O2, O3, H, O, OH, HO2, H2O, H2O2, CO, CO2, HOCO, CH2O, HCO,
+    NH2, NH, N, NNH, N2H4, N2H3, tHNNH, cHNNH, H2NN, NH2OH, H2NO, HNOH,
+    HNO, HON, HONO, HNO2, NO3, HONO2, H2NCO, HNCO, NCO, AR, HE, N2, NH2NO, tNHNOH]
+  kinetics: gas
+  transport: mixture-averaged
+  state: {T: 300.0, P: 1 atm}
+
+species:
+- name: NH3
+  composition: {H: 3, N: 1}
+  thermo:
+    model: NASA7
+    temperature-ranges: [200.0, 1000.0, 4000.0]
+    data:
+    - [4.14027871, -3.58489142e-03, 1.89475904e-05, -1.9883397e-08, 7.15267961e-12,
+      -6685.45158, -0.0166754883]
+    - [2.36074311, 6.31850146e-03, -2.28966806e-06, 4.11767411e-10, -2.90836787e-14,
+      -6415.96473, 8.02154329]
+    note: |-
+      ATcT3E
+       in Marshall and Glarborg, Proc. Combust. Inst. 35 (2015) 153160
+       ********************************************************************************
+       ********************************************************************************
+       ***** NH3 NH2 NH N N2H4 N2H3 N2H2 H2NN NNH
+       ********************************************************************************
+       ********************************************************************************
+       NH3 <g> ATcT ver. 1.122, DHf298 = -45.554  0.030 kJ/mol - fit JAN17
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 481.0
+    diameter: 2.92
+    dipole: 1.47
+    rotational-relaxation: 10.0
+- name: H2
+  composition: {H: 2}
+  thermo:
+    model: NASA7
+    temperature-ranges: [200.0, 1000.0, 6000.0]
+    data:
+    - [2.37694204, 7.73916922e-03, -1.88735073e-05, 1.95517114e-08, -7.17095663e-12,
+      -921.173081, 0.547184736]
+    - [2.90207649, 8.68992581e-04, -1.6586443e-07, 1.90851899e-11, -9.31121789e-16,
+      -797.948726, -0.84559132]
+    note: |-
+      ATcT3E
+       ********************************************************************************
+       ********************************************************************************
+       ***** H2 O2 O3 H O OH HO2 H2O H2O2
+       ********************************************************************************
+       ********************************************************************************
+       H2 <g> ATcT ver. 1.122, DHf298 = 0.000  0.000 kJ/mol - fit JAN17
+  transport:
+    model: gas
+    geometry: linear
+    well-depth: 38.0
+    diameter: 2.92
+    polarizability: 0.79
+    rotational-relaxation: 280.0
+- name: NO2
+  composition: {N: 1, O: 2}
+  thermo:
+    model: NASA7
+    temperature-ranges: [200.0, 1000.0, 6000.0]
+    data:
+    - [3.78712696, -4.29576834e-04, 1.37383818e-05, -1.7426414e-08, 6.71249644e-12,
+      2895.00124, 6.96592162]
+    - [4.90482285, 2.14474498e-03, -8.12654059e-07, 1.55511957e-10, -1.04113963e-14,
+      2289.58979, -0.233567018]
+    note: |-
+      ATcT3E
+       ONO <g> ATcT ver. 1.122, DHf298 = 34.049  0.065 kJ/mol - fit JAN17
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 333.59
+    diameter: 3.852
+    dipole: 0.4
+    rotational-relaxation: 1.0
+    note: CJP
+- name: NO
+  composition: {N: 1, O: 1}
+  thermo:
+    model: NASA7
+    temperature-ranges: [200.0, 1000.0, 6000.0]
+    data:
+    - [4.0851799, -3.64693188e-03, 8.49607612e-06, -6.62405734e-09, 1.77647373e-12,
+      9840.61267, 2.83578236]
+    - [3.25487317, 1.19869941e-03, -4.330285e-07, 7.02943336e-11, -4.09788575e-15,
+      9906.99836, 6.4039514]
+    note: |-
+      ATcT3E
+       NO <g> ATcT ver. 1.122, DHf298 = 91.121  0.065 kJ/mol - fit JAN17
+  transport:
+    model: gas
+    geometry: linear
+    well-depth: 139.32
+    diameter: 3.339
+    dipole: 0.2
+    polarizability: 1.76
+    rotational-relaxation: 4.0
+    note: CJP
+- name: N2O
+  composition: {N: 2, O: 1}
+  thermo:
+    model: NASA7
+    temperature-ranges: [200.0, 1000.0, 6000.0]
+    data:
+    - [2.1394229, 0.0121800874, -1.59189415e-05, 1.20920039e-08, -3.85125915e-12,
+      8870.08622, 11.2477534]
+    - [4.80641382, 2.65307443e-03, -9.70797397e-07, 1.6259015e-10, -9.96738154e-15,
+      8197.98219, -2.10607801]
+    note: |-
+      ATcT3E
+       NNO <g> ATcT ver. 1.122, DHf298 = 82.569  0.097 kJ/mol - fit JAN17
+  transport:
+    model: gas
+    geometry: linear
+    well-depth: 232.4
+    diameter: 3.828
+    rotational-relaxation: 1.0
+    note: '*'
+- name: tHNNO
+  composition: {H: 1, N: 2, O: 1}
+  thermo:
+    model: NASA7
+    temperature-ranges: [200.0, 1000.0, 3000.0]
+    data:
+    - [3.3491028, 2.66464795e-03, 1.51235201e-05, -2.19671749e-08, 8.96739792e-12,
+      2.31795663e+04, 9.48662673]
+    - [3.71198811, 7.39811112e-03, -3.83738745e-06, 9.58274234e-10, -9.3492135e-14,
+      2.28510677e+04, 6.35030056]
+    note: |-
+      Marshall and Glarborg (2021)
+      sjk 2406
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 232.4
+    diameter: 3.828
+    rotational-relaxation: 1.0
+    note: est as HNNO
+- name: cHNNO
+  composition: {H: 1, N: 2, O: 1}
+  thermo:
+    model: NASA7
+    temperature-ranges: [200.0, 1000.0, 3000.0]
+    data:
+    - [3.22971229, 4.37577007e-03, 1.09358198e-05, -1.76839668e-08, 7.38656238e-12,
+      2.6288356e+04, 9.95219243]
+    - [3.80873807, 7.49533525e-03, -3.96518414e-06, 1.00392648e-09, -9.89178928e-14,
+      2.59416716e+04, 5.92543315]
+    note: |-
+      pw (Glarborg, Fabricius-Bjerre, Joensen, Hashemi, Klippenstein, 2024)
+      sjk 2406
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 232.4
+    diameter: 3.828
+    rotational-relaxation: 1.0
+    note: est as HNNO
+- name: NHNO
+  composition: {H: 1, N: 2, O: 1}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1000.0, 4000.0]
+    data:
+    - [2.4119486, 9.373293e-03, -2.5389252e-06, -2.065547e-09, 1.0130771e-12,
+      3.4826621e+04, 13.744653]
+    - [4.24542, 6.2618167e-03, -2.8797255e-06, 6.1659735e-10, -5.0261902e-14,
+      3.420462e+04, 3.7331454]
+    note: pw (Glarborg, Fabricius-Bjerre, Joensen, Hashemi, Klippenstein,
+      2024)
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 232.4
+    diameter: 3.828
+    rotational-relaxation: 1.0
+    note: est as HNNO
+- name: H2NNO2
+  composition: {H: 2, N: 2, O: 2}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1000.0, 4000.0]
+    data:
+    - [0.32859247, 0.029113322, -2.9454146e-05, 1.6819576e-08, -4.24891206e-12,
+      -21.362967, 23.026454]
+    - [6.1275311, 9.9487681e-03, -4.3443428e-06, 8.9787674e-10, -7.1401245e-14,
+      -1463.0365, -6.1586874]
+    note: Meng, Lei, Lee, Burke, Proc Combust Inst 39 (2023) 551-560.
+  transport:
+    model: gas
+    geometry: linear
+    well-depth: 357.0
+    diameter: 5.18
+    rotational-relaxation: 1.0
+    note: est as C5H2
+- name: tHNN(O)OH
+  composition: {H: 2, N: 2, O: 2}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1000.0, 4000.0]
+    data:
+    - [-0.13197675, 0.032406834, -3.5663844e-05, 2.1675231e-08, -5.6407028e-12,
+      9124.6217, 24.904137]
+    - [6.4585065, 9.5519437e-03, -4.1527165e-06, 8.5571518e-10, -6.7906695e-14,
+      7548.1944, -7.9753421]
+    note: Meng, Lei, Lee, Burke, Proc Combust Inst 39 (2023) 551-560.
+  transport:
+    model: gas
+    geometry: linear
+    well-depth: 357.0
+    diameter: 5.18
+    rotational-relaxation: 1.0
+    note: est as C5H2
+- name: cHNN(O)OH
+  composition: {H: 2, N: 2, O: 2}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1000.0, 4000.0]
+    data:
+    - [-0.038769214, 0.033205634, -3.8070879e-05, 2.3971571e-08, -6.3781557e-12,
+      4428.378, 24.376095]
+    - [6.6604028, 9.2859355e-03, -4.016074e-06, 8.2436894e-10, -6.5231795e-14,
+      2861.6698, -8.8703469]
+    note: Meng, Lei, Lee, Burke, Proc Combust Inst 39 (2023) 551-560.
+  transport:
+    model: gas
+    geometry: linear
+    well-depth: 357.0
+    diameter: 5.18
+    rotational-relaxation: 1.0
+    note: est as C5H2
+- name: O2
+  composition: {O: 2}
+  thermo:
+    model: NASA7
+    temperature-ranges: [200.0, 1000.0, 6000.0]
+    data:
+    - [3.78498258, -3.02002233e-03, 9.92029171e-06, -9.77840434e-09, 3.28877702e-12,
+      -1064.13589, 3.64780709]
+    - [3.65980488, 6.59877372e-04, -1.44158172e-07, 2.14656037e-11, -1.36503784e-15,
+      -1216.03048, 3.42074148]
+    note: |-
+      ATcT3E
+       O2 <g> ATcT ver. 1.122, DHf298 = 0.000  0.000 kJ/mol - fit JAN17
+  transport:
+    model: gas
+    geometry: linear
+    well-depth: 107.4
+    diameter: 3.458
+    polarizability: 1.6
+    rotational-relaxation: 3.8
+- name: O3
+  composition: {O: 3}
+  thermo:
+    model: NASA7
+    temperature-ranges: [200.0, 1000.0, 6000.0]
+    data:
+    - [3.31673393, 2.68546939e-03, 1.2241166e-05, -2.07427723e-08, 9.22985344e-12,
+      1.58667815e+04, 8.66105917]
+    - [10.1625308, -7.7689699e-03, 5.47843588e-06, -1.22951829e-09, 8.79720138e-14,
+      1.34525105e+04, -29.0111737]
+    note: |-
+      ATcT3E
+       OOO <g> ATcT ver. 1.122, DHf298 = 141.733  0.039 kJ/mol - fit JAN17
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 180.0
+    diameter: 4.1
+    rotational-relaxation: 2.0
+- name: H
+  composition: {H: 1}
+  thermo:
+    model: NASA7
+    temperature-ranges: [200.0, 1000.0, 6000.0]
+    data:
+    - [2.49975925, 6.73824499e-07, 1.11807261e-09, -3.70192126e-12, 2.14233822e-15,
+      2.54737665e+04, -0.445574009]
+    - [2.49985211, 2.34582548e-07, -1.16171641e-10, 2.25708298e-14, -1.52992005e-18,
+      2.54738024e+04, -0.445864645]
+    note: |-
+      ATcT3E
+       H <g> ATcT ver. 1.122, DHf298 = 217.998  0.000 kJ/mol - fit JAN17
+  transport:
+    model: gas
+    geometry: atom
+    well-depth: 145.0
+    diameter: 2.05
+- name: O
+  composition: {O: 1}
+  thermo:
+    model: NASA7
+    temperature-ranges: [200.0, 1000.0, 6000.0]
+    data:
+    - [3.15906526, -3.21509999e-03, 6.49255543e-06, -5.98755115e-09, 2.06876117e-12,
+      2.91298453e+04, 2.09078344]
+    - [2.55160087, -3.83085457e-05, 8.43197478e-10, 4.01267136e-12, -4.17476574e-16,
+      2.92287628e+04, 4.87617014]
+    note: |-
+      ATcT3E
+       O <g> ATcT ver. 1.122, DHf298 = 249.229  0.002 kJ/mol - fit JAN17
+  transport:
+    model: gas
+    geometry: atom
+    well-depth: 80.0
+    diameter: 2.75
+- name: OH
+  composition: {H: 1, O: 1}
+  thermo:
+    model: NASA7
+    temperature-ranges: [200.0, 1000.0, 6000.0]
+    data:
+    - [3.97585165, -2.28555291e-03, 4.33442882e-06, -3.5992664e-09, 1.2670693e-12,
+      3393.41137, -0.0355397262]
+    - [2.84581721, 1.09723818e-03, -2.89121101e-07, 4.0909991e-11, -2.31382258e-15,
+      3717.0661, 5.80339915]
+    note: |-
+      ATcT3E
+       OH <g> ATcT ver. 1.122, DHf298 = 37.490  0.027 kJ/mol - fit JAN17
+  transport:
+    model: gas
+    geometry: linear
+    well-depth: 80.0
+    diameter: 2.75
+- name: HO2
+  composition: {H: 1, O: 2}
+  thermo:
+    model: NASA7
+    temperature-ranges: [200.0, 1000.0, 6000.0]
+    data:
+    - [4.2625125, -4.45642032e-03, 2.05164934e-05, -2.35794011e-08, 9.05614257e-12,
+      262.442356, 3.88223684]
+    - [4.1056401, 2.04046836e-03, -3.65877562e-07, 1.85973044e-11, 4.98818315e-16,
+      43.2898769, 3.30808126]
+    note: |-
+      ATcT3E
+       HO2 <g> ATcT ver. 1.122, DHf298 = 12.26  0.16 kJ/mol - fit JAN17
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 107.4
+    diameter: 3.458
+    rotational-relaxation: 1.0
+    note: '*'
+- name: H2O
+  composition: {H: 2, O: 1}
+  thermo:
+    model: NASA7
+    temperature-ranges: [200.0, 1000.0, 6000.0]
+    data:
+    - [4.20147551, -2.05583546e-03, 6.56547207e-06, -5.5290696e-09, 1.78282605e-12,
+      -3.02950066e+04, -0.860610906]
+    - [2.73117512, 2.95136995e-03, -8.35359785e-07, 1.26088593e-10, -8.40531676e-15,
+      -2.99169082e+04, 6.55183]
+    note: |-
+      ATcT3E
+       H2O <g> ATcT ver. 1.122, DHf298 = -241.833  0.027 kJ/mol - fit JAN17
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 572.4
+    diameter: 2.605
+    dipole: 1.844
+    rotational-relaxation: 4.0
+- name: H2O2
+  composition: {H: 2, O: 2}
+  thermo:
+    model: NASA7
+    temperature-ranges: [200.0, 1000.0, 6000.0]
+    data:
+    - [4.2385416, -2.49610911e-04, 1.59857901e-05, -2.06919945e-08, 8.2976632e-12,
+      -1.76486003e+04, 3.58850097]
+    - [4.5401748, 4.15970971e-03, -1.30876777e-06, 2.00823615e-10, -1.15509243e-14,
+      -1.79514029e+04, 0.855881745]
+    note: |-
+      ATcT3E
+       H2O2 <g> ATcT ver. 1.122, DHf298 = -135.457  0.064 kJ/mol - fit JAN17
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 107.4
+    diameter: 3.458
+    rotational-relaxation: 3.8
+- name: CO
+  composition: {C: 1, O: 1}
+  thermo:
+    model: NASA7
+    temperature-ranges: [200.0, 1000.0, 6000.0]
+    data:
+    - [3.59508377, -7.21196937e-04, 1.28238234e-06, 6.52429293e-10, -8.21714806e-13,
+      -1.43448968e+04, 3.44355598]
+    - [3.03397274, 1.37328118e-03, -4.96445087e-07, 8.10281447e-11, -4.85331749e-15,
+      -1.42586044e+04, 6.10076092]
+    note: |-
+      ATcT3E
+       ********************************************************************************
+       ********************************************************************************
+       ***** CO CO2
+       ********************************************************************************
+       ********************************************************************************
+       CO <g> ATcT ver. 1.122, DHf298 = -110.523  0.026 kJ/mol - fit JAN17
+  transport:
+    model: gas
+    geometry: linear
+    well-depth: 98.1
+    diameter: 3.65
+    polarizability: 1.95
+    rotational-relaxation: 1.8
+- name: CO2
+  composition: {C: 1, O: 2}
+  thermo:
+    model: NASA7
+    temperature-ranges: [200.0, 1000.0, 6000.0]
+    data:
+    - [2.20664321, 0.0100970086, -9.96338809e-06, 5.47155623e-09, -1.27733965e-12,
+      -4.83529864e+04, 10.5261943]
+    - [4.6353747, 2.74559459e-03, -9.98282389e-07, 1.61013606e-10, -9.22018642e-15,
+      -4.90203677e+04, -1.9288763]
+    note: |-
+      ATcT3E
+       CO2 <g> ATcT ver. 1.122, DHf298 = -393.475  0.015 kJ/mol - fit JAN17
+  transport:
+    model: gas
+    geometry: linear
+    well-depth: 244.0
+    diameter: 3.763
+    polarizability: 2.65
+    rotational-relaxation: 2.1
+- name: HOCO
+  composition: {C: 1, O: 2, H: 1}
+  thermo:
+    model: NASA7
+    temperature-ranges: [200.0, 998.402, 3000.0]
+    data:
+    - [2.82191157, 9.66218175e-03, -2.78560177e-06, -4.12692493e-09, 2.61472072e-12,
+      -2.35465218e+04, 11.4284719]
+    - [4.63988707, 5.66362726e-03, -2.67855311e-06, 6.17048884e-10, -5.60953531e-14,
+      -2.40527335e+04, 1.90175132]
+    note: |-
+      FAB/JAN05
+      H298 =-44.33 kcal/mol [FAB/JAN05]
+      S298 = 60.07 cal/mol/K [FAB/JAN05]
+      Cp [FAB/JAN05] (polyfit RAS/GLA08a)
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 498.0
+    diameter: 3.59
+    rotational-relaxation: 2.0
+    note: WKM =OCHO LLNL
+- name: CH2O
+  composition: {C: 1, H: 2, O: 1}
+  thermo:
+    model: NASA7
+    temperature-ranges: [200.0, 1000.0, 6000.0]
+    data:
+    - [4.77187231, -9.76266155e-03, 3.70121918e-05, -3.76921617e-08, 1.31326646e-11,
+      -1.43798106e+04, 0.696585679]
+    - [2.91332516, 6.70039926e-03, -2.55520684e-06, 4.27795142e-10, -2.44072521e-14,
+      -1.44622358e+04, 7.43822875]
+    note: |-
+      ATcT3E
+       H2CO <g> ATcT ver. 1.122, DHf298 = -109.188  0.099 kJ/mol - fit JAN17
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 498.0
+    diameter: 3.59
+    rotational-relaxation: 2.0
+- name: HCO
+  composition: {C: 1, H: 1, O: 1}
+  thermo:
+    model: NASA7
+    temperature-ranges: [200.0, 1000.0, 6000.0]
+    data:
+    - [3.97074749, -1.49121608e-03, 9.54041776e-06, -8.82720349e-09, 2.67645129e-12,
+      3842.03291, 4.44660361]
+    - [3.85781113, 2.6411395e-03, -7.44177294e-07, 1.2331323e-10, -8.88958718e-15,
+      3616.42883, 3.92451197]
+    note: |-
+      ATcT3E
+      REF=ATcT C 2011}  Max Lst Sq Error Cp @ 6000 K 0.49%.
+       from Xiong et al., Combust. Flame 161 (2014) 885897
+      3-HCOH                  C   1H   2O   1    0G   298.150  6000.000 1000.00      1
+       0.62184153E+01 0.18701090E-02-0.17117529E-06-0.44242689E-10 0.63999362E-14    2
+       0.23486822E+05-0.97996712E+01 0.36513441E+01 0.46834047E-02 0.11223500E-05    3
+      -0.80289814E-09-0.77469460E-12 0.24561953E+05 0.49211311E+01                   4
+      1-HCOH                  C   1H   2O   1    0G   298.150  6000.000 1000.00      1
+       0.57648468E+01 0.21295433E-02-0.19747641E-06-0.51074096E-10 0.74327861E-14    2
+       0.10621689E+05-0.77241540E+01 0.32130404E+01 0.32250737E-02 0.24648079E-05    3
+       0.15449875E-08-0.27946393E-11 0.11899702E+05 0.76449280E+01                   4
+      CHOH trans Hydroxymethylene trans  SIGMA=1  STATWT=1  IA=0.2970  IB=2.3197
+      IC=2.6167  Nu=3634,2827,1536,1330,1224,1099  REF=Burcat G3B3  HF298=108.16+/-.43
+      kJ  REF=Ruscic ATcT D 2013  {HF298=106.47+/-8 kJ  REF=Burcat G3B3}  Max Lst Sq
+      Error Cp @ 6000 K 0.45%.
+      CHOH trans  Hydr  T12/14C  1.H  2.O  1.   0.G   200.000  6000.000  B  30.02598 1
+      3.63500546E+00 5.45479239E-03-1.91285077E-06 3.03882849E-10-1.79904440E-14    2
+      5.28968001E+04 4.34543184E+00 4.72862471E+00-1.02082828E-02 4.21639528E-05    3
+      -4.64774522E-08 1.72559970E-11 5.31829869E+04 1.69093263E+00 5.44279146E+04    4
+       HCO <g> ATcT ver. 1.122, DHf298 = 41.803  0.099 kJ/mol - fit JAN17
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 498.0
+    diameter: 3.59
+- name: NH2
+  composition: {H: 2, N: 1}
+  thermo:
+    model: NASA7
+    temperature-ranges: [200.0, 1000.0, 3000.0]
+    data:
+    - [4.06463329, -1.10021454e-03, 4.25849068e-06, -2.68223583e-09, 5.89267407e-13,
+      2.11768668e+04, 0.43985077]
+    - [2.62499312, 3.39841177e-03, -1.01630968e-06, 1.25510796e-10, -2.66500843e-15,
+      2.15419104e+04, 7.73537416]
+    note: |-
+      ATcT3E
+       NH2 <g> ATcT ver. 1.122, DHf298 = 186.02  0.12 kJ/mol - fit JAN17
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 80.0
+    diameter: 2.65
+    polarizability: 2.26
+    rotational-relaxation: 4.0
+- name: NH
+  composition: {H: 1, N: 1}
+  thermo:
+    model: NASA7
+    temperature-ranges: [200.0, 1000.0, 6000.0]
+    data:
+    - [3.45887003, 4.93904408e-04, -1.8786256e-06, 2.85542239e-09, -1.16864671e-12,
+      4.21088372e+04, 2.00373292]
+    - [2.79498941, 1.29259567e-03, -3.85559094e-07, 6.26027608e-11, -3.70421913e-15,
+      4.23408998e+04, 5.68413752]
+    note: |-
+      ATcT3E
+       NH <g> ATcT ver. 1.122, DHf298 = 358.77  0.17 kJ/mol - fit JAN17
+  transport:
+    model: gas
+    geometry: linear
+    well-depth: 80.0
+    diameter: 2.65
+    rotational-relaxation: 4.0
+- name: N
+  composition: {N: 1}
+  thermo:
+    model: NASA7
+    temperature-ranges: [200.0, 1000.0, 6000.0]
+    data:
+    - [2.49976643, 5.02149594e-07, 1.93091211e-09, -4.94632629e-12, 2.74089506e-15,
+      5.6076071e+04, 4.19499326]
+    - [2.41604245, 1.74663766e-04, -1.18864562e-07, 3.01850054e-11, -2.03260159e-15,
+      5.61051512e+04, 4.64905706]
+    note: |-
+      ATcT3E
+       N <g> ATcT ver. 1.122, DHf298 = 472.440  0.024 kJ/mol - fit JAN17
+  transport:
+    model: gas
+    geometry: atom
+    well-depth: 71.4
+    diameter: 3.298
+    note: '*'
+- name: NNH
+  composition: {N: 2, H: 1}
+  thermo:
+    model: NASA7
+    temperature-ranges: [200.0, 1000.0, 6000.0]
+    data:
+    - [4.25474632, -3.45098298e-03, 1.37788699e-05, -1.33263744e-08, 4.41023397e-12,
+      2.88323793e+04, 3.28551762]
+    - [3.42744423, 3.23295234e-03, -1.17296299e-06, 1.90508356e-10, -1.14491506e-14,
+      2.8806774e+04, 6.39209233]
+    note: |-
+      T 1/06
+       E Goos A Burcat B Ruscic Ideal gas thermochemical database with updates from active thermochemical
+       tables (ftp://ftp.technion.ac.il/pub/supported/aetdd/thermodynamics; mirrored at
+       http://garfield.chem.elte.hu/burcat/burcat.html. Accessed July 2013.
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 71.4
+    diameter: 3.798
+    rotational-relaxation: 1.0
+    note: '*'
+- name: N2H4
+  composition: {N: 2, H: 4}
+  thermo:
+    model: NASA7
+    temperature-ranges: [200.0, 1000.0, 6000.0]
+    data:
+    - [3.83472149, -6.49129555e-04, 3.76848463e-05, -5.00709182e-08, 2.03362064e-11,
+      1.00893925e+04, 5.7527203]
+    - [4.93957357, 8.75017187e-03, -2.99399058e-06, 4.67278418e-10, -2.73068599e-14,
+      9282.65548, -2.69439772]
+    note: HYDRAZINE    L 5/90
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 205.0
+    diameter: 4.23
+    polarizability: 4.26
+    rotational-relaxation: 1.5
+- name: N2H3
+  composition: {N: 2, H: 3}
+  thermo:
+    model: NASA7
+    temperature-ranges: [200.0, 1000.0, 6000.0]
+    data:
+    - [3.42125505, 1.3490159e-03, 2.23459071e-05, -2.99727732e-08, 1.2097897e-11,
+      2.58198956e+04, 7.83176309]
+    - [4.04483566, 7.31130186e-03, -2.47625799e-06, 3.83733021e-10, -2.23107573e-14,
+      2.5324142e+04, 2.88423392]
+    note: |-
+      Rad.       T 7/11
+       E Goos A Burcat B Ruscic Ideal gas thermochemical database with updates from active thermochemical
+       tables (ftp://ftp.technion.ac.il/pub/supported/aetdd/thermodynamics; mirrored at
+       http://garfield.chem.elte.hu/burcat/burcat.html. Accessed July 2013.
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 200.0
+    diameter: 3.9
+    rotational-relaxation: 1.0
+    note: '*'
+- name: tHNNH
+  composition: {H: 2, N: 2}
+  thermo:
+    model: NASA7
+    temperature-ranges: [298.0, 1000.0, 3000.0]
+    data:
+    - [3.88929213, -3.2100086e-03, 1.9439051e-05, -1.85473031e-08, 5.73712849e-12,
+      2.28940896e+04, 4.30388193]
+    - [1.90331153, 8.56115359e-03, -3.95855194e-06, 8.78338614e-10, -7.60918709e-14,
+      2.30999238e+04, 12.9282804]
+    note: pw   210418
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 71.4
+    diameter: 3.798
+    rotational-relaxation: 1.0
+    note: est as N2H2
+- name: cHNNH
+  composition: {H: 2, N: 2}
+  thermo:
+    model: NASA7
+    temperature-ranges: [298.0, 1000.0, 3000.0]
+    data:
+    - [3.99834419, -3.85016242e-03, 2.0168314e-05, -1.88422179e-08, 5.76266192e-12,
+      2.54958664e+04, 3.86368201]
+    - [1.79734239, 8.59099031e-03, -3.9491334e-06, 8.73225938e-10, -7.54854178e-14,
+      2.57542095e+04, 13.572957]
+    note: |-
+      pw   210418
+       Marshall and Glarborg (2021)
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 71.4
+    diameter: 3.798
+    rotational-relaxation: 1.0
+    note: est as N2H2
+- name: H2NN
+  composition: {N: 2, H: 2}
+  thermo:
+    model: NASA7
+    temperature-ranges: [200.0, 1000.0, 6000.0]
+    data:
+    - [4.53204001, -7.32418578e-03, 3.00803713e-05, -3.04000551e-08, 1.04700639e-11,
+      3.49580003e+04, 1.51074195]
+    - [3.0590367, 6.18382347e-03, -2.22171165e-06, 3.58539206e-10, -2.14532905e-14,
+      3.48530149e+04, 6.69893515]
+    note: |-
+      Isodiazene   T 9/11
+       E Goos A Burcat B Ruscic Ideal gas thermochemical database with updates from active thermochemical
+       tables (ftp://ftp.technion.ac.il/pub/supported/aetdd/thermodynamics; mirrored at
+       http://garfield.chem.elte.hu/burcat/burcat.html. Accessed July 2013.
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 71.4
+    diameter: 3.798
+    rotational-relaxation: 1.0
+    note: = N2H2
+- name: NH2OH
+  composition: {N: 1, H: 3, O: 1}
+  thermo:
+    model: NASA7
+    temperature-ranges: [200.0, 1000.0, 6000.0]
+    data:
+    - [3.21016092, 6.19671676e-03, 1.10594948e-05, -1.96668262e-08, 8.8251659e-12,
+      -6581.48481, 7.93293571]
+    - [3.88112502, 8.15708448e-03, -2.82615576e-06, 4.37930933e-10, -2.52724604e-14,
+      -6860.18419, 3.79156136]
+    note: |-
+      ATcT/A
+       Klippenstein et al, 2011 paper
+       ********************************************************************************
+       ********************************************************************************
+       ***** NH2OH H2NO HNOH HNO HON NO HONO HNO2 NO2 HONO2 NO3 N2O
+       ********************************************************************************
+       ********************************************************************************
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 116.7
+    diameter: 3.492
+    rotational-relaxation: 1.0
+    note: = NHOH
+- name: H2NO
+  composition: {N: 1, H: 2, O: 1}
+  thermo:
+    model: NASA7
+    temperature-ranges: [200.0, 1000.0, 6000.0]
+    data:
+    - [3.93201139, -1.64028165e-04, 1.39161409e-05, -1.62747853e-08, 6.00352834e-12,
+      6711.78975, 4.58837038]
+    - [3.75555914, 5.16219354e-03, -1.76387387e-06, 2.75052692e-10, -1.60643143e-14,
+      6518.26177, 4.30933053]
+    note: |-
+      RADICAL     T09/09
+       E Goos A Burcat B Ruscic Ideal gas thermochemical database with updates from active thermochemical
+       tables (ftp://ftp.technion.ac.il/pub/supported/aetdd/thermodynamics; mirrored at
+       http://garfield.chem.elte.hu/burcat/burcat.html. Accessed July 2013.
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 116.7
+    diameter: 3.492
+    rotational-relaxation: 1.0
+    note: JAM
+- name: HNOH
+  composition: {H: 2, N: 1, O: 1}
+  thermo:
+    model: NASA7
+    temperature-ranges: [200.0, 1000.0, 6000.0]
+    data:
+    - [3.95608248, -3.0261102e-03, 2.56874396e-05, -3.1564512e-08, 1.24084574e-11,
+      1.0919979e+04, 5.55950983]
+    - [3.98321933, 4.88846374e-03, -1.65086637e-06, 2.55371446e-10, -1.48308561e-14,
+      1.05780106e+04, 3.62582838]
+    note: |-
+      trans & Equ  T11/11
+       E Goos A Burcat B Ruscic Ideal gas thermochemical database with updates from active thermochemical
+       tables (ftp://ftp.technion.ac.il/pub/supported/aetdd/thermodynamics; mirrored at
+       http://garfield.chem.elte.hu/burcat/burcat.html. Accessed July 2013.
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 116.7
+    diameter: 3.492
+    rotational-relaxation: 1.0
+    note: JAM
+- name: HNO
+  composition: {H: 1, N: 1, O: 1}
+  thermo:
+    model: NASA7
+    temperature-ranges: [200.0, 1000.0, 6000.0]
+    data:
+    - [4.5532616, -5.84531688e-03, 1.88853744e-05, -1.76039893e-08, 5.72889621e-12,
+      1.16315603e+04, 1.66850841]
+    - [3.24129053, 2.72377193e-03, -1.60633296e-07, -9.79134982e-11, 1.17103944e-14,
+      1.17745744e+04, 7.27913637]
+    note: |-
+      ATcT3E
+       E Goos A Burcat B Ruscic Ideal gas thermochemical database with updates from active thermochemical
+       tables (ftp://ftp.technion.ac.il/pub/supported/aetdd/thermodynamics; mirrored at
+       http://garfield.chem.elte.hu/burcat/burcat.html. Accessed July 2013.
+      HNOH cis  ATcT C  T11/11H  2.N  1.O  1.   0.G   200.000  6000.000 1000.        1
+       4.11664692E+00 4.81707273E-03-1.63507639E-06 2.53797646E-10-1.47744717E-14    2
+       1.25020921E+04 3.12195287E+00 3.80983976E+00 4.35965662E-04 1.51571801E-05    3
+      -1.96181113E-08 7.75279218E-12 1.28164979E+04 5.90835846E+00 1.40705826E+04    4
+       E Goos A Burcat B Ruscic Ideal gas thermochemical database with updates from active thermochemical
+       tables (ftp://ftp.technion.ac.il/pub/supported/aetdd/thermodynamics; mirrored at
+       http://garfield.chem.elte.hu/burcat/burcat.html. Accessed July 2013.
+       HNO <g> ATcT ver. 1.122, DHf298 = 106.96  0.11 kJ/mol - fit JAN17
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 170.0
+    diameter: 3.43
+    dipole: 1.62
+    rotational-relaxation: 1.0
+    note: CJP
+- name: HON
+  composition: {H: 1, N: 1, O: 1}
+  thermo:
+    model: NASA7
+    temperature-ranges: [200.0, 1000.0, 6000.0]
+    data:
+    - [4.1527245, -3.87826402e-03, 2.05476031e-05, -2.49049483e-08, 9.87365462e-12,
+      2.46037098e+04, 4.56636321]
+    - [4.12044656, 2.28738122e-03, -7.14685362e-07, 1.03332384e-10, -5.704841e-15,
+      2.43643963e+04, 3.38857665]
+    note: |-
+      ATcT3E
+       NOH <g> ATcT ver. 1.122, DHf298 = 214.57  0.87 kJ/mol - fit JAN17
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 116.7
+    diameter: 3.492
+    rotational-relaxation: 1.0
+    note: = HNO
+- name: HONO
+  composition: {H: 1, N: 1, O: 2}
+  thermo:
+    model: NASA7
+    temperature-ranges: [200.0, 1000.0, 6000.0]
+    data:
+    - [3.16416438, 8.50517773e-03, 5.48561573e-07, -8.27656474e-09, 4.39957151e-12,
+      -1.07744086e+04, 10.0231941]
+    - [5.79144641, 3.64630732e-03, -1.29112765e-06, 2.06498233e-10, -1.22138679e-14,
+      -1.15974343e+04, -4.07145349]
+    note: |-
+      ATcT3E
+       HONO <g> ATcT ver. 1.122, DHf298 = -78.675  0.079 kJ/mol - fit JAN17
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 350.0
+    diameter: 3.95
+    dipole: 1.639
+    rotational-relaxation: 1.0
+    note: CJP
+- name: HNO2
+  composition: {H: 1, N: 1, O: 2}
+  thermo:
+    model: NASA7
+    temperature-ranges: [200.0, 1000.0, 6000.0]
+    data:
+    - [4.03779347, -4.46123109e-03, 3.19440815e-05, -3.7935949e-08, 1.44570885e-11,
+      -6530.88236, 5.90620097]
+    - [4.66358504, 4.89854351e-03, -1.79694193e-06, 2.94420361e-10, -1.78235577e-14,
+      -7252.16334, -0.030605364]
+    note: |-
+      ATcT3E
+       HN(O)O <g> ATcT ver. 1.122, DHf298 = -44.2  1.5 kJ/mol - fit JAN17
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 350.0
+    diameter: 3.95
+    dipole: 1.639
+    rotational-relaxation: 1.0
+    note: = HONO
+- name: NO3
+  composition: {N: 1, O: 3}
+  thermo:
+    model: NASA7
+    temperature-ranges: [200.0, 1000.0, 6000.0]
+    data:
+    - [3.3558685, 0.0106545436, -2.86690494e-06, -5.14711611e-09, 3.08532286e-12,
+      7475.34931, 8.94786516]
+    - [7.37569146, 2.21733003e-03, -5.75695789e-07, 6.69775424e-11, -2.589347e-15,
+      6224.45577, -12.4945323]
+    note: |-
+      ATcT3E
+       NO3 <g> ATcT ver. 1.122, DHf298 = 74.13  0.19 kJ/mol - fit JAN17
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 400.0
+    diameter: 4.2
+    dipole: 0.2
+    rotational-relaxation: 1.0
+    note: CJP
+- name: HONO2
+  composition: {H: 1, N: 1, O: 3}
+  thermo:
+    model: NASA7
+    temperature-ranges: [200.0, 1000.0, 6000.0]
+    data:
+    - [1.55975056, 0.0201502169, -1.15217296e-05, -2.3189123e-09, 3.17580552e-12,
+      -1.73955871e+04, 17.7294677]
+    - [8.03061257, 4.46368336e-03, -1.72272779e-06, 2.91611606e-10, -1.80487362e-14,
+      -1.93033764e+04, -16.2543421]
+    note: |-
+      ATcT3E
+       HNO3 <g> ATcT ver. 1.122, DHf298 = -134.19  0.18 kJ/mol - fit JAN17
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 400.0
+    diameter: 4.2
+    dipole: 0.2
+    rotational-relaxation: 1.0
+    note: = NO3
+- name: H2NCO
+  composition: {C: 1, H: 2, N: 1, O: 1}
+  thermo:
+    model: NASA7
+    temperature-ranges: [200.0, 1000.0, 6000.0]
+    data:
+    - [3.53640094, 9.73407134e-03, -3.87292847e-07, -5.90128176e-09, 3.01181866e-12,
+      -3096.23872, 8.47952204]
+    - [5.69169331, 6.08717989e-03, -2.09433522e-06, 3.28448737e-10, -1.9270389e-14,
+      -3810.28606, -3.22710215]
+    note: |-
+      H2N-C*=O  T09/09
+       E Goos A Burcat B Ruscic Ideal gas thermochemical database with updates from active thermochemical
+       tables (ftp://ftp.technion.ac.il/pub/supported/aetdd/thermodynamics; mirrored at
+       http://garfield.chem.elte.hu/burcat/burcat.html. Accessed July 2013.
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 307.8
+    diameter: 4.14
+    rotational-relaxation: 1.0
+    note: = c3h6
+- name: HNCO
+  composition: {H: 1, N: 1, C: 1, O: 1}
+  thermo:
+    model: NASA7
+    temperature-ranges: [200.0, 1000.0, 6000.0]
+    data:
+    - [2.24009031, 0.0145600497, -1.5435233e-05, 8.55535028e-09, -1.79631611e-12,
+      -1.54589951e+04, 12.1663775]
+    - [5.30045051, 4.02250821e-03, -1.4096228e-06, 2.23855342e-10, -1.32499966e-14,
+      -1.61995274e+04, -3.11770684]
+    note: Isocyanic AciA 5/05
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 232.4
+    diameter: 3.828
+    rotational-relaxation: 1.0
+    note: OIS
+- name: NCO
+  composition: {N: 1, C: 1, O: 1}
+  thermo:
+    model: NASA7
+    temperature-ranges: [200.0, 1000.0, 6000.0]
+    data:
+    - [2.77405177, 9.24523481e-03, -9.91773586e-06, 6.68461303e-09, -2.09520542e-12,
+      1.4236957e+04, 9.7545867]
+    - [5.08064474, 2.37443587e-03, -9.07098904e-07, 1.52286713e-10, -9.31009234e-15,
+      1.35781204e+04, -2.15734434]
+    note: |-
+      (NCO)        A 5/05
+       E Goos A Burcat B Ruscic Ideal gas thermochemical database with updates from active thermochemical
+       tables (ftp://ftp.technion.ac.il/pub/supported/aetdd/thermodynamics; mirrored at
+       http://garfield.chem.elte.hu/burcat/burcat.html. Accessed July 2013.
+  transport:
+    model: gas
+    geometry: linear
+    well-depth: 232.4
+    diameter: 3.828
+    rotational-relaxation: 1.0
+    note: OIS
+- name: AR
+  composition: {Ar: 1}
+  thermo:
+    model: NASA7
+    temperature-ranges: [200.0, 1000.0, 6000.0]
+    data:
+    - [2.49988611, 2.1303796e-07, 8.97320772e-10, -2.31395752e-12, 1.30201393e-15,
+      -745.354481, 4.38024367]
+    - [2.49989176, 1.56134837e-07, -7.76108557e-11, 1.52928085e-14, -1.05304493e-18,
+      -745.328403, 4.38029835]
+    note: |-
+      ATcT3E
+       Ar <g> ATcT ver. 1.122, DHf298 = 0.000  0.000 kJ/mol - fit JAN17
+  transport:
+    model: gas
+    geometry: atom
+    well-depth: 136.5
+    diameter: 3.33
+- name: HE
+  composition: {He: 1}
+  thermo:
+    model: NASA7
+    temperature-ranges: [200.0, 1000.0, 6000.0]
+    data:
+    - [2.49976293, 1.01013432e-06, -8.24578465e-10, -6.85983306e-13, 7.24751856e-16,
+      -745.340917, 0.929800315]
+    - [2.49985609, 2.19365392e-07, -1.07525085e-10, 2.07198041e-14, -1.39358612e-18,
+      -745.309155, 0.929535014]
+    note: |-
+      ATcT3E
+       He <g> ATcT ver. 1.122, DHf298 = 0.000  0.000 kJ/mol - fit JAN17
+  transport:
+    model: gas
+    geometry: atom
+    well-depth: 10.2
+    diameter: 2.576
+    note: '*'
+- name: N2
+  composition: {N: 2}
+  thermo:
+    model: NASA7
+    temperature-ranges: [200.0, 1000.0, 6000.0]
+    data:
+    - [3.53603521, -1.58270944e-04, -4.26984251e-07, 2.3754259e-09, -1.39708206e-12,
+      -1047.49645, 2.94603724]
+    - [2.9380297, 1.4183803e-03, -5.03281045e-07, 8.07555464e-11, -4.76064275e-15,
+      -917.18099, 5.95521985]
+    note: |-
+      ATcT3E
+       Meng, Lei, Lee, Burke, Proc Combust Inst 39 (2023) 551-560.
+       ********************************************************************************
+       ********************************************************************************
+       ***** N2 AR HE
+       ********************************************************************************
+       ********************************************************************************
+       N2 <g> ATcT ver. 1.122, DHf298 = 0.000  0.000 kJ/mol - fit JAN17
+  transport:
+    model: gas
+    geometry: linear
+    well-depth: 97.53
+    diameter: 3.621
+    polarizability: 1.76
+    rotational-relaxation: 4.0
+- name: NH2NO  # added by ECK from thermo calculated in automech (mess2nasa) 
+  composition: {N: 2, H: 2, O: 1}
+  thermo:
+    model: NASA7
+    temperature-ranges: [200.00, 1000.0, 3000.0]
+    data:
+    - [4.64195161E+00, 8.88552596E-03, -4.24373195E-06, 9.92811451E-10, -9.20343635E-14,
+       7.62037949E+03, 2.45041261E+00]
+    - [3.61618959E+00, 8.30423452E-03, 5.75459597E-06, -1.36679220E-08, 6.17742466E-12,
+       8.01530283E+03, 8.43779953E+00]
+  transport:
+    model: gas
+    geometry: nonlinear # based on visual analysis of geometry
+    well-depth: 305.73 # K - calculated from OneDMin
+    diameter: 3.49 # ang - calculated from OneDMin
+    rotational-relaxation: 1.0 # same as NH2OH
+- name: tNHNOH  # added by ECK from thermo calculated in automech (mess2nasa) 
+  composition: {N: 2, H: 2, O: 1}
+  thermo:
+    model: NASA7
+    temperature-ranges: [200.00, 1000.0, 3000.0]
+    data:
+    - [4.55132951E+00, 9.05391246E-03, -4.36243520E-06, 1.02912035E-09, -9.61032978E-14,
+       6.63261605E+04, 1.56853740E+00]
+    - [3.34032112E+00, 6.51031237E-03, 1.42713681E-05, -2.46521528E-08, 1.07059750E-11,
+       6.68576038E+04, 9.02049022E+00]
+  transport:
+    model: gas
+    geometry: nonlinear # based on visual analysis of geometry
+    well-depth: 293.10 # K - calculated from OneDMin
+    diameter: 3.67 # ang - calculated from OneDMin
+    rotational-relaxation: 1.0 # same as NH2OH
+##################################################################################################
+#                                  Reactions
+##################################################################################################
+reactions:
+- equation: N2O (+M) <=> N2 + O (+M)  # Reaction 1
+  type: falloff
+  low-P-rate-constant: {A: 6.0e+14, b: 0.0, Ea: 5.7444e+04}
+  high-P-rate-constant: {A: 9.9e+10, b: 0.0, Ea: 5.7901e+04}
+  efficiencies: {N2: 1.7, O2: 1.4, H2O: 12.0, N2O: 6.0}
+  note: |-
+    *****************************************************************************
+       N2O subset (HNNO from Meng et al., 2023)                                 *
+    *****************************************************************************
+- equation: N2O + H <=> N2 + OH  # Reaction 2
+  rate-constant: {A: 2.2e+14, b: 0.0, Ea: 1.6752e+04}
+  note: |-
+    KR /0.79/ !
+    Baulch DL Bowman CT Cobos CJ Cox RA Just Th Kerr JA Pilling MJ Stocker D Troe J Tsang W Walker RW Warnatz J JPCRD 34:757-1397 2005
+    Fc=1.167-1.25E-4T close to 1.0 over 300-2500 K range
+    Johnsson JE Glarborg P Dam-Johansen K PCI 24:917 1992 (TBE)
+    ##
+- equation: N2O + H (+M) <=> tHNNO (+M)  # Reaction 3
+  type: falloff
+  low-P-rate-constant: {A: 1.3e+27, b: -3.48, Ea: 7030.0}
+  high-P-rate-constant: {A: 1.7e+04, b: 3.05, Ea: 6530.0}
+  Troe: {A: 0.12, T3: 1.0e-30, T1: 1.0e+30}
+  efficiencies: {H2: 3.0, H2O: 21.0, O2: 1.1, N2: 1.5}
+  note: |-
+    N2O+H=N2+OH                          2.5E10    0.000    4551 !
+     Marshall, P.; Ko, T.; Fontijn, A. J. Phys. Chem. 1989, 93, 1922-1927.
+     pw: low activation energy coefficients removed (replaced by addition channel to HNNO)
+     ##
+- equation: N2O + H (+M) <=> cHNNO (+M)  # Reaction 4
+  type: falloff
+  low-P-rate-constant: {A: 1.2e+25, b: -2.94, Ea: 6770.0}
+  high-P-rate-constant: {A: 0.024, b: 4.81, Ea: 4790.0}
+  Troe: {A: 0.12, T3: 1.0e-30, T1: 1.0e+30}
+  efficiencies: {H2: 3.0, H2O: 21.0, O2: 1.1, N2: 1.5}
+  note: |-
+    Meng, Lei, Lee, Burke, Proc Combust Inst 39 (2023) 551-560.
+    ##
+- equation: N2O + H (+M) <=> NHNO (+M)  # Reaction 5
+  type: falloff
+  low-P-rate-constant: {A: 4.8e+20, b: -1.93, Ea: 1.44e+04}
+  high-P-rate-constant: {A: 5.9e-17, b: 9.29, Ea: 1.19e+04}
+  Troe: {A: 0.075, T3: 1.0e-30, T1: 1.0e+30}
+  efficiencies: {H2: 3.0, H2O: 21.0, O2: 1.1, N2: 1.5}
+  note: |-
+    Meng, Lei, Lee, Burke, Proc Combust Inst 39 (2023) 551-560.
+    ##
+- equation: N2O + O <=> NO + NO  # Reaction 6
+  rate-constant: {A: 2.0e+10, b: 1.0, Ea: 2.48e+04}
+  note: |-
+    Meng, Lei, Lee, Burke, Proc Combust Inst 39 (2023) 551-560.
+    ##
+- equation: N2O + O <=> N2 + O2  # Reaction 7
+  rate-constant: {A: 2.6e+12, b: 0.5, Ea: 4.11e+04}
+  note: |-
+    Gonzalez, Sayos, Valero, Chem Phys Lett 355 (2002) 123-132.
+    Glarborg, Allingham, Skov, Hashemi, Marshall, J Phys Chem A 127 (2023) 6521-6531.
+    ##
+- equation: N2O + OH <=> N2 + HO2  # Reaction 8
+  rate-constant: {A: 0.013, b: 4.72, Ea: 3.656e+04}
+  note: |-
+    Gonzalez, Sayos, Valero, Chem Phys Lett 355 (2002) 123-132.
+    Glarborg, Allingham, Skov, Hashemi, Marshall, J Phys Chem A 127 (2023) 6521-6531.
+- equation: N2O + OH <=> HNO + NO  # Reaction 9
+  rate-constant: {A: 1.2e-04, b: 4.33, Ea: 2.508e+04}
+  note: Mebel, Diau, Lin, Morokuma, J Phys Chem 100 (1996) 7517-7525.
+- equation: N2O + NO <=> NO2 + N2  # Reaction 10
+  rate-constant: {A: 5.3e+05, b: 2.23, Ea: 4.628e+04}
+  note: Mebel, Diau, Lin, Morokuma, J Phys Chem 100 (1996) 7517-7525.
+- equation: tHNNO (+M) <=> cHNNO (+M)  # Reaction 11
+  type: falloff
+  low-P-rate-constant: {A: 1.0e+17, b: -0.801, Ea: 1.69e+04}
+  high-P-rate-constant: {A: 1.3e+04, b: 3.36, Ea: 2.3e+04}
+  Troe: {A: 0.074, T3: 1.0e-30, T1: 1.0e+30}
+  efficiencies: {H2: 3.0, H2O: 21.0, O2: 1.1, N2: 1.5}
+  note: |-
+    Mebel, Diau, Lin, Morokuma, J Phys Chem 100 (1996) 7517-7525.
+    ##
+- equation: tHNNO <=> N2 + OH  # Reaction 12
+  type: pressure-dependent-Arrhenius
+  rate-constants:
+  - {P: 0.001 atm, A: 5.5e+20, b: -4.92, Ea: 2.7957e+04}
+  - {P: 0.01 atm, A: 7.2e+19, b: -4.47, Ea: 2.829e+04}
+  - {P: 0.1 atm, A: 1.4e+17, b: -3.44, Ea: 2.8122e+04}
+  - {P: 1.0 atm, A: 1.9e+14, b: -2.27, Ea: 2.83e+04}
+  - {P: 10.0 atm, A: 1.2e+14, b: -1.76, Ea: 3.0057e+04}
+  - {P: 100.0 atm, A: 6.5e+16, b: -2.06, Ea: 3.3255e+04}
+  - {P: 1000.0 atm, A: 1.2e+18, b: -2.0, Ea: 3.5804e+04}
+  note: |-
+    Meng, Lei, Lee, Burke, Proc Combust Inst 39 (2023) 551-560.
+    1 atm  ##
+- equation: tHNNO <=> NHNO  # Reaction 13
+  type: pressure-dependent-Arrhenius
+  rate-constants:
+  - {P: 1.0 atm, A: 0.7, b: 0.403, Ea: 3.0406e+04}
+  - {P: 10.0 atm, A: 7.6, b: 0.907, Ea: 3.3467e+04}
+  - {P: 100.0 atm, A: 7.6, b: 0.907, Ea: 3.3467e+04}
+  - {P: 1000.0 atm, A: 7800.0, b: 1.009, Ea: 3.8212e+04}
+  note: |-
+    Meng, Lei, Lee, Burke, Proc Combust Inst 39 (2023) 551-560.
+    800-3000 K ##
+- equation: tHNNO + H <=> NH2 + NO  # Reaction 14
+  rate-constant: {A: 1.8e+13, b: 0.183, Ea: -45.0}
+  note: |-
+    Meng, Lei, Lee, Burke, Proc Combust Inst 39 (2023) 551-560.
+    ##
+- equation: tHNNO + H <=> N2 + H + OH  # Reaction 15
+  rate-constant: {A: 1.2e+14, b: -0.077, Ea: 126.0}
+  note: '##'
+- equation: tHNNO + H <=> N2 + H2O  # Reaction 16
+  rate-constant: {A: 7.9e+13, b: -0.139, Ea: 270.0}
+  note: '##'
+- equation: tHNNO + H <=> N2O + H2  # Reaction 17
+  rate-constant: {A: 6.7e+06, b: 1.878, Ea: 143.0}
+  note: '##'
+- equation: tHNNO + O <=> N2O + OH  # Reaction 18
+  rate-constant: {A: 6.0e+13, b: 0.0, Ea: 0.0}
+  note: |-
+    pw (Glarborg, Fabricius-Bjerre, Joensen, Hashemi, Klippenstein, 2024)
+    est ##
+- equation: tHNNO + O <=> HNO + NO  # Reaction 19
+  rate-constant: {A: 6.0e+13, b: 0.0, Ea: 0.0}
+  note: 'est ##'
+- equation: tHNNO + OH <=> H2NNO2  # Reaction 20
+  type: pressure-dependent-Arrhenius
+  rate-constants:
+  - {P: 0.001 atm, A: 3.0e+24, b: -6.22, Ea: 1.2272e+04}
+  - {P: 0.01 atm, A: 1.5e+22, b: -5.3, Ea: 1.0109e+04}
+  - {P: 0.1 atm, A: 1.4e+21, b: -4.77, Ea: 6968.0}
+  - {P: 1.0 atm, A: 2.3e+23, b: -5.11, Ea: 3594.0}
+  - {P: 10.0 atm, A: 8.2e+28, b: -6.26, Ea: 3437.0}
+  - {P: 100.0 atm, A: 8.5e+31, b: -6.68, Ea: 5301.0}
+  - {P: 1000.0 atm, A: 6.8e+29, b: -5.71, Ea: 7282.0}
+  note: |-
+    Meng, Lei, Lee, Burke, Proc Combust Inst 39 (2023) 551-560.
+    1 atm ##
+- equation: tHNNO + OH <=> tHNN(O)OH  # Reaction 21
+  type: pressure-dependent-Arrhenius
+  rate-constants:
+  - {P: 0.001 atm, A: 1.4e+21, b: -5.39, Ea: 1.2576e+04}
+  - {P: 0.01 atm, A: 1.3e+20, b: -4.83, Ea: 1.1019e+04}
+  - {P: 0.1 atm, A: 1.0e+17, b: -3.74, Ea: 5875.0}
+  - {P: 1.0 atm, A: 3.0e+19, b: -4.15, Ea: 2539.0}
+  - {P: 10.0 atm, A: 7.8e+24, b: -5.25, Ea: 2310.0}
+  - {P: 100.0 atm, A: 1.3e+28, b: -5.63, Ea: 3641.0}
+  - {P: 1000.0 atm, A: 2.6e+27, b: -4.97, Ea: 5060.0}
+  note: |-
+    Meng, Lei, Lee, Burke, Proc Combust Inst 39 (2023) 551-560.
+    1 atm ##
+- equation: tHNNO + OH <=> cHNN(O)OH  # Reaction 22
+  type: pressure-dependent-Arrhenius
+  rate-constants:
+  - {P: 0.001 atm, A: 3.7e-56, b: 15.1, Ea: -4.4419e+04}
+  - {P: 0.01 atm, A: 1.1e+23, b: -5.5, Ea: 3.4725e+04}
+  - {P: 0.1 atm, A: 6.9e+15, b: -3.34, Ea: 1.7962e+04}
+  - {P: 1.0 atm, A: 4.9e+10, b: -1.69, Ea: 2195.0}
+  - {P: 10.0 atm, A: 9.5e+21, b: -4.41, Ea: 1742.0}
+  - {P: 100.0 atm, A: 7.2e+27, b: -5.53, Ea: 3389.0}
+  - {P: 1000.0 atm, A: 4.6e+27, b: -5.01, Ea: 4132.0}
+  note: |-
+    Meng, Lei, Lee, Burke, Proc Combust Inst 39 (2023) 551-560.
+    1 atm ##
+- equation: tHNNO + OH <=> NH2 + NO2  # Reaction 23
+  type: pressure-dependent-Arrhenius
+  rate-constants:
+  - {P: 0.001 atm, A: 2.2e+16, b: -1.44, Ea: 1234.0}
+  - {P: 0.01 atm, A: 2.2e+16, b: -1.44, Ea: 1234.0}
+  - {P: 0.1 atm, A: 2.2e+16, b: -1.44, Ea: 1234.0}
+  - {P: 1.0 atm, A: 2.3e+16, b: -1.44, Ea: 1239.0}
+  - {P: 10.0 atm, A: 3.5e+16, b: -1.5, Ea: 1408.0}
+  - {P: 100.0 atm, A: 1.4e+18, b: -1.92, Ea: 3172.0}
+  - {P: 1000.0 atm, A: 8.2e+18, b: -2.06, Ea: 6656.0}
+  note: |-
+    Meng, Lei, Lee, Burke, Proc Combust Inst 39 (2023) 551-560.
+    1 atm ##
+- equation: tHNNO + OH <=> H2O + N2O  # Reaction 24
+  type: pressure-dependent-Arrhenius
+  rate-constants:
+  - {P: 0.001 atm, A: 9.2e+13, b: -0.55, Ea: 338.0}
+  - {P: 0.01 atm, A: 9.2e+13, b: -0.55, Ea: 338.0}
+  - {P: 0.1 atm, A: 9.2e+13, b: -0.55, Ea: 338.0}
+  - {P: 1.0 atm, A: 9.1e+13, b: -0.55, Ea: 337.0}
+  - {P: 10.0 atm, A: 9.3e+13, b: -0.55, Ea: 338.0}
+  - {P: 100.0 atm, A: 2.2e+14, b: -0.65, Ea: 720.0}
+  - {P: 1000.0 atm, A: 2.2e+14, b: -0.62, Ea: 1739.0}
+  note: |-
+    Meng, Lei, Lee, Burke, Proc Combust Inst 39 (2023) 551-560.
+    1 atm ##
+- equation: tHNNO + OH <=> HNOH + NO  # Reaction 25
+  rate-constant: {A: 3.0e+13, b: 0.0, Ea: 0.0}
+  note: |-
+    Meng, Lei, Lee, Burke, Proc Combust Inst 39 (2023) 551-560.
+    ##
+- equation: tHNNO + O2 <=> HO2 + N2O  # Reaction 26
+  rate-constant: {A: 0.037, b: 4.341, Ea: 1.1952e+04}
+  note: |-
+    Meng, Lei, Lee, Burke, Proc Combust Inst 39 (2023) 551-560 est.
+    ##
+- equation: tHNNO + O2 <=> NO + HNO2  # Reaction 27
+  rate-constant: {A: 2900.0, b: 2.444, Ea: 3.1043e+04}
+  note: '##'
+- equation: tHNNO + O2 <=> cHNNO + O2  # Reaction 28
+  rate-constant: {A: 1.0e+04, b: 2.09, Ea: 3.7213e+04}
+  note: '##'
+- equation: cHNNO <=> N2 + OH  # Reaction 29
+  type: pressure-dependent-Arrhenius
+  rate-constants:
+  - {P: 0.001 atm, A: 2.7e+07, b: -0.96, Ea: 1.741e+04}
+  - {P: 0.01 atm, A: 1.3e+07, b: -0.71, Ea: 1.7789e+04}
+  - {P: 0.1 atm, A: 2.7e+05, b: -0.01, Ea: 1.7748e+04}
+  - {P: 1.0 atm, A: 1000.0, b: 1.0, Ea: 1.783e+04}
+  - {P: 10.0 atm, A: 470.0, b: 1.52, Ea: 1.9263e+04}
+  - {P: 100.0 atm, A: 9.6e+04, b: 1.32, Ea: 2.1935e+04}
+  - {P: 1000.0 atm, A: 8.8e+05, b: 1.43, Ea: 2.3724e+04}
+  note: |-
+    Meng, Lei, Lee, Burke, Proc Combust Inst 39 (2023) 551-560.
+    1 atm ##
+- equation: cHNNO <=> NHNO  # Reaction 30
+  type: pressure-dependent-Arrhenius
+  rate-constants:
+  - {P: 1.0 atm, A: 3.9e-06, b: 1.913, Ea: 2.3095e+04}
+  - {P: 10.0 atm, A: 1.0e-03, b: 1.987, Ea: 2.6556e+04}
+  - {P: 100.0 atm, A: 1.0e-03, b: 1.987, Ea: 2.6556e+04}
+  note: |-
+    Meng, Lei, Lee, Burke, Proc Combust Inst 39 (2023) 551-560.
+    1 atm ##
+- equation: cHNNO + H <=> NH2 + NO  # Reaction 31
+  rate-constant: {A: 5.8e+10, b: 0.313, Ea: -182.0}
+  note: |-
+    Meng, Lei, Lee, Burke, Proc Combust Inst 39 (2023) 551-560 (800-3000 K).
+    ##
+- equation: cHNNO + H <=> H + N2 + OH  # Reaction 32
+  rate-constant: {A: 1.0e+14, b: -0.157, Ea: 180.0}
+  note: '##'
+- equation: cHNNO + H <=> N2 + H2O  # Reaction 33
+  rate-constant: {A: 9.1e+13, b: -0.088, Ea: 75.0}
+  note: '##'
+- equation: cHNNO + H <=> N2O + H2  # Reaction 34
+  rate-constant: {A: 3.0e+13, b: 0.0954, Ea: 60.0}
+  note: '##'
+- equation: cHNNO + O <=> HNO + NO  # Reaction 35
+  rate-constant: {A: 6.0e+13, b: 0.0, Ea: 0.0}
+  note: pw (Glarborg, Fabricius-Bjerre, Joensen, Hashemi, Klippenstein,
+    2024)
+- equation: cHNNO + O <=> N2O + OH  # Reaction 36
+  rate-constant: {A: 6.0e+13, b: 0.0, Ea: 0.0}
+- equation: cHNNO + OH <=> H2NNO2  # Reaction 37
+  type: pressure-dependent-Arrhenius
+  rate-constants:
+  - {P: 0.001 atm, A: 6.6e+07, b: -1.75, Ea: 1.2568e+04}
+  - {P: 0.01 atm, A: 9.3e+12, b: -2.89, Ea: 1.6148e+04}
+  - {P: 0.1 atm, A: 1.7e+18, b: -4.09, Ea: 1.8328e+04}
+  - {P: 1.0 atm, A: 1.1e+15, b: -2.98, Ea: 8984.0}
+  - {P: 10.0 atm, A: 6.6e+19, b: -4.01, Ea: 3295.0}
+  - {P: 100.0 atm, A: 1.3e+28, b: -5.85, Ea: 3491.0}
+  - {P: 1000.0 atm, A: 5.6e+29, b: -5.79, Ea: 5235.0}
+  note: |-
+    Meng, Lei, Lee, Burke, Proc Combust Inst 39 (2023) 551-560.
+    1 atm ##
+- equation: cHNNO + OH <=> tHNN(O)OH  # Reaction 38
+  type: pressure-dependent-Arrhenius
+  rate-constants:
+  - {P: 0.001 atm, A: 1.5e+30, b: -7.88, Ea: 3.6355e+04}
+  - {P: 0.01 atm, A: 1.6e+31, b: -7.86, Ea: 3.7492e+04}
+  - {P: 0.1 atm, A: 2.0e+17, b: -3.91, Ea: 2.034e+04}
+  - {P: 1.0 atm, A: 9.6e+09, b: -1.69, Ea: 7400.0}
+  - {P: 10.0 atm, A: 4.1e+15, b: -2.94, Ea: 2092.0}
+  - {P: 100.0 atm, A: 1.7e+24, b: -4.8, Ea: 2307.0}
+  - {P: 1000.0 atm, A: 1.2e+27, b: -5.0, Ea: 3790.0}
+  note: |-
+    Meng, Lei, Lee, Burke, Proc Combust Inst 39 (2023) 551-560.
+    1 atm ##
+- equation: cHNNO + OH <=> cHNN(O)OH  # Reaction 39
+  type: pressure-dependent-Arrhenius
+  rate-constants:
+  - {P: 1.0 atm, A: 1.4e+06, b: -0.76, Ea: 8238.0}
+  - {P: 10.0 atm, A: 4.3e+13, b: -2.42, Ea: 1857.0}
+  - {P: 100.0 atm, A: 2.8e+24, b: -4.87, Ea: 2369.0}
+  - {P: 1000.0 atm, A: 6.3e+27, b: -5.23, Ea: 4346.0}
+  note: |-
+    Meng, Lei, Lee, Burke, Proc Combust Inst 39 (2023) 551-560.
+    1 atm ##
+- equation: cHNNO + OH <=> NH2 + NO2  # Reaction 40
+  type: pressure-dependent-Arrhenius
+  rate-constants:
+  - {P: 0.001 atm, A: 1.5e+14, b: -0.65, Ea: 626.0}
+  - {P: 0.01 atm, A: 1.5e+14, b: -0.65, Ea: 626.0}
+  - {P: 0.1 atm, A: 1.5e+14, b: -0.65, Ea: 626.0}
+  - {P: 1.0 atm, A: 1.5e+14, b: -0.65, Ea: 626.0}
+  - {P: 10.0 atm, A: 1.5e+14, b: -0.65, Ea: 626.0}
+  - {P: 100.0 atm, A: 2.3e+14, b: -0.7, Ea: 784.0}
+  - {P: 1000.0 atm, A: 2.9e+15, b: -0.98, Ea: 2546.0}
+  note: |-
+    Meng, Lei, Lee, Burke, Proc Combust Inst 39 (2023) 551-560.
+    1 atm ##
+- equation: cHNNO + OH <=> tHNNO + OH  # Reaction 41
+  type: pressure-dependent-Arrhenius
+  rate-constants:
+  - {P: 0.001 atm, A: 8.2e+12, b: -0.3, Ea: 1159.0}
+  - {P: 0.01 atm, A: 8.2e+12, b: -0.3, Ea: 1159.0}
+  - {P: 0.1 atm, A: 8.2e+12, b: -0.3, Ea: 1159.0}
+  - {P: 1.0 atm, A: 1.5e+14, b: -0.65, Ea: 626.0}
+  - {P: 10.0 atm, A: 8.7e+12, b: -0.31, Ea: 1190.0}
+  - {P: 100.0 atm, A: 1.7e+13, b: -0.38, Ea: 1502.0}
+  - {P: 1000.0 atm, A: 1.8e+14, b: -0.65, Ea: 3175.0}
+  note: |-
+    Meng, Lei, Lee, Burke, Proc Combust Inst 39 (2023) 551-560.
+    1 atm ##
+- equation: cHNNO + OH <=> N2O + H2O  # Reaction 42
+  type: pressure-dependent-Arrhenius
+  rate-constants:
+  - {P: 0.001 atm, A: 6.0e+14, b: -0.91, Ea: 668.0}
+  - {P: 0.01 atm, A: 6.0e+14, b: -0.91, Ea: 668.0}
+  - {P: 0.1 atm, A: 6.0e+14, b: -0.91, Ea: 668.0}
+  - {P: 1.0 atm, A: 6.0e+14, b: -0.91, Ea: 668.0}
+  - {P: 10.0 atm, A: 6.0e+14, b: -0.91, Ea: 666.0}
+  - {P: 100.0 atm, A: 7.5e+14, b: -0.94, Ea: 711.0}
+  - {P: 1000.0 atm, A: 6.8e+15, b: -1.18, Ea: 2089.0}
+  note: |-
+    Meng, Lei, Lee, Burke, Proc Combust Inst 39 (2023) 551-560.
+    1 atm  ##
+- equation: cHNNO + OH <=> HNOH + NO  # Reaction 43
+  rate-constant: {A: 3.0e+13, b: 0.0, Ea: 0.0}
+  note: |-
+    Meng, Lei, Lee, Burke, Proc Combust Inst 39 (2023) 551-560.
+    ##
+- equation: cHNNO + O2 <=> N2O + HO2  # Reaction 44
+  rate-constant: {A: 9.9, b: 3.498, Ea: 1.4772e+04}
+  note: |-
+    Meng, Lei, Lee, Burke, Proc Combust Inst 39 (2023) 551-560 (est).
+    ##
+- equation: cHNNO + O2 <=> NO + HNO2  # Reaction 45
+  rate-constant: {A: 5.8e+04, b: 2.189, Ea: 3.1166e+04}
+  note: '##'
+- equation: NHNO <=> N2 + OH  # Reaction 46
+  type: pressure-dependent-Arrhenius
+  rate-constants:
+  - {P: 0.001 atm, A: 2.6e+05, b: -0.51, Ea: 1.0529e+04}
+  - {P: 0.01 atm, A: 1.2e+06, b: -0.4, Ea: 1.1592e+04}
+  - {P: 0.1 atm, A: 1.0e+06, b: -0.06, Ea: 1.2507e+04}
+  - {P: 1.0 atm, A: 6.6e+05, b: 0.36, Ea: 1.359e+04}
+  - {P: 10.0 atm, A: 2.6e+07, b: 0.33, Ea: 1.5729e+04}
+  - {P: 100.0 atm, A: 3.7e+11, b: -0.41, Ea: 1.9036e+04}
+  - {P: 1000.0 atm, A: 4.3e+14, b: -0.89, Ea: 2.1729e+04}
+  note: |-
+    Meng, Lei, Lee, Burke, Proc Combust Inst 39 (2023) 551-560.
+    1 atm ##
+- equation: NHNO + H <=> NH2 + NO  # Reaction 47
+  rate-constant: {A: 6.0e+13, b: 0.0, Ea: 0.0}
+  note: |-
+    Meng, Lei, Lee, Burke, Proc Combust Inst 39 (2023) 551-560.
+    ##
+- equation: NHNO + H <=> H + N2 + OH  # Reaction 48
+  rate-constant: {A: 6.0e+13, b: 0.0, Ea: 0.0}
+  note: '##'
+- equation: NHNO + H <=> N2 + H2O  # Reaction 49
+  rate-constant: {A: 6.0e+13, b: 0.0, Ea: 0.0}
+  note: '##'
+- equation: NHNO + O <=> HNO + NO  # Reaction 50
+  rate-constant: {A: 6.0e+13, b: 0.0, Ea: 0.0}
+  note: |-
+    Meng, Lei, Lee, Burke, Proc Combust Inst 39 (2023) 551-560 est.
+    ##
+- equation: NHNO + O <=> N2O + OH  # Reaction 51
+  rate-constant: {A: 6.0e+13, b: 0.0, Ea: 0.0}
+  note: '##'
+- equation: NHNO + OH <=> HNOH + NO  # Reaction 52
+  rate-constant: {A: 3.0e+13, b: 0.0, Ea: 0.0}
+  note: |-
+    Meng, Lei, Lee, Burke, Proc Combust Inst 39 (2023) 551-560 est.
+    ##
+- equation: NHNO + OH <=> H2O + N2O  # Reaction 53
+  rate-constant: {A: 3.0e+13, b: 0.0, Ea: 0.0}
+  note: '##'
+- equation: NHNO + O2 <=> N2O + HO2  # Reaction 54
+  rate-constant: {A: 3.0e+13, b: 0.0, Ea: 0.0}
+  note: |-
+    Meng, Lei, Lee, Burke, Proc Combust Inst 39 (2023) 551-560 est.
+    ##
+- equation: NHNO + O2 <=> HNO + NO2  # Reaction 55
+  rate-constant: {A: 3.0e+13, b: 0.0, Ea: 0.0}
+  note: '##'
+- equation: H + O2 <=> O + OH  # Reaction 56
+  rate-constant: {A: 1.0e+14, b: 0.0, Ea: 1.5286e+04}
+  note: |-
+    Meng, Lei, Lee, Burke, Proc Combust Inst 39 (2023) 551-560 est.
+    *****************************************************************************
+       H2/O2 subset                                                             *
+    *****************************************************************************
+- equation: O + H2 <=> OH + H  # Reaction 57
+  duplicate: true
+  rate-constant: {A: 3.8e+12, b: 0.0, Ea: 7948.0}
+  note: Hong et al., Proc. Comb. Inst. 33:309-316 (2011)
+- equation: O + H2 <=> OH + H  # Reaction 58
+  duplicate: true
+  rate-constant: {A: 8.8e+14, b: 0.0, Ea: 1.9175e+04}
+- equation: OH + H2 <=> H + H2O  # Reaction 59
+  rate-constant: {A: 2.2e+08, b: 1.51, Ea: 3430.0}
+  note: Baulch DL Bowman CT Cobos CJ Cox RA Just Th Kerr JA Pilling MJ Stocker
+    D Troe J Tsang W Walker RW Warnatz J JPCRD 34:757-1397 2005
+- equation: OH + OH <=> O + H2O  # Reaction 60
+  duplicate: true
+  rate-constant: {A: 2.0e+07, b: 1.651, Ea: 631.0}
+  note: |2-
+     Michael and Sutherland, J. Phys. Chem. 92:3853 (1988)
+    OH+OH=O+H2O                          1.4E07   1.689   -1167 !
+     DUPLICATE
+    OH+OH=O+H2O                         -2.7E10   0.567       0 !
+     DUPLICATE
+     M. Sangwan, L. N. Krasnoperov, J Phys Chem A 116 (2012) 11817-11822.
+- equation: OH + OH <=> O + H2O  # Reaction 61
+  duplicate: true
+  rate-constant: {A: 2.6e+11, b: -0.057, Ea: -827.0}
+- equation: H2 + M <=> H + H + M  # Reaction 62
+  type: three-body
+  rate-constant: {A: 4.6e+19, b: -1.4, Ea: 1.0438e+05}
+  efficiencies: {H2: 2.5, H2O: 12.0, NH3: 5.0, AR: 0.0, O2: 0.0}
+  note: "HH: Refitted (400-3000 K) for better stability of the solvers (avoiding\
+    \ negative 'A') 16-04-08"
+- equation: H2 + O2 <=> H + H + O2  # Reaction 63
+  duplicate: true
+  rate-constant: {A: 4.6e+19, b: -1.4, Ea: 1.0438e+05}
+- equation: H2 + AR <=> H + H + AR  # Reaction 64
+  rate-constant: {A: 5.8e+18, b: -1.1, Ea: 1.0438e+05}
+- equation: H + O + M <=> OH + M  # Reaction 65
+  type: three-body
+  rate-constant: {A: 4.7e+18, b: -1.0, Ea: 0.0}
+  efficiencies: {H2: 2.5, H2O: 12.0, AR: 0.75, CO: 1.9, CO2: 3.8, NH3: 5.0,
+    O2: 0.0}
+  note: Tsang and Hampson, J. Phys. Chem. Ref. Data, 15:1087 (1986)
+- equation: H + O + O2 <=> OH + O2  # Reaction 66
+  duplicate: true
+  rate-constant: {A: 4.7e+18, b: -1.0, Ea: 0.0}
+  note: Tsang and Hampson, J. Phys. Chem. Ref. Data, 15:1087 (1986)
+- equation: O + O + M <=> O2 + M  # Reaction 67
+  type: three-body
+  rate-constant: {A: 1.9e+13, b: 0.0, Ea: -1788.0}
+  efficiencies: {H2: 2.5, H2O: 12.0, AR: 0.0, CO: 1.9, CO2: 3.8, NH3: 5.0}
+- equation: H2O + M <=> H + OH + M  # Reaction 68
+  type: three-body
+  rate-constant: {A: 6.1e+27, b: -3.322, Ea: 1.2079e+05}
+  efficiencies: {H2: 3.0, H2O: 0.0, N2: 2.0, O2: 0.0, CO: 1.9, CO2: 3.8,
+    NH3: 5.0}
+  note: Tsang W Hampson RF JPCRD 15:1087 1986
+- equation: H2O + O2 <=> H + OH + O2  # Reaction 69
+  duplicate: true
+  rate-constant: {A: 9.15e+27, b: -3.322, Ea: 1.2079e+05}
+  note: |-
+    Srinivasan and Michael, Int. J. Chem. Kinetic. 38 (2006)
+    Rate constant is for Ar with efficiencies from Michael et al., J. Phys. Chem. A, 106 (2002)
+    Efficiencies for CO and CO2 taken from Li et al., Int. J. Chem. Kinet. 36:566-575 (2004)
+- equation: H2O + H2O <=> H + OH + H2O  # Reaction 70
+  rate-constant: {A: 1.0e+26, b: -2.44, Ea: 1.2018e+05}
+- equation: H + O2 (+M) <=> HO2 (+M)  # Reaction 71
+  type: falloff
+  low-P-rate-constant: {A: 4.6e+20, b: -1.67, Ea: 871.0}
+  high-P-rate-constant: {A: 1.2e+12, b: 0.58, Ea: -214.0}
+  Troe: {A: 0.5852, T3: 1.0e+30, T1: 1.0e-10}
+  efficiencies: {AR: 1.0, H2O: 22.6, N2: 1.53, H2: 3.0, O2: 1.0, CO: 3.0,
+    CO2: 11.0, NH3: 19.0}
+  note: |-
+    Srinivasan and Michael, Int. J. Chem. Kinetic. 38 (2006)
+    #
+- equation: HO2 + H <=> H2 + O2  # Reaction 72
+  rate-constant: {A: 2.8e+06, b: 2.09, Ea: -1451.0}
+  note: Lei, L. & Burke, M. P., Combust. Flame 213, 467-474 (2020).
+- equation: HO2 + H <=> OH + OH  # Reaction 73
+  rate-constant: {A: 7.1e+13, b: 0.0, Ea: 295.0}
+  note: |-
+    Michael et al., Proc. Comb. Inst. 28:1471 (2000)
+    Scaled by 0.75 Burke et al. (2012)
+- equation: HO2 + H <=> H2O + O  # Reaction 74
+  rate-constant: {A: 1.4e+12, b: 0.0, Ea: 0.0}
+  note: Mueller et al., Int. J. Chem. Kinetic. 31:113 (1999)
+- equation: HO2 + O <=> O2 + OH  # Reaction 75
+  rate-constant: {A: 2.9e+10, b: 1.0, Ea: -724.0}
+  note: Baulch DL Bowman CT Cobos CJ Cox RA Just Th Kerr JA Pilling MJ Stocker
+    D Troe J Tsang W Walker RW Warnatz J JPCRD 34:757-1397 2005
+- equation: HO2 + OH <=> H2O + O2  # Reaction 76
+  duplicate: true
+  rate-constant: {A: 1.9e+20, b: -2.49, Ea: 584.0}
+  note: |-
+    Fernandez-Ramos and Varandas, J. Phys. Chem. A 106:4077-4083 (2002)
+    Scaled by 0.60 by Burke et al. 2012
+- equation: HO2 + OH <=> H2O + O2  # Reaction 77
+  duplicate: true
+  rate-constant: {A: 1.2e+09, b: 1.24, Ea: -1310.0}
+- equation: HO2 + HO2 <=> H2O2 + O2  # Reaction 78
+  rate-constant: {A: 0.019, b: 4.12, Ea: -4960.0}
+  note: |-
+    M. P. Burke, S. J. Klippenstein, L. B. Harding, Proc Combust Inst 34 (2013) 547-555.
+    #
+- equation: HO2 + HO2 <=> O2 + OH + OH  # Reaction 79
+  rate-constant: {A: 6.4e+17, b: -1.54, Ea: 8540.0}
+  note: |-
+    S.J. Klippenstein, R. Sivaramakrishnan, U. Burke, K. P. Somers, H. J. Curran, L. Cai, H. Pitsch, M. Pelucchi, T. Faravelli, P. Glarborg,
+    "HO2 + HO2: High Level Theory and the Role of Singlet Channels", Combust. Flame 243 (2022) 111975.
+    #
+- equation: H2O2 (+M) <=> OH + OH (+M)  # Reaction 80
+  type: falloff
+  low-P-rate-constant: {A: 2.5e+24, b: -2.3, Ea: 4.8749e+04}
+  high-P-rate-constant: {A: 2.0e+12, b: 0.9, Ea: 4.8749e+04}
+  Troe: {A: 0.43, T3: 1.0e-30, T1: 1.0e+30}
+  efficiencies: {AR: 1.0, H2O: 5.5, CO2: 5.2, N2: 1.5, O2: 1.2, H2O2: 7.7,
+    H2: 3.7, CO: 2.8, NH3: 8.0}
+  note: |-
+    S.J. Klippenstein, R. Sivaramakrishnan, U. Burke, K.P. Somers, H.J. Curran, L. Cai, H. Pitsch, M. Pelucchi, T. Faravelli, P. Glarborg,
+    "HO2 + HO2: High Level Theory and the Role of Singlet Channels", Combust. Flame 243 (2022) 111975.
+- equation: H2O2 + H <=> H2O + OH  # Reaction 81
+  rate-constant: {A: 2.4e+13, b: 0.0, Ea: 3970.0}
+  note: |-
+    Troe, Combust. Flame 158:594-601 (2011)
+    Efficiencies for H2 and CO taken from Li et al., Int. J. Chem. Kinet. 36:566-575 (2004)
+- equation: H2O2 + H <=> HO2 + H2  # Reaction 82
+  rate-constant: {A: 4.8e+13, b: 0.0, Ea: 7950.0}
+  note: Tsang and Hampson, J. Phys. Chem. Ref. Data, 15:1087 (1986)
+- equation: H2O2 + O <=> HO2 + OH  # Reaction 83
+  rate-constant: {A: 9.6e+06, b: 2.0, Ea: 3970.0}
+  note: Tsang and Hampson, J. Phys. Chem. Ref. Data, 15:1087 (1986)
+- equation: H2O2 + OH <=> HO2 + H2O  # Reaction 84
+  duplicate: true
+  rate-constant: {A: 1.7e+12, b: 0.0, Ea: 318.0}
+  note: Tsang W Hampson RF JPCRD 15:1087 1986
+- equation: H2O2 + OH <=> HO2 + H2O  # Reaction 85
+  duplicate: true
+  rate-constant: {A: 7.6e+13, b: 0.0, Ea: 7270.0}
+- equation: H + O2 + H <=> H2 + O2  # Reaction 86
+  duplicate: true
+  rate-constant: {A: 8.8e+22, b: -1.835, Ea: 800.0}
+  note: |-
+    Hong et al., J. Phys. Chem. A  114 (2010) 5718-5727
+    #
+- equation: H + O2 + H <=> OH + OH  # Reaction 87
+  rate-constant: {A: 4.0e+22, b: -1.835, Ea: 800.0}
+  note: '#'
+- equation: H + O2 + O <=> OH + O2  # Reaction 88
+  duplicate: true
+  rate-constant: {A: 7.4e+22, b: -1.835, Ea: 800.0}
+  note: '#'
+- equation: H + O2 + OH <=> H2O + O2  # Reaction 89
+  duplicate: true
+  rate-constant: {A: 2.6e+22, b: -1.835, Ea: 800.0}
+  note: '#'
+- equation: CO + O (+M) <=> CO2 (+M)  # Reaction 90
+  type: falloff
+  low-P-rate-constant: {A: 1.4e+24, b: -2.79, Ea: 4191.0}
+  high-P-rate-constant: {A: 1.8e+10, b: 0.0, Ea: 2384.0}
+  Troe: {A: 1.0, T3: 1.0e-30, T1: 1.0e+30, T2: 1.0e+30}
+  efficiencies: {H2: 2.5, H2O: 12.0, CO: 1.9, CO2: 3.8, NH3: 5.0}
+  note: |-
+    M. P. Burke and S. J. Klippenstein. Ephemeral collision complexes mediate chemically termolecular transformations
+    that affect system chemistry. Nat. Chem., 9:1078-1082, 2017
+    *****************************************************************************
+       CO/CO2 subset                                                            *
+    *****************************************************************************
+- equation: CO + OH <=> CO2 + H  # Reaction 91
+  type: pressure-dependent-Arrhenius
+  rate-constants:
+  - {P: 0.01315 atm, A: 2.1e+05, b: 1.9, Ea: -1064.0}
+  - {P: 0.1315 atm, A: 2.5e+05, b: 1.88, Ea: -1043.0}
+  - {P: 1.315 atm, A: 8.7e+05, b: 1.73, Ea: -685.0}
+  - {P: 13.158 atm, A: 6.8e+06, b: 1.48, Ea: 48.0}
+  - {P: 131.58 atm, A: 2.3e+07, b: 1.35, Ea: 974.0}
+  note: |-
+    Mueller MA Yetter RA Dryer FL IJCK 31:705 1999
+    1 atm
+- equation: CO + OH <=> HOCO  # Reaction 92
+  type: pressure-dependent-Arrhenius
+  rate-constants:
+  - {P: 0.013158 atm, A: 1.7e+15, b: -2.68, Ea: 859.0}
+  - {P: 0.13158 atm, A: 5.9e+18, b: -3.35, Ea: 887.0}
+  - {P: 1.3158 atm, A: 2.6e+20, b: -3.5, Ea: 1309.0}
+  - {P: 13.158 atm, A: 7.1e+20, b: -3.32, Ea: 1763.0}
+  - {P: 131.58 atm, A: 1.1e+20, b: -2.78, Ea: 2056.0}
+  note: |-
+    J.P. Senosiain, S.J. Klippenstein, J.A. Miller, Proc. Combust. Inst. 30 (2005) 945-953.
+     1.0 atm interpolation - LPL (JPS,SJK,&JAM 30th Symp)
+- equation: CO + HO2 <=> CO2 + OH  # Reaction 93
+  rate-constant: {A: 1.6e+05, b: 2.18, Ea: 1.7943e+04}
+  note: J.P. Senosiain, S.J. Klippenstein, J.A. Miller, Proc. Combust. Inst.
+    30 (2005) 945-953.
+- equation: CO + O2 <=> CO2 + O  # Reaction 94
+  rate-constant: {A: 4.7e+12, b: 0.0, Ea: 6.05e+04}
+  note: You X Wang H Goos E Sung C-J Klippenstein SJ JCPA 111:4031-4042
+    2007
+- equation: CO + H2O2 <=> HOCO + OH  # Reaction 95
+  rate-constant: {A: 3.6e+04, b: 2.5, Ea: 2.866e+04}
+  note: Bacskay GB Mackie JC JPCA 109:2019-2025 2005
+- equation: HOCO (+M) <=> CO2 + H (+M)  # Reaction 96
+  type: falloff
+  low-P-rate-constant: {A: 6.0e+26, b: -3.148, Ea: 3.7116e+04}
+  high-P-rate-constant: {A: 8.2e+11, b: 0.413, Ea: 3.5335e+04}
+  Troe: {A: 0.39, T3: 1.0e-30, T1: 1.0e+30}
+  efficiencies: {H2: 2.5, H2O: 12.0, CO: 1.9, CO2: 3.8, NH3: 5.0}
+  note: P Glarborg P Marshall CPL 475 (2009) 40-43
+- equation: HOCO + H <=> CO2 + H2  # Reaction 97
+  rate-constant: {A: 3.1e+17, b: -1.3475, Ea: 555.0}
+  note: |-
+    Fc = 0.39
+    DM Golden GP Smith AB McEwen C-L Yu B Eiteneer M Frenklach GL Vaghjiani AR Ravishankara FP Tully J Phys Chem. A 102 (1998) 8598-8606.
+- equation: HOCO + H <=> CO + H2O  # Reaction 98
+  rate-constant: {A: 6.0e+15, b: -0.525, Ea: 2125.0}
+  note: |-
+    H.G. Yu, J.S. Francisco, J. Chem. Phys. 128 (2008) 244315.
+    P. Marshall, P. Glarborg, Proc. Combust. Inst. 35 (2015) 153-160 (300-1000 K, fit).
+- equation: HOCO + O <=> CO2 + OH  # Reaction 99
+  rate-constant: {A: 9.0e+12, b: 0.0, Ea: 0.0}
+  note: |-
+    H.G. Yu, J.S. Francisco, J. Chem. Phys. 128 (2008) 244315.
+    P. Marshall, P. Glarborg, Proc. Combust. Inst. 35 (2015) 153-160 (300-1000 K, fit).
+- equation: HOCO + OH <=> CO2 + H2O  # Reaction 100
+  duplicate: true
+  rate-constant: {A: 4.6e+12, b: 0.0, Ea: -89.0}
+  note: H.G. Yu, J.T. Muckerman, J.S. Francisco, J. Chem. Phys. 127 (2007)
+    094302.
+- equation: HOCO + OH <=> CO2 + H2O  # Reaction 101
+  duplicate: true
+  rate-constant: {A: 9.5e+06, b: 2.0, Ea: -89.0}
+- equation: HOCO + HO2 <=> CO2 + H2O2  # Reaction 102
+  rate-constant: {A: 4.0e+13, b: 0.0, Ea: 0.0}
+  note: Yu H-G Muckerman JT Francisco JS JPCA 109:5230-5236 2005
+- equation: HOCO + O2 <=> CO2 + HO2  # Reaction 103
+  rate-constant: {A: 4.0e+09, b: 1.0, Ea: 0.0}
+  note: H.G. Yu, G. Poggi, J.S. Francisco, J.T. Muckerman, J. Chem. Phys.
+    129 (2008) 214307.
+- equation: CH2O (+M) <=> HCO + H (+M)  # Reaction 104
+  type: falloff
+  low-P-rate-constant: {A: 1.3e+36, b: -5.5, Ea: 9.3932e+04}
+  high-P-rate-constant: {A: 8.0e+15, b: 0.0, Ea: 8.7726e+04}
+  efficiencies: {H2: 2.5, H2O: 12.0, CO: 1.9, CO2: 3.8, NH3: 5.0}
+  note: |-
+    H.G. Yu, J.T. Muckerman, J. Phys. Chem. A 110 (2006) 5312-5316.
+    P. Marshall, P. Glarborg, Proc. Combust. Inst. 35 (2015) 153-160 (300-1000 K, fit).
+    *****************************************************************************
+       CH2O subset                                                              *
+    *****************************************************************************
+- equation: CH2O (+M) <=> CO + H2 (+M)  # Reaction 105
+  type: falloff
+  low-P-rate-constant: {A: 4.4e+38, b: -6.1, Ea: 9.3932e+04}
+  high-P-rate-constant: {A: 3.7e+13, b: 0.0, Ea: 7.1969e+04}
+  efficiencies: {H2: 2.5, H2O: 12.0, CO: 1.9, CO2: 3.8, NH3: 5.0}
+  note: |-
+    Troe J JPCA 109:8320-8328 2005
+    J. Troe, J. Phys. Chem. A 111 (2007) 3862-3867.
+- equation: CH2O + H <=> HCO + H2  # Reaction 106
+  duplicate: true
+  type: pressure-dependent-Arrhenius
+  rate-constants:
+  - {P: 0.04 atm, A: 7.4e+23, b: -2.732, Ea: 1.6379e+04}
+  - {P: 1.0 atm, A: 1.4e+23, b: -2.355, Ea: 1.7519e+04}
+  - {P: 10.0 atm, A: 7.3e+23, b: -2.665, Ea: 1.7634e+04}
+  note: |2-
+     Troe J JPCA 109:8320-8328 2005
+     J. Troe, J. Phys. Chem. A 111 (2007) 3862-3867.
+    CH2O+H=HCO+H2                        5.9E03   3.130    1510 !
+     Wang SK Dames EE Davidson DF Hanson RK, J. Phys. Chem. A  118 10201-10209 2014
+     applying prompt HCO dissociation - Labbe et al., J. Phys. Chem. Lett. 2016:
+     1 atm
+- equation: CH2O + H <=> HCO + H2  # Reaction 107
+  duplicate: true
+  type: pressure-dependent-Arrhenius
+  rate-constants:
+  - {P: 0.04 atm, A: 2.1e+10, b: 1.057, Ea: 3720.0}
+  - {P: 1.0 atm, A: 1.6e+15, b: -0.444, Ea: 5682.0}
+  - {P: 10.0 atm, A: 4.2e+09, b: 1.294, Ea: 3591.0}
+  note: 1 atm
+- equation: CH2O + H <=> H + CO + H2  # Reaction 108
+  type: pressure-dependent-Arrhenius
+  rate-constants:
+  - {P: 0.04 atm, A: 7.2e+08, b: 1.903, Ea: 1.1733e+04}
+  - {P: 1.0 atm, A: 5.1e+07, b: 2.182, Ea: 1.1524e+04}
+- equation: CH2O + O <=> HCO + OH  # Reaction 109
+  duplicate: true
+  rate-constant: {A: 5.6e+31, b: -5.189, Ea: 1.9968e+04}
+  note: |-
+    PLOG/10                         1.1E09   1.812   13163/
+    CH2O+O=HCO+OH                        4.2E11   0.570    2760 !
+     Baulch DL Bowman CT Cobos CJ Cox RA Just Th Kerr JA Pilling MJ Stocker D Troe J Tsang W Walker RW Warnatz J JPCRD 34:757-1397 2005
+     applying prompt HCO dissociation - Labbe et al., J. Phys. Chem. Lett. 2016:
+- equation: CH2O + O <=> HCO + OH  # Reaction 110
+  duplicate: true
+  rate-constant: {A: 1.4e+15, b: -0.53, Ea: 4011.0}
+- equation: CH2O + O <=> H + CO + OH  # Reaction 111
+  rate-constant: {A: 2.5e+21, b: -1.903, Ea: 2.2674e+04}
+- equation: CH2O + OH <=> HCO + H2O  # Reaction 112
+  type: pressure-dependent-Arrhenius
+  rate-constants:
+  - {P: 0.04 atm, A: 3.6e+09, b: 1.167, Ea: -206.0}
+  - {P: 1.0 atm, A: 1.9e+09, b: 1.256, Ea: -302.0}
+  - {P: 10.0 atm, A: 1.1e+09, b: 1.33, Ea: -392.0}
+  note: |-
+    CH2O+OH=HCO+H2O                      2.4E07   1.830   -1116 !
+     S. Wang, D. F. Davidson, R. K. Hanson, Proc. Combust. Inst. 35 473-480 2015
+     applying prompt HCO dissociation - Labbe et al., J. Phys. Chem. Lett. 2016:
+- equation: CH2O + OH <=> H + CO + H2O  # Reaction 113
+  type: pressure-dependent-Arrhenius
+  rate-constants:
+  - {P: 0.04 atm, A: 7.0e+10, b: 0.911, Ea: 8646.0}
+  - {P: 1.0 atm, A: 7.2e+10, b: 0.892, Ea: 9310.0}
+  - {P: 10.0 atm, A: 8.4e+10, b: 0.879, Ea: 9843.0}
+- equation: CH2O + HO2 <=> HCO + H2O2  # Reaction 114
+  rate-constant: {A: 4.4e+08, b: 1.298, Ea: 1.2129e+04}
+  note: |-
+    CH2O+HO2=HCO+H2O2                    4.1E04   2.500   10206 !
+     Eiteneer B Yu CL Goldenberg M Frenklach M JPCA 102:5196 1998
+     applying prompt HCO dissociation - Labbe et al., J. Phys. Chem. Lett. 2016:
+    CH2O+HO2=HCO+H2O2                    4.1E04   2.500   10206 !
+     DUPLICATE
+    CH2O+HO2=HCO+H2O2                   -2.5E14   0.027   30133
+     DUPLICATE
+     refit
+- equation: CH2O + HO2 <=> H + CO + H2O2  # Reaction 115
+  rate-constant: {A: 2.5e+14, b: 0.027, Ea: 3.012e+04}
+- equation: CH2O + O2 <=> HCO + HO2  # Reaction 116
+  duplicate: true
+  rate-constant: {A: 1.8e+16, b: -0.639, Ea: 4.54e+04}
+  note: |-
+    CH2O+O2=HCO+HO2                      2.4E05   2.500   36461 !
+     Baulch DL Bowman CT Cobos CJ Cox RA Just Th Kerr JA Pilling MJ Stocker D Troe J Tsang W Walker RW Warnatz J JPCRD 34:757-1397 2005
+     applying prompt HCO dissociation - Labbe et al., J. Phys. Chem. Lett. 2016:
+    CH2O+O2=HCO+HO2                      2.4E05   2.500   36461
+     DUPLICATE
+    CH2O+O2=HCO+HO2                     -1.4E15    0.027   56388
+     DUPLICATE
+     refit
+- equation: CH2O + O2 <=> HCO + HO2  # Reaction 117
+  duplicate: true
+  rate-constant: {A: 6.6e+08, b: 1.36, Ea: 3.7324e+04}
+  note: refit
+- equation: CH2O + O2 <=> H + CO + HO2  # Reaction 118
+  rate-constant: {A: 1.4e+15, b: 0.027, Ea: 5.6388e+04}
+- equation: HCO (+M) <=> H + CO (+M)  # Reaction 119
+  type: falloff
+  low-P-rate-constant: {A: 7.4e+21, b: -2.36, Ea: 1.9383e+04}
+  high-P-rate-constant: {A: 4.9e+16, b: -0.93, Ea: 1.9724e+04}
+  Troe: {A: 0.103, T3: 139.0, T1: 1.09e+04, T2: 4550.0}
+  efficiencies: {N2: 1.5, HE: 1.3, O2: 1.5, CO: 1.5, H2: 2.0, CO2: 3.0,
+    H2O: 15.0, NH3: 8.0}
+- equation: HCO + H <=> CO + H2  # Reaction 120
+  rate-constant: {A: 1.1e+14, b: 0.0, Ea: 0.0}
+  note: Yang et al., 8th U.S. National Combustion Meeting, 2013, 070RK-0163.
+- equation: HCO + O <=> CO + OH  # Reaction 121
+  rate-constant: {A: 3.0e+13, b: 0.0, Ea: 0.0}
+  note: Friedrichs G Herbon JT Davidson DF Hanson RK CPPC 4:5778-5788 2002
+- equation: HCO + O <=> CO2 + H  # Reaction 122
+  rate-constant: {A: 3.0e+13, b: 0.0, Ea: 0.0}
+  note: Baulch DL Cobos CJ Cox RA Esser C Frank P Just Th Kerr JA Pilling
+    MJ Troe J Walker RW Warnatz J JPCRD 21:403 1992
+- equation: HCO + OH <=> CO + H2O  # Reaction 123
+  rate-constant: {A: 1.1e+14, b: 0.0, Ea: 0.0}
+  note: Baulch DL Cobos CJ Cox RA Esser C Frank P Just Th Kerr JA Pilling
+    MJ Troe J Walker RW Warnatz J JPCRD 21:403 1992
+- equation: HCO + O2 <=> CO + HO2  # Reaction 124
+  rate-constant: {A: 6.9e+06, b: 1.9, Ea: -1369.0}
+  note: Baulch DL Bowman CT Cobos CJ Cox RA Just Th Kerr JA Pilling MJ Stocker
+    D Troe J Tsang W Walker RW Warnatz J JPCRD 34:757-1397 2005
+- equation: HCO + HO2 <=> CO2 + OH + H  # Reaction 125
+  rate-constant: {A: 3.0e+13, b: 0.0, Ea: 0.0}
+  note: Fassheber N Friedrichs G Marshall P Glarborg P J. Phys. Chem. A
+    119 (2015) 7305-7315.
+- equation: HCO + HCO <=> CO + CH2O  # Reaction 126
+  rate-constant: {A: 2.7e+13, b: 0.0, Ea: 0.0}
+  note: Tsang W Hampson RF JPCRD 15:1087 1986
+- equation: NH2 + H (+M) <=> NH3 (+M)  # Reaction 127
+  type: falloff
+  low-P-rate-constant: {A: 2.6e+23, b: -2.083, Ea: 0.0}
+  high-P-rate-constant: {A: 1.5e+14, b: 0.167, Ea: 0.0}
+  Troe: {A: 0.5, T3: 1.0e-30, T1: 1.0e+30, T2: 1.0e+30}
+  efficiencies: {N2: 1.0, O2: 0.6, CO2: 5.5, AR: 0.0, NH3: 0.0}
+  note: |-
+    Friedrichs G Herbon JT Davidson DF Hanson RK CPPC 4:5778-5788 2002
+    ************************************************************************
+      NH3 subset                                                           *
+    ************************************************************************
+    #
+- equation: NH2 + H (+AR) <=> NH3 (+AR)  # Reaction 128
+  type: falloff
+  low-P-rate-constant: {A: 3.0e+22, b: -1.9, Ea: 0.0}
+  high-P-rate-constant: {A: 1.5e+14, b: 0.167, Ea: 0.0}
+  Troe: {A: 0.5, T3: 1.0e-30, T1: 1.0e+30, T2: 1.0e+30}
+  note: |-
+    N2
+    #
+- equation: NH2 + H (+NH3) <=> NH3 (+NH3)  # Reaction 129
+  type: falloff
+  low-P-rate-constant: {A: 1.0e+23, b: -1.645, Ea: 0.0}
+  high-P-rate-constant: {A: 1.5e+14, b: 0.167, Ea: 0.0}
+  Troe: {A: 0.5, T3: 1.0e-30, T1: 1.0e+30, T2: 1.0e+30}
+  note: |-
+    AR
+    #
+- equation: NH3 + H <=> NH2 + H2  # Reaction 130
+  rate-constant: {A: 5.4e+05, b: 2.4, Ea: 9916.0}
+  note: |-
+    NH3
+    P. Glarborg, H. Hashemi, P. Marshall, "Challenges in Kinetic Modeling of Ammonia Pyrolysis", Fuel Commun. 10 (2022) 100049.
+    P. Glarborg, H. Hashemi, S. Cheskis, A.W. Jasper, J. Phys. Chem. A 125 (2021) 1505-1516: NH3/N2=0.37T^0.438
+    #
+- equation: NH3 + O <=> NH2 + OH  # Reaction 131
+  rate-constant: {A: 9.4e+06, b: 1.94, Ea: 6460.0}
+  note: Ko, T.; Marshall, P.; Fontijn, A., J. Phys. Chem. 94, 1401-1404,
+    1990
+- equation: NH3 + OH <=> NH2 + H2O  # Reaction 132
+  rate-constant: {A: 2.0e+06, b: 2.04, Ea: 566.0}
+  note: Sutherland JW Patterson PM Klemm RB JPC 94:2471 1990
+- equation: NH3 + HO2 <=> NH2 + H2O2  # Reaction 133
+  rate-constant: {A: 1.2, b: 3.839, Ea: 1.726e+04}
+  note: |-
+    Salimian S, Hanson RK, Kruger CH. Int J Chem Kin 1984;16:725.
+    #
+- equation: NH + H + M <=> NH2 + M  # Reaction 134
+  type: three-body
+  rate-constant: {A: 1.2e+25, b: -2.71, Ea: 0.0}
+  efficiencies: {N2: 2.0, NH3: 10.0}
+  note: |-
+    A. Stagni, C. Cavallotti, S. Arunthanayothin, Y. Song, O. Herbinet, F. Battin-Leclerc, T. Faravelli,
+    An experimental, theoretical and kinetic-modeling study of the gas-phase oxidation of ammonia, React. Chem. Eng. 5 (2020) 696-711.
+    #
+- equation: NH2 + H <=> NH + H2  # Reaction 135
+  rate-constant: {A: 5.1e+08, b: 1.5, Ea: 3700.0}
+  note: |-
+    Deppe, J., G. Friedrichs, A. Ibrahim, H.-J. Romming, and H. Gg Wagner.
+    The thermal decomposition of NH2 and NH radicals. Ber Bunsenges. Phys. Chem. 102 (1998) 1474-1485.
+    P. Glarborg, H. Hashemi, P. Marshall, "Challenges in Kinetic Modeling of Ammonia Pyrolysis", Fuel Commun. 10 (2022) 100049.
+    #
+- equation: NH2 + O <=> HNO + H  # Reaction 136
+  rate-constant: {A: 2.8e+13, b: -0.065, Ea: -188.0}
+  note: |-
+    P. Glarborg, H. Hashemi, P. Marshall, "Challenges in Kinetic Modeling of Ammonia Pyrolysis", Fuel Commun. 10 (2022) 100049.
+    #
+- equation: NH2 + O <=> NH + OH  # Reaction 137
+  rate-constant: {A: 3100.0, b: 2.84, Ea: -2780.0}
+  note: |-
+    S. J. Klippenstein, C. Mulvihill, P. Glarborg, J. Phys. Chem. A (2023).
+    #
+- equation: NH2 + O <=> NO + H2  # Reaction 138
+  rate-constant: {A: 2.4e+12, b: 0.112, Ea: -347.0}
+  note: |-
+    S. J. Klippenstein, C. Mulvihill, P. Glarborg, J. Phys. Chem. A (2023).
+    #
+- equation: NH2 + OH <=> NH + H2O  # Reaction 139
+  rate-constant: {A: 3.3e+06, b: 1.949, Ea: -217.0}
+  note: S. J. Klippenstein, C. Mulvihill, P. Glarborg, J. Phys. Chem. A
+    (2023).
+- equation: NH2 + HO2 <=> NH3 + O2  # Reaction 140
+  duplicate: true
+  rate-constant: {A: 6.0e+18, b: -1.9135, Ea: 306.0}
+  note: |-
+    SJ Klippenstein LB Harding B Ruscic R Sivaramakrishnan NK Srinivasan M-C Su JV Michael JPCA 113 (2009) 10241-10259.
+    SJ Klippenstein LB Harding P Glarborg JA Miller CF 158 (2011) 774-789.
+    #
+- equation: NH2 + HO2 <=> NH3 + O2  # Reaction 141
+  duplicate: true
+  rate-constant: {A: 5.9e+07, b: 1.592, Ea: -1373.0}
+  note: '#'
+- equation: NH2 + HO2 <=> H2NO + OH  # Reaction 142
+  rate-constant: {A: 1.0e+12, b: 0.1662, Ea: -938.0}
+  note: |-
+    S.J. Klippenstein, P. Glarborg, "Theoretical Kinetics Predictions for NH2 + HO2", Combust. Flame 236 (2022) 111787
+    #
+- equation: NH2 + HO2 <=> HNO + H2O  # Reaction 143
+  rate-constant: {A: 2.2e+09, b: 0.7906, Ea: -1428.0}
+  note: |-
+    S.J. Klippenstein, P. Glarborg, "Theoretical Kinetics Predictions for NH2 + HO2", Combust. Flame 236 (2022) 111787
+    #
+- equation: NH2 + O2 <=> H2NO + O  # Reaction 144
+  rate-constant: {A: 2.6e+11, b: 0.4872, Ea: 2.905e+04}
+  note: S.J. Klippenstein, P. Glarborg, "Theoretical Kinetics Predictions
+    for NH2 + HO2", Combust. Flame 236 (2022) 111787
+- equation: NH2 + O2 <=> HNO + OH  # Reaction 145
+  rate-constant: {A: 0.029, b: 3.764, Ea: 1.8185e+04}
+  note: SJ Klippenstein LB Harding P Glarborg JA Miller CF 158 (2011) 774-789.
+- equation: NH2 + NH2 <=> NH3 + NH  # Reaction 146
+  rate-constant: {A: 5.6, b: 3.53, Ea: 552.0}
+  note: SJ Klippenstein LB Harding P Glarborg JA Miller CF 158 (2011) 774-789.
+- equation: NH2 + NH2 (+M) <=> N2H4 (+M)  # Reaction 147
+  type: falloff
+  low-P-rate-constant: {A: 1.6e+34, b: -5.49, Ea: 1987.0}
+  high-P-rate-constant: {A: 5.6e+14, b: -0.414, Ea: 66.0}
+  Troe: {A: 0.31, T3: 1.0e-30, T1: 1.0e+30, T2: 1.0e+30}
+  efficiencies: {N2: 1.7, AR: 1.0, NH3: 8.5}
+  note: |-
+    SJ Klippenstein LB Harding B Ruscic R Sivaramakrishnan NK Srinivasan M-C Su JV Michael JPCA 113 (2009) 10241-10259.
+    #
+- equation: NH2 + NH2 <=> tHNNH + H2  # Reaction 148
+  rate-constant: {A: 1.7e+08, b: 1.02, Ea: 1.1783e+04}
+  note: |-
+    AR                                   !
+    Fc=0.31
+    SJ Klippenstein LB Harding B Ruscic R Sivaramakrishnan NK Srinivasan M-C Su JV Michael JPCA 113 (2009) 10241-10259.
+    see also C.J. Cobos, P. Glarborg, P. Marshall, J. Troe, "Re-evaluation of rate constants for the reaction
+    N2H4(+M)=NH2+NH2(+ M)", Combust. Flame (2023).
+    P. Glarborg, H. Hashemi, P. Marshall, "Challenges in Kinetic Modeling of Ammonia Pyrolysis", Fuel Commun. 10 (2022) 100049.
+    P. Glarborg, H. Hashemi, S. Cheskis, A.W. Jasper, J. Phys. Chem. A 125 (2021) 1505-1516
+    #
+- equation: NH2 + NH2 <=> H2NN + H2  # Reaction 149
+  rate-constant: {A: 7.2e+04, b: 1.88, Ea: 8802.0}
+  note: |-
+    SJ Klippenstein LB Harding B Ruscic R Sivaramakrishnan NK Srinivasan M-C Su JV Michael JPCA 113 (2009) 10241-10259.
+    (assuming tHNNH to be the dominating product)
+    P. Marshall, G.R. Rawlins, P. Glarborg. "New reactions of diazene and related species for modeling combustion of amine fuels", Mol. Phys. 119 (2021) e1979674.
+- equation: NH2 + NH <=> tHNNH + H  # Reaction 150
+  rate-constant: {A: 1.2e+15, b: -0.5, Ea: 0.0}
+  note: |-
+    SJ Klippenstein LB Harding B Ruscic R Sivaramakrishnan NK Srinivasan M-C Su JV Michael JPCA 113 (2009) 10241-10259.
+    #
+- equation: NH2 + NH <=> cHNNH + H  # Reaction 151
+  rate-constant: {A: 3.0e+14, b: -0.5, Ea: 0.0}
+  note: |-
+    DF Davidson K Kohse-Hoinghaus AY Chang RK Hanson. A pyrolysis mechanism for ammonia. Int J Chem Kin 22:513-535, 1990.
+    P. Marshall, G.R. Rawlins, P. Glarborg. "New reactions of diazene and related species for modeling combustion of amine fuels", Mol. Phys. 119 (2021) e1979674.
+    P. Glarborg, H. Hashemi, P. Marshall, "Challenges in Kinetic Modeling of Ammonia Pyrolysis", Fuel Commun. 10 (2022) 100049.
+    #
+- equation: NH2 + NH <=> NH3 + N  # Reaction 152
+  rate-constant: {A: 9600.0, b: 2.46, Ea: 107.0}
+  note: |2-
+     DF Davidson K Kohse-Hoinghaus AY Chang RK Hanson. A pyrolysis mechanism for ammonia. Int J Chem Kin 22:513-535, 1990.
+     P. Marshall, G.R. Rawlins, P. Glarborg. "New reactions of diazene and related species for modeling combustion of amine fuels", Mol. Phys. 119 (2021) e1979674.
+     P. Glarborg, H. Hashemi, P. Marshall, "Challenges in Kinetic Modeling of Ammonia Pyrolysis", Fuel Commun. 10 (2022) 100049.
+    NH2+NH=HNNH+H                        4.3E14  -0.272     -78 !
+     SJ Klippenstein LB Harding B Ruscic R Sivaramakrishnan NK Srinivasan M-C Su JV Michael JPCA 113 (2009) 10241-10259.
+- equation: NH2 + N <=> NNH + H  # Reaction 153
+  rate-constant: {A: 7.0e+13, b: 0.0, Ea: 0.0}
+  note: |-
+    SJ Klippenstein LB Harding B Ruscic R Sivaramakrishnan NK Srinivasan M-C Su JV Michael JPCA 113 (2009) 10241-10259.
+    #
+- equation: NH2 + HNO <=> NH3 + NO  # Reaction 154
+  duplicate: true
+  rate-constant: {A: 8.8e+06, b: 2.0, Ea: -1555.0}
+  note: |-
+    Whyte AR Phillips LF CPL 102:451 1983
+    #230628 (products NH+NH too fast HENWAG93f1)
+    #
+- equation: NH2 + HNO <=> NH3 + NO  # Reaction 155
+  duplicate: true
+  rate-constant: {A: 6.7e+16, b: -1.407, Ea: 5.0}
+# - equation: NH2 + NO <=> N2 + H2O  # Reaction 156 commented out by ECK and replaced at bottom of mech
+#   rate-constant: {A: 2.6e+19, b: -2.369, Ea: 870.0}
+#   note: present work (SJK, 2023)
+# - equation: NH2 + NO <=> NNH + OH  # Reaction 157 commented out by ECK and replaced at bottom of mech
+#   rate-constant: {A: 4.3e+10, b: 0.294, Ea: -866.0}
+#   note: S. Song R.K. Hanson C.T. Bowman D.M. Golden Int J Chem Kinet 33
+#     715-721, 2001 (kT)
+- equation: NH2 + HONO <=> NH3 + NO2  # Reaction 158
+  rate-constant: {A: 6400.0, b: 2.34, Ea: -3200.0}
+  note: |-
+    S. Song R.K. Hanson C.T. Bowman D.M. Golden Int J Chem Kinet 33 715-721, 2001 (kT)
+    ##
+- equation: NH2 + HONO <=> NH2OH + NO  # Reaction 159
+  rate-constant: {A: 5300.0, b: 2.28, Ea: 7983.0}
+  note: |-
+    P. Glarborg, "The NH3/NO2/O2 system: Constraining key steps in ammonia ignition and N2O formation", Combust. Flame (2022).
+    S. Xu, M.C. Lin, Int J Chem Kinet 41: 667-677, 2009; A-factor reduced 30%
+    #
+- equation: NH2 + HNO2 <=> NH3 + NO2  # Reaction 160
+  rate-constant: {A: 2.8e+10, b: 0.0, Ea: -5760.0}
+  note: |-
+    S. Xu, M.C. Lin, Int J Chem Kinet 41: 667-677, 2009
+    #
+- equation: NH2 + NO2 <=> H2NO + NO  # Reaction 161
+  duplicate: true
+  rate-constant: {A: 1.1e+12, b: 0.11, Ea: -1186.0}
+  note: |-
+    Thaxton, A.G.; Hsu, C.C.; Lin, M.C. Int. J. Chem. Kinet. 29 245-251 (1997)
+    k(tot) #
+- equation: NH2 + NO2 <=> H2NO + NO  # Reaction 162
+  duplicate: true
+  rate-constant: {A: -4.3e+17, b: -1.874, Ea: 588.0}
+  negative-A: true
+  note: k(n2o+h2o)
+- equation: NH2 + NO2 <=> N2O + H2O  # Reaction 163
+  rate-constant: {A: 4.3e+17, b: -1.874, Ea: 588.0}
+  note: |-
+    P. Glarborg, "The NH3/NO2/O2 system: Constraining key steps in ammonia ignition and N2O formation", Combust. Flame (2022).
+    P. Glarborg, J.A. Miller, B. Ruscic, S.J. Klippenstein, Prog. Energy Combust. Sci. 67 (2018) 31-68.
+    S. J. Klippenstein, L. B. Harding, P. Glarborg, Y. Gao, P. Marshall, "Rate constant and branching fraction for the NH2 + NO2 reaction", J. Phys. Chem. A 117 (2013) 9011-9022!
+    #
+- equation: NH + M <=> N + H + M  # Reaction 164
+  type: three-body
+  rate-constant: {A: 1.8e+14, b: 0.0, Ea: 7.48e+04}
+  note: |-
+    P. Glarborg, "The NH3/NO2/O2 system: Constraining key steps in ammonia ignition and N2O formation", Combust. Flame (2022).
+    P. Glarborg, J.A. Miller, B. Ruscic, S.J. Klippenstein, Prog. Energy Combust. Sci. 67 (2018) 31-68.
+    S. J. Klippenstein, L. B. Harding, P. Glarborg, Y. Gao, P. Marshall, "Rate constant and branching fraction for the NH2 + NO2 reaction", J. Phys. Chem. A 117 (2013) 9011-9022!NH2+NO2=H2NO+NO                      8.6E11   0.110   -1186 !
+    #
+- equation: NH + H <=> N + H2  # Reaction 165
+  rate-constant: {A: 1.6e+11, b: 0.68, Ea: 800.0}
+  note: |-
+    Deppe, J., G. Friedrichs, A. Ibrahim, H.-J. Romming, and H. Gg Wagner.
+    The thermal decomposition of NH2 and NH radicals. Ber Bunsenges. Phys. Chem. 102 (1998) 1474-1485.
+    #
+- equation: NH + O <=> NO + H  # Reaction 166
+  rate-constant: {A: 9.2e+13, b: 0.0, Ea: 0.0}
+  note: B. Han, H. Yang, Y. Zheng, and A. J. C. Varandas. Chem. Phys. Lett.,
+    493:225-228, 2010
+- equation: NH + OH <=> HNO + H  # Reaction 167
+  rate-constant: {A: 1.5e+14, b: -0.314, Ea: -308.0}
+  note: |-
+    Baulch DL Cobos CJ Cox RA Frank P Hayman G Just Th Kerr JA Murrells T Pilling MJ Troe J Walker RW Warnatz J JPCRD 23:847-1033 1994
+    #
+- equation: NH + OH <=> NO + H2  # Reaction 168
+  rate-constant: {A: 3.4e+13, b: -0.303, Ea: -336.0}
+  note: |-
+    S. J. Klippenstein, C. Mulvihill, P. Glarborg, Theoretical Kinetics Predictions for Reactions on the NH2O Potential Energy Surface ?, J. Phys. Chem. A, submitted (2023).
+    #
+- equation: NH + OH <=> N + H2O  # Reaction 169
+  rate-constant: {A: 2.6e+07, b: 1.66, Ea: -945.0}
+  note: |-
+    S. J. Klippenstein, C. Mulvihill, P. Glarborg, Theoretical Kinetics Predictions for Reactions on the NH2O Potential Energy Surface ?, J. Phys. Chem. A, submitted (2023).
+    #
+- equation: NH + O2 <=> HNO + O  # Reaction 170
+  rate-constant: {A: 2.1e+13, b: 0.0, Ea: 1.58e+04}
+  note: |-
+    S. J. Klippenstein, C. Mulvihill, P. Glarborg, Theoretical Kinetics Predictions for Reactions on the NH2O Potential Energy Surface ?, J. Phys. Chem. A, submitted (2023).
+    #
+- equation: NH + O2 <=> NO + OH  # Reaction 171
+  rate-constant: {A: 4.5e+08, b: 0.79, Ea: 1200.0}
+  note: |-
+    H.-J. Romming, H.G. Wagner, Symp. (Int.) Combust. 26 (1996) 559566
+    #
+- equation: NH + NH <=> NNH + H  # Reaction 172
+  rate-constant: {A: 6.2e+13, b: -0.036, Ea: -161.0}
+  note: |-
+    H.-J. Romming, H.G. Wagner, Symp. (Int.) Combust. 26 (1996) 559-566
+    #
+- equation: NH + NH <=> NH2 + N  # Reaction 173
+  rate-constant: {A: 0.57, b: 3.88, Ea: 342.0}
+  note: SJ Klippenstein LB Harding B Ruscic R Sivaramakrishnan NK Srinivasan
+    M-C Su JV Michael JPCA 113 (2009) 10241-10259.
+- equation: NH + N <=> N2 + H  # Reaction 174
+  rate-constant: {A: 3.0e+13, b: 0.0, Ea: 0.0}
+  note: SJ Klippenstein LB Harding B Ruscic R Sivaramakrishnan NK Srinivasan
+    M-C Su JV Michael JPCA 113 (2009) 10241-10259.
+- equation: NH + NO <=> N2O + H  # Reaction 175
+  rate-constant: {A: 1.8e+14, b: -0.351, Ea: -244.0}
+  note: |-
+    JAM est
+    #
+- equation: NH + NO <=> N2 + OH  # Reaction 176
+  rate-constant: {A: 2.7e+12, b: -0.0721, Ea: -512.0}
+  note: |-
+    Klippenstein, Harding, Glarborg, Miller, Combust Flame 158 (2011) 774-789.
+    #
+- equation: NH + HNO <=> NH2 + NO  # Reaction 177
+  rate-constant: {A: 5.0e+13, b: 0.0, Ea: 0.0}
+  note: |-
+    Klippenstein, Harding, Glarborg, Miller, Combust Flame 158 (2011) 774-789.
+    #
+- equation: NH + NO2 <=> N2O + OH  # Reaction 178
+  rate-constant: {A: 4.1e+12, b: 0.0, Ea: 0.0}
+  note: |2-
+     est
+    NH+HONO=NH2+NO2                      1.0E13   0.000       0 ! #
+     JAM est
+     eliminated based on S.J. Klippenstein, L.B. Harding, P. Glarborg, Y. Gao, P. Marshall, "Rate constant and branching fraction for the NH2 + NO2 reaction", J. Phys. Chem. A 117 (2013) 9011-9022!NH2+NO2=H2NO+NO                      8.6E11   0.110   -1186 !
+- equation: NH + NO2 <=> HNO + NO  # Reaction 179
+  rate-constant: {A: 5.9e+12, b: 0.0, Ea: 0.0}
+  note: Harrison JA Whyte AR Phillips LF CPL 129:346 1986
+- equation: N + OH <=> NO + H  # Reaction 180
+  rate-constant: {A: 3.8e+13, b: 0.0, Ea: 0.0}
+  note: Harrison JA Whyte AR Phillips LF CPL 129:346 1986
+- equation: N + O2 <=> NO + O  # Reaction 181
+  rate-constant: {A: 5.9e+09, b: 1.0, Ea: 6280.0}
+  note: |-
+    Flower WL Hanson RK Kruger CH CST 15:115 1977
+    Howard MJ Smith IWM CPL 69:40 1980
+- equation: N + NO <=> N2 + O  # Reaction 182
+  rate-constant: {A: 9.4e+12, b: 0.14, Ea: 0.0}
+  note: Baulch DL Bowman CT Cobos CJ Cox RA Just Th Kerr JA Pilling MJ Stocker
+    D Troe J Tsang W Walker RW Warnatz J JPCRD 34:757-1397 2005
+- equation: NNH <=> N2 + H  # Reaction 183
+  rate-constant: {A: 1.0e+09, b: 0.0, Ea: 0.0}
+  note: M. Abian, M.U. Alzueta, P. Glarborg, Int. J. Chem. Kinet. 47 (2015)
+    518-532.
+- equation: NNH + H <=> N2 + H2  # Reaction 184
+  rate-constant: {A: 1.0e+14, b: 0.0, Ea: 0.0}
+  note: SJ Klippenstein LB Harding P Glarborg JA Miller CF 158 (2011) 774-789.
+- equation: NNH + O <=> N2O + H  # Reaction 185
+  rate-constant: {A: 1.9e+14, b: -0.274, Ea: -22.0}
+  note: JAM est
+- equation: NNH + O <=> N2 + OH  # Reaction 186
+  rate-constant: {A: 1.2e+13, b: 0.145, Ea: -217.0}
+  note: SJ Klippenstein LB Harding P Glarborg JA Miller CF 158 (2011) 774-789.
+- equation: NNH + O <=> NH + NO  # Reaction 187
+  type: elementary
+  rate-constant: {A: 5.2e+11, b: 0.381, Ea: -409.0}
+  note: SJ Klippenstein LB Harding P Glarborg JA Miller CF 158 (2011) 774-789.
+# - equation: NNH + OH <=> N2 + H2O  # Reaction 188 commented out by ECK and replaced at bottom of mech
+#   type: elementary
+#   rate-constant: {A: 5.0e+13, b: 0.0, Ea: 0.0}
+#   note: SJ Klippenstein LB Harding P Glarborg JA Miller CF 158 (2011) 774-789.
+- equation: NNH + O2 <=> N2 + HO2  # Reaction 189
+  type: elementary
+  rate-constant: {A: 5.6e+14, b: -0.385, Ea: -13.0}
+  note: JAM est
+- equation: NNH + NH <=> N2 + NH2  # Reaction 190
+  rate-constant: {A: 5.0e+13, b: 0.0, Ea: 0.0}
+  note: SJ Klippenstein LB Harding P Glarborg JA Miller CF 158 (2011) 774-789.
+- equation: NNH + NH2 <=> N2 + NH3  # Reaction 191
+  rate-constant: {A: 5.0e+13, b: 0.0, Ea: 0.0}
+  note: JAM est
+- equation: NNH + NO <=> N2 + HNO  # Reaction 192
+  rate-constant: {A: 5.0e+13, b: 0.0, Ea: 0.0}
+  note: JAM est
+- equation: NH2OH (+M) <=> NH2 + OH (+M)  # Reaction 193
+  type: falloff
+  low-P-rate-constant: {A: 5.4e+37, b: -5.96, Ea: 6.6783e+04}
+  high-P-rate-constant: {A: 1.4e+20, b: -1.31, Ea: 6.408e+04}
+  Troe: {A: 0.31, T3: 1.0e-30, T1: 1.0e+30, T2: 1.0e+30}
+  note: JAM est
+- equation: NH2OH + H <=> HNOH + H2  # Reaction 194
+  rate-constant: {A: 4.8e+08, b: 1.5, Ea: 6249.0}
+  note: SJ Klippenstein LB Harding B Ruscic R Sivaramakrishnan NK Srinivasan
+    M-C Su JV Michael JPCA 113 (2009) 10241-10259.
+- equation: NH2OH + H <=> H2NO + H2  # Reaction 195
+  rate-constant: {A: 2.4e+08, b: 1.5, Ea: 5067.0}
+  note: Dean AM Bozzelli JW (Gardiner WC) Gas Phase Combustion Chemistry,
+    Springer 2000
+- equation: NH2OH + O <=> HNOH + OH  # Reaction 196
+  rate-constant: {A: 3.3e+08, b: 1.5, Ea: 3865.0}
+  note: Dean AM Bozzelli JW (Gardiner WC) Gas Phase Combustion Chemistry,
+    Springer 2000
+- equation: NH2OH + O <=> H2NO + OH  # Reaction 197
+  rate-constant: {A: 1.7e+08, b: 1.5, Ea: 3010.0}
+  note: Dean AM Bozzelli JW (Gardiner WC) Gas Phase Combustion Chemistry,
+    Springer 2000
+- equation: NH2OH + OH <=> HNOH + H2O  # Reaction 198
+  rate-constant: {A: 1.5e+04, b: 2.61, Ea: -3537.0}
+  note: Dean AM Bozzelli JW (Gardiner WC) Gas Phase Combustion Chemistry,
+    Springer 2000
+- equation: NH2OH + OH <=> H2NO + H2O  # Reaction 199
+  rate-constant: {A: 1.5e+05, b: 2.28, Ea: -1296.0}
+  note: SJ Klippenstein LB Harding B Ruscic R Sivaramakrishnan NK Srinivasan
+    M-C Su JV Michael JPCA 113 (2009) 10241-10259.
+- equation: NH2OH + NH2 <=> HNOH + NH3  # Reaction 200
+  rate-constant: {A: 0.11, b: 4.0, Ea: -97.0}
+  note: SJ Klippenstein LB Harding B Ruscic R Sivaramakrishnan NK Srinivasan
+    M-C Su JV Michael JPCA 113 (2009) 10241-10259.
+- equation: NH2OH + NH2 <=> H2NO + NH3  # Reaction 201
+  rate-constant: {A: 9.5, b: 3.42, Ea: -1013.0}
+  note: SJ Klippenstein LB Harding B Ruscic R Sivaramakrishnan NK Srinivasan
+    M-C Su JV Michael JPCA 113 (2009) 10241-10259.
+- equation: NH2OH + NH <=> HNOH + NH2  # Reaction 202
+  rate-constant: {A: 2.9e-03, b: 4.4, Ea: 1564.0}
+  note: SJ Klippenstein LB Harding B Ruscic R Sivaramakrishnan NK Srinivasan
+    M-C Su JV Michael JPCA 113 (2009) 10241-10259.
+- equation: NH2OH + NH <=> H2NO + NH2  # Reaction 203
+  rate-constant: {A: 1.5e-03, b: 4.6, Ea: 2424.0}
+  note: SJ Klippenstein LB Harding B Ruscic R Sivaramakrishnan NK Srinivasan
+    M-C Su JV Michael JPCA 113 (2009) 10241-10259.
+- equation: NH2OH + HO2 <=> HNOH + H2O2  # Reaction 204
+  rate-constant: {A: 2.9e+04, b: 2.69, Ea: 9557.0}
+  note: SJ Klippenstein LB Harding B Ruscic R Sivaramakrishnan NK Srinivasan
+    M-C Su JV Michael JPCA 113 (2009) 10241-10259.
+- equation: NH2OH + HO2 <=> H2NO + H2O2  # Reaction 205
+  rate-constant: {A: 1.4e+04, b: 2.69, Ea: 6418.0}
+  note: Dean AM Bozzelli JW (Gardiner WC) Gas Phase Combustion Chemistry,
+    Springer 2000
+- equation: HNO + H (+M) <=> H2NO (+M)  # Reaction 206
+  type: falloff
+  low-P-rate-constant: {A: 6.1e+28, b: -3.805, Ea: 4308.0}
+  high-P-rate-constant: {A: 1.9e+21, b: -2.507, Ea: 4305.0}
+  Troe: {A: -1.0, T3: 4.585e-04, T1: 11.08, T2: 3.015}
+  efficiencies: {H2: 2.5, H2O: 12.0, CO: 1.9, CO2: 3.8, NH3: 5.0}
+  note: |-
+    Dean AM Bozzelli JW (Gardiner WC) Gas Phase Combustion Chemistry, Springer 2000
+    #
+- equation: H2NO (+M) <=> H2 + NO (+M)  # Reaction 207
+  type: falloff
+  low-P-rate-constant: {A: 3.7e+25, b: -2.82, Ea: 5.9667e+04}
+  high-P-rate-constant: {A: 7.0e+22, b: -3.149, Ea: 6.3663e+04}
+  Troe: {A: -1.0, T3: 0.07577, T1: 8.843e-15, T2: 7.877}
+  efficiencies: {H2: 2.5, H2O: 12.0, CO: 1.9, CO2: 3.8, NH3: 5.0}
+  note: |2-
+     S. J. Klippenstein, C. Mulvihill, P. Glarborg, J. Phys. Chem. A (2023).
+     refitted to Troe format (Hashemi 2023)                                !
+    HNO+H=H2NO                      2.7E27  -4.940    4849 ! 1 atm
+    PLOG / 0.01                          5.7E23  -4.590    5690 /
+    PLOG / 0.1                           5.7E25  -4.800    4233 /
+    PLOG / 1.0                           2.7E27  -4.940    4849 /
+    PLOG / 10.0                          2.6E27  -4.630    5539 /
+    PLOG / 100.0                         4.8E25  -3.870    5867 /
+     #
+- equation: H2NO + H <=> HNO + H2  # Reaction 208
+  rate-constant: {A: 3.0e+07, b: 2.0, Ea: 2000.0}
+  note: |2-
+     S. J. Klippenstein, C. Mulvihill, P. Glarborg, J. Phys. Chem. A (2023).
+     refitted to Troe format (Hashemi 2023)                                !
+    H2NO=H2+NO                      1.4E28  -5.050   64350 ! 1 atm
+    PLOG / 0.01                          1.6E27  -5.280   61560 /
+    PLOG / 0.1                           1.8E28  -5.320   63290 /
+    PLOG / 1.0                           1.4E28  -5.050   64350 /
+    PLOG / 10.0                          4.7E26  -4.390   64830 /
+    PLOG / 100.0                         1.7E23  -3.180   64220 /
+     SJK 2023
+- equation: H2NO + H <=> NH2 + OH  # Reaction 209
+  rate-constant: {A: 5.0e+13, b: 0.0, Ea: 0.0}
+  note: JAM est
+- equation: H2NO + O <=> HNO + OH  # Reaction 210
+  rate-constant: {A: 3.0e+07, b: 2.0, Ea: 2000.0}
+  note: JAM est
+- equation: H2NO + OH <=> HNO + H2O  # Reaction 211
+  rate-constant: {A: 2.1e+15, b: -0.751, Ea: -464.0}
+  note: |-
+    JAM est
+    #
+- equation: H2NO + HO2 <=> HNO + H2O2  # Reaction 212
+  rate-constant: {A: 5.4e+04, b: 2.16, Ea: -3597.0}
+  note: |-
+    S.J. Klippenstein, P. Glarborg, "Theoretical Kinetics Predictions for NH2 + HO2", Combust. Flame 236 (2022) 111787
+    #
+- equation: H2NO + O2 <=> HNO + HO2  # Reaction 213
+  rate-constant: {A: 1.7e+05, b: 2.19, Ea: 1.801e+04}
+  note: |-
+    A. Stagni, C. Cavallotti, Proc Combust Inst 39 (2023) 633-641
+    #
+- equation: H2NO + NH2 <=> HNO + NH3  # Reaction 214
+  rate-constant: {A: 9.4e+12, b: -0.08, Ea: -1644.0}
+  note: |-
+    A. Stagni, C. Cavallotti, Proc Combust Inst 39 (2023) 633-641
+    #
+- equation: H2NO + NH <=> HNO + NH2  # Reaction 215
+  rate-constant: {A: 5.0e+13, b: 0.0, Ea: 0.0}
+  note: A. Stagni, C. Cavallotti, Proc Combust Inst 39 (2023) 633-641
+- equation: H2NO + NO2 <=> HONO + HNO  # Reaction 216
+  rate-constant: {A: 8.0, b: 2.95, Ea: -3293.0}
+  note: |-
+    est
+    #
+- equation: HNO + H (+M) <=> HNOH (+M)  # Reaction 217
+  type: falloff
+  low-P-rate-constant: {A: 2.6e+25, b: -2.816, Ea: 2360.0}
+  high-P-rate-constant: {A: 2.2e+19, b: -1.92, Ea: 2980.0}
+  Troe: {A: 0.442, T3: 3.48e-03, T1: 1.645, T2: 8.795e-13}
+  efficiencies: {H2: 2.5, H2O: 12.0, CO: 1.9, CO2: 3.8, NH3: 5.0}
+  note: |2-
+     A. Stagni, C. Cavallotti, Proc Combust Inst 39 (2023) 633-641
+    H2NO+NO2=HONO+HNO                    8.0E11   0.000    6000 ! #
+     P. Glarborg, "The NH3/NO2/O2 system: Constraining key steps in ammonia ignition and N2O formation", Combust. Flame (2022).
+     (within x2 of STACAV23 1000-2500 K)
+     #
+- equation: HNOH (+M) <=> H2NO (+M)  # Reaction 218
+  type: falloff
+  low-P-rate-constant: {A: 2.6e+23, b: -2.433, Ea: 3.8475e+04}
+  high-P-rate-constant: {A: 1.1e+26, b: -4.251, Ea: 4.4695e+04}
+  Troe: {A: -1.0, T3: 4.173, T1: 0.9166, T2: 1.541e-08}
+  efficiencies: {H2: 2.5, H2O: 12.0, CO: 1.9, CO2: 3.8, NH3: 5.0}
+  note: |2-
+     S. J. Klippenstein, C. Mulvihill, P. Glarborg, J. Phys. Chem. A (2023).
+     refitted to Troe format (Hashemi 2023)                                !
+    HNO+H=HNOH                      4.9E24  -4.140    3141 ! 1 atm
+    PLOG / 0.01                          7.0E18  -3.180    2600 /
+    PLOG / 0.1                           7.1E22  -3.950    2487 /
+    PLOG / 1.0                           4.9E24  -4.140    3141 /
+    PLOG / 10.0                          3.6E24  -3.790    3702 /
+    PLOG / 100.0                         1.0E24  -3.360    4710 /
+     #
+- equation: HNOH + H <=> NH2 + OH  # Reaction 219
+  rate-constant: {A: 4.0e+13, b: 0.0, Ea: 0.0}
+  note: |2-
+     S. J. Klippenstein, C. Mulvihill, P. Glarborg, J. Phys. Chem. A (2023).
+     refitted to Troe format (Hashemi 2023)                                !
+    HNOH=H2NO                       3.5E27  -5.130   43280 ! 1 atm
+    PLOG / 0.01                          2.3E25  -5.130   39080 /
+    PLOG / 0.1                           3.5E26  -5.150   41210 /
+    PLOG / 1.0                           3.5E27  -5.130   43280 /
+    PLOG / 10.0                          7.7E27  -4.930   45060 /
+    PLOG / 100.0                         3.4E26  -4.260   45960 /
+- equation: HNOH + H <=> HNO + H2  # Reaction 220
+  rate-constant: {A: 4.8e+08, b: 1.5, Ea: 378.0}
+  note: Dean AM Bozzelli JW (Gardiner WC) Gas Phase Combustion Chemistry,
+    Springer 2000
+- equation: HNOH + O <=> HNO + OH  # Reaction 221
+  duplicate: true
+  rate-constant: {A: 7.0e+13, b: 0.0, Ea: 0.0}
+  note: Dean AM Bozzelli JW (Gardiner WC) Gas Phase Combustion Chemistry,
+    Springer 2000
+- equation: HNOH + O <=> HNO + OH  # Reaction 222
+  duplicate: true
+  rate-constant: {A: 3.3e+08, b: 1.5, Ea: -358.0}
+- equation: HNOH + OH <=> HNO + H2O  # Reaction 223
+  rate-constant: {A: 5.0e+13, b: 0.0, Ea: 0.0}
+  note: Dean AM Bozzelli JW (Gardiner WC) Gas Phase Combustion Chemistry,
+    Springer 2000
+- equation: HNOH + HO2 <=> HNO + H2O2  # Reaction 224
+  rate-constant: {A: 2.9e+04, b: 2.69, Ea: -1600.0}
+  note: est
+- equation: HNOH + HO2 <=> NH2OH + O2  # Reaction 225
+  rate-constant: {A: 2.9e+04, b: 2.69, Ea: -1600.0}
+  note: Dean AM Bozzelli JW (Gardiner WC) Gas Phase Combustion Chemistry,
+    Springer 2000
+- equation: HNOH + O2 <=> HNO + HO2  # Reaction 226
+  rate-constant: {A: 3.0e+12, b: 0.0, Ea: 2.5e+04}
+  note: |-
+    Dean AM Bozzelli JW (Gardiner WC) Gas Phase Combustion Chemistry, Springer 2000
+    error
+- equation: HNOH + NH2 <=> NH3 + HNO  # Reaction 227
+  rate-constant: {A: 3.0e+13, b: 0.0, Ea: 0.0}
+  note: JAM est
+- equation: HNOH + NO2 <=> HONO + HNO  # Reaction 228
+  rate-constant: {A: 8.0e+11, b: 0.0, Ea: 6000.0}
+  note: |-
+    est
+    #
+- equation: NO + H (+M) <=> HNO (+M)  # Reaction 229
+  type: falloff
+  low-P-rate-constant: {A: 3.4e+21, b: -2.062, Ea: 0.0}
+  high-P-rate-constant: {A: 3.0e+19, b: -2.165, Ea: 0.0}
+  Troe: {A: 0.82, T3: 1.0e-30, T1: 1.0e+30, T2: 1.0e+30}
+  efficiencies: {N2: 1.0, AR: 0.63, HE: 1.0, NH3: 3.8, H2O: 4.0}
+  note: |-
+    P. Glarborg, "The NH3/NO2/O2 system: Constraining key steps in ammonia ignition and N2O formation", submitted (2022).
+     est as h2no+no2
+    ##
+- equation: HNO + H <=> NO + H2  # Reaction 230
+  rate-constant: {A: 1.7e+10, b: 1.18, Ea: -446.0}
+  note: |2-
+     N2                                   !
+     ##                                                    !
+     present work (TBE)
+     Based on (reversed):
+     A. Stagni, C. Cavallotti, S. Arunthanayothin, Y. Song, O. Herbinet, F. Battin-Leclerc, T. Faravelli,
+     An experimental, theoretical and kinetic-modeling study of the gas-phase oxidation of ammonia, React. Chem. Eng. 5 (2020) 696-711.
+    HNO=H+NO                             1.8E20  -3.008    47880 ! 1 atm
+     PLOG/ 0.1                           2.0E19  -3.021    47792/
+     PLOG/ 1                             1.8E20  -3.008    47880/
+     PLOG/ 10                            1.3E21  -2.959    48100/
+     PLOG/ 100                           5.6E21  -2.855    48459/
+     PLOG/ 1000                          9.7E21  -2.642    48940/
+     #
+- equation: HNO + O <=> NO + OH  # Reaction 231
+  rate-constant: {A: 2.3e+13, b: 0.0, Ea: 0.0}
+  note: S. J. Klippenstein, C. Mulvihill, P. Glarborg, Theoretical Kinetics
+    Predictions for Reactions on the NH2O Potential Energy Surface ?, J.
+    Phys. Chem. A, submitted (2023).
+- equation: HNO + OH <=> NO + H2O  # Reaction 232
+  rate-constant: {A: 3.0e+13, b: 0.0, Ea: 0.0}
+  note: |-
+    Inomata S Washida N JPCA 103:5023-5031 1999
+    #
+- equation: HNO + HO2 <=> HNO2 + OH  # Reaction 233
+  rate-constant: {A: 2000.0, b: 2.36, Ea: 8980.0}
+  note: |-
+    Sun, F.; DeSain, J.D.; Scott, G.; Hung, P.Y.; Thompson, R.I.; Glass, G.P.; Curl, R.F.
+    Reactions of NH2 with NO2 and of OH with NH2O, J. Phys. Chem. A 105, 6121-6128, 2001
+- equation: HNO + O2 <=> NO + HO2  # Reaction 234
+  rate-constant: {A: 4.0e+05, b: 2.3, Ea: 1.4605e+04}
+  note: |-
+    SH Mousavipour SS Asemani J Phys Chem A 2015 119 5553-5565
+    #
+- equation: HNO + HNO <=> N2O + H2O  # Reaction 235
+  rate-constant: {A: 9.0e+08, b: 0.0, Ea: 3100.0}
+  note: Q.-D. Wang, Y. Sun, H. J. Curran, Energy Fuels 34 (2019) 949-964
+- equation: HNO + NO2 <=> HONO + NO  # Reaction 236
+  rate-constant: {A: 790.0, b: 3.06, Ea: 3882.0}
+  note: |-
+    Tsang W JPCRD 20:221 1991
+    #
+- equation: NO + HO2 <=> NO2 + OH  # Reaction 237
+  rate-constant: {A: 2.1e+12, b: 0.0, Ea: -497.0}
+  note: Y. Shang, J. Shi, H. Ning, R. Zhang, H. Wang, S. Luo, Fuel 243
+- equation: NO + O (+M) <=> NO2 (+M)  # Reaction 238
+  type: falloff
+  low-P-rate-constant: {A: 4.72e+24, b: -2.87, Ea: 1550.0}
+  high-P-rate-constant: {A: 1.3e+15, b: -0.75, Ea: 0.0}
+  Troe: {A: 0.75, T3: 1000.0, T1: 1.0e+05, T2: 1.0e+30}
+  efficiencies: {AR: 0.0, N2O: 6.9, NH3: 5.0}
+  note: Baulch DL Bowman CT Cobos CJ Cox RA Just Th Kerr JA Pilling MJ Stocker
+    D Troe J Tsang W Walker RW Warnatz J JPCRD 34:757-1397 2005
+- equation: NO + O (+AR) <=> NO2 (+AR)  # Reaction 239
+  type: falloff
+  low-P-rate-constant: {A: 7.56e+19, b: -1.41, Ea: 0.0}
+  high-P-rate-constant: {A: 1.3e+15, b: -0.75, Ea: 0.0}
+  Troe: {A: 0.75, T3: 1000.0, T1: 1.0e+05, T2: 1.0e+30}
+  note: N2
+- equation: NO2 + H <=> NO + OH  # Reaction 240
+  rate-constant: {A: 1.4e+13, b: 0.29, Ea: 25.0}
+  note: |-
+    AR
+    Tsang W JPCRD 20:221 1991
+    Allen MT Yetter RA Dryer FL CF 109:449 1997
+    Yarwood G Sutherland JW Wickramaaratchi MA Klemm RB JPC 95:8771 1991 (AR)
+    #
+- equation: NO2 + O <=> NO + O2  # Reaction 241
+  rate-constant: {A: 1.1e+14, b: -0.52, Ea: 0.0}
+  note: Chen, X., Fuller, M. E., & Goldsmith, C. F. Reac Chem Eng, 4(2),
+    323-333 (2019).
+- equation: NO2 + HO2 <=> HONO + O2  # Reaction 242
+  rate-constant: {A: 1.9, b: 3.32, Ea: 3044.0}
+  note: Bemand PP Clyne MAA Watson RT JCSFT2 70:564-576 1974
+- equation: NO2 + HO2 <=> HNO2 + O2  # Reaction 243
+  rate-constant: {A: 19.0, b: 3.26, Ea: 4983.0}
+  note: CL Rasmussen J Hansen P Marshall P Glarborg IJCK 40, 454-480 (2008)
+- equation: NO2 + NO2 <=> NO + NO + O2  # Reaction 244
+  rate-constant: {A: 4.5e+12, b: 0.0, Ea: 2.7599e+04}
+  note: CL Rasmussen J Hansen P Marshall P Glarborg IJCK 40, 454-480 (2008)
+- equation: NO2 + NO2 <=> NO3 + NO  # Reaction 245
+  rate-constant: {A: 9.6e+09, b: 0.73, Ea: 2.09e+04}
+  note: Park J Giles ND Moore J Lin MC JPCA 102:10099 1998
+- equation: NO + OH (+M) <=> HONO (+M)  # Reaction 246
+  type: falloff
+  low-P-rate-constant: {A: 3.392e+23, b: -2.5, Ea: 0.0}
+  high-P-rate-constant: {A: 1.1e+14, b: -0.3, Ea: 0.0}
+  Troe: {A: 0.75, T3: 1.0e-30, T1: 1.0e+30, T2: 1.0e+30}
+  efficiencies: {N2: 2.0, AR: 1.1, NH3: 6.0, NO2: 4.0, NO: 2.0}
+  note: |-
+    Tsang W JPCRD 20:221 1991
+    #
+- equation: HONO + H <=> H2 + NO2  # Reaction 247
+  rate-constant: {A: 1900.0, b: 2.83, Ea: 1423.0}
+  note: |-
+    He
+    # Howard, C.J.; Evenson, K.M. Laser Magnetic Resonance Study of the Gas Phase Reactions of OH with CO, NO, and NO2 J. Chem. Phys. 61 1974
+    # est from P. Glarborg, H. Hashemi, S. Cheskis, A.W. Jasper, "On the Rate Constant for NH2+HO2 and Third Body Collision Efficiencies for NH2+H (+M) and NH2+NH2 (+M)", J. Phys. Chem. A 125 (2021) 1505-1516.
+    est
+    Fulle D Hamann HF Hippler H Troe J JCP 108:5391 1998
+    #
+- equation: HONO + H <=> NO + H2O  # Reaction 248
+  type: pressure-dependent-Arrhenius
+  rate-constants:
+  - {P: 0.01 atm, A: 3.9e+09, b: 0.99, Ea: 4049.0}
+  - {P: 0.1 atm, A: 3.9e+09, b: 0.99, Ea: 4049.0}
+  - {P: 0.316 atm, A: 4.0e+09, b: 0.99, Ea: 4051.0}
+  - {P: 1.0 atm, A: 4.3e+09, b: 0.98, Ea: 4070.0}
+  - {P: 3.16 atm, A: 7.0e+09, b: 0.92, Ea: 4225.0}
+  - {P: 10.0 atm, A: 2.6e+10, b: 0.76, Ea: 4736.0}
+  - {P: 31.6 atm, A: 7.9e+10, b: 0.64, Ea: 5519.0}
+  - {P: 100.0 atm, A: 2.8e+10, b: 0.8, Ea: 6146.0}
+  note: |-
+    Chen, X., Fuller, M. E., & Goldsmith, C. F. Reac Chem Eng 4, 323-333 (2019).
+    1 atm #
+- equation: HONO + O <=> NO2 + OH  # Reaction 249
+  rate-constant: {A: 1.2e+13, b: 0.0, Ea: 5960.0}
+  note: |2-
+     Chen, X., Fuller, M. E., & Goldsmith, C. F. Reac Chem Eng, 4(2), 323-333 (2019).
+    HONO+H=NO+H2O                        8.1E06   1.890    3850 !
+     Hsu CC Lin MC Mebel AM Melius CF JPCA 101:60 1997
+- equation: HONO + OH <=> NO2 + H2O  # Reaction 250
+  rate-constant: {A: 1.7e+12, b: 0.0, Ea: -520.0}
+  note: NBS91      Tsang W JPCRD 20:221 1991
+- equation: HONO + NO2 <=> HONO2 + NO  # Reaction 251
+  rate-constant: {A: 2.0e+11, b: 0.0, Ea: 3.27e+04}
+  note: |-
+    Burkholder JB Mellouki A Talukdar R Ravishankara AR IJCK 24:711 1992
+    Consistent with R. A. Fifer, Kinetics of the reaction OH + HONO = H2O + NO2 at
+    high temperatures behind shock, J. Phys. Chem. 80 (1976) 2717-2723
+- equation: HONO + HONO <=> NO + NO2 + H2O  # Reaction 252
+  rate-constant: {A: 0.35, b: 3.64, Ea: 1.214e+04}
+  note: Park J Giles ND Moore J Lin MC JPCA 102:10099 1998
+- equation: HNO2 (+M) <=> HONO (+M)  # Reaction 253
+  type: falloff
+  low-P-rate-constant: {A: 2.9e+42, b: -8.442, Ea: 4.8737e+04}
+  high-P-rate-constant: {A: 7.1e+19, b: -2.758, Ea: 4.2598e+04}
+  Troe: {A: 1.0, T3: 17.53, T1: 8.324e-04, T2: 5.293}
+  efficiencies: {H2: 2.5, H2O: 12.0, CO: 1.9, CO2: 3.8, NH3: 5.0}
+  note: |-
+    Mebel AM Lin MC Melius CF JPCA 102:1803 1998
+    #
+- equation: NO + OH (+M) <=> HNO2 (+M)  # Reaction 254
+  type: falloff
+  low-P-rate-constant: {A: 10.0, b: 3.107, Ea: -1.9146e+04}
+  high-P-rate-constant: {A: 250.0, b: 2.341, Ea: 378.0}
+  Troe: {A: -0.186, T3: 222.4, T1: 1271.0, T2: 1545.0}
+  efficiencies: {H2: 2.5, H2O: 12.0, CO: 1.9, CO2: 3.8, NH3: 5.0}
+  note: |-
+    HNO2=HONO                            1.7E38  -8.79    48160 ! 1 atm
+     Chen, X., Fuller, M. E., & Goldsmith, C. F. Reac Chem Eng, 4(2), 323-333 (2019) (corrected).
+     refitted to Troe format (Hashemi 2023) difficult to achieve good fit                               !
+     PLOG/1.000E-01                      1.1E47 -11.48    52140/
+     PLOG/2.154E-01                      1.6E44 -10.63    50780/
+     PLOG/4.641E-01                      2.0E41  -9.74    49460/
+     PLOG/1.000E+00                      1.7E38  -8.79    48160/
+     PLOG/2.154E+00                      7.5E34  -7.73    46880/
+     PLOG/4.641E+00                      2.3E31  -6.60    45680/
+     PLOG/1.000E+01                      9.1E27  -5.47    44660/
+     PLOG/2.154E+01                      8.5E24  -4.44    43880/
+     PLOG/4.641E+01                      2.7E22  -3.55    43380/
+     PLOG/1.000E+02                      2.7E20  -2.80    43120/
+     #
+- equation: HNO2 + H <=> NO + H2O  # Reaction 255
+  rate-constant: {A: 3.4e+09, b: 1.07, Ea: 5565.0}
+  note: |2-
+     Chen, X., Fuller, M. E., & Goldsmith, C. F. Reac Chem Eng, 4(2), 323-333 (2019) (corrected).
+     refitted to Troe format (Hashemi 2023)                             !
+    NO+OH=HNO2                           3.1E15  -2.17     2775 ! 1 atm
+    PLOG/1.000E-01                      2.0E18   3.29     2792/! PLOG format creates convergence problems
+    PLOG/2.154E-01                      2.7E17  -2.93     2798/
+    PLOG/4.641E-01                      3.1E16  -2.56     2791/
+    PLOG/1.000E+00                      3.1E15  -2.17     2775/
+    PLOG/2.154E+00                      2.9E14  -1.77     2757/
+    PLOG/4.641E+00                      2.5E13  -1.37     2751/
+    PLOG/1.000E+01                      2.1E12  -0.97     2767/
+    PLOG/2.154E+01                      1.8E11  -0.57     2809/
+    PLOG/4.641E+01                      1.4E10  -0.17     2875/
+    PLOG/1.000E+02                      1.1E09   0.25     2951/
+     0.01-10 atm ##
+- equation: HNO2 + H <=> HNO + OH  # Reaction 256
+  rate-constant: {A: 3.7e+07, b: 1.78, Ea: 5570.0}
+  note: |-
+    PLOG / 0.010                        3.4E09   1.070    5568 /
+    PLOG / 0.100                        3.4E09   1.070    5567 /
+    PLOG / 0.316                        3.4E09   1.070    5567 /
+    PLOG / 1.000                        3.4E09   1.070    5565 /
+    PLOG / 3.160                        3.4E09   1.070    5560 /
+    PLOG / 10.00                        3.4E09   1.070    5546 /
+    PLOG / 31.60                        4.3E09   1.040    5591 /
+    PLOG / 100.0                        1.3E10   0.910    5968 /
+    Chen, X., Fuller, M. E., & Goldsmith, C. F. Reac Chem Eng, 4(2), 323-333 (2019).
+    0.01-10 atm ##
+- equation: HNO2 + H <=> NO2 + H2  # Reaction 257
+  rate-constant: {A: 2.3e+04, b: 2.77, Ea: -2022.0}
+  note: |-
+    PLOG / 0.010                        3.6E07   1.780    5565  /
+    PLOG / 0.100                        3.6E07   1.780    5566  /
+    PLOG / 0.316                        3.6E07   1.780    5567  /
+    PLOG / 1.000                        3.7E07   1.780    5570  /
+    PLOG / 3.160                        3.7E07   1.770    5580  /
+    PLOG / 10.00                        4.1E07   1.760    5617  /
+    PLOG / 31.60                        6.2E07   1.710    5770  /
+    PLOG / 100.0                        1.8E08   1.590    6233  /
+    Chen, X., Fuller, M. E., & Goldsmith, C. F. Reac Chem Eng, 4(2), 323-333 (2019).
+    #
+- equation: HNO2 + O <=> NO2 + OH  # Reaction 258
+  rate-constant: {A: 1.7e+08, b: 1.5, Ea: 2000.0}
+  note: Chen, X., Fuller, M. E., & Goldsmith, C. F. Reac Chem Eng 4, 323-333
+    (2019).
+- equation: HNO2 + OH <=> NO2 + H2O  # Reaction 259
+  rate-constant: {A: 4.0e+13, b: 0.0, Ea: 0.0}
+  note: Dean AM Bozzelli JW (Gardiner WC) Gas Phase Combustion Chemistry,
+    Springer 2000
+- equation: NO2 + O (+M) <=> NO3 (+M)  # Reaction 260
+  type: falloff
+  low-P-rate-constant: {A: 2.5e+20, b: -1.5, Ea: 0.0}
+  high-P-rate-constant: {A: 3.5e+12, b: 0.24, Ea: 0.0}
+  Troe: {A: 0.71, T3: 1.0e-30, T1: 1700.0, T2: 1.0e+30}
+  efficiencies: {H2: 2.5, H2O: 12.0, CO: 1.9, CO2: 3.8, NH3: 5.0}
+  note: CL Rasmussen J Hansen P Marshall P Glarborg IJCK 40, 454-480 (2008)
+- equation: NO3 + H <=> NO2 + OH  # Reaction 261
+  rate-constant: {A: 6.0e+13, b: 0.0, Ea: 0.0}
+  note: Hahn J Luther K Troe J PCCP 2:5098 2000
+- equation: NO3 + O <=> NO2 + O2  # Reaction 262
+  rate-constant: {A: 1.0e+13, b: 0.0, Ea: 0.0}
+  note: Becker E Rahman MM Schindler RN BBPC 96:776 1992
+- equation: NO3 + OH <=> NO2 + HO2  # Reaction 263
+  rate-constant: {A: 1.4e+13, b: 0.0, Ea: 0.0}
+  note: Atkinson R Baulch DL Cox RA Hampson RF Kerr JA Troe J JPC Ref Data
+    1992, 21, 1125-1568.
+- equation: NO3 + HO2 <=> NO2 + O2 + OH  # Reaction 264
+  rate-constant: {A: 1.5e+12, b: 0.0, Ea: 0.0}
+  note: Atkinson R Baulch DL Cox RA Hampson RF Kerr JA Troe J JPC Ref Data
+    1992, 21, 1125-1568.
+- equation: NO3 + NO2 <=> NO + NO2 + O2  # Reaction 265
+  rate-constant: {A: 5.0e+10, b: 0.0, Ea: 2940.0}
+  note: Becker E Rahman MM Schindler RN BBPC 96:776 1992
+- equation: NO2 + OH (+M) <=> HONO2 (+M)  # Reaction 266
+  type: falloff
+  low-P-rate-constant: {A: 2.938e+25, b: -3.0, Ea: 0.0}
+  high-P-rate-constant: {A: 3.0e+13, b: 0.0, Ea: 0.0}
+  Troe: {A: 0.4, T3: 1.0e-30, T1: 1.0e+30, T2: 1.0e+30}
+  efficiencies: {H2: 2.5, H2O: 12.0, CO: 1.9, CO2: 3.8, NH3: 5.0}
+  note: DeMore WB Sander SP Golden DM Molina MJ Hampson RF Kurylo MJ Howard
+    CJ Ravishankara AR JPL P 90-1:1 1990
+- equation: HONO2 + H <=> H2 + NO3  # Reaction 267
+  rate-constant: {A: 5.6e+08, b: 1.5, Ea: 1.64e+04}
+  note: |-
+    Fc=0.4
+    Troe J IJCK 33:878 2001
+- equation: HONO2 + H <=> H2O + NO2  # Reaction 268
+  rate-constant: {A: 61.0, b: 3.3, Ea: 6285.0}
+  note: Boughton JW Kristyan S Lin MC Chem. Phys 214:219 1997
+- equation: HONO2 + H <=> OH + HONO  # Reaction 269
+  rate-constant: {A: 3.8e+05, b: 2.3, Ea: 6976.0}
+  note: Boughton JW Kristyan S Lin MC Chem. Phys 214:219 1997
+- equation: HONO2 + OH <=> H2O + NO3  # Reaction 270
+  rate-constant: {A: 1.0e+10, b: 0.0, Ea: -1240.0}
+  note: Boughton JW Kristyan S Lin MC Chem. Phys 214:219 1997
+- equation: N2H4 + H <=> N2H3 + H2  # Reaction 271
+  rate-constant: {A: 2.7e+05, b: 2.56, Ea: 1218.0}
+  note: |-
+    Lamb JJ Mozurkewich M Benson SW JPC 88:6441-6448 1984
+    ************************************************************************
+      N2 amine subset                                                      *
+    ************************************************************************
+    #
+- equation: N2H4 + H <=> NH3 + NH2  # Reaction 272
+  rate-constant: {A: 3.0e+06, b: 2.07, Ea: 8012.0}
+  note: |-
+    N. Kanno, T. Kito, Theoretical study on the hydrogen abstraction reactions from hydrazine derivatives by H atom, Int. J. Chem. Kinet. 52 (2020) 548-555
+    #
+- equation: N2H4 + O <=> N2H3 + OH  # Reaction 273
+  rate-constant: {A: 1.5e+11, b: 0.0, Ea: -1270.0}
+  note: Y. Gao, I.M. Alecu, H. Hashemi, P. Glarborg, P. Marshall, "Reactions
+    of hydrazine with the amidogen radical and atomic hydrogen", Proc. Combust.
+    Inst. (2022).
+- equation: N2H4 + O <=> tHNNH + H2O  # Reaction 274
+  rate-constant: {A: 2.9e+11, b: 0.0, Ea: -1270.0}
+  note: |-
+    Vaghjiani GL JPC 104:5479-5489 1996
+    Vaghjiani GL JPCA 105:4682-4690 2001
+- equation: N2H4 + OH <=> N2H3 + H2O  # Reaction 275
+  rate-constant: {A: 1.3e+13, b: 0.0, Ea: -318.0}
+  note: |-
+    Vaghjiani GL JPC 104:5479-5489 1996
+    Vaghjiani GL JPCA 105:4682-4690 2001
+    Non-OH products assumed
+- equation: N2H4 + NH2 <=> N2H3 + NH3  # Reaction 276
+  rate-constant: {A: 20.0, b: 3.62, Ea: -397.0}
+  note: Vaghjiani GL IJCK 33:354-362 2001
+- equation: N2H4 + NO <=> N2H3 + HNO  # Reaction 277
+  rate-constant: {A: 60.0, b: 3.16, Ea: 3.0845e+04}
+  note: Y. Gao, I.M. Alecu, H. Hashemi, P. Glarborg, P. Marshall, "Reactions
+    of hydrazine with the amidogen radical and atomic hydrogen", Proc. Combust.
+    Inst., accepted for presentation (2022).
+- equation: N2H4 + NO2 <=> N2H3 + HONO  # Reaction 278
+  rate-constant: {A: 82.0, b: 3.13, Ea: 8860.0}
+  note: |-
+    P. Raghunath and Y.H. Lin and M.C. Lin:  Ab initio chemical kinetics for the N2H4+NOx (x=1-3) reactions and related reverse processes
+    Comp. Theor. Chem. 1046, 73-80, 2014
+- equation: N2H4 + NO2 <=> N2H3 + HNO2  # Reaction 279
+  rate-constant: {A: 0.024, b: 4.14, Ea: 7946.0}
+  note: |-
+    P. Raghunath and Y.H. Lin and M.C. Lin
+    Ab initio chemical kinetics for the N2H4+NOx (x=1-3) reactions and related reverse processes,
+    Comp. Theor. Chem. 1046, 73-80, 2014
+- equation: N2H3 (+M) <=> tHNNH + H (+M)  # Reaction 280
+  type: falloff
+  low-P-rate-constant: {A: 3.8e+40, b: -6.88, Ea: 5.446e+04}
+  high-P-rate-constant: {A: 1.3e+11, b: 0.819, Ea: 4.806e+04}
+  Troe: {A: 0.168, T3: 8.0e+04, T1: 28.0, T2: 7298.0}
+  efficiencies: {N2: 2.0, AR: 1.0, NH3: 5.0}
+  note: |-
+    P. Raghunath and Y.H. Lin and M.C. Lin
+    Ab initio chemical kinetics for the N2H4+NOx (x=1-3) reactions and related reverse processes,
+    Comp. Theor. Chem. 1046, 73-80, 2014
+    #
+- equation: N2H3 + H <=> tHNNH + H2  # Reaction 281
+  rate-constant: {A: 46.0, b: 3.53, Ea: 3750.0}
+  note: |-
+    AR
+    P. Dievart and L. Catoire. J. Phys. Chem. A, 124:6214-6236, 2020.
+    #
+- equation: N2H3 + H <=> cHNNH + H2  # Reaction 282
+  rate-constant: {A: 270.0, b: 3.18, Ea: 6620.0}
+  note: |-
+    P. Marshall, G.R. Rawlins, P. Glarborg. "New reactions of diazene and related species for modeling combustion of amine fuels", Mol. Phys. 119 (2021) e1979674.!
+    #
+- equation: N2H3 + H <=> H2NN + H2  # Reaction 283
+  rate-constant: {A: 3.1e+06, b: 2.11, Ea: 288.0}
+  note: |-
+    P. Marshall, G.R. Rawlins, P. Glarborg. "New reactions of diazene and related species for modeling combustion of amine fuels", Mol. Phys. 119 (2021) e1979674.!
+    #
+- equation: N2H3 + H <=> NH2 + NH2  # Reaction 284
+  rate-constant: {A: 1.0e+14, b: 0.0, Ea: 0.0}
+  note: |-
+    P. Marshall, G.R. Rawlins, P. Glarborg. "New reactions of diazene and related species for modeling combustion of amine fuels", Mol. Phys. 119 (2021) e1979674.!
+    #
+- equation: N2H3 + O <=> tHNNH + OH  # Reaction 285
+  rate-constant: {A: 1.7e+08, b: 1.5, Ea: -646.0}
+  note: P. Marshall, G.R. Rawlins, P. Glarborg. "New reactions of diazene
+    and related species for modeling combustion of amine fuels", Mol. Phys.
+    119 (2021) e1979674.!
+- equation: N2H3 + O <=> NH2 + HNO  # Reaction 286
+  rate-constant: {A: 3.0e+13, b: 0.0, Ea: 0.0}
+  note: Dean AM Bozzelli JW (Gardiner WC) Gas Phase Combustion Chemistry,
+    Springer 2000
+- equation: N2H3 + O => NH2 + NO + H  # Reaction 287
+  rate-constant: {A: 3.0e+13, b: 0.0, Ea: 0.0}
+  note: Dean AM Bozzelli JW (Gardiner WC) Gas Phase Combustion Chemistry,
+    Springer 2000
+- equation: N2H3 + OH <=> tHNNH + H2O  # Reaction 288
+  rate-constant: {A: 1.2e+06, b: 2.0, Ea: -1192.0}
+  note: Dean AM Bozzelli JW (Gardiner WC) Gas Phase Combustion Chemistry,
+    Springer 2000
+- equation: N2H3 + OH <=> H2NN + H2O  # Reaction 289
+  rate-constant: {A: 3.0e+13, b: 0.0, Ea: 0.0}
+  note: Dean AM Bozzelli JW (Gardiner WC) Gas Phase Combustion Chemistry,
+    Springer 2000
+- equation: N2H3 + OH <=> NH3 + HNO  # Reaction 290
+  rate-constant: {A: 1.0e+12, b: 0.0, Ea: 1.5e+04}
+  note: Dean AM Bozzelli JW (Gardiner WC) Gas Phase Combustion Chemistry,
+    Springer 2000
+- equation: N2H3 + HO2 <=> tHNNH + H2O2  # Reaction 291
+  rate-constant: {A: 1.4e+04, b: 2.69, Ea: -1600.0}
+  note: JAM est
+- equation: N2H3 + HO2 <=> N2H4 + O2  # Reaction 292
+  rate-constant: {A: 9.2e+05, b: 1.94, Ea: 2126.0}
+  note: Dean AM Bozzelli JW (Gardiner WC) Gas Phase Combustion Chemistry,
+    Springer 2000
+- equation: N2H3 + NH2 <=> tHNNH + NH3  # Reaction 293
+  rate-constant: {A: 0.61, b: 3.574, Ea: 1194.0}
+  note: |-
+    Dean AM Bozzelli JW (Gardiner WC) Gas Phase Combustion Chemistry, Springer 2000
+    #
+- equation: N2H3 + NH2 <=> H2NN + NH3  # Reaction 294
+  rate-constant: {A: 11.0, b: 3.08, Ea: 211.0}
+  note: |-
+    P. Dievart and L. Catoire. J. Phys. Chem. A, 124:62146236, 2020.
+    #
+- equation: N2H3 + NH <=> tHNNH + NH2  # Reaction 295
+  rate-constant: {A: 2.0e+13, b: 0.0, Ea: 0.0}
+  note: "P. Dievart and L. Catoire. J. Phys. Chem. A, 124:6214\x156236,\
+    \ 2020."
+- equation: tHNNH (+M) <=> cHNNH (+M)  # Reaction 296
+  duplicate: true
+  type: falloff
+  low-P-rate-constant: {A: 3.0e+28, b: -3.56, Ea: 5.61e+04}
+  high-P-rate-constant: {A: 4.9e+09, b: 1.18, Ea: 4.77e+04}
+  Troe: {A: 0.35, T3: 650.0, T1: 1.06e+04}
+  efficiencies: {N2: 1.0, AR: 0.5, H2: 1.0, H2O: 6.0, CO: 1.9, CO2: 3.8,
+    NH3: 2.5}
+  note: |-
+    JAM est
+    #
+- equation: tHNNH (+M) <=> cHNNH (+M)  # Reaction 297
+  duplicate: true
+  type: falloff
+  low-P-rate-constant: {A: 2.3e+29, b: -4.0, Ea: 6.01e+04}
+  high-P-rate-constant: {A: 1.5e+14, b: 0.0, Ea: 5.5e+04}
+  Troe: {A: 0.35, T3: 650.0, T1: 1.06e+04}
+  efficiencies: {N2: 1.0, AR: 0.5, H2: 1.0, H2O: 6.0, CO: 1.9, CO2: 3.8,
+    NH3: 2.5}
+  note: '#'
+- equation: tHNNH (+M) <=> NNH + H (+M)  # Reaction 298
+  type: falloff
+  low-P-rate-constant: {A: 8.7e+39, b: -6.91, Ea: 7.04e+04}
+  high-P-rate-constant: {A: 6.3e+16, b: 0.0, Ea: 6.398e+04}
+  Troe: {A: 0.44, T3: 520.0, T1: 6150.0}
+  efficiencies: {N2: 1.0, AR: 0.5, O2: 0.6, H2: 1.0, H2O: 6.0, CO: 1.9,
+    CO2: 3.8, NH3: 2.5}
+  note: |-
+    P. Marshall, G.R. Rawlins, P. Glarborg. "New reactions of diazene and related species for modeling combustion of amine fuels", Mol. Phys. 119 (2021) e1979674.
+    #
+- equation: tHNNH + H <=> NNH + H2  # Reaction 299
+  rate-constant: {A: 9.6e+07, b: 1.8, Ea: 900.0}
+  note: |-
+    P. Marshall, G.R. Rawlins, P. Glarborg. "New reactions of diazene and related species for modeling combustion of amine fuels", Mol. Phys. 119 (2021) e1979674.
+    #
+- equation: tHNNH + O <=> NNH + OH  # Reaction 300
+  rate-constant: {A: 3.3e+08, b: 1.5, Ea: 497.0}
+  note: P. Marshall, G.R. Rawlins, P. Glarborg. "New reactions of diazene
+    and related species for modeling combustion of amine fuels", Mol. Phys.
+    119 (2021) e1979674.
+- equation: tHNNH + O <=> NH2 + NO  # Reaction 301
+  rate-constant: {A: 1.0e+13, b: 0.0, Ea: 0.0}
+  note: Dean AM Bozzelli JW (Gardiner WC) Gas Phase Combustion Chemistry,
+    Springer 2000
+- equation: tHNNH + OH <=> NNH + H2O  # Reaction 302
+  rate-constant: {A: 59.0, b: 3.4, Ea: 1360.0}
+  note: JAM est
+- equation: tHNNH + NH2 <=> NNH + NH3  # Reaction 303
+  rate-constant: {A: 2.7e+05, b: 2.226, Ea: -1034.0}
+  note: |-
+    Linder DP Duan X Page M JCP 104:6298 1996
+    #
+- equation: tHNNH + NH <=> NNH + NH2  # Reaction 304
+  rate-constant: {A: 2.4e+06, b: 2.0, Ea: -1192.0}
+  note: P. Dievart and L. Catoire. J. Phys. Chem. A, 124:6214-6236, 2020.
+- equation: cHNNH (+M) <=> NNH + H (+M)  # Reaction 305
+  type: falloff
+  low-P-rate-constant: {A: 9.6e+35, b: -5.44, Ea: 6.39e+04}
+  high-P-rate-constant: {A: 5.7e+16, b: 0.0, Ea: 5.87e+04}
+  Troe: {A: 0.44, T3: 520.0, T1: 6150.0}
+  efficiencies: {N2: 1.0, AR: 0.5, H2: 1.0, H2O: 6.0, CO: 1.9, CO2: 3.8,
+    NH3: 2.5}
+  note: |2-
+     Dean AM Bozzelli JW (Gardiner WC) Gas Phase Combustion Chemistry, Springer 2000
+    N2H2+NO=N2O+NH2                      4.0E12   0.000   11922 ! #
+     Dean AM Bozzelli JW (Gardiner WC) Gas Phase Combustion Chemistry, Springer 2000
+- equation: cHNNH + H <=> NNH + H2  # Reaction 306
+  rate-constant: {A: 2.8e+08, b: 1.72, Ea: 470.0}
+  note: P. Marshall, G.R. Rawlins, P. Glarborg. "New reactions of diazene
+    and related species for modeling combustion of amine fuels", Mol. Phys.
+    119 (2021) e1979674.!
+- equation: cHNNH + H <=> tHNNH + H  # Reaction 307
+  rate-constant: {A: 7.8e+08, b: 1.58, Ea: 2180.0}
+  note: P. Marshall, G.R. Rawlins, P. Glarborg. "New reactions of diazene
+    and related species for modeling combustion of amine fuels", Mol. Phys.
+    119 (2021) e1979674.!
+- equation: H2NN <=> NNH + H  # Reaction 308
+  rate-constant: {A: 3.4e+26, b: -4.83, Ea: 4.6228e+04}
+  note: |-
+    P. Marshall, G.R. Rawlins, P. Glarborg. "New reactions of diazene and related species for modeling combustion of amine fuels", Mol. Phys. 119 (2021) e1979674.!
+     1 atm
+- equation: H2NN <=> N2 + H2  # Reaction 309
+  rate-constant: {A: 2.5e+14, b: 0.0, Ea: 5.2785e+04}
+  note: Dean AM Bozzelli JW (Gardiner WC) Gas Phase Combustion Chemistry,
+    Springer 2000
+- equation: H2NN <=> tHNNH  # Reaction 310
+  rate-constant: {A: 1.3e+14, b: 0.0, Ea: 4.6931e+04}
+  note: D.-Y. Hwang, A.M. Mebel, J. Phys. Chem. A 2003, 107, 2865-2874
+- equation: H2NN + H <=> NNH + H2  # Reaction 311
+  rate-constant: {A: 4.8e+08, b: 1.5, Ea: -894.0}
+  note: D.-Y. Hwang, A.M. Mebel, J. Phys. Chem. A 2003, 107, 2865-2874
+- equation: H2NN + H <=> tHNNH + H  # Reaction 312
+  rate-constant: {A: 7.0e+13, b: 0.0, Ea: 0.0}
+  note: Dean AM Bozzelli JW (Gardiner WC) Gas Phase Combustion Chemistry,
+    Springer 2000
+- equation: H2NN + O <=> NNH + OH  # Reaction 313
+  rate-constant: {A: 3.3e+08, b: 1.5, Ea: -894.0}
+  note: Dean AM Bozzelli JW (Gardiner WC) Gas Phase Combustion Chemistry,
+    Springer 2000
+- equation: H2NN + O <=> NH2 + NO  # Reaction 314
+  rate-constant: {A: 7.0e+13, b: 0.0, Ea: 0.0}
+  note: Dean AM Bozzelli JW (Gardiner WC) Gas Phase Combustion Chemistry,
+    Springer 2000
+- equation: H2NN + OH <=> NNH + H2O  # Reaction 315
+  rate-constant: {A: 2.4e+06, b: 2.0, Ea: -1192.0}
+  note: Dean AM Bozzelli JW (Gardiner WC) Gas Phase Combustion Chemistry,
+    Springer 2000
+- equation: H2NN + OH => NH2 + NO + H  # Reaction 316
+  rate-constant: {A: 2.0e+12, b: 0.0, Ea: 0.0}
+  note: Dean AM Bozzelli JW (Gardiner WC) Gas Phase Combustion Chemistry,
+    Springer 2000
+- equation: H2NN + HO2 => NH2 + NO + OH  # Reaction 317
+  rate-constant: {A: 9.0e+12, b: 0.0, Ea: 0.0}
+  note: Dean AM Bozzelli JW (Gardiner WC) Gas Phase Combustion Chemistry,
+    Springer 2000
+- equation: H2NN + HO2 <=> NNH + H2O2  # Reaction 318
+  rate-constant: {A: 2.9e+04, b: 2.69, Ea: -1600.0}
+  note: Dean AM Bozzelli JW (Gardiner WC) Gas Phase Combustion Chemistry,
+    Springer 2000
+- equation: H2NN + O2 <=> NH2 + NO2  # Reaction 319
+  rate-constant: {A: 1.5e+12, b: 0.0, Ea: 5961.0}
+  note: Dean AM Bozzelli JW (Gardiner WC) Gas Phase Combustion Chemistry,
+    Springer 2000
+- equation: H2NN + NH2 <=> NNH + NH3  # Reaction 320
+  rate-constant: {A: 1.8e+06, b: 1.94, Ea: -1152.0}
+  note: Dean AM Bozzelli JW (Gardiner WC) Gas Phase Combustion Chemistry,
+    Springer 2000
+- equation: HOCO + NO <=> CO2 + HNO  # Reaction 321
+  rate-constant: {A: 5.0e+09, b: 1.0, Ea: 0.0}
+  note: |-
+    Dean AM Bozzelli JW (Gardiner WC) Gas Phase Combustion Chemistry, Springer 2000
+    #
+- equation: HOCO + NH2 <=> CO2 + NH3  # Reaction 322
+  rate-constant: {A: 2.0e+13, b: 0.0, Ea: 0.0}
+  note: |-
+    est to be slightly faster than HOCO+O2
+    #
+- equation: H2NCO (+M) <=> CO + NH2 (+M)  # Reaction 323
+  type: falloff
+  low-P-rate-constant: {A: 1.0e+14, b: 0.0, Ea: 2.17e+04}
+  high-P-rate-constant: {A: 5.9e+12, b: 0.0, Ea: 2.5e+04}
+  note: est
+- equation: H2NCO + H <=> HNCO + H2  # Reaction 324
+  rate-constant: {A: 3.0e+13, b: 0.0, Ea: 0.0}
+  note: R.A. Back, T. Yokota, Int. J. Chem. Kinet. 5 (1973) 37-46 (573 K)
+- equation: H2NCO + O <=> HNCO + OH  # Reaction 325
+  rate-constant: {A: 3.0e+13, b: 0.0, Ea: 0.0}
+  note: |-
+    A Lucassen K Zhang J Warkentin K Moshammer P Glarborg P Marshall K Kohse-Hoinghaus, CF 159 (2012) 2254-2279.
+    est
+- equation: H2NCO + OH <=> HNCO + H2O  # Reaction 326
+  rate-constant: {A: 3.0e+13, b: 0.0, Ea: 0.0}
+  note: |-
+    A Lucassen K Zhang J Warkentin K Moshammer P Glarborg P Marshall K Kohse-Hoinghaus, CF 159 (2012) 2254-2279.
+    est
+- equation: HNCO + M <=> CO + NH + M  # Reaction 327
+  type: three-body
+  rate-constant: {A: 1.1e+16, b: 0.0, Ea: 8.6e+04}
+  efficiencies: {N2: 1.5}
+  note: |-
+    A Lucassen K Zhang J Warkentin K Moshammer P Glarborg P Marshall K Kohse-Hoinghaus, CF 159 (2012) 2254-2279.
+    est
+- equation: HNCO + H <=> NH2 + CO  # Reaction 328
+  rate-constant: {A: 3.6e+04, b: 2.49, Ea: 2345.0}
+  note: Mertens JD Chang AY Hanson RK Bowman CT IJCK 21:1049 1989
+- equation: HNCO + H <=> NCO + H2  # Reaction 329
+  rate-constant: {A: 9.0e+07, b: 1.66, Ea: 1.39e+04}
+  note: Baulch DL Bowman CT Cobos CJ Cox RA Just Th Kerr JA Pilling MJ Stocker
+    D Troe J Tsang W Walker RW Warnatz J JPCRD 34:757-1397 2005
+- equation: HNCO + O <=> NCO + OH  # Reaction 330
+  rate-constant: {A: 2.2e+06, b: 2.11, Ea: 1.143e+04}
+  note: Baulch DL Bowman CT Cobos CJ Cox RA Just Th Kerr JA Pilling MJ Stocker
+    D Troe J Tsang W Walker RW Warnatz J JPCRD 34:757-1397 2005
+- equation: HNCO + O <=> NH + CO2  # Reaction 331
+  rate-constant: {A: 9.6e+07, b: 1.41, Ea: 8520.0}
+  note: |-
+    Baulch DL Bowman CT Cobos CJ Cox RA Just Th Kerr JA Pilling MJ Stocker D Troe J Tsang W Walker RW Warnatz J JPCRD 34:757-1397 2005
+    Tsang W JPCRD 21:753-791 1992
+- equation: HNCO + O <=> HNO + CO  # Reaction 332
+  rate-constant: {A: 1.5e+08, b: 1.57, Ea: 4.4012e+04}
+  note: |-
+    Baulch DL Bowman CT Cobos CJ Cox RA Just Th Kerr JA Pilling MJ Stocker D Troe J Tsang W Walker RW Warnatz J JPCRD 34:757-1397 2005
+    Tsang W JPCRD 21:753-791 1992
+- equation: HNCO + OH <=> NCO + H2O  # Reaction 333
+  rate-constant: {A: 3.5e+07, b: 1.5, Ea: 3600.0}
+  note: He Y Lin MC Wu CK Melius CF PCI 24:711 1992
+- equation: HNCO + HO2 <=> NCO + H2O2  # Reaction 334
+  rate-constant: {A: 3.0e+11, b: 0.0, Ea: 2.2e+04}
+  note: |-
+    Wooldridge ST Hanson RK Bowman CT IJCK 28:361-372 1995
+    D Sengupta MT Nguyen J. Chem. Phys. 106 (1997) 9703-9707: NH2+CO2 channel negligible
+- equation: HNCO + O2 <=> HNO + CO2  # Reaction 335
+  rate-constant: {A: 2.0e+13, b: 0.0, Ea: 5.89e+04}
+  note: JAM est
+- equation: HNCO + H2O <=> NH3 + CO2  # Reaction 336
+  rate-constant: {A: 2.0e+13, b: 0.0, Ea: 4.85e+04}
+  note: P. Glarborg, J.A. Miller, B. Ruscic, S.J. Klippenstein, Prog. Energy
+    Combust. Sci. 67 (2018) 31-68.
+- equation: HNCO + NH <=> NH2 + NCO  # Reaction 337
+  rate-constant: {A: 3.0e+13, b: 0.0, Ea: 2.37e+04}
+  note: |-
+    X.-G. Wei, X.-M. Sun, X.-P. Wu, S. Geng, Y. Ren, N.-B. Wong, and W.-K. Li. J Mol Model 17:20692082, 2011.
+    X. Cheng, Y. Zhao, W. Zhu, and Y. Liu. J Mol Model, 19:5037-5043, 2013.
+    P. Glarborg, J.A. Miller, B. Ruscic, S.J. Klippenstein, Prog. Energy Combust. Sci. 67 (2018) 31-68.
+    JAM est
+    
+  # *********************************************************************
+  # H2NNO PES Subset from Kane et al. 2025                              *
+  # *********************************************************************
+- equation: NH2 + NO <=> N2 + H2O # Reaction 338 P1->P3 added by ECK
+  type: pressure-dependent-Arrhenius
+  rate-constants:
+  - {P: 1.000e-03 atm, A: 4.569359238280003e+21, b: -3.0660325723000588, Ea: 1350.2233028459727}
+  - {P: 3.000e-03 atm, A: 4.571867359038223e+21, b: -3.066100416800638, Ea: 1350.1821119142878}
+  - {P: 1.000e-02 atm, A: 4.579603733924842e+21, b: -3.0663096509610273, Ea: 1349.9804664183123}
+  - {P: 3.000e-02 atm, A: 4.6028904768510514e+21, b: -3.0669370357162835, Ea: 1349.4842193046757}
+  - {P: 1.000e-01 atm, A: 4.684015329316702e+21, b: -3.0690967577980692, Ea: 1347.8791745559513}
+  - {P: 3.000e-01 atm, A: 4.914437339363972e+21, b: -3.0750302884484157, Ea: 1344.1786758072578}
+  - {P: 1.000e+00 atm, A: 5.651517171645336e+21, b: -3.0922852243576555, Ea: 1336.4263455108346}
+  - {P: 3.000e+00 atm, A: 7.814496644571815e+21, b: -3.131482490046908, Ea: 1375.7882980049915}
+  - {P: 1.000e+01 atm, A: 1.704234396672072e+22, b: -3.2218493702168476, Ea: 1704.435343971121}
+  - {P: 3.000e+01 atm, A: 3.490254725389559e+22, b: -3.2977369796481035, Ea: 2363.591538547937}
+  - {P: 1.000e+02 atm, A: 3.1972059650230453e+22, b: -3.2666174076039365, Ea: 3354.466690800691}
+  - {P: 3.000e+02 atm, A: 6.358926652186828e+21, b: -3.0455064275807873, Ea: 4343.3685829318165}
+  note: Kane et al. CNF 2025
+- equation: NH2 + NO <=> NNH + OH # Reaction 339 P1->P2 added by ECK
+  type: pressure-dependent-Arrhenius
+  rate-constants:
+  - {P: 1.000e-03 atm, A: 1.2158112891707092e+16, b: -1.2133813795098074, Ea: 2733.0894670042676}
+  - {P: 3.000e-03 atm, A: 1.2157990045817958e+16, b: -1.2133800086989401, Ea: 2733.091322838471}
+  - {P: 1.000e-02 atm, A: 1.215856647442594e+16, b: -1.2133853018842569, Ea: 2733.124921642508}
+  - {P: 3.000e-02 atm, A: 1.215957508529099e+16, b: -1.213394282379553, Ea: 2733.202176822568}
+  - {P: 1.000e-01 atm, A: 1.2163378820750674e+16, b: -1.2134275357509363, Ea: 2733.49529117667}
+  - {P: 3.000e-01 atm, A: 1.2177078509537644e+16, b: -1.213549544797816, Ea: 2734.4372187272875}
+  - {P: 1.000e+00 atm, A: 1.2249507702998492e+16, b: -1.2142052367044542, Ea: 2738.7260820913957}
+  - {P: 3.000e+00 atm, A: 1.263114551149e+16, b: -1.2176691548941165, Ea: 2757.4654853003904}
+  - {P: 1.000e+01 atm, A: 1.5207303537374156e+16, b: -1.2388914026730813, Ea: 2858.5687351508145}
+  - {P: 3.000e+01 atm, A: 2.7589455522112516e+16, b: -1.30685333366508, Ea: 3185.98822541073}
+  - {P: 1.000e+02 atm, A: 1.017774347556423e+17, b: -1.4524802284546012, Ea: 4030.1893023232924}
+  - {P: 3.000e+02 atm, A: 3.3755209499318304e+17, b: -1.5753165750121432, Ea: 5252.992424280296}
+  note: Kane et al. CNF 2025
+- equation: NNH + OH <=> N2 + H2O # Reaction 340 P2->P3 added by ECK
+  type: pressure-dependent-Arrhenius
+  rate-constants:
+  - {P: 1.000e-03 atm, A: 1.1615309601687158e+17, b: -1.2096570183644721, Ea: 1112.8589036424328}
+  - {P: 3.000e-03 atm, A: 1.1615265385433122e+17, b: -1.2096566518000438, Ea: 1112.854793294968}
+  - {P: 1.000e-02 atm, A: 1.161487935918986e+17, b: -1.2096528134356768, Ea: 1112.8388803233213}
+  - {P: 3.000e-02 atm, A: 1.1614915452238494e+17, b: -1.2096536586219215, Ea: 1112.822681808635}
+  - {P: 1.000e-01 atm, A: 1.1612079418629992e+17, b: -1.2096247730784173, Ea: 1112.6987367289812}
+  - {P: 3.000e-01 atm, A: 1.1608108808482978e+17, b: -1.2095877827944035, Ea: 1112.4211802685784}
+  - {P: 1.000e+00 atm, A: 1.1590186847918746e+17, b: -1.2094163997462468, Ea: 1111.3208269689014}
+  - {P: 3.000e+00 atm, A: 1.152271530909704e+17, b: -1.20875685655741, Ea: 1107.7004671533516}
+  - {P: 1.000e+01 atm, A: 1.1401694747475347e+17, b: -1.207593870725575, Ea: 1099.9199349586647}
+  - {P: 3.000e+01 atm, A: 1.1734535295975475e+17, b: -1.2111353255036905, Ea: 1105.4231896698177}
+  - {P: 1.000e+02 atm, A: 1.3627279905368974e+17, b: -1.2288726258581528, Ea: 1160.539144389763}
+  - {P: 3.000e+02 atm, A: 1.8889234512061213e+17, b: -1.2669062393305337, Ea: 1306.735442072571}
+  note: Kane et al. CNF 2025
+- equation: NNH + OH <=> NH2NO # Reaction 341 P2->W1 added by ECK
+  type: pressure-dependent-Arrhenius
+  rate-constants:
+  - {P: 1.000e-03 atm, A: 5.367108358049685e+28, b: -6.927533105735208, Ea: 44721.66881571945}
+  - {P: 3.000e-03 atm, A: 1.0113923870304375e+26, b: -6.097667409466361, Ea: 37940.47690517818}
+  - {P: 1.000e-02 atm, A: 3.043425052924761e+20, b: -4.503757644078239, Ea: 27589.0072580743}
+  - {P: 3.000e-02 atm, A: 3629601701138918.5, b: -3.0644057508959492, Ea: 18143.23181484436}
+  - {P: 1.000e-01 atm, A: 3.776333148980652e+16, b: -3.2183899153514703, Ea: 13150.239194513833}
+  - {P: 3.000e-01 atm, A: 1.4087006466780406e+16, b: -2.9614171608550923, Ea: 7311.220134098923}
+  - {P: 1.000e+00 atm, A: 9.035423748656055e+18, b: -3.5510878219997655, Ea: 4032.3126877787304}
+  - {P: 3.000e+00 atm, A: 2.7432711531072355e+22, b: -4.318457978282001, Ea: 2988.153300158198}
+  - {P: 1.000e+01 atm, A: 9.57477012364822e+25, b: -5.0766061433551215, Ea: 3227.1745203944656}
+  - {P: 3.000e+01 atm, A: 1.835713359771149e+28, b: -5.516515944106117, Ea: 3907.604862789224}
+  - {P: 1.000e+02 atm, A: 4.9162831023586404e+29, b: -5.724486953922399, Ea: 4750.879617308437}
+  - {P: 3.000e+02 atm, A: 1.1464383520724566e+30, b: -5.675517779838956, Ea: 5537.676063506523}
+  note: Kane et al. CNF 2025
+- equation: H2O + N2 <=> NH2NO # Reaction 342 P3->W1 added by ECK
+  type: pressure-dependent-Arrhenius
+  rate-constants:
+  - {P: 1.000e-03 atm, A: 1.0349252959000728e+23, b: -4.795310881491027, Ea: 112131.6892654615}
+  - {P: 3.000e-03 atm, A: 1.2574186061788124e+24, b: -4.950460609420426, Ea: 113216.04883104778}
+  - {P: 1.000e-02 atm, A: 4.2783028794005126e+24, b: -4.937732936884775, Ea: 113949.72998459608}
+  - {P: 3.000e-02 atm, A: 1.3353987872955663e+25, b: -4.927974800965892, Ea: 114688.27348612629}
+  - {P: 1.000e-01 atm, A: 3.2876515635948104e+25, b: -4.874507730187555, Ea: 115484.69294624198}
+  - {P: 3.000e-01 atm, A: 5.784070443989621e+25, b: -4.794450819809914, Ea: 116240.35319635493}
+  - {P: 1.000e+00 atm, A: 2.1454024907280662e+26, b: -4.794207837980741, Ea: 117405.38701754439}
+  - {P: 3.000e+00 atm, A: 3.0626845049169368e+26, b: -4.704044730557223, Ea: 118275.21164299457}
+  - {P: 1.000e+01 atm, A: 1.2266808855292794e+27, b: -4.745639145428269, Ea: 119650.69294937381}
+  - {P: 3.000e+01 atm, A: 2.066760633071332e+27, b: -4.70972929293968, Ea: 120847.15919034525}
+  - {P: 1.000e+02 atm, A: 5.420651823327191e+27, b: -4.73189838331742, Ea: 122549.26615316528}
+  - {P: 3.000e+02 atm, A: 8.57357894362877e+27, b: -4.713581353469169, Ea: 124207.8042131018}
+  note: Kane et al. CNF 2025
+- equation: NH2 + NO <=> NH2NO # Reaction 343 P1->W1 added by ECK
+  type: pressure-dependent-Arrhenius
+  rate-constants:
+  - {P: 1.000e-03 atm, A: 2.3176518632138903e+25, b: -5.821421579404748, Ea: 31191.849610274698}
+  - {P: 3.000e-03 atm, A: 2.2850871925446623e+20, b: -4.350272229454248, Ea: 23091.85992028664}
+  - {P: 1.000e-02 atm, A: 9.207354516936402e+17, b: -3.568517838850663, Ea: 16867.4397421951}
+  - {P: 3.000e-02 atm, A: 4.274468837617215e+17, b: -3.351479196031399, Ea: 12435.906514102686}
+  - {P: 1.000e-01 atm, A: 7.945679027514709e+18, b: -3.5521143094938563, Ea: 8340.362634425566}
+  - {P: 3.000e-01 atm, A: 1.7921330892489235e+20, b: -3.7685170740243725, Ea: 4665.393751197924}
+  - {P: 1.000e+00 atm, A: 6.878738598427951e+23, b: -4.5572890811730495, Ea: 3255.576571623343}
+  - {P: 3.000e+00 atm, A: 3.258099531368942e+26, b: -5.099303263280264, Ea: 3052.0424670614325}
+  - {P: 1.000e+01 atm, A: 2.246533824072486e+28, b: -5.402454962965127, Ea: 3410.630927080192}
+  - {P: 3.000e+01 atm, A: 1.6926870676173432e+29, b: -5.473471041860518, Ea: 3978.6430772004187}
+  - {P: 1.000e+02 atm, A: 1.7530134755919366e+29, b: -5.300883609037573, Ea: 4488.129109380719}
+  - {P: 3.000e+02 atm, A: 2.5532658350846505e+28, b: -4.914711082289081, Ea: 4696.114159566171}
+  note: Kane et al. CNF 2025
+- equation: NH2 + NO <=> tNHNOH # Reaction 344 P1->W2a added by ECK
+  type: pressure-dependent-Arrhenius
+  rate-constants:
+  - {P: 1.000e-03 atm, A: 8.205149389188474e+19, b: -4.512422783345522, Ea: 26342.65121201085}
+  - {P: 3.000e-03 atm, A: 1.1009526361917164e+19, b: -4.15650513463373, Ea: 22318.409169736104}
+  - {P: 1.000e-02 atm, A: 1.5819238192472148e+18, b: -3.7966344831752856, Ea: 17534.264242584864}
+  - {P: 3.000e-02 atm, A: 1.5017962778354387e+17, b: -3.392411055977802, Ea: 12476.456924497177}
+  - {P: 1.000e-01 atm, A: 4.3202508385844777e+18, b: -3.6467431636266436, Ea: 8522.36187969933}
+  - {P: 3.000e-01 atm, A: 3.727540820992825e+20, b: -4.02847328837196, Ea: 5248.266359306622}
+  - {P: 1.000e+00 atm, A: 5.319397291557987e+23, b: -4.705406068560024, Ea: 3456.826810274966}
+  - {P: 3.000e+00 atm, A: 3.1381697089343776e+26, b: -5.2859741199597385, Ea: 3264.8724991274003}
+  - {P: 1.000e+01 atm, A: 4.8327911551871465e+28, b: -5.70593742666632, Ea: 3839.0085735905946}
+  - {P: 3.000e+01 atm, A: 4.888252466203271e+29, b: -5.836222823424848, Ea: 4510.7075342529515}
+  - {P: 1.000e+02 atm, A: 7.93191443676947e+29, b: -5.751092573648135, Ea: 5257.008979881701}
+  - {P: 3.000e+02 atm, A: 2.003482168450406e+29, b: -5.469506017420421, Ea: 5872.591920437079}
+  note: Kane et al. CNF 2025
+- equation: NNH + OH <=> tNHNOH # Reaction 345 P2->W2a added by ECK
+  type: pressure-dependent-Arrhenius
+  rate-constants:
+  - {P: 1.000e-03 atm, A: 3.6599517506513574e+24, b: -5.969632121761393, Ea: 40964.59744651464}
+  - {P: 3.000e-03 atm, A: 5.462742625095865e+25, b: -6.184576966924104, Ea: 38240.3867949007}
+  - {P: 1.000e-02 atm, A: 3.216223758673687e+17, b: -3.8569223117945444, Ea: 25316.846802685155}
+  - {P: 3.000e-02 atm, A: 416499510962551.94, b: -2.9678485674082773, Ea: 17845.268740681346}
+  - {P: 1.000e-01 atm, A: 30366312314621.914, b: -2.5295610567196967, Ea: 11087.045939200207}
+  - {P: 3.000e-01 atm, A: 5101700424773904.0, b: -3.006527138460789, Ea: 7380.472299419011}
+  - {P: 1.000e+00 atm, A: 6.087167986185324e+18, b: -3.6776854308523066, Ea: 4258.293414853858}
+  - {P: 3.000e+00 atm, A: 1.33018161953545e+22, b: -4.414219172967342, Ea: 3088.256329668013}
+  - {P: 1.000e+01 atm, A: 1.888622678447203e+25, b: -5.0687016627638695, Ea: 3171.2440928852875}
+  - {P: 3.000e+01 atm, A: 3.652006621210476e+26, b: -5.2091855059630285, Ea: 3518.1280359925504}
+  - {P: 1.000e+02 atm, A: 2.378352789651649e+27, b: -5.184629444454755, Ea: 3932.5512018730524}
+  - {P: 3.000e+02 atm, A: 1.9649176064391853e+28, b: -5.228230154818818, Ea: 4250.833877967105}
+  note: Kane et al. CNF 2025
+- equation: H2O + N2 <=> tNHNOH # Reaction 346 P3->W2a added by ECK
+  type: pressure-dependent-Arrhenius
+  rate-constants:
+  - {P: 1.000e-03 atm, A: 7.979296010508444e+22, b: -4.928347051529397, Ea: 112470.90525252074}
+  - {P: 3.000e-03 atm, A: 1.482551106845685e+23, b: -4.856726906195683, Ea: 112948.74085576602}
+  - {P: 1.000e-02 atm, A: 1.1140940613548729e+24, b: -4.940155470918022, Ea: 113928.41613773874}
+  - {P: 3.000e-02 atm, A: 3.358185704320974e+24, b: -4.926508684325257, Ea: 114649.11912356873}
+  - {P: 1.000e-01 atm, A: 7.518524450608509e+24, b: -4.862023192359869, Ea: 115403.65734611874}
+  - {P: 3.000e-01 atm, A: 1.1509849390976943e+25, b: -4.766371580639151, Ea: 116073.76462195456}
+  - {P: 1.000e+00 atm, A: 7.72025114771844e+25, b: -4.840567877747265, Ea: 117295.65896619338}
+  - {P: 3.000e+00 atm, A: 4.849966182755485e+24, b: -4.3777691740476214, Ea: 116826.50103557433}
+  - {P: 1.000e+01 atm, A: 2.051969276507204e+24, b: -4.143271479994673, Ea: 116898.72457553481}
+  - {P: 3.000e+01 atm, A: 1.3888490099734582e+24, b: -3.968513949577173, Ea: 117213.93641958364}
+  - {P: 1.000e+02 atm, A: 7.19058124321576e+23, b: -3.7359597262232636, Ea: 117779.3074949577}
+  - {P: 3.000e+02 atm, A: 1.82630497844869e+23, b: -3.434360832870065, Ea: 118232.48932806308}
+  note: Kane et al. CNF 2025
+- equation: NH2NO <=> tNHNOH # Reaction 347 W1->W2a added by ECK
+  type: pressure-dependent-Arrhenius
+  rate-constants:
+  - {P: 1.000e-03 atm, A: 2.566149675527759e+18, b: -3.701027748366584, Ea: 22161.7343301421}
+  - {P: 3.000e-03 atm, A: 2.839202412516593e+21, b: -4.415260375739997, Ea: 24637.713221818263}
+  - {P: 1.000e-02 atm, A: 1.4143754667109214e+22, b: -4.462015539924884, Ea: 25451.2761034447}
+  - {P: 3.000e-02 atm, A: 7.649651427889929e+23, b: -4.808518353205748, Ea: 27043.187161229744}
+  - {P: 1.000e-01 atm, A: 2.1263763180832276e+25, b: -5.060171634535796, Ea: 28502.623957633597}
+  - {P: 3.000e-01 atm, A: 3.9309972686071194e+26, b: -5.274959187620476, Ea: 29857.640485641048}
+  - {P: 1.000e+00 atm, A: 9.123731695172008e+27, b: -5.504225653694658, Ea: 31416.5711643121}
+  - {P: 3.000e+00 atm, A: 8.828239355544714e+28, b: -5.642279632375769, Ea: 32753.42926867292}
+  - {P: 1.000e+01 atm, A: 3.2003616164538535e+29, b: -5.653119539898922, Ea: 33953.01354739958}
+  - {P: 3.000e+01 atm, A: 4.4937823187705624e+29, b: -5.569500252745174, Ea: 34870.71276863687}
+  - {P: 1.000e+02 atm, A: 1.1776282592891915e+29, b: -5.280608059511584, Ea: 35414.561017684704}
+  - {P: 3.000e+02 atm, A: 7.24071978685013e+27, b: -4.836982372134596, Ea: 35461.46614895395}
+  note: Kane et al. CNF 2025

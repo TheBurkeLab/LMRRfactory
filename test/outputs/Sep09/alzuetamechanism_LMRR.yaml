@@ -1,7 +1,7 @@
 generator: YamlWriter
 cantera-version: 3.1.0
 git-commit: 6e00275
-date: Wed Sep 10 17:45:15 2025
+date: Thu Sep 11 16:56:48 2025
 units: {length: cm, quantity: mol, activation-energy: cal/mol}
 phases:
 - name: gas
@@ -691,10 +691,10 @@ reactions:
     low-P-rate-constant: {A: 4.53e+21, b: -1.81, Ea: 498.7}
     high-P-rate-constant: {A: 25100000000000.0, b: 0.234, Ea: -114.2}
     Troe: {A: 0.73, T3: 1.0e-30, T1: 1.0e+30, T2: 1.0e+30}
-  - name: N2
-    efficiency: {A: 45.3266342113823, b: -0.4740359676708274, Ea: 113.1597647918847}
+  - name: AR
+    efficiency: {A: 0.02206208374829829, b: 0.4740359676708276, Ea: -113.1597647918849}
   - name: H2O
-    efficiency: {A: 4.737932423135421, b: 0.07675083976085123, Ea: -119.5391226404447}
+    efficiency: {A: 0.1045286619129915, b: 0.5507868074316787, Ea: -232.6988874323296}
 - equation: H2O + O2 <=> H + OH + O2
   rate-constant: {A: 9.15e+27, b: -3.322, Ea: 120790.0}
   duplicate: true

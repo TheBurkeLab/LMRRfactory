@@ -975,6 +975,7 @@ reactions:
   low-P-rate-constant: {A: 4.5300E+21, b: -1.8100E+00, Ea: 4.9870E+02}
   high-P-rate-constant: {A: 2.5100E+13, b: 0.234, Ea: -114.2}
   Troe: {A: 7.3000E-01, T3: 1.0000E-30, T1: 1.0000E+30, T2: 1.0000E+30} #SUBBED IN FROM STAGNI ET ALL
+  efficiencies: {AR: 0.5} ## ADDED BY PSINGAL JUST FOR SAKE OF TEST, REMOVE LATER
 - equation: H2O + O2 <=> H + OH + O2  # Reaction 14
   duplicate: true
   rate-constant: {A: 9.15e+27, b: -3.322, Ea: 1.2079e+05}
