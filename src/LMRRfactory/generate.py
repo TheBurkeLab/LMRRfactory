@@ -174,6 +174,7 @@ class makeYAML:
         else:
             return obj
     def _colliders(self,mech_rxn,blend_rxn=None,generic=False):
+        print(mech_rxn.equation)
         def arrheniusFit(col):
             newCol = copy.deepcopy(col)
             temps=np.array(newCol['temperatures'])
@@ -240,6 +241,9 @@ class makeYAML:
                         colliders.append(arrheniusFit(col))
                         colliderNames.append(col['composition'])
                     elif col['composition'] in list(self.species_dict.values()):
+                        print(col['name'])
+                        print(col['efficiency'])
+                        print(divisors)
                         for i in range(len(divisors)):
                             try:
                                 col['efficiency'] = np.divide(col['efficiency'], divisors[i])
