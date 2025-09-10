@@ -289,7 +289,7 @@ class makeYAML:
                         print(col['name'])
                         print(col['efficiency'])
                         print(divisors)
-                        for i, div in enumerate(len(divisors[col['name']])):
+                        for i, div in enumerate(divisors[col['name']]):
                             col['efficiency'] = np.divide(col['efficiency'][i], div)
                             print(col['efficiency'])
                         colliders.append(self._arrheniusFit(col))
