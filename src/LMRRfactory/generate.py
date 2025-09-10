@@ -378,7 +378,7 @@ class makeYAML:
     
     def _saveYAML(self):
         fName = f"{self.foutName}.yaml"
-        dataSet.write_yaml(filename=fName, units=self.units)
+        self.output.write_yaml(filename=fName, units=self.units)
         # Resave it to remove formatting inconsistencies
         mech = self._loadYAML(fName)
         # Prevent 'NO' from being misinterpreted as bool in species list
