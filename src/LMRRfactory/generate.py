@@ -289,9 +289,9 @@ class makeYAML:
                         print(col['name'])
                         # print(col['efficiency'][0])
                         print(divisors)
-                        for i, div in enumerate(divisors[col['name']]):
+                        # for i, div in enumerate(divisors[col['name']]):
                             # print(col['efficiency'])
-                            col['efficiency'] = np.divide(col['efficiency'][i], div)
+                        col['efficiency'] = np.divide(col['efficiency'], divisors[col['name']])
                             # print(col['efficiency'])
                         colliders.append(self._arrheniusFit(col))
                         colliderNames.append(col['composition'])
