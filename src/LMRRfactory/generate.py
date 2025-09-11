@@ -199,17 +199,28 @@ class makeYAML:
         two_pair_divisor=[]
         # Extract T-dependent values for N2 if blend_rxn is provided
         for col in blend_rxn['colliders']:
+            temps=np.array(col['temperatures'])
+            eps = np.array(col['efficiency'])
             if col['composition']=={'N': 2}:
-                three_pair_divisor.extend(col['efficiency']) #T-dep divisor of length 3
-                temps=np.array(col['temperatures'])
-                eps = np.array(col['efficiency'])
-                def log_arrhenius(T, A, beta, Ea):
-                    return np.log(A) + beta*np.log(T)+ (-Ea/(ct.gas_constant*T))
-                popt, pcov = curve_fit(log_arrhenius, temps, np.log(eps),maxfev = 3000000)
-                two_pair_divisor = [  #T-dep divisor of length 2
-                    np.exp(log_arrhenius(750,popt[0],popt[1],popt[2])),
-                    np.exp(log_arrhenius(1500,popt[0],popt[1],popt[2]))
-                    ]
+                if len(eps)==3:
+                    three_pair_divisor.extend(eps) #T-dep divisor of length 3
+                    def log_arrhenius(T, A, beta, Ea):
+                        return np.log(A) + beta*np.log(T)+ (-Ea/(ct.gas_constant*T))
+                    popt, pcov = curve_fit(log_arrhenius, temps, np.log(eps),maxfev = 3000000)
+                    two_pair_divisor = [  #T-dep divisor of length 2
+                        np.exp(log_arrhenius(750,popt[0],popt[1],popt[2])),
+                        np.exp(log_arrhenius(1500,popt[0],popt[1],popt[2]))
+                        ]
+                elif len(eps)==2:
+                    two_pair_divisor.extend(eps)
+                    def log_arrhenius(T, A, beta):
+                        return np.log(A) + beta*np.log(T)
+                    popt, pcov = curve_fit(log_arrhenius, temps, np.log(eps),maxfev = 3000000)
+                    three_pair_divisor = [  #T-dep divisor of length 2
+                        np.exp(log_arrhenius(300,popt[0],popt[1])),
+                        np.exp(log_arrhenius(1000,popt[0],popt[1])),
+                        np.exp(log_arrhenius(2000,popt[0],popt[1]))
+                        ]
         divisors={}
         for col in blend_rxn['colliders']:
             elem = two_pair_divisor if len(col['efficiency'])==2 else three_pair_divisor

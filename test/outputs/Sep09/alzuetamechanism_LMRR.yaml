@@ -1,7 +1,7 @@
 generator: YamlWriter
 cantera-version: 3.1.0
 git-commit: 6e00275
-date: Wed Sep 10 18:07:28 2025
+date: Thu Sep 11 16:56:48 2025
 units: {length: cm, quantity: mol, activation-energy: cal/mol}
 phases:
 - name: gas
@@ -694,7 +694,7 @@ reactions:
   - name: AR
     efficiency: {A: 0.02206208374829829, b: 0.4740359676708276, Ea: -113.1597647918849}
   - name: H2O
-    efficiency: {A: 1.887622479336807, b: 0.07675083976085217, Ea: -119.5391226404461}
+    efficiency: {A: 0.1045286619129915, b: 0.5507868074316787, Ea: -232.6988874323296}
 - equation: H2O + O2 <=> H + OH + O2
   rate-constant: {A: 9.15e+27, b: -3.322, Ea: 120790.0}
   duplicate: true
