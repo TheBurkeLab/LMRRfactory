@@ -221,6 +221,8 @@ class makeYAML:
                         np.exp(log_arrhenius(1000,popt[0],popt[1])),
                         np.exp(log_arrhenius(2000,popt[0],popt[1]))
                         ]
+        print(two_pair_divisor)
+        print(three_pair_divisor)
         divisors={}
         for col in blend_rxn['colliders']:
             elem = two_pair_divisor if len(col['efficiency'])==2 else three_pair_divisor
