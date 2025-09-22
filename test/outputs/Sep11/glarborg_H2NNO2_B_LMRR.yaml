@@ -1,8 +1,8 @@
 generator: YamlWriter
 cantera-version: 3.1.0
 git-commit: 6e00275
-date: Thu Sep 11 17:25:43 2025
 units: {length: cm, quantity: mol, activation-energy: cal/mol}
+date: Fri Sep 12 19:32:54 2025
 phases:
 - name: gas
   thermo: ideal-gas

@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "LMRRfactory"
-version = '0.0.469'
+version = '0.0.484'
 authors = [
   { name="Patrick Singal", email="p.singal@columbia.edu" },
 ]

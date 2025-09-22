@@ -174,10 +174,29 @@ class makeYAML:
         else:
             return obj
 
-    def _arrheniusFit(self,col):
-        newCol = copy.deepcopy(col)
-        temps=np.array(newCol['temperatures'])
-        eps = np.array(newCol['efficiency'])
+    # def _arrheniusFit(self,col):
+    #     newCol = copy.deepcopy(col)
+    #     temps=np.array(newCol['temperatures'])
+    #     eps = np.array(newCol['efficiency'])
+    #     if len(temps) == 3 and len(eps) == 3:
+    #         def log_arrhenius(T, A, beta, Ea):
+    #             return np.log(A) + beta*np.log(T)+ (-Ea/(ct.gas_constant*T))
+    #         popt, pcov = curve_fit(log_arrhenius, temps, np.log(eps),maxfev = 3000000)
+    #         fits = [popt[0],popt[1],popt[2]]
+    #     elif len(temps) == 2 and len (eps) == 2:
+    #         def log_arrhenius(T, A, beta):
+    #             return np.log(A) + beta*np.log(T)
+    #         popt, pcov = curve_fit(log_arrhenius, temps, np.log(eps),maxfev = 3000000)
+    #         fits = [popt[0],popt[1],0.0]
+    #     fits = [float(fit) for fit in fits]
+    #     newCol['efficiency'] = {'A': fits[0],'b': fits[1],'Ea': fits[2]}
+    #     newCol.pop('temperatures', None)
+    #     newCol.pop('composition')
+    #     return dict(newCol)
+    
+
+
+    def _arrheniusFit(self,temps,eps):
         if len(temps) == 3 and len(eps) == 3:
             def log_arrhenius(T, A, beta, Ea):
                 return np.log(A) + beta*np.log(T)+ (-Ea/(ct.gas_constant*T))
@@ -189,62 +208,66 @@ class makeYAML:
             popt, pcov = curve_fit(log_arrhenius, temps, np.log(eps),maxfev = 3000000)
             fits = [popt[0],popt[1],0.0]
         fits = [float(fit) for fit in fits]
-        newCol['efficiency'] = {'A': fits[0],'b': fits[1],'Ea': fits[2]}
-        newCol.pop('temperatures', None)
-        newCol.pop('composition')
-        return dict(newCol)
+        return {'A': fits[0],'b': fits[1],'Ea': fits[2]}
+    
+    def _rescaleArrhenius(self,k_ref,k_i):
+        A_new = k_i['A']/k_ref['A']
+        b_new = k_i['b']-k_ref['b']
+        Ea_new = k_i['Ea']-k_ref['Ea']
+        return {'A': A_new,'b': b_new,'Ea': Ea_new}
 
-    def _divisors(self,blend_rxn):
-        three_pair_divisor=[]
-        two_pair_divisor=[]
-        # Extract T-dependent values for N2 if blend_rxn is provided
-        for col in blend_rxn['colliders']:
-            temps=np.array(col['temperatures'])
-            eps = np.array(col['efficiency'])
-            if col['composition']=={'N': 2}:
-                if len(eps)==3:
-                    three_pair_divisor.extend(eps) #T-dep divisor of length 3
-                    def log_arrhenius(T, A, beta, Ea):
-                        return np.log(A) + beta*np.log(T)+ (-Ea/(ct.gas_constant*T))
-                    popt, pcov = curve_fit(log_arrhenius, temps, np.log(eps),maxfev = 3000000)
-                    two_pair_divisor = [  #T-dep divisor of length 2
-                        np.exp(log_arrhenius(750,popt[0],popt[1],popt[2])),
-                        np.exp(log_arrhenius(1500,popt[0],popt[1],popt[2]))
-                        ]
-                elif len(eps)==2:
-                    two_pair_divisor.extend(eps)
-                    def log_arrhenius(T, A, beta):
-                        return np.log(A) + beta*np.log(T)
-                    popt, pcov = curve_fit(log_arrhenius, temps, np.log(eps),maxfev = 3000000)
-                    three_pair_divisor = [  #T-dep divisor of length 2
-                        np.exp(log_arrhenius(300,popt[0],popt[1])),
-                        np.exp(log_arrhenius(1000,popt[0],popt[1])),
-                        np.exp(log_arrhenius(2000,popt[0],popt[1]))
-                        ]
-        print(two_pair_divisor)
-        print(three_pair_divisor)
-        divisors={}
-        for col in blend_rxn['colliders']:
-            elem = two_pair_divisor if len(col['efficiency'])==2 else three_pair_divisor
-            divisors[col['name']]=elem
-        return divisors
 
-        # elif len(temps) == 2 and len (eps) == 2:
-        #     def log_arrhenius(T, A, beta):
-        #         return np.log(A) + beta*np.log(T)
-        #     popt, pcov = curve_fit(log_arrhenius, temps, np.log(eps),maxfev = 3000000)
-        #     fits = [popt[0],popt[1],0.0]
+    # def _divisors(self,blend_rxn):
+    #     three_pair_divisor=[]
+    #     two_pair_divisor=[]
+    #     # Extract T-dependent values for N2 if blend_rxn is provided
+    #     for col in blend_rxn['colliders']:
+    #         temps=np.array(col['temperatures'])
+    #         eps = np.array(col['efficiency'])
+    #         if col['composition']=={'N': 2}:
+    #             if len(eps)==3:
+    #                 three_pair_divisor.extend(eps) #T-dep divisor of length 3
+    #                 def log_arrhenius(T, A, beta, Ea):
+    #                     return np.log(A) + beta*np.log(T)+ (-Ea/(ct.gas_constant*T))
+    #                 popt, pcov = curve_fit(log_arrhenius, temps, np.log(eps),maxfev = 3000000)
+    #                 two_pair_divisor = [  #T-dep divisor of length 2
+    #                     np.exp(log_arrhenius(750,popt[0],popt[1],popt[2])),
+    #                     np.exp(log_arrhenius(1500,popt[0],popt[1],popt[2]))
+    #                     ]
+    #             elif len(eps)==2:
+    #                 two_pair_divisor.extend(eps)
+    #                 def log_arrhenius(T, A, beta):
+    #                     return np.log(A) + beta*np.log(T)
+    #                 popt, pcov = curve_fit(log_arrhenius, temps, np.log(eps),maxfev = 3000000)
+    #                 three_pair_divisor = [  #T-dep divisor of length 2
+    #                     np.exp(log_arrhenius(300,popt[0],popt[1])),
+    #                     np.exp(log_arrhenius(1000,popt[0],popt[1])),
+    #                     np.exp(log_arrhenius(2000,popt[0],popt[1]))
+    #                     ]
+    #     # print(two_pair_divisor)
+    #     # print(three_pair_divisor)
+    #     divisors={}
+    #     for col in blend_rxn['colliders']:
+    #         elem = two_pair_divisor if len(col['efficiency'])==2 else three_pair_divisor
+    #         divisors[col['name']]=elem
+    #     return divisors
 
-        # Trange = np.linspace(300,2000,35)
-        # yvals = col['efficiency']['A']*Trange**col['efficiency']['beta'] #Ea is zero
-        # indices = [np.where(Trange == 300)[0][0],np.where(Trange == 1000)[0][0],np.where(Trange == 2000)[0][0]]
-        # Tvals = [300,1000,2000]
-        # A, beta, Ea = col['efficiency']['']
-        # return 
+    #     # elif len(temps) == 2 and len (eps) == 2:
+    #     #     def log_arrhenius(T, A, beta):
+    #     #         return np.log(A) + beta*np.log(T)
+    #     #     popt, pcov = curve_fit(log_arrhenius, temps, np.log(eps),maxfev = 3000000)
+    #     #     fits = [popt[0],popt[1],0.0]
+
+    #     # Trange = np.linspace(300,2000,35)
+    #     # yvals = col['efficiency']['A']*Trange**col['efficiency']['beta'] #Ea is zero
+    #     # indices = [np.where(Trange == 300)[0][0],np.where(Trange == 1000)[0][0],np.where(Trange == 2000)[0][0]]
+    #     # Tvals = [300,1000,2000]
+    #     # A, beta, Ea = col['efficiency']['']
+    #     # return 
 
 
     def _colliders(self,mech_rxn,blend_rxn=None,generic=False):
-        print(mech_rxn.equation)
+        # print(mech_rxn.equation)
         
         divisor = 1
         colliders=[]
@@ -267,49 +290,31 @@ class makeYAML:
             # Check if N2 is the reference collider instead of Ar
             if comp=={'Ar': 1} and val!=0 and val !=1:
                 is_M_N2 = True
-                divisor = 1/val #ratio of N2:Ar
-            if comp=={'Ar': 1} and val==0 :
-                is_M_N2 = True
-                divisor = 1 #imperfect solution, doesn't scale colliders, i.e. 1/val, to avoid dividing by zero but still acknowledges that rxn is w.r.t. N2
-            # Give warning if both Ar and N2 are non-unity colliders
+                divisor = 1/val
+        for name, val in troe_efficiencies.items():
+            comp = self.species_dict[name]
             if is_M_N2 and comp=={'N': 2} and val!=0 and val !=1:
-                print(f"Warning: {mech_rxn} has both Ar and N2 as non-unity colliders!")
+                is_M_N2 = False #just treat as if Ar is reference since case is ambiguous
+                print(f"Warning: {mech_rxn} has both Ar and N2 as non-unity colliders! Please fix.")
+            if comp=={'Ar': 1} and val==0 :
+                print(f"Warning: {mech_rxn} has Ar assumed as reference collider, since params cannot be scaled by the Ar=0 value provided. Please fix.")
         if is_M_N2:
             if blend_rxn:
-                divisors = self._divisors(blend_rxn)
-                
-                # divisors=[]
-                # # Extract T-dependent values for N2 if blend_rxn is provided
-                # for col in blend_rxn['colliders']:
-                    
-                #     if col['composition']=={'N': 2}:
-                #         divisors.extend(col['efficiency']) #T-dep divisor of length 2 or 3
-                # Make reaction-specific colliders wrt N2 and append to collider list 
                 for col in blend_rxn['colliders']:
-                    print(divisors[col['name']])
-                    print(type(divisors[col['name']]))
-                    #Convert N2:Ar database entry to Ar:N2
                     if col['composition']=={'N': 2}:
-                        col['composition']={'Ar': 1}
-                        col['efficiency']=np.divide(1,divisors[col['name']]) 
-
-                        col['name']=next(k for k, v in self.species_dict.items() if v == col['composition'])
-                        
-                        #maybe divide by divisors, not efficiency )I think it{s the same thing}=
-                        colliders.append(self._arrheniusFit(col))
-                        colliderNames.append(col['composition'])
-                    elif col['composition'] in list(self.species_dict.values()):
-                        print(col['name'])
-                        # print(col['efficiency'][0])
-                        print(divisors)
-                        # for i, div in enumerate(divisors[col['name']]):
-                            # print(col['efficiency'])
-                        col['efficiency'] = np.divide(col['efficiency'], divisors[col['name']])
-                            # print(col['efficiency'])
-                        colliders.append(self._arrheniusFit(col))
-                        colliderNames.append(col['composition'])
-                # print(divisors)
-            # colliderNames=set(colliderNames)
+                        k_ref = self._arrheniusFit(col['temperatures'],col['efficiency'])
+                for col in blend_rxn['colliders']:
+                    newCol = copy.deepcopy(col)
+                    #Convert N2:Ar database entry to Ar:N2
+                    if newCol['composition']=={'N': 2}:
+                        newCol['composition']={'Ar': 1}
+                        newCol['name']=next(k for k, v in self.species_dict.items() if v == newCol['composition'])
+                        k_i = self._arrheniusFit([300,1000,2000],[1,1,1])
+                    elif newCol['composition'] in list(self.species_dict.values()):
+                        k_i = self._arrheniusFit(col['temperatures'],col['efficiency'])
+                    newCol['efficiency']=self._rescaleArrhenius(k_ref,k_i)
+                    colliderNames.append(newCol['composition'])
+                    colliders.append(newCol)
             # Add troe efficiencies that haven't already been given a value
             for name, val in troe_efficiencies.items():
                 comp = self.species_dict[name]
@@ -325,22 +330,22 @@ class makeYAML:
                 for col in self.defaults['generic-colliders']:
                     already_given = col['composition'] in colliderNames
                     if col['composition'] in list(self.species_dict.keys()) and not already_given and not col['composition']=={'N': 2}:
-                        if col.get('temperatures'):
-                            col['efficiency'] = np.divide(col['efficiency'],divisor)
-                            colliders.append(self._arrheniusFit(col))
-                        else:
-                            colliders.append({
-                                'name': next(k for k, v in self.species_dict.items() if v == col['composition']),
-                                'efficiency': {'A': col['efficiency']/divisor,'b':0,'Ea':0},
-                                'note': col['note']
-                            })
+                        colliders.append({
+                            'name': next(k for k, v in self.species_dict.items() if v == col['composition']),
+                            'efficiency': {'A': col['efficiency']/divisor,'b':0,'Ea':0},
+                            'note': col['note']
+                        })
         else:
             if blend_rxn:
                 # Make reaction-specific colliders wrt Ar and append to collider list 
                 for col in blend_rxn['colliders']:
                     if col['composition'] in list(self.species_dict.values()):
-                        colliders.append(self._arrheniusFit(col))
-                        colliderNames.append(col['composition'])
+                        print(col['name'])
+                        print(col['efficiency'])
+                        newCol = copy.deepcopy(col)
+                        newCol['efficiency']=self._arrheniusFit(newCol['temperatures'], newCol['efficiency'])
+                        colliderNames.append(newCol['composition'])
+                        colliders.append(newCol)
             # Add troe efficiencies that haven't already been given a value
             for name, val in troe_efficiencies.items():
                 comp = self.species_dict[name]
@@ -357,14 +362,14 @@ class makeYAML:
                 for col in self.defaults['generic-colliders']:
                     already_given = col['composition'] in colliderNames
                     if col['composition'] in list(self.species_dict.values()) and not already_given and not col['composition']=={'Ar': 1}:
-                        if col.get('temperatures'):
-                            colliders.append(self._arrheniusFit(col))
-                        else:
-                            colliders.append({
-                                'name': next(k for k, v in self.species_dict.items() if v == col['composition']),
-                                'efficiency': {'A': col['efficiency'],'b':0,'Ea':0},
-                                'note': col['note']
-                            })
+                        colliders.append({
+                            'name': next(k for k, v in self.species_dict.items() if v == col['composition']),
+                            'efficiency': {'A': col['efficiency'],'b':0,'Ea':0},
+                            'note': col['note']
+                        })
+        # for col in colliders:
+        #     col.pop('composition',None)
+        #     col.pop('temperatures', None)
         return colliders
 
     def _zippedMech(self):

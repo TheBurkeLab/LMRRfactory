@@ -6,6 +6,7 @@ src/LMRRfactory/arrheniusfit_tester.py
 src/LMRRfactory/compareArrhenius.py
 src/LMRRfactory/generate.py
 src/LMRRfactory/generate_old.py
+src/LMRRfactory/manualFits.py
 src/LMRRfactory/removeduplicates.py
 src/LMRRfactory/testbin.py
 src/LMRRfactory/testdefaults.yaml

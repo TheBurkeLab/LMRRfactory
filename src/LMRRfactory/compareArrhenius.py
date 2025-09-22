@@ -35,6 +35,7 @@ def compare(rxn,collider):
         print(A)
         print(beta)
         print(Ea)
+        print(eps)
         fit_curve = np.exp(np.log(arrhenius_rate(Trange, A, beta, Ea)))
         plt.figure()
         plt.plot(Trange,fit_curve)
