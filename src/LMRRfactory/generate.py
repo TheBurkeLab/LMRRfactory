@@ -186,7 +186,7 @@ class makeYAML:
             A, b, Ea = float(np.exp(c0)), float(c1), 0.0
         else:
             c0, c1, c2 = np.linalg.lstsq(X, y, rcond=None)[0]
-            A, b, Ea = float(np.exp(c0)), float(c1), float(-c2*ct.gas_constant)
+            A, b, Ea = round(float(np.exp(c0)),8), round(float(c1),8), round(float(-c2*ct.gas_constant),8)
         return {'A': A,'b': b,'Ea': Ea}
     
     def _rescaleArrhenius(self,k_ref,k_i):
