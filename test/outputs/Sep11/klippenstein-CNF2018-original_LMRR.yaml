@@ -1,7 +1,7 @@
 generator: YamlWriter
 cantera-version: 3.1.0
 git-commit: 6e00275
-date: Thu Sep 25 19:51:46 2025
+date: Thu Sep 25 20:27:03 2025
 units: {length: cm, quantity: mol, activation-energy: cal/mol}
 phases:
 - name: gas

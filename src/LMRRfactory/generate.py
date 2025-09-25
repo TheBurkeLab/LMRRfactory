@@ -382,7 +382,20 @@ class makeYAML:
         for species in mech['species']:
             if str(species['name']).lower() == "false":
                 species['name']="NO"
-        # Prevent 'NO' from being misinterpreted as bool in efficiencies list found in Troe falloff reactions
+        
+        for reaction in mech['reactions']:
+            if reaction.get('efficiencies'):
+                # Prevent 'NO' from being misinterpreted as bool in efficiencies list found in Troe falloff reactions
+                reaction['efficiencies'] = {
+                    "NO" if str(key).lower() == "false" else key: reaction['efficiencies'][key]
+                    for key in reaction['efficiencies']
+                }
+            if reaction.get('colliders'):
+                for col in reaction['colliders']:
+                    if str(col['name']).lower() == "false":
+                        col['name']="NO"
+
+        # Prevent 'NO' from being misinterpreted as bool in colliders list for LMRR rxns
         for reaction in mech['reactions']:
             effs = reaction.get('efficiencies')
             if effs:
