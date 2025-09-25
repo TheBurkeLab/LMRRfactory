@@ -392,10 +392,8 @@ class makeYAML:
                 }
             if reaction.get('colliders'):
                 for col in reaction['colliders']:
-                    col['name'] = {
-                        "NO" if str(key).lower() == "false" else key: col['name'][key]
-                        for key in col['name']
-                    }
+                    if str(species['name']).lower() == "false":
+                        species['name']="NO"
 
         # Prevent 'NO' from being misinterpreted as bool in colliders list for LMRR rxns
         for reaction in mech['reactions']:
