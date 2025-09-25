@@ -14,7 +14,7 @@ import io
 warnings.filterwarnings("ignore")
 
 class makeYAML:
-    def __init__(self,mechInput, colliderInput=None, outputPath=".", allPdep=False, verbose=False):
+    def __init__(self,mechInput, colliderInput=None, outputPath=".", allPdep=False):
         self.T_ls = None
         self.P_ls = None
         self.n_P= None
@@ -24,7 +24,6 @@ class makeYAML:
         self.T_min = None
         self.T_max = None
         self.rxnIdx = None
-        self.verbose = verbose
         self.colliderInput=None
         self.units = self._loadYAML(mechInput).get("units",{})
         self.allPdep = False # option to apply generic 3b-effs to all p-dep rxns in mech
@@ -224,9 +223,9 @@ class makeYAML:
             comp = self.species_dict[name]
             if is_M_N2 and comp=={'N': 2} and val!=0 and val !=1:
                 is_M_N2 = False #just treat as if Ar is reference since case is ambiguous
-                print(f"Warning: {mech_rxn} has both Ar and N2 as non-unity colliders! Please fix.")
+                print(f"> Warning: {mech_rxn} has both Ar and N2 as non-unity colliders! Please fix.")
             if comp=={'Ar': 1} and val==0 :
-                print(f"Warning: {mech_rxn} has Ar assumed as reference collider, since params cannot be scaled by the Ar=0 value provided. Please fix.")
+                print(f"> Warning: {mech_rxn} has Ar assumed as reference collider, since params cannot be scaled by the Ar=0 value provided. Please fix.")
         if is_M_N2:
             if blend_rxn:
                 for col in blend_rxn['colliders']:
@@ -350,8 +349,7 @@ class makeYAML:
                 yaml_str = yaml.dump(newRxn, sort_keys=False)
                 newRxn_obj = ct.Reaction.from_yaml(yaml_str,self.mech_obj)
                 newReactions.append(newRxn_obj)
-                if self.verbose:
-                    print(f"{mech_rxn} {dict(self.mech_pes[i])} converted to LMR-R with {param_type} parameters")
+                print(f"{mech_rxn} {dict(self.mech_pes[i])} converted to LMR-R with {param_type} parameters")
             else: # just append it as-is
                 d = mech_rxn.input_data
                 if 'note' in d and re.fullmatch(r'\n+', d['note']):
@@ -393,7 +391,7 @@ class makeYAML:
                     for key in effs
                 }
         with open(fName, 'w') as outfile:
-            yaml.dump(copy.deepcopy(mech), outfile,
+            yaml.safe_dump(copy.deepcopy(mech), outfile,
             default_flow_style=None,
             sort_keys=False)
        

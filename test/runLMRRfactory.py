@@ -21,8 +21,8 @@ models = {
 
 for m in models.keys():
     LMRRfactory.makeYAML(mechInput=models[m],
-                        outputPath=f"test/outputs/{date}")
+                        outputPath=f"test/outputs/{date}",verbose=True)
     if allPdep == 'True':
         LMRRfactory.makeYAML(mechInput=models[m],
                             outputPath=f"test/outputs/{date}",
-                            allPdep=True)
+                            allPdep=True,verbose=True)
