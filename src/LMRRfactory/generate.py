@@ -14,7 +14,7 @@ import io
 warnings.filterwarnings("ignore")
 
 class makeYAML:
-    def __init__(self,mechInput, colliderInput=None, outputPath=".", allPdep=False):
+    def __init__(self,mechInput, colliderInput=None, outputPath=".", allPdep=False, verbose=False):
         self.T_ls = None
         self.P_ls = None
         self.n_P= None
@@ -24,6 +24,7 @@ class makeYAML:
         self.T_min = None
         self.T_max = None
         self.rxnIdx = None
+        self.verbose = verbose
         self.colliderInput=None
         self.units = self._loadYAML(mechInput).get("units",{})
         self.allPdep = False # option to apply generic 3b-effs to all p-dep rxns in mech
@@ -174,87 +175,19 @@ class makeYAML:
         else:
             return obj
 
-    # def _arrheniusFit(self,col):
-    #     newCol = copy.deepcopy(col)
-    #     temps=np.array(newCol['temperatures'])
-    #     eps = np.array(newCol['efficiency'])
-    #     if len(temps) == 3 and len(eps) == 3:
-    #         def log_arrhenius(T, A, beta, Ea):
-    #             return np.log(A) + beta*np.log(T)+ (-Ea/(ct.gas_constant*T))
-    #         popt, pcov = curve_fit(log_arrhenius, temps, np.log(eps),maxfev = 3000000)
-    #         fits = [popt[0],popt[1],popt[2]]
-    #     elif len(temps) == 2 and len (eps) == 2:
-    #         def log_arrhenius(T, A, beta):
-    #             return np.log(A) + beta*np.log(T)
-    #         popt, pcov = curve_fit(log_arrhenius, temps, np.log(eps),maxfev = 3000000)
-    #         fits = [popt[0],popt[1],0.0]
-    #     fits = [float(fit) for fit in fits]
-    #     newCol['efficiency'] = {'A': fits[0],'b': fits[1],'Ea': fits[2]}
-    #     newCol.pop('temperatures', None)
-    #     newCol.pop('composition')
-    #     return dict(newCol)
-    
-    # def _divisors(self,blend_rxn):
-    #     three_pair_divisor=[]
-    #     two_pair_divisor=[]
-    #     # Extract T-dependent values for N2 if blend_rxn is provided
-    #     for col in blend_rxn['colliders']:
-    #         temps=np.array(col['temperatures'])
-    #         eps = np.array(col['efficiency'])
-    #         if col['composition']=={'N': 2}:
-    #             if len(eps)==3:
-    #                 three_pair_divisor.extend(eps) #T-dep divisor of length 3
-    #                 def log_arrhenius(T, A, beta, Ea):
-    #                     return np.log(A) + beta*np.log(T)+ (-Ea/(ct.gas_constant*T))
-    #                 popt, pcov = curve_fit(log_arrhenius, temps, np.log(eps),maxfev = 3000000)
-    #                 two_pair_divisor = [  #T-dep divisor of length 2
-    #                     np.exp(log_arrhenius(750,popt[0],popt[1],popt[2])),
-    #                     np.exp(log_arrhenius(1500,popt[0],popt[1],popt[2]))
-    #                     ]
-    #             elif len(eps)==2:
-    #                 two_pair_divisor.extend(eps)
-    #                 def log_arrhenius(T, A, beta):
-    #                     return np.log(A) + beta*np.log(T)
-    #                 popt, pcov = curve_fit(log_arrhenius, temps, np.log(eps),maxfev = 3000000)
-    #                 three_pair_divisor = [  #T-dep divisor of length 2
-    #                     np.exp(log_arrhenius(300,popt[0],popt[1])),
-    #                     np.exp(log_arrhenius(1000,popt[0],popt[1])),
-    #                     np.exp(log_arrhenius(2000,popt[0],popt[1]))
-    #                     ]
-    #     # print(two_pair_divisor)
-    #     # print(three_pair_divisor)
-    #     divisors={}
-    #     for col in blend_rxn['colliders']:
-    #         elem = two_pair_divisor if len(col['efficiency'])==2 else three_pair_divisor
-    #         divisors[col['name']]=elem
-    #     return divisors
-
-    #     # elif len(temps) == 2 and len (eps) == 2:
-    #     #     def log_arrhenius(T, A, beta):
-    #     #         return np.log(A) + beta*np.log(T)
-    #     #     popt, pcov = curve_fit(log_arrhenius, temps, np.log(eps),maxfev = 3000000)
-    #     #     fits = [popt[0],popt[1],0.0]
-
-    #     # Trange = np.linspace(300,2000,35)
-    #     # yvals = col['efficiency']['A']*Trange**col['efficiency']['beta'] #Ea is zero
-    #     # indices = [np.where(Trange == 300)[0][0],np.where(Trange == 1000)[0][0],np.where(Trange == 2000)[0][0]]
-    #     # Tvals = [300,1000,2000]
-    #     # A, beta, Ea = col['efficiency']['']
-    #     # return 
-
     def _arrheniusFit(self,temps,eps):
-        if len(temps) == 3 and len(eps) == 3:
-            def log_arrhenius(T, A, beta, Ea):
-                return np.log(A) + beta*np.log(T)+ (-Ea/(ct.gas_constant*T))
-            popt, pcov = curve_fit(log_arrhenius, temps, np.log(eps),maxfev = 3000000)
-            fits = [popt[0],popt[1],popt[2]]
-        elif len(temps) == 2 and len (eps) == 2:
-            def log_arrhenius(T, A, beta):
-                return np.log(A) + beta*np.log(T)
-            popt, pcov = curve_fit(log_arrhenius, temps, np.log(eps),maxfev = 3000000)
-            fits = [popt[0],popt[1],0.0]
-        fits = [float(fit) for fit in fits]
-        return {'A': fits[0],'b': fits[1],'Ea': fits[2]}
+        temps = np.asarray(temps, dtype=float)
+        eps = np.asarray(eps, dtype=float)
+        # ln(eps) = ln A + b*ln(T) - (Ea/R)*(1/T)
+        y = np.log(eps)
+        X = np.column_stack([np.ones_like(temps),np.log(temps),1/temps])
+        if len(temps) == 2:
+            c0, c1 = np.linalg.lstsq(X[:, :2], y, rcond=None)[0]
+            A, b, Ea = float(np.exp(c0)), float(c1), 0.0
+        else:
+            c0, c1, c2 = np.linalg.lstsq(X, y, rcond=None)[0]
+            A, b, Ea = round(float(np.exp(c0)),8), round(float(c1),8), round(float(-c2*ct.gas_constant),8)
+        return {'A': A,'b': b,'Ea': Ea}
     
     def _rescaleArrhenius(self,k_ref,k_i):
         A_new = k_i['A']/k_ref['A']
@@ -417,7 +350,8 @@ class makeYAML:
                 yaml_str = yaml.dump(newRxn, sort_keys=False)
                 newRxn_obj = ct.Reaction.from_yaml(yaml_str,self.mech_obj)
                 newReactions.append(newRxn_obj)
-                print(f"{mech_rxn} {dict(self.mech_pes[i])} converted to LMR-R with {param_type} parameters")
+                if self.verbose:
+                    print(f"{mech_rxn} {dict(self.mech_pes[i])} converted to LMR-R with {param_type} parameters")
             else: # just append it as-is
                 d = mech_rxn.input_data
                 if 'note' in d and re.fullmatch(r'\n+', d['note']):
@@ -463,3 +397,6 @@ class makeYAML:
             default_flow_style=None,
             sort_keys=False)
        
+
+## VALIDATION OF INTERNAL DBASE
+# All temp/eps pairs must be of matching length
