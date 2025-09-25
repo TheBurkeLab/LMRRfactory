@@ -194,29 +194,6 @@ class makeYAML:
     #     newCol.pop('composition')
     #     return dict(newCol)
     
-
-
-    def _arrheniusFit(self,temps,eps):
-        if len(temps) == 3 and len(eps) == 3:
-            def log_arrhenius(T, A, beta, Ea):
-                return np.log(A) + beta*np.log(T)+ (-Ea/(ct.gas_constant*T))
-            popt, pcov = curve_fit(log_arrhenius, temps, np.log(eps),maxfev = 3000000)
-            fits = [popt[0],popt[1],popt[2]]
-        elif len(temps) == 2 and len (eps) == 2:
-            def log_arrhenius(T, A, beta):
-                return np.log(A) + beta*np.log(T)
-            popt, pcov = curve_fit(log_arrhenius, temps, np.log(eps),maxfev = 3000000)
-            fits = [popt[0],popt[1],0.0]
-        fits = [float(fit) for fit in fits]
-        return {'A': fits[0],'b': fits[1],'Ea': fits[2]}
-    
-    def _rescaleArrhenius(self,k_ref,k_i):
-        A_new = k_i['A']/k_ref['A']
-        b_new = k_i['b']-k_ref['b']
-        Ea_new = k_i['Ea']-k_ref['Ea']
-        return {'A': A_new,'b': b_new,'Ea': Ea_new}
-
-
     # def _divisors(self,blend_rxn):
     #     three_pair_divisor=[]
     #     two_pair_divisor=[]
@@ -265,6 +242,25 @@ class makeYAML:
     #     # A, beta, Ea = col['efficiency']['']
     #     # return 
 
+    def _arrheniusFit(self,temps,eps):
+        if len(temps) == 3 and len(eps) == 3:
+            def log_arrhenius(T, A, beta, Ea):
+                return np.log(A) + beta*np.log(T)+ (-Ea/(ct.gas_constant*T))
+            popt, pcov = curve_fit(log_arrhenius, temps, np.log(eps),maxfev = 3000000)
+            fits = [popt[0],popt[1],popt[2]]
+        elif len(temps) == 2 and len (eps) == 2:
+            def log_arrhenius(T, A, beta):
+                return np.log(A) + beta*np.log(T)
+            popt, pcov = curve_fit(log_arrhenius, temps, np.log(eps),maxfev = 3000000)
+            fits = [popt[0],popt[1],0.0]
+        fits = [float(fit) for fit in fits]
+        return {'A': fits[0],'b': fits[1],'Ea': fits[2]}
+    
+    def _rescaleArrhenius(self,k_ref,k_i):
+        A_new = k_i['A']/k_ref['A']
+        b_new = k_i['b']-k_ref['b']
+        Ea_new = k_i['Ea']-k_ref['Ea']
+        return {'A': A_new,'b': b_new,'Ea': Ea_new}
 
     def _colliders(self,mech_rxn,blend_rxn=None,generic=False):
         # print(mech_rxn.equation)
@@ -340,8 +336,8 @@ class makeYAML:
                 # Make reaction-specific colliders wrt Ar and append to collider list 
                 for col in blend_rxn['colliders']:
                     if col['composition'] in list(self.species_dict.values()):
-                        print(col['name'])
-                        print(col['efficiency'])
+                        # print(col['name'])
+                        # print(col['efficiency'])
                         newCol = copy.deepcopy(col)
                         newCol['efficiency']=self._arrheniusFit(newCol['temperatures'], newCol['efficiency'])
                         colliderNames.append(newCol['composition'])
