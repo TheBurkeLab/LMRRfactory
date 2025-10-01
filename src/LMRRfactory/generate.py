@@ -355,6 +355,8 @@ class makeYAML:
                 if 'note' in d and re.fullmatch(r'\n+', d['note']):
                     mech_rxn.update_user_data({'note': ''})
                 newReactions.append(mech_rxn)
+            if pDep:
+                print(f"{mech_rxn.equation} is P-dep")
         output_data = {
             'thermo': self.mech_obj.thermo_model,
             'kinetics': self.mech_obj.kinetics_model,
