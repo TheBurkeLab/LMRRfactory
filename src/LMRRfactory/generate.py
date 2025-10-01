@@ -204,6 +204,7 @@ class makeYAML:
         troe_efficiencies={}
         if mech_rxn.reaction_type == 'falloff-Troe':
             troe_efficiencies= mech_rxn.input_data.get('efficiencies', {})
+            print(troe_efficiencies)
             # for sp_name in list(troe_efficiencies_raw.keys()):
             #     # [disregard] make the keys the compositions instead of species names
             #     troe_efficiencies[sp_name] = troe_efficiencies_raw[sp_name]
@@ -305,9 +306,11 @@ class makeYAML:
         newReactions = []
         blendRxnNames = [rxn['pes'] for rxn in self.blend['reactions']]
         for i, mech_rxn in enumerate(self.mech_obj.reactions()):
+            
+            # print(mech_rxn.reaction_type)
             pDep = False
             # Create the M-collider entry for the pressure-dependent reactions
-            if mech_rxn.reaction_type in ['falloff-Troe','pressure-dependent-Arrhenius','Chebyshev','three-body-linear-Burke']:     
+            if mech_rxn.reaction_type in ['falloff-Troe','three-body-pressure-dependent-Arrhenius','pressure-dependent-Arrhenius','Chebyshev','three-body-linear-Burke']:     
                 pDep = True
                 if mech_rxn.reaction_type == 'three-body-linear-Burke':
                     d = self._to_builtin(mech_rxn.input_data['colliders'][0]) #use the pdep format given for collider M when rebuilding the reaction
@@ -326,6 +329,8 @@ class makeYAML:
                     d['high-P-rate-constant']=dict(d['high-P-rate-constant'])
                 colliderM = {'name': 'M'}
                 colliderM.update(dict(d))
+            if pDep:
+                print(mech_rxn.equation)
             if pDep and (self.mech_pes[i] in blendRxnNames or self.allPdep):
                 if self.mech_pes[i] in blendRxnNames:
                     # rxn is specifically covered either in defaults or user input
@@ -355,6 +360,8 @@ class makeYAML:
                 if 'note' in d and re.fullmatch(r'\n+', d['note']):
                     mech_rxn.update_user_data({'note': ''})
                 newReactions.append(mech_rxn)
+            if pDep:
+                print(f"{mech_rxn.equation} is P-dep")
         output_data = {
             'thermo': self.mech_obj.thermo_model,
             'kinetics': self.mech_obj.kinetics_model,

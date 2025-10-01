@@ -13,7 +13,7 @@ phases:
 - name: gas
   thermo: ideal-gas
   elements: [C, H, N, O, Ar, He]
-  species: [AR, N2, HE, H2, H, O2, O, H2O, OH, OHV, H2O2, HO2, CO, CO2,
+  species: [AR, CH2CHOO, N2, HE, H2, H, O2, O, H2O, OH, OHV, H2O2, HO2, CO, CO2,
     HOCO, CH4, CH3, CH2, CH2(S), C, CH, CHV, CH3O2H, CH3O2, CH2O2H, CH3OH,
     CH3O, CH2OH, CH2O, HCO, HCOH, HO2CHO, HOCH2O2H, HOCH2O2, OCH2O2H, HOCH2O,
     O2CHO, HOCHO, OCHO, C2H6, C2H5, C2H5O2H, C2H5O2, C2H4, C2H3, CHOCHO,
@@ -2102,6 +2102,27 @@ species:
     dipole: 1.7
     rotational-relaxation: 1.0
     note: '!'
+- name: CH2CHOO
+  composition: {C: 2, H: 3, O: 2}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1000.0, 2000.0]
+    data:
+    - [1.4146113, 0.029754629, -2.5839387e-05, 1.1222085e-08, -1.8678097e-12,
+      1.1371249e+04, 19.022561]
+    - [1.41603, 0.029933721, -2.6385173e-05, 1.1770709e-08, -2.0511571e-12,
+      1.1361727e+04, 18.969526]
+    note: |-
+      0
+       J Gimenez CL Rasmussen MU Alzueta P Marshall P Glarborg Proc. Combust. Inst. 32 (2009) 367-375
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 395.0
+    diameter: 4.037
+    dipole: 1.3
+    rotational-relaxation: 1.0
+    note: CH2OCHO
 - name: C3H6
   composition: {C: 3, H: 6}
   thermo:
@@ -10538,3 +10559,100 @@ reactions:
   rate-constant: {A: 3.73e+14, b: -0.726, Ea: 3.20083e+04}
 - equation: CH2CH2COCH3 <=> C2H3 + CH3CHO  # Reaction 1766
   rate-constant: {A: 1.93e+19, b: -1.94, Ea: 4.844e+04}
+
+
+# - equation: CH2CHO + H <=> CH3CO + H + CO  # Reaction 458
+- equation: CH2CHO + H <=> H + CH3 + CO  # Reaction 458
+# - equation: CH2CHO + H <=> H + CO + CH3  # Reaction 458
+# - equation: CH2CHO + H <=> CH3 + CO + H  # Reaction 458
+# - equation: H + CH2CHO <=> CH3 + CO + H  # Reaction 458
+  type: pressure-dependent-Arrhenius
+  rate-constants:
+  - {P: 0.01 atm, A: 1.1e+27, b: -3.408, Ea: 2.3047e+04}
+  - {P: 0.1 atm, A: 1.5e+28, b: -3.716, Ea: 2.3989e+04}
+  - {P: 1.0 atm, A: 1.1e+32, b: -4.773, Ea: 2.762e+04}
+  - {P: 10.0 atm, A: 1.7e+35, b: -5.573, Ea: 3.2381e+04}
+  - {P: 100.0 atm, A: 4.5e+30, b: -4.166, Ea: 3.3356e+04}
+
+- equation: CH2CHOO <=> CH2O + H + CO  # Reaction 550
+  type: pressure-dependent-Arrhenius
+  rate-constants:
+  - {P: 0.01 atm, A: 3.9e+174, b: -55.52, Ea: 6.032e+04}
+  - {P: 0.1 atm, A: 2.1e+67, b: -17.25, Ea: 4.812e+04}
+  - {P: 0.316 atm, A: 4.3e+43, b: -9.87, Ea: 3.796e+04}
+  - {P: 1.0 atm, A: 2.0e+34, b: -6.88, Ea: 3.437e+04}
+  - {P: 3.16 atm, A: 1.7e+172, b: -43.53, Ea: 1.919e+05}
+  - {P: 10.0 atm, A: 2.4e+32, b: -6.06, Ea: 3.55e+04}
+  - {P: 31.6 atm, A: 4.3e+34, b: -6.57, Ea: 3.851e+04}
+  - {P: 100.0 atm, A: 1.3e+30, b: -5.19, Ea: 3.68e+04}
+  - {P: 0.01 atm, A: 5.3e+35, b: -7.97, Ea: 3.128e+04}
+  - {P: 0.1 atm, A: 4.9e+26, b: -4.96, Ea: 2.878e+04}
+  - {P: 0.316 atm, A: 3.4e+20, b: -3.08, Ea: 2.663e+04}
+  - {P: 1.0 atm, A: 2.5e+130, b: -39.38, Ea: 5.47e+04}
+  - {P: 3.16 atm, A: 5.5e+34, b: -6.87, Ea: 3.57e+04}
+  - {P: 10.0 atm, A: 5.1e+175, b: -53.78, Ea: 6.85e+04}
+  - {P: 31.6 atm, A: 2.5e+185, b: -54.22, Ea: 8.899e+04}
+  - {P: 100.0 atm, A: 1100.0, b: 1.81, Ea: 1.81e+04}
+  note: |
+    Goldsmith et al., 2015, J. Phys. Chem. A 2015, 119, 7766-7779 (DOI: 10.1021/acs.jpca.5b01088)
+    assume 70% HCO
+    1 atm
+
+- equation: CH2CHO + H <=> CH3CO + H  # Reaction 459
+  type: pressure-dependent-Arrhenius
+  rate-constants:
+  - {P: 0.001 atm, A: 3.6e+13, b: 0.05139, Ea: 4301.0}
+  - {P: 0.01 atm, A: 4.6e+13, b: 0.02101, Ea: 4392.0}
+  - {P: 0.1 atm, A: 3.4e+14, b: -0.21686, Ea: 5113.0}
+  - {P: 1.0 atm, A: 9.2e+17, b: -1.15762, Ea: 8193.0}
+  - {P: 10.0 atm, A: 1.6e+22, b: -2.27331, Ea: 1.3261e+04}
+  - {P: 100.0 atm, A: 8.1e+19, b: -1.50969, Ea: 1.5534e+04}
+  note: |
+    Labbe NJ Sivaramakrishnan R Klippenstein SJ, Proc. Combust. Inst. 35 (2015) 447-455
+    including prompt dissociation of HCO (following Labbe et al., J. Phys. Chem. Lett. 2016)
+    1 atm
+
+- equation: CH3CO + O2 <=> CH2O + CO + OH  # Reaction 451
+  type: pressure-dependent-Arrhenius
+  rate-constants:
+  - {P: 0.1 atm, A: 5.1e+22, b: -3.524, Ea: 3255.0}
+  - {P: 1.0 atm, A: 4.9e+23, b: -3.712, Ea: 5895.0}
+  - {P: 10.0 atm, A: 4.8e+22, b: -3.303, Ea: 8598.0}
+  note: |
+    J.W. Allen, C.F. Goldsmith, W.H. Green, PhysChemChemPhys 2012, 14, 1131-1155.
+    fitted from figure
+    1 atm
+
+- equation: CH3 + OH <=> CH2(S) + H2O  # Reaction 81
+  type: pressure-dependent-Arrhenius
+  rate-constants:
+  - {P: 0.001316 atm, A: 1.1e+14, b: -0.45845, Ea: -496.0}
+  - {P: 0.013158 atm, A: 2.2e+14, b: -0.53832, Ea: -220.0}
+  - {P: 0.131579 atm, A: 1.2e+15, b: -0.72747, Ea: 600.0}
+  - {P: 1.315789 atm, A: 4.3e+15, b: -0.85972, Ea: 1888.0}
+  - {P: 13.157895 atm, A: 4.4e+14, b: -0.53864, Ea: 2932.0}
+  - {P: 131.578947 atm, A: 6.1e+10, b: 0.5956, Ea: 2923.0}
+  note: |2
+     Jasper AW Klippenstein SJ Harding LB Ruscic B JPCA 111:3932-3950 2007
+    CH3OH(+M)=CH3+OH(+M)                 2.1E18  -0.6148  92540 ! 
+     LOW  /2.60E49 -8.80 101500/                                ! 
+     TROE /0.7656 1910 59.51 9374/                              !
+     Jasper AW Klippenstein SJ Harding LB Ruscic B JPCA 111:3932-3950 2007
+     1.3 atm 
+
+- equation: C2H4 + CH2(S) <=> C2H3 + CH3  # Reaction 257
+  type: pressure-dependent-Arrhenius
+  rate-constants:
+  - {P: 0.01 atm, A: 1.8e+19, b: -1.95, Ea: 6787.0}
+  - {P: 0.1 atm, A: 1.7e+19, b: -1.8, Ea: 4310.0}
+  - {P: 1.0 atm, A: 4.2e+24, b: -3.19, Ea: 9759.0}
+  - {P: 10.0 atm, A: 7.9e+24, b: -3.08, Ea: 1.3894e+04}
+  - {P: 100.0 atm, A: 7.4e+29, b: -4.28, Ea: 2.3849e+04}
+  - {P: 0.01 atm, A: 4.3e+12, b: 0.19, Ea: -110.0}
+  - {P: 0.1 atm, A: 2.3e+11, b: 0.54, Ea: 48.0}
+  - {P: 1.0 atm, A: 4.9e+09, b: 1.02, Ea: 600.0}
+  - {P: 10.0 atm, A: 1.5e+08, b: 1.33, Ea: 1228.0}
+  - {P: 100.0 atm, A: 8.1e+10, b: 0.55, Ea: 5507.0}
+  note: |
+    Miller and Klippenstein, J. Phys. Chem. A 2013, 117, 2718–2727
+    1 atm

@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import yaml
 import cantera as ct
+import os
 
 def loadYAML(fName):
     with open(fName) as f:
@@ -40,10 +41,14 @@ def compare(rxn,collider):
         plt.figure()
         plt.plot(Trange,fit_curve)
         plt.plot(temps,eps,linestyle="None",marker="o")
-        plt.savefig(f"comparison_{rxn['equation']}_{collider['name']}.png")
-            
-# data = loadYAML("/home/pjs/LMRRfactory/test/outputs/Aug27/test_mech_LMRR.yaml")
-data = loadYAML("/home/pjs/LMRRfactory/test/outputs/Sep11/glarborg_H2NNO_B_LMRR.yaml")
+        os.makedirs(f"test/outputs/{date}/{datafile}",exist_ok=True)
+        plt.savefig(f"test/outputs/{date}/{datafile}/comparison_{rxn['equation']}_{collider['name']}.png")
+
+date='Oct06'
+datapath = "/home/pjs/LMRRfactory/test/data/"
+datafile = "klippenstein-CNF2018-original_LMRR_Feb14"
+# datafile = "klippenstein-CNF2018-original_LMRR_Oct06"
+data = loadYAML(datapath+datafile+".yaml")
 for rxn in data['reactions']:
     if rxn.get('type')=="linear-Burke":
         for collider in rxn['colliders']:
