@@ -37,7 +37,7 @@ class makeYAML:
         self.mech_obj = ct.Solution(mechInput)
         self._lookForPdep() # Verify that 'mech' has >=1 relevant p-dep reaction
         self.mech_pes = self._getPES()
-        self.defaults = self._loadYAML(f"{str(files("LMRRfactory"))}/thirdbodydefaults.yaml")
+        self.defaults = self._loadYAML(f"{str(files("LMRRfactory"))}/thirdbodydatabase.yaml")
         self._normalizedKeys() # normalize species as uppercase
         self.species_dict = {}
         for sp in self.mech_obj.species():
@@ -91,7 +91,7 @@ class makeYAML:
             pes.append(sum(counters, Counter()))
         return pes
 
-    def _deleteDuplicates(self): # delete duplicates from thirdBodyDefaults
+    def _deleteDuplicates(self): # delete duplicates from thirdbodydatabase
         newData = {'generic-colliders': self.defaults['generic-colliders'],
                 'reactions': []}
         inputRxnNames = None
