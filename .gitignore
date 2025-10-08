@@ -2,6 +2,7 @@
 src/__pycache__
 src/methods/__pycache__
 buildcommands.sh
+test
 # # Byte-compiled / optimized / DLL files
 # __pycache__/
 # *.py[cod]
