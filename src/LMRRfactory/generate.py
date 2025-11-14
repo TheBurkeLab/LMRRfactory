@@ -354,7 +354,7 @@ class makeYAML:
         output_data = {
             'thermo': self.mech_obj.thermo_model,
             'kinetics': self.mech_obj.kinetics_model,
-            'transport': self.mech_obj.transport_model,
+            'transport_model': self.mech_obj.transport_model,
             'species': self.mech_obj.species(),
             'reactions': newReactions,
             'name': 'gas',
