@@ -319,6 +319,14 @@ generic-colliders: # AR is always reference collider
   composition: {C: 2, H: 4, O: 2}
   efficiency: 3.29 #2.3/0.7
   note: ThInK 1.0 (generic)
+- name: CH3NC
+  composition: {C: 2, H: 3, N: 1}
+  efficiency: 7.27
+  note: Matsugi-JPCA2019
+- name: HCN
+  composition: {H: 1, C: 1, N: 1}
+  efficiency: 4.23
+  note: Matsugi-JPCA2019
 
 reactions:
 - name: H2O (+M)
