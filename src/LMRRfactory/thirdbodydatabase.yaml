@@ -327,6 +327,35 @@ generic-colliders: # AR is always reference collider
   composition: {H: 1, C: 1, N: 1}
   efficiency: 4.23
   note: Matsugi-JPCA2019
+- name: NO3
+  composition: {N: 1, O: 3}
+  efficiency: 5.00
+  note: ChenMcQuaidNG-2022
+- name: HNO3
+  composition: {H: 1, N: 1, O: 3}
+  efficiency: 5.00
+  note: ChenMcQuaidNG-2022
+- name: CL2
+  composition: {Cl: 2}
+  efficiency: 6.9
+  note: Pelucchi via Bernigaud
+- name: CH3NHNH2
+  composition: {C: 1, H: 6, N: 2}
+  efficiency: 5.0
+  note: Dievart-2020
+- name: O
+  composition: {O: 1}
+  efficiency: 28.8
+  note: Konnov-2019
+- name: O3
+  composition: {O: 3}
+  efficiency: 8.0
+  note: Konnov-2019
+- name: N2H4
+  composition: {N: 2, H: 4}
+  efficiency: 4.0
+  note: Shrestha-2018
+
 
 reactions:
 - name: H2O (+M)
