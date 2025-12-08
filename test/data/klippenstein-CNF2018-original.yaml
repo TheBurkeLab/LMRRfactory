@@ -36,7 +36,7 @@ phases:
 - name: gas
   thermo: ideal-gas
   elements: [O, H, C, N, He, Ar]
-  species: [H2, O2, O3, H, O, OH, HO2, H2O, H2O2, CO, CO2, CH4, CH3, CH2,
+  species: [H2, o2, O3, H, O, OH, HO2, H2O, H2O2, CO, CO2, CH4, CH3, CH2,
     CH2(S), CH, C, CH3OH, CH3O, CH2OH, CH2O, HCOH, HCO, HOCO, HOCHO, OCHO,
     HOCH2O, CH3OOH, CH3OO, CH2OOH, C2H6, C2H5, C2H4, C2H3, C2H2, H2CC, C2H,
     C2, CH3CH2OH, CH3CHOH, CH3CH2O, CH2CH2OH, CH3CHO, CH2CHOH, cC2H4O, CHCHOH,
@@ -70,7 +70,7 @@ species:
       ATcT3E
        ********************************************************************************
        ********************************************************************************
-       ***** H2 O2 O3 H O OH HO2 H2O H2O2 
+       ***** H2 o2 O3 H O OH HO2 H2O H2O2 
        ********************************************************************************
        ********************************************************************************
        H2 <g> ATcT ver. 1.122, DHf298 = 0.000 ± 0.000 kJ/mol - fit JAN17
@@ -81,7 +81,7 @@ species:
     diameter: 2.92
     polarizability: 0.79
     rotational-relaxation: 280.0
-- name: O2
+- name: o2
   composition: {O: 2}
   thermo:
     model: NASA7
@@ -93,7 +93,7 @@ species:
       -1216.03048, 3.42074148]
     note: |-
       ATcT3E
-       O2 <g> ATcT ver. 1.122, DHf298 = 0.000 ± 0.000 kJ/mol - fit JAN17
+       o2 <g> ATcT ver. 1.122, DHf298 = 0.000 ± 0.000 kJ/mol - fit JAN17
   transport:
     model: gas
     geometry: linear
@@ -3301,11 +3301,11 @@ species:
     rotational-relaxation: 4.0
 
 reactions:
-- equation: H + O2 <=> O + OH  # Reaction 1
+- equation: H + o2 <=> O + OH  # Reaction 1
   rate-constant: {A: 1.0e+14, b: 0.0, Ea: 1.5286e+04}
   note: |
     *****************************************************************************
-       H2/O2 subset                                                             *
+       H2/o2 subset                                                             *
     *****************************************************************************
 - equation: O + H2 <=> OH + H  # Reaction 2
   duplicate: true
@@ -3353,7 +3353,7 @@ reactions:
   efficiencies: {H2: 2.5, H2O: 12.0, AR: 0.75, CO: 1.9, CO2: 3.8}
   note: |
     Tsang and Hampson, J. Phys. Chem. Ref. Data, 15:1087 (1986) 
-- equation: O + O + M <=> O2 + M  # Reaction 10
+- equation: O + O + M <=> o2 + M  # Reaction 10
   type: three-body
   rate-constant: {A: 1.9e+13, b: 0.0, Ea: -1788.0}
   efficiencies: {H2: 2.5, H2O: 12.0, AR: 0.0, CO: 1.9, CO2: 3.8}
@@ -3363,7 +3363,7 @@ reactions:
 - equation: H2O + M <=> H + OH + M  # Reaction 11
   type: three-body
   rate-constant: {A: 6.1e+27, b: -3.322, Ea: 1.2079e+05}
-  efficiencies: {H2: 3.0, H2O: 0.0, N2: 2.0, O2: 1.5, CO: 1.9, CO2: 3.8}
+  efficiencies: {H2: 3.0, H2O: 0.0, N2: 2.0, o2: 1.5, CO: 1.9, CO2: 3.8}
   note: |
     Tsang W Hampson RF JPCRD 15:1087 1986
 - equation: H2O + H2O <=> H + OH + H2O  # Reaction 12
@@ -3372,26 +3372,26 @@ reactions:
     Srinivasan and Michael, Int. J. Chem. Kinetic. 38 (2006)
     Rate constant is for Ar with efficiencies from Michael et al., J. Phys. Chem. A, 106 (2002)
     Efficiencies for CO and CO2 taken from Li et al., Int. J. Chem. Kinet. 36:566-575 (2004)
-- equation: H + O2 (+M) <=> HO2 (+M)  # Reaction 13
+- equation: H + o2 (+M) <=> HO2 (+M)  # Reaction 13
   type: falloff
   low-P-rate-constant: {A: 6.366e+20, b: -1.72, Ea: 524.8}
   high-P-rate-constant: {A: 4.7e+12, b: 0.44, Ea: 0.0}
   Troe: {A: 0.5, T3: 1.0e-30, T1: 1.0e+30}
-  efficiencies: {H2: 2.0, H2O: 14.0, O2: 0.78, CO: 1.9, CO2: 3.8, AR: 0.67}
+  efficiencies: {H2: 2.0, H2O: 14.0, o2: 0.78, CO: 1.9, CO2: 3.8, AR: 0.67}
   note: |2
      Srinivasan and Michael, Int. J. Chem. Kinetic. 38 (2006)
                             !   
     =================================================================================
      MAIN BATH GAS IS N2 (comment this reaction otherwise)
-- equation: HO2 + H <=> H2 + O2  # Reaction 14
+- equation: HO2 + H <=> H2 + o2  # Reaction 14
   rate-constant: {A: 2.8e+06, b: 2.09, Ea: -1451.0}
   note: |
     =================================================================================
      MAIN BATH GAS IS AR (comment this reaction otherwise)
-    H+O2(+M)=HO2(+M)                     4.7E12   0.440       0 !
+    H+o2(+M)=HO2(+M)                     4.7E12   0.440       0 !
      LOW/9.042E19 -1.50  4.922E02/
      TROE/0.5 1E-30  1E30/
-     H2/3/ H2O/21/ O2/1.1/ CO/2.7/ CO2/5.4/ N2/1.5/
+     H2/3/ H2O/21/ o2/1.1/ CO/2.7/ CO2/5.4/ N2/1.5/
     =================================================================================
      High-pressure limit from Troe, Proc. Comb. Inst. 28:1463-1469 (2000)
      Low-pressure  limit from Michael et al., J. Phys. Chem. A 106:5297-5313
@@ -3407,25 +3407,25 @@ reactions:
   note: |+
     Mueller et al., Int. J. Chem. Kinetic. 31:113 (1999) 
 
-- equation: HO2 + O <=> O2 + OH  # Reaction 17
+- equation: HO2 + O <=> o2 + OH  # Reaction 17
   rate-constant: {A: 2.9e+10, b: 1.0, Ea: -724.0}
   note: |
     Baulch DL Bowman CT Cobos CJ Cox RA Just Th Kerr JA Pilling MJ Stocker D Troe J Tsang W Walker RW Warnatz J JPCRD 34:757-1397 2005
-- equation: HO2 + OH <=> H2O + O2  # Reaction 18
+- equation: HO2 + OH <=> H2O + o2  # Reaction 18
   duplicate: true
   rate-constant: {A: 1.9e+20, b: -2.49, Ea: 584.0}
   note: |
     Fernandez-Ramos and Varandas, J. Phys. Chem. A 106:4077-4083 (2002)
     Scaled by 0.60 by Burke et al. 2012
-- equation: HO2 + OH <=> H2O + O2  # Reaction 19
+- equation: HO2 + OH <=> H2O + o2  # Reaction 19
   duplicate: true
   rate-constant: {A: 1.2e+09, b: 1.24, Ea: -1310.0}
-- equation: HO2 + HO2 <=> H2O2 + O2  # Reaction 20
+- equation: HO2 + HO2 <=> H2O2 + o2  # Reaction 20
   duplicate: true
   rate-constant: {A: 1.2e+09, b: 0.7712, Ea: -1825.0}
   note: |
     M. P. Burke, S. J. Klippenstein, L. B. Harding, Proc Combust Inst 34 (2013) 547–555.
-- equation: HO2 + HO2 <=> H2O2 + O2  # Reaction 21
+- equation: HO2 + HO2 <=> H2O2 + o2  # Reaction 21
   duplicate: true
   rate-constant: {A: 1.3e+12, b: 0.295, Ea: 7397.0}
   note: |2+
@@ -3435,7 +3435,7 @@ reactions:
   low-P-rate-constant: {A: 2.5e+24, b: -2.3, Ea: 4.8749e+04}
   high-P-rate-constant: {A: 2.0e+12, b: 0.9, Ea: 4.8749e+04}
   Troe: {A: 0.43, T3: 1.0e-30, T1: 1.0e+30}
-  efficiencies: {AR: 1.0, H2O: 7.5, CO2: 1.6, N2: 1.5, O2: 1.2, H2O2: 7.7,
+  efficiencies: {AR: 1.0, H2O: 7.5, CO2: 1.6, N2: 1.5, o2: 1.2, H2O2: 7.7,
     H2: 3.7, CO: 2.8}
   note: |
     D. D. Y. Zhou, K. Han, P. Zhang, L. B. Harding, M. J. Davis, R. T. Skodje, J Phys Chem A 116 (2012) 2089–2100.
@@ -3500,7 +3500,7 @@ reactions:
   rate-constant: {A: 1.6e+05, b: 2.18, Ea: 1.7943e+04}
   note: |
     J.P. Senosiain, S.J. Klippenstein, J.A. Miller, Proc. Combust. Inst. 30 (2005) 945-953.
-- equation: CO + O2 <=> CO2 + O  # Reaction 32
+- equation: CO + o2 <=> CO2 + O  # Reaction 32
   rate-constant: {A: 4.7e+12, b: 0.0, Ea: 6.05e+04}
   note: |+
     You X Wang H Goos E Sung C-J Klippenstein SJ JCPA 111:4031-4042 2007
@@ -3554,7 +3554,7 @@ reactions:
   note: |+
     Yu H-G Muckerman JT Francisco JS JPCA 109:5230-5236 2005
 
-- equation: HOCO + O2 <=> CO2 + HO2  # Reaction 41
+- equation: HOCO + o2 <=> CO2 + HO2  # Reaction 41
   rate-constant: {A: 4.0e+09, b: 1.0, Ea: 0.0}
   note: |+
     H.G. Yu, G. Poggi, J.S. Francisco, J.T. Muckerman, J. Chem. Phys. 129 (2008) 214307.
@@ -3642,31 +3642,31 @@ reactions:
      refit
 - equation: CH2O + HO2 <=> H + CO + H2O2  # Reaction 52
   rate-constant: {A: 2.5e+14, b: 0.027, Ea: 3.012e+04}
-- equation: CH2O + O2 <=> HCO + HO2  # Reaction 53
+- equation: CH2O + o2 <=> HCO + HO2  # Reaction 53
   duplicate: true
   rate-constant: {A: 1.8e+16, b: -0.639, Ea: 4.54e+04}
   note: |
-    CH2O+O2=HCO+HO2                      2.4E05   2.500   36461 ! 
+    CH2O+o2=HCO+HO2                      2.4E05   2.500   36461 ! 
      Baulch DL Bowman CT Cobos CJ Cox RA Just Th Kerr JA Pilling MJ Stocker D Troe J Tsang W Walker RW Warnatz J JPCRD 34:757-1397 2005
      applying prompt HCO dissociation - Labbe et al., J. Phys. Chem. Lett. 2016:
-    CH2O+O2=HCO+HO2                      2.4E05   2.500   36461 
+    CH2O+o2=HCO+HO2                      2.4E05   2.500   36461 
      DUPLICATE
-    CH2O+O2=HCO+HO2                     -1.4E15    0.027   56388 
+    CH2O+o2=HCO+HO2                     -1.4E15    0.027   56388 
      DUPLICATE
      refit
-- equation: CH2O + O2 <=> HCO + HO2  # Reaction 54
+- equation: CH2O + o2 <=> HCO + HO2  # Reaction 54
   duplicate: true
   rate-constant: {A: 6.6e+08, b: 1.36, Ea: 3.7324e+04}
   note: |
     refit
-- equation: CH2O + O2 <=> H + CO + HO2  # Reaction 55
+- equation: CH2O + o2 <=> H + CO + HO2  # Reaction 55
   rate-constant: {A: 1.4e+15, b: 0.027, Ea: 5.6388e+04}
 - equation: HCO (+M) <=> H + CO (+M)  # Reaction 56
   type: falloff
   low-P-rate-constant: {A: 7.4e+21, b: -2.36, Ea: 1.9383e+04}
   high-P-rate-constant: {A: 4.9e+16, b: -0.93, Ea: 1.9724e+04}
   Troe: {A: 0.103, T3: 139.0, T1: 1.09e+04, T2: 4550.0}
-  efficiencies: {N2: 1.5, HE: 1.3, O2: 1.5, CO: 1.5, H2: 2.0, CH4: 5.0,
+  efficiencies: {N2: 1.5, HE: 1.3, o2: 1.5, CO: 1.5, H2: 2.0, CH4: 5.0,
     CO2: 3.0, H2O: 15.0}
   note: |2+
 
@@ -3690,7 +3690,7 @@ reactions:
   note: |+
     Baulch DL Cobos CJ Cox RA Esser C Frank P Just Th Kerr JA Pilling MJ Troe J Walker RW Warnatz J JPCRD 21:403 1992
 
-- equation: HCO + O2 <=> CO + HO2  # Reaction 61
+- equation: HCO + o2 <=> CO + HO2  # Reaction 61
   rate-constant: {A: 6.9e+06, b: 1.9, Ea: -1369.0}
   note: |+
     Baulch DL Bowman CT Cobos CJ Cox RA Just Th Kerr JA Pilling MJ Stocker D Troe J Tsang W Walker RW Warnatz J JPCRD 34:757-1397 2005
@@ -3739,14 +3739,14 @@ reactions:
   note: |+
     Srinivasan NK Su M-C Sutherland JW Michael JV JPCA 109:7902-7914 2005
 
-- equation: CH4 + O2 <=> CH3 + HO2  # Reaction 69
+- equation: CH4 + o2 <=> CH3 + HO2  # Reaction 69
   rate-constant: {A: 2.0e+05, b: 2.745, Ea: 5.1714e+04}
   note: |
     Baulch DL Bowman CT Cobos CJ Cox RA Just Th Kerr JA Pilling MJ Stocker D Troe J Tsang W Walker RW Warnatz J JPCRD 34:757-1397 2005
 - equation: CH4 + CH2 <=> CH3 + CH3  # Reaction 70
   rate-constant: {A: 4.3e+12, b: 0.0, Ea: 1.003e+04}
   note: |+
-    CH3+HO2=CH4+O2                       1.2E05   2.228    3022 ! rv (not in paper)
+    CH3+HO2=CH4+o2                       1.2E05   2.228    3022 ! rv (not in paper)
      Srinivasan, Michael, Harding, Klippenstein, Combust Flame 149, 104 (2007)
 
 - equation: CH4 + CH2(S) <=> CH3 + CH3  # Reaction 71
@@ -3886,18 +3886,18 @@ reactions:
     Jasper AW Klippenstein SJ Harding LB Ruscic B JPCA 111:3932-3950 2007
     cis and trans products are combined as HCOH
     #
-- equation: CH3 + O2 <=> CH3O + O  # Reaction 87
+- equation: CH3 + o2 <=> CH3O + O  # Reaction 87
   rate-constant: {A: 7.5e+12, b: 0.0, Ea: 2.8297e+04}
   note: |+
     Jasper, Klippenstein, Harding, Proc. Combust. Inst. 32, 279 (2009)
     OBS typo in HASGLA16ch4 mechanism #
 
-- equation: CH3 + O2 <=> CH2O + OH  # Reaction 88
+- equation: CH3 + o2 <=> CH2O + OH  # Reaction 88
   rate-constant: {A: 1.9e+11, b: 0.0, Ea: 9842.0}
   note: |+
     Srinivasan NK Su M-C Sutherland JW Michael JV JPCA 109:7902-7914 2005
 
-- equation: CH3 + O2 <=> CH3OO  # Reaction 89
+- equation: CH3 + o2 <=> CH3OO  # Reaction 89
   type: pressure-dependent-Arrhenius
   rate-constants:
   - {P: 0.01 atm, A: 6.8e+24, b: -3.0, Ea: 0.0}
@@ -4011,12 +4011,12 @@ reactions:
   note: |+
     A.W. Jasper, S.J. Klippenstein, L.B. Harding, J. Phys. Chem. A 111 (2007) 8699-8707.
 
-- equation: CH2 + O2 <=> CO2 + H + H  # Reaction 106
+- equation: CH2 + o2 <=> CO2 + H + H  # Reaction 106
   rate-constant: {A: 2.1e+09, b: 0.9929, Ea: -269.0}
   note: |+
     A.W. Jasper, S.J. Klippenstein, L.B. Harding, J. Phys. Chem. A 111 (2007) 8699-8707.
 
-- equation: CH2 + O2 <=> CH2O + O  # Reaction 107
+- equation: CH2 + o2 <=> CH2O + O  # Reaction 107
   rate-constant: {A: 2.2e+09, b: 1.08, Ea: 1196.0}
   note: |+
     SJK unpublished (2013) 
@@ -4078,7 +4078,7 @@ reactions:
   note: |+
     Tsang W Hampson RF JPCRD 15:1087 1986  
 
-- equation: CH2(S) + O2 <=> CH2 + O2  # Reaction 119
+- equation: CH2(S) + o2 <=> CH2 + o2  # Reaction 119
   rate-constant: {A: 3.1e+13, b: 0.0, Ea: 0.0}
   note: |
     Tsang W Hampson RF JPCRD 15:1087 1986  
@@ -4116,11 +4116,11 @@ reactions:
     JAM est
     including prompt dissociation of HCO (following Labbe et al., J. Phys. Chem. Lett. 2016)
 
-- equation: CH + O2 <=> HCO + O  # Reaction 127
+- equation: CH + o2 <=> HCO + O  # Reaction 127
   rate-constant: {A: 9.7e+13, b: 0.0, Ea: 0.0}
   note: |
     JAM est
-- equation: CH + O2 <=> H + CO + O  # Reaction 128
+- equation: CH + o2 <=> H + CO + O  # Reaction 128
   rate-constant: {A: 2.0e+23, b: -2.473, Ea: 1.9927e+04}
 - equation: CH + H2O <=> CH2O + H  # Reaction 129
   rate-constant: {A: 2.8e+07, b: 1.59, Ea: -2610.0}
@@ -4147,7 +4147,7 @@ reactions:
     Baulch DL Cobos CJ Cox RA Esser C Frank P Just Th Kerr JA Pilling MJ Troe J Walker RW Warnatz J JPCRD 21:403 1992
     HMT Nguyen, HT Nguyen, T-N Nguyen, HV Hoang, L Vereecken J. Phys. Chem. A 2014, 118, 8861-8871 (confirm major pr channel)
 
-- equation: C + O2 <=> CO + O  # Reaction 134
+- equation: C + o2 <=> CO + O  # Reaction 134
   rate-constant: {A: 2.0e+13, b: 0.0, Ea: 0.0}
   note: |+
     JAM est
@@ -4223,12 +4223,12 @@ reactions:
   note: |+
     Alecu, I.M.; Truhlar, D.G. J Phys Chem A 2011, 115, 14599-14611.
 
-- equation: CH3OH + O2 <=> CH2OH + HO2  # Reaction 146
+- equation: CH3OH + o2 <=> CH2OH + HO2  # Reaction 146
   rate-constant: {A: 3.6e+05, b: 2.27, Ea: 4.276e+04}
   note: |+
     Alecu, I.M.; Truhlar, D.G. J Phys Chem A 2011, 115, 14599-14611.
 
-- equation: CH3O + HO2 <=> CH3OH + O2  # Reaction 147
+- equation: CH3O + HO2 <=> CH3OH + o2  # Reaction 147
   rate-constant: {A: 1.4e+11, b: 0.0, Ea: 0.0}
   note: |
     Klippenstein SJ Harding LB Davis MJ Tomlin AS Skodje RT PCI 2011, 33, 351-357.
@@ -4248,7 +4248,7 @@ reactions:
   low-P-rate-constant: {A: 3.5e+21, b: -1.99, Ea: 2.3983e+04}
   high-P-rate-constant: {A: 7.4e+10, b: 0.811, Ea: 3.9559e+04}
   Troe: {A: 0.844, T3: 900.0, T1: 1.0, T2: 3315.0}
-  efficiencies: {HE: 0.67, AR: 0.85, O2: 1.0, H2: 2.0, CO: 1.5, CO2: 2.0,
+  efficiencies: {HE: 0.67, AR: 0.85, o2: 1.0, H2: 2.0, CO: 1.5, CO2: 2.0,
     H2O: 6.0, CH4: 2.0, CH2O: 2.5, C2H6: 3.0, CH3OH: 3.0}
   note: |+
     Alecu and Truhlar, J Phys Chem A 115 (2011) 14599-14611
@@ -4281,13 +4281,13 @@ reactions:
   note: |+
     Tsang W JPCRD 16:471 1987
 
-- equation: CH2OH + O2 <=> CH2O + HO2  # Reaction 155
+- equation: CH2OH + o2 <=> CH2O + HO2  # Reaction 155
   duplicate: true
   rate-constant: {A: 7.2e+13, b: 0.0, Ea: 3736.0}
   note: |+
     Tsang W JPCRD 16:471 1987
 
-- equation: CH2OH + O2 <=> CH2O + HO2  # Reaction 156
+- equation: CH2OH + o2 <=> CH2O + HO2  # Reaction 156
   duplicate: true
   rate-constant: {A: 2.9e+16, b: -1.5, Ea: 0.0}
   note: |2+
@@ -4339,7 +4339,7 @@ reactions:
   low-P-rate-constant: {A: 6.0e+16, b: -0.547, Ea: 1.8012e+04}
   high-P-rate-constant: {A: 1.1e+10, b: 1.21, Ea: 2.4069e+04}
   Troe: {A: 0.341, T3: 28.0, T1: 1000.0, T2: 2339.0}
-  efficiencies: {HE: 0.67, AR: 0.85, O2: 1.0, H2: 2.0, CO: 1.5, CO2: 2.0,
+  efficiencies: {HE: 0.67, AR: 0.85, o2: 1.0, H2: 2.0, CO: 1.5, CO2: 2.0,
     H2O: 6.0, CH4: 2.0, CH2O: 2.5, C2H6: 3.0, CH3OH: 3.0}
   note: |
     Tsang W JPCRD 16:471 1987
@@ -4381,7 +4381,7 @@ reactions:
   note: |+
     Tsang W Hampson RF JPCRD 15:1087 1986
 
-- equation: CH3O + O2 <=> CH2O + HO2  # Reaction 169
+- equation: CH3O + o2 <=> CH2O + HO2  # Reaction 169
   rate-constant: {A: 0.48, b: 3.567, Ea: -1055.0}
   note: |+
     Tsang W Hampson RF JPCRD 15:1087 1986
@@ -4459,17 +4459,17 @@ reactions:
     CL Rasmussen JG Jacobsen P Glarborg IJCK 40 (2008) 778-807
     est CH2O+HO2=HCO+H2O2
 
-- equation: CH3OO + O <=> CH3O + O2  # Reaction 184
+- equation: CH3OO + O <=> CH3O + o2  # Reaction 184
   rate-constant: {A: 2.9e+10, b: 1.0, Ea: -724.0}
   note: |+
     Tsang W Hampson RF JPCRD 15:1087 1986
 
-- equation: CH3OO + OH <=> CH3OH + O2  # Reaction 185
+- equation: CH3OO + OH <=> CH3OH + o2  # Reaction 185
   rate-constant: {A: 1.7e+14, b: 0.0, Ea: 0.0}
   note: |+
     est HO2+O
 
-- equation: CH3OO + HO2 <=> CH3OOH + O2  # Reaction 186
+- equation: CH3OO + HO2 <=> CH3OOH + o2  # Reaction 186
   rate-constant: {A: 2.5e+11, b: 0.0, Ea: -1490.0}
   note: |+
     A. Bossolasco, E. P. Farago, C. Schoemaecker, C. Fittschen, Chem. Phys. Lett. 593 (2014) 7–13
@@ -4519,17 +4519,17 @@ reactions:
   note: |+
     Tsang W Hampson RF JPCRD 15:1087 1986
 
-- equation: CH3OO + CH3OO <=> CH3O + CH3O + O2  # Reaction 196
+- equation: CH3OO + CH3OO <=> CH3O + CH3O + o2  # Reaction 196
   duplicate: true
   rate-constant: {A: 1.1e+18, b: -2.4, Ea: 1800.0}
   note: |+
     CL Rasmussen JG Jacobsen P Glarborg IJCK 40 (2008) 778-807
     est CH3OH+HO2=CH2OH+H2O2
 
-- equation: CH3OO + CH3OO <=> CH3O + CH3O + O2  # Reaction 197
+- equation: CH3OO + CH3OO <=> CH3O + CH3O + o2  # Reaction 197
   duplicate: true
   rate-constant: {A: 7.0e+10, b: 0.0, Ea: 800.0}
-- equation: CH3OO + CH3OO <=> CH3OH + CH2O + O2  # Reaction 198
+- equation: CH3OO + CH3OO <=> CH3OH + CH2O + o2  # Reaction 198
   rate-constant: {A: 2.0e+11, b: -0.55, Ea: -1600.0}
   note: |+
     Baulch DL Bowman CT Cobos CJ Cox RA Just Th Kerr JA Pilling MJ Stocker D Troe J Tsang W Walker RW Warnatz J JPCRD 34:757-1397 2005
@@ -4629,7 +4629,7 @@ reactions:
   note: |+
     L.N. Krasnoperov, J.V. Michael, J. Phys. Chem. A, 108 (2004) 5643–5648.
 
-- equation: C2H6 + O2 <=> C2H5 + HO2  # Reaction 216
+- equation: C2H6 + o2 <=> C2H5 + HO2  # Reaction 216
   rate-constant: {A: 2.9e+07, b: 1.9, Ea: 4.9548e+04}
   note: |+
     H-H Carstensen, AM Dean Proc Combust Inst 30 (2005) 995-1003 (estimation rule)
@@ -4711,7 +4711,7 @@ reactions:
   rate-constant: {A: 3.1e+13, b: 0.0, Ea: 0.0}
   note: |
     Labbe NJ Sivaramakrishnan R Klippenstein SJ, Proc. Combust. Inst. 35 (2015) 447-455
-- equation: C2H5 + O2 <=> CH3CH2OO  # Reaction 228
+- equation: C2H5 + o2 <=> CH3CH2OO  # Reaction 228
   type: pressure-dependent-Arrhenius
   rate-constants:
   - {P: 0.0001 atm, A: 1.3e+42, b: -11.12, Ea: 5137.0}
@@ -4730,7 +4730,7 @@ reactions:
   note: |
     Ludwig W Brandt B Friedrichs G Temps F JPCA 110:3330-3337 2006
     1 atm
-- equation: C2H5 + O2 <=> C2H4 + HO2  # Reaction 229
+- equation: C2H5 + o2 <=> C2H4 + HO2  # Reaction 229
   type: pressure-dependent-Arrhenius
   rate-constants:
   - {P: 0.0001 atm, A: 9.1, b: 2.87, Ea: -5099.0}
@@ -4748,7 +4748,7 @@ reactions:
   - {P: 100.0 atm, A: 1.9e+11, b: 0.14, Ea: 6373.0}
   note: |
     S Klippenstein, "Theory of Elementary Reactions", Proc. Combust. Inst., 2016
-- equation: C2H5 + O2 <=> CH2CH2OOH  # Reaction 230
+- equation: C2H5 + o2 <=> CH2CH2OOH  # Reaction 230
   type: pressure-dependent-Arrhenius
   rate-constants:
   - {P: 0.0001 atm, A: 3.2e+21, b: -5.53, Ea: -83.5}
@@ -4767,7 +4767,7 @@ reactions:
   note: |
     S Klippenstein, "Theory of Elementary Reactions", Proc. Combust. Inst., 2016
     1 atm
-- equation: C2H5 + O2 <=> cC2H4O + OH  # Reaction 231
+- equation: C2H5 + o2 <=> cC2H4O + OH  # Reaction 231
   type: pressure-dependent-Arrhenius
   rate-constants:
   - {P: 0.0001 atm, A: 1.4e-05, b: 4.2, Ea: -5618.0}
@@ -4976,7 +4976,7 @@ reactions:
   note: |
     S Klippenstein, "Theory of Elementary Reactions", Proc. Combust. Inst., 2016
     1 atm
-- equation: C2H4 + O2 <=> C2H3 + HO2  # Reaction 254
+- equation: C2H4 + o2 <=> C2H3 + HO2  # Reaction 254
   rate-constant: {A: 7.1e+13, b: 0.0, Ea: 6.001e+04}
   note: |+
     S Klippenstein, "Theory of Elementary Reactions", Proc. Combust. Inst., 2016
@@ -5038,7 +5038,7 @@ reactions:
     Glarborg P Alzueta MU Dam-Johansen K Miller JA CF 115:1 1998
     JAM est
 
-- equation: C2H3 + O2 <=> CH2CHOO  # Reaction 263
+- equation: C2H3 + o2 <=> CH2CHOO  # Reaction 263
   type: pressure-dependent-Arrhenius
   rate-constants:
   - {P: 0.01 atm, A: 1.6e+24, b: -5.45, Ea: 9662.0}
@@ -5060,7 +5060,7 @@ reactions:
   note: |
     Tsang W Hampson RF JPCRD 15:1087 1986  
     1 atm
-- equation: C2H3 + O2 <=> CHCHO + OH  # Reaction 264
+- equation: C2H3 + o2 <=> CHCHO + OH  # Reaction 264
   type: pressure-dependent-Arrhenius
   rate-constants:
   - {P: 0.01 atm, A: 3.9e+11, b: -0.11, Ea: 2131.0}
@@ -5082,7 +5082,7 @@ reactions:
   note: |
     C.F. Goldsmith, L.B. Harding, Y. Georgievskii, J.A. Miller, S.J. Klippenstein, J Phys Chem A 2015, 119, 7766-7779 (400-2200).
     1 atm
-- equation: C2H3 + O2 <=> CH2CO + OH  # Reaction 265
+- equation: C2H3 + o2 <=> CH2CO + OH  # Reaction 265
   type: pressure-dependent-Arrhenius
   rate-constants:
   - {P: 0.01 atm, A: 870.0, b: 2.41, Ea: 6061.0}
@@ -5105,7 +5105,7 @@ reactions:
     C.F. Goldsmith, L.B. Harding, Y. Georgievskii, J.A. Miller, S.J. Klippenstein, J Phys Chem A 2015, 119, 7766-7779 (400-2200).
 
     1 atm
-- equation: C2H3 + O2 <=> CH2CHO + O  # Reaction 266
+- equation: C2H3 + o2 <=> CH2CHO + O  # Reaction 266
   type: pressure-dependent-Arrhenius
   rate-constants:
   - {P: 0.01 atm, A: 7.2e+20, b: -2.67, Ea: 6742.0}
@@ -5128,7 +5128,7 @@ reactions:
     C.F. Goldsmith, L.B. Harding, Y. Georgievskii, J.A. Miller, S.J. Klippenstein, J Phys Chem A 2015, 119, 7766-7779 (400-2200).
 
     1 atm
-- equation: C2H3 + O2 <=> C2H2 + HO2  # Reaction 267
+- equation: C2H3 + o2 <=> C2H2 + HO2  # Reaction 267
   type: pressure-dependent-Arrhenius
   rate-constants:
   - {P: 0.01 atm, A: 1.1e+07, b: 1.28, Ea: 3322.0}
@@ -5151,7 +5151,7 @@ reactions:
     C.F. Goldsmith, L.B. Harding, Y. Georgievskii, J.A. Miller, S.J. Klippenstein, J Phys Chem A 2015, 119, 7766-7779 (400-2200).
 
     1 atm
-- equation: C2H3 + O2 <=> OCHCHO + H  # Reaction 268
+- equation: C2H3 + o2 <=> OCHCHO + H  # Reaction 268
   type: pressure-dependent-Arrhenius
   rate-constants:
   - {P: 0.01 atm, A: 4.8e+14, b: -1.03, Ea: 912.0}
@@ -5174,7 +5174,7 @@ reactions:
     C.F. Goldsmith, L.B. Harding, Y. Georgievskii, J.A. Miller, S.J. Klippenstein, J Phys Chem A 2015, 119, 7766-7779 (400-2200).
 
     1 atm
-- equation: C2H3 + O2 <=> CH2O + HCO  # Reaction 269
+- equation: C2H3 + o2 <=> CH2O + HCO  # Reaction 269
   type: pressure-dependent-Arrhenius
   rate-constants:
   - {P: 0.01 atm, A: 1.4e+36, b: -7.6, Ea: 1.261e+04}
@@ -5197,7 +5197,7 @@ reactions:
     C.F. Goldsmith, L.B. Harding, Y. Georgievskii, J.A. Miller, S.J. Klippenstein, J Phys Chem A 2015, 119, 7766-7779 (400-2200).
 
     1 atm
-- equation: C2H3 + O2 <=> CH2O + H + CO  # Reaction 270
+- equation: C2H3 + o2 <=> CH2O + H + CO  # Reaction 270
   type: pressure-dependent-Arrhenius
   rate-constants:
   - {P: 0.01 atm, A: 6.5e+36, b: -7.6, Ea: 1.264e+04}
@@ -5220,7 +5220,7 @@ reactions:
     C.F. Goldsmith, L.B. Harding, Y. Georgievskii, J.A. Miller, S.J. Klippenstein, J Phys Chem A 2015, 119, 7766-7779 (400-2200).
 
     1 atm
-- equation: C2H3 + O2 <=> CO + CH3O  # Reaction 271
+- equation: C2H3 + o2 <=> CO + CH3O  # Reaction 271
   type: pressure-dependent-Arrhenius
   rate-constants:
   - {P: 0.01 atm, A: 8.2e+18, b: -2.66, Ea: 3201.0}
@@ -5243,7 +5243,7 @@ reactions:
     C.F. Goldsmith, L.B. Harding, Y. Georgievskii, J.A. Miller, S.J. Klippenstein, J Phys Chem A 2015, 119, 7766-7779 (400-2200).
 
     1 atm
-- equation: C2H3 + O2 <=> CO2 + CH3  # Reaction 272
+- equation: C2H3 + o2 <=> CO2 + CH3  # Reaction 272
   type: pressure-dependent-Arrhenius
   rate-constants:
   - {P: 0.01 atm, A: 2.4e+35, b: -7.76, Ea: 1.263e+04}
@@ -5677,7 +5677,7 @@ reactions:
     fit btw. 400 and 2200 K with MAE of 0.8%, 1.8%
     fit btw. 400 and 2200 K with MAE of 1.6%, 5.8%
     1 atm
-- equation: C2H2 + O2 <=> HCO + HCO  # Reaction 301
+- equation: C2H2 + o2 <=> HCO + HCO  # Reaction 301
   duplicate: true
   rate-constant: {A: 6.1e+12, b: 0.0, Ea: 5.325e+04}
   note: |
@@ -5690,18 +5690,18 @@ reactions:
     fit btw. 400 and 2200 K with MAE of 0.8%, 2.0%
     fit btw. 400 and 2200 K with MAE of 2.1%, 8.2%
     pw CFG 2015
-- equation: C2H2 + O2 <=> HCO + HCO  # Reaction 302
+- equation: C2H2 + o2 <=> HCO + HCO  # Reaction 302
   duplicate: true
   rate-constant: {A: 1.7e+07, b: 1.67, Ea: 7.096e+04}
   note: |
     triplet surface         
-- equation: C2H2 + O2 <=> HCO + H + CO  # Reaction 303
+- equation: C2H2 + o2 <=> HCO + H + CO  # Reaction 303
   duplicate: true
   rate-constant: {A: 6.7e+33, b: -5.633, Ea: 8.2336e+04}
-- equation: C2H2 + O2 <=> HCO + H + CO  # Reaction 304
+- equation: C2H2 + o2 <=> HCO + H + CO  # Reaction 304
   duplicate: true
   rate-constant: {A: 1.1e+26, b: -3.525, Ea: 7.3959e+04}
-- equation: C2H2 + O2 <=> H + CO + H + CO  # Reaction 305
+- equation: C2H2 + o2 <=> H + CO + H + CO  # Reaction 305
   rate-constant: {A: 1.218e+32, b: -4.869, Ea: 9.30106e+04}
 - equation: C2H2 + CH2(S) <=> C2H2 + CH2  # Reaction 306
   rate-constant: {A: 4.0e+13, b: 0.0, Ea: 0.0}
@@ -5719,7 +5719,7 @@ reactions:
   note: |+
     Laskin A Wang H Law CK IJCK 32:589 2000
 
-- equation: H2CC + O2 <=> CH2 + CO2  # Reaction 309
+- equation: H2CC + o2 <=> CH2 + CO2  # Reaction 309
   rate-constant: {A: 1.0e+13, b: 0.0, Ea: 0.0}
   note: |+
     Laskin A Wang H Law CK IJCK 32:589 2000
@@ -5749,7 +5749,7 @@ reactions:
     JAM est
 
 
-- equation: C2H + O2 <=> CO + CO + H  # Reaction 314
+- equation: C2H + o2 <=> CO + CO + H  # Reaction 314
   rate-constant: {A: 4.7e+13, b: -0.16, Ea: 0.0}
   note: |+
     Glarborg P Alzueta MU Dam-Johansen K Miller JA CF 115:1 1998
@@ -5776,7 +5776,7 @@ reactions:
   note: |+
     est
 
-- equation: C2 + O2 <=> CO + CO  # Reaction 319
+- equation: C2 + o2 <=> CO + CO  # Reaction 319
   rate-constant: {A: 9.0e+12, b: 0.0, Ea: 980.0}
   note: |+
     Glarborg P Alzueta MU Dam-Johansen K Miller JA CF 115:1 1998
@@ -5981,7 +5981,7 @@ reactions:
   note: |+
     Marinov NM IJCK 31:183 1999
 
-- equation: CH3CHOH + O2 <=> CH3CHO + HO2  # Reaction 350
+- equation: CH3CHOH + o2 <=> CH3CHO + HO2  # Reaction 350
   type: pressure-dependent-Arrhenius
   rate-constants:
   - {P: 0.001 atm, A: 5.3e+17, b: -1.637, Ea: 838.0}
@@ -5993,7 +5993,7 @@ reactions:
   note: |
     Marinov NM IJCK 31:183 1999
     1 atm
-- equation: CH3CHOH + O2 <=> CH2CHOH + HO2  # Reaction 351
+- equation: CH3CHOH + o2 <=> CH2CHOH + HO2  # Reaction 351
   type: pressure-dependent-Arrhenius
   rate-constants:
   - {P: 0.001 atm, A: 510.0, b: 2.495, Ea: -414.0}
@@ -6078,7 +6078,7 @@ reactions:
   note: |
     est C2H5+O
     1 atm
-- equation: CH2CH2OH + HO2 <=> CH3CH2OH + O2  # Reaction 359
+- equation: CH2CH2OH + HO2 <=> CH3CH2OH + o2  # Reaction 359
   rate-constant: {A: 1.0e+12, b: 0.0, Ea: 0.0}
   note: |+
     est C2H5+OH
@@ -6088,7 +6088,7 @@ reactions:
   note: |+
     est C2H5+HO2
 
-- equation: CH2CH2OH + O2 <=> HOCH2CH2OO  # Reaction 361
+- equation: CH2CH2OH + o2 <=> HOCH2CH2OO  # Reaction 361
   type: pressure-dependent-Arrhenius
   rate-constants:
   - {P: 0.013 atm, A: 1.5e+44, b: -11.15, Ea: 5523.0}
@@ -6100,7 +6100,7 @@ reactions:
     est C2H5+HO2
 
     1 atm
-- equation: CH2CH2OH + O2 <=> CH2CHOH + HO2  # Reaction 362
+- equation: CH2CH2OH + o2 <=> CH2CHOH + HO2  # Reaction 362
   type: pressure-dependent-Arrhenius
   rate-constants:
   - {P: 0.013 atm, A: 1.3e+53, b: -11.88, Ea: 3.5927e+04}
@@ -6116,7 +6116,7 @@ reactions:
   note: |
     Zador J Fernandes RX Georgievskii Y Meloni G Taatjes CA Miller JA Proc Combust Inst 2009 32 271-277
     1 atm
-- equation: CH2CH2OH + O2 <=> CH2O + CH2O + OH  # Reaction 363
+- equation: CH2CH2OH + o2 <=> CH2O + CH2O + OH  # Reaction 363
   type: pressure-dependent-Arrhenius
   rate-constants:
   - {P: 0.013 atm, A: 5.6e+22, b: -3.95, Ea: 1210.0}
@@ -6156,7 +6156,7 @@ reactions:
   note: |+
     Xu et al., J. Phys. Chem. A 115 (2011) 3509–3522.
 
-- equation: CH3CH2O + O2 <=> CH3CHO + HO2  # Reaction 369
+- equation: CH3CH2O + o2 <=> CH3CHO + HO2  # Reaction 369
   rate-constant: {A: 1.5e+10, b: 0.0, Ea: 645.0}
   note: |+
     est
@@ -6247,12 +6247,12 @@ reactions:
   note: |
     M Altarawneh AH Al-Muhtaseb BZ Dlugogorski EM Kennedy JC Mackie J Comput Chem 32: 1725–1733, 2011 
     ¤
-- equation: CH3CHO + O2 <=> CH3CO + HO2  # Reaction 383
+- equation: CH3CHO + o2 <=> CH3CO + HO2  # Reaction 383
   rate-constant: {A: 1.2e+05, b: 2.5, Ea: 3.7554e+04}
   note: |
     M Altarawneh AH Al-Muhtaseb BZ Dlugogorski EM Kennedy JC Mackie J Comput Chem 32: 1725–1733, 2011 
     ¤
-- equation: CH3CHO + O2 <=> CH2CHO + HO2  # Reaction 384
+- equation: CH3CHO + o2 <=> CH2CHO + HO2  # Reaction 384
   rate-constant: {A: 1.5e+07, b: 1.9, Ea: 4.9548e+04}
   note: |
     Baulch DL Bowman CT Cobos CJ Cox RA Just Th Kerr JA Pilling MJ Stocker D Troe J Tsang W Walker RW Warnatz J JPCRD 34:757-1397 2005
@@ -6362,7 +6362,7 @@ reactions:
   note: |+
     R.R. Baldwin, A. Keen, R.W. Walker, J. Chem. Soc. Faraday Trans. 80 (1984) 435
 
-- equation: cC2H4O + O2 <=> cC2H3O + HO2  # Reaction 406
+- equation: cC2H4O + o2 <=> cC2H3O + HO2  # Reaction 406
   rate-constant: {A: 4.0e+13, b: 0.0, Ea: 6.15e+04}
   note: |
     P. Dagaut, D. Voisin, M. Cathonnet, M. McGuinness, J.M. Simmie, Combust. Flame 106 (1996) 62-68.
@@ -6427,17 +6427,17 @@ reactions:
   rate-constant: {A: 1.5e+05, b: 1.67, Ea: 6810.0}
   note: |
     M Altarawneh AH Al-Muhtaseb BZ Dlugogorski EM Kennedy JC Mackie J Comput Chem 32: 1725–1733, 2011 
-- equation: CH2CHOH + O2 => CH2O + HCO + OH  # Reaction 420
+- equation: CH2CHOH + o2 => CH2O + HCO + OH  # Reaction 420
   duplicate: true
   rate-constant: {A: 3.5e+07, b: 1.8, Ea: 3.9e+04}
   note: |+
     G. da Silva, J.W. Bozzelli, Chem. Phys. Lett. 483 (2009) 25–29 (1 atm) 
 
-- equation: CH2CHOH + O2 => CH2O + HCO + OH  # Reaction 421
+- equation: CH2CHOH + o2 => CH2O + HCO + OH  # Reaction 421
   duplicate: true
   rate-constant: {A: -2.1e+17, b: -0.673, Ea: 5.8927e+04}
   negative-A: true
-- equation: CH2CHOH + O2 => CH2O + H + CO + OH  # Reaction 422
+- equation: CH2CHOH + o2 => CH2O + H + CO + OH  # Reaction 422
   rate-constant: {A: 2.1e+17, b: -0.673, Ea: 5.8927e+04}
 - equation: CHCHOH <=> HCCOH + H  # Reaction 423
   type: pressure-dependent-Arrhenius
@@ -6447,7 +6447,7 @@ reactions:
   - {P: 10.0 atm, A: 1.5e+32, b: -6.168, Ea: 5.2239e+04}
   - {P: 100.0 atm, A: 5.5e+29, b: -5.057, Ea: 5.2377e+04}
   note: |
-    est C2H4+O2
+    est C2H4+o2
     applying prompt HCO dissociation - Labbe et al., J. Phys. Chem. Lett. 2016
     1 atm 
 - equation: CHCHOH + H <=> CH2CHO + H  # Reaction 424
@@ -6474,23 +6474,23 @@ reactions:
     Glarborg P Alzueta MU Dam-Johansen K Miller JA CF 115:1 1998
     JAM est
 
-- equation: CHCHOH + O2 <=> OCHCHO + OH  # Reaction 428
+- equation: CHCHOH + o2 <=> OCHCHO + OH  # Reaction 428
   rate-constant: {A: 1.8e+12, b: 0.0, Ea: -187.0}
   note: |
     est C2H3+OH 
-- equation: CHCHOH + O2 <=> HOCHO + HCO  # Reaction 429
+- equation: CHCHOH + o2 <=> HOCHO + HCO  # Reaction 429
   duplicate: true
   rate-constant: {A: 3.3e+12, b: 0.0, Ea: 0.0}
   note: |+
     c2h2 paper 
 
-- equation: CHCHOH + O2 <=> HOCHO + HCO  # Reaction 430
+- equation: CHCHOH + o2 <=> HOCHO + HCO  # Reaction 430
   duplicate: true
   rate-constant: {A: -1.8e+12, b: 0.0, Ea: -187.0}
   negative-A: true
   note: |2+
 
-- equation: CHCHOH + O2 <=> HOCHO + H + CO  # Reaction 431
+- equation: CHCHOH + o2 <=> HOCHO + H + CO  # Reaction 431
   rate-constant: {A: 1.1e+22, b: -2.498, Ea: 2.0266e+04}
 - equation: CHCHOH + CH2O <=> CH2CHOH + HCO  # Reaction 432
   duplicate: true
@@ -6582,7 +6582,7 @@ reactions:
   note: |+
     Baulch DL Bowman CT Cobos CJ Cox RA Just Th Kerr JA Pilling MJ Stocker D Troe J Tsang W Walker RW Warnatz J JPCRD 34:757-1397 2005
 
-- equation: CH3CO + O2 <=> CH3C(O)OO  # Reaction 449
+- equation: CH3CO + o2 <=> CH3C(O)OO  # Reaction 449
   type: pressure-dependent-Arrhenius
   rate-constants:
   - {P: 0.1 atm, A: 3.6e+31, b: -4.769, Ea: 2188.0}
@@ -6591,7 +6591,7 @@ reactions:
   note: |
     Tsang W Hampson RF JPCRD 15:1087 1986  
     1 atm
-- equation: CH3CO + O2 <=> CH2CO + HO2  # Reaction 450
+- equation: CH3CO + o2 <=> CH2CO + HO2  # Reaction 450
   type: pressure-dependent-Arrhenius
   rate-constants:
   - {P: 0.1 atm, A: 1.3e+08, b: 1.986, Ea: 228.0}
@@ -6601,7 +6601,7 @@ reactions:
     J.W. Allen, C.F. Goldsmith, W.H. Green, PhysChemChemPhys 2012, 14, 1131-1155.
     fitted from figure
     1 atm
-- equation: CH3CO + O2 <=> CH2O + CO + OH  # Reaction 451
+- equation: CH3CO + o2 <=> CH2O + CO + OH  # Reaction 451
   type: pressure-dependent-Arrhenius
   rate-constants:
   - {P: 0.1 atm, A: 5.1e+22, b: -3.524, Ea: 3255.0}
@@ -6731,7 +6731,7 @@ reactions:
     applying prompt HCO dissociation - Labbe et al., J. Phys. Chem. Lett. 2016:
 
 
-- equation: CH2CHO + O2 <=> CH2O + CO + OH  # Reaction 466
+- equation: CH2CHO + o2 <=> CH2O + CO + OH  # Reaction 466
   rate-constant: {A: 7.0e+10, b: 0.0, Ea: 0.0}
   note: |+
     est as C2H5+HO2; prod Marinov NM IJCK 31:183 1999
@@ -6759,17 +6759,17 @@ reactions:
     JAM est
     including prompt dissociation of HCO (following Labbe et al., J. Phys. Chem. Lett. 2016)	
 
-- equation: CHCHO + O2 <=> CO2 + H + HCO  # Reaction 472
+- equation: CHCHO + o2 <=> CO2 + H + HCO  # Reaction 472
   rate-constant: {A: 2.1e+09, b: 0.9929, Ea: -269.0}
   note: |+
     J.G. Lopez, C.L. Rasmussen, H. Hashemi, M.U. Alzueta, Y. Gao, P. Marshall, C.F. Goldsmith, P. Glarborg, Int. J. Chem. Kinet. (2016).
     est 
 
-- equation: CHCHO + O2 <=> OCHCHO + O  # Reaction 473
+- equation: CHCHO + o2 <=> OCHCHO + O  # Reaction 473
   rate-constant: {A: 1.3e+06, b: 2.4202, Ea: 1604.0}
   note: |+
     J.G. Lopez, C.L. Rasmussen, H. Hashemi, M.U. Alzueta, Y. Gao, P. Marshall, C.F. Goldsmith, P. Glarborg, Int. J. Chem. Kinet. (2016).
-    est as CH2+O2
+    est as CH2+o2
 
 - equation: CH2 + CO (+M) <=> CH2CO (+M)  # Reaction 474
   type: falloff
@@ -6779,7 +6779,7 @@ reactions:
   efficiencies: {N2: 1.0, H2O: 6.0, AR: 0.7}
   note: |+
     J.G. Lopez, C.L. Rasmussen, H. Hashemi, M.U. Alzueta, Y. Gao, P. Marshall, C.F. Goldsmith, P. Glarborg, Int. J. Chem. Kinet. (2016).
-    est as CH2+O2
+    est as CH2+o2
 
 - equation: CH2CO + H <=> CH3 + CO  # Reaction 475
   rate-constant: {A: 7.8e+08, b: 1.45, Ea: 2780.0}
@@ -6941,7 +6941,7 @@ reactions:
   note: |
     Xiong et al., Combust. Flame 161 (2014) 885–897
     1 atm
-- equation: HCCO + O2 <=> CO2 + CO + H  # Reaction 495
+- equation: HCCO + o2 <=> CO2 + CO + H  # Reaction 495
   rate-constant: {A: 4.9e+12, b: -0.142, Ea: 1150.0}
   note: |+
     PLOG / 0.01                          3.4E14  -1.400    1240 / !results in negative rate constant
@@ -6960,17 +6960,17 @@ reactions:
      Xiong et al., Combust. Flame 161 (2014) 885–897
      ASSUMING 3-CHCOOH = 1-CHCOOH ==fast==> CO2+CH2
 
-- equation: HCCO + O2 <=> CO + CO + OH  # Reaction 496
+- equation: HCCO + o2 <=> CO + CO + OH  # Reaction 496
   rate-constant: {A: 1.6e+11, b: -0.02, Ea: 1020.0}
   note: |+
     Klippenstein SJ Miller JA Harding LB PCI 29:1209-1217 2002
 
-- equation: HCCO + O2 <=> HCO + CO + O  # Reaction 497
+- equation: HCCO + o2 <=> HCO + CO + O  # Reaction 497
   rate-constant: {A: 220.0, b: 2.69, Ea: 3540.0}
   note: |+
     Klippenstein SJ Miller JA Harding LB PCI 29:1209-1217 2002
 
-- equation: HCCO + O2 <=> H + CO + CO + O  # Reaction 498
+- equation: HCCO + o2 <=> H + CO + CO + O  # Reaction 498
   rate-constant: {A: 1.3e+12, b: 0.217, Ea: 2.3467e+04}
 - equation: HCCO + CH2 <=> C2H3 + CO  # Reaction 499
   rate-constant: {A: 3.0e+13, b: 0.0, Ea: 0.0}
@@ -7007,12 +7007,12 @@ reactions:
   rate-constant: {A: 2.0e+13, b: 0.0, Ea: 0.0}
   note: |
     Bauer W Becker KH Meuser R BBPC 89:340 1985
-- equation: C2O + O2 <=> CO + CO + O  # Reaction 506
+- equation: C2O + o2 <=> CO + CO + O  # Reaction 506
   rate-constant: {A: 1.0e+13, b: 0.0, Ea: 2600.0}
   note: |+
     JAM est
 
-- equation: C2O + O2 <=> CO + CO2  # Reaction 507
+- equation: C2O + o2 <=> CO + CO2  # Reaction 507
   rate-constant: {A: 1.0e+13, b: 0.0, Ea: 2600.0}
   note: |+
     Becker KH Konig R Meuser R Wiesen P Bayes KD J Photochem Photobiol A 64:1-14 1992
@@ -7135,15 +7135,15 @@ reactions:
   rate-constant: {A: 9.6e+13, b: 0.0, Ea: 0.0}
   note: |
     S Klippenstein, "Theory of Elementary Reactions", Proc. Combust. Inst., 2016
-- equation: CH3CH2OO + O <=> CH3CH2O + O2  # Reaction 523
+- equation: CH3CH2OO + O <=> CH3CH2O + o2  # Reaction 523
   rate-constant: {A: 2.9e+10, b: 1.0, Ea: -724.0}
   note: |
     est CH3OO+H
-- equation: CH3CH2OO + OH <=> CH3CH2OH + O2  # Reaction 524
+- equation: CH3CH2OO + OH <=> CH3CH2OH + o2  # Reaction 524
   rate-constant: {A: 5.1e+15, b: -0.81, Ea: 0.0}
   note: |
     est CH3OO+O
-- equation: CH3CH2OO + HO2 <=> CH3CH2OOH + O2  # Reaction 525
+- equation: CH3CH2OO + HO2 <=> CH3CH2OOH + o2  # Reaction 525
   rate-constant: {A: 3.6e+11, b: 0.0, Ea: -1267.0}
   note: |
     est CH3OO+OH
@@ -7187,11 +7187,11 @@ reactions:
   note: |+
     est CH3CHO+HO2
 
-- equation: CH3CH2OO + CH3CH2OO <=> CH3CH2O + CH3CH2O + O2  # Reaction 536
+- equation: CH3CH2OO + CH3CH2OO <=> CH3CH2O + CH3CH2O + o2  # Reaction 536
   rate-constant: {A: 2.2e+10, b: 0.0, Ea: 46.0}
   note: |
     est CH3CHO+HO2
-- equation: CH3CH2OO + CH3CH2OO <=> CH3CHO + CH3CH2OH + O2  # Reaction 537
+- equation: CH3CH2OO + CH3CH2OO <=> CH3CHO + CH3CH2OH + o2  # Reaction 537
   rate-constant: {A: 5.6e+10, b: 0.0, Ea: 46.0}
   note: |
     Noell et al., J. Phys. Chem. A 2010, 114, 6983–6995 (221-296 K)
@@ -7213,7 +7213,7 @@ reactions:
   - {P: 100.0 atm, A: 3.2e+21, b: -2.97, Ea: 1.64e+04}
   note: |
     Noell et al., J. Phys. Chem. A 2010, 114, 6983–6995 (221-296 K)
-    CH2CH2OOH=C2H5+O2			1		1		1
+    CH2CH2OOH=C2H5+o2			1		1		1
     see the reverse
 - equation: CH2CHOOH <=> CH2CHO + OH  # Reaction 539
   type: pressure-dependent-Arrhenius
@@ -7438,22 +7438,22 @@ reactions:
     Average (max) fitting error: 8.8% (79.2%) over T of 500--3000 [K] 
      Goldsmith et al., 2015, J. Phys. Chem. A 2015, 119, 7766-7779 (DOI: 10.1021/acs.jpca.5b01088)
 
-- equation: CH2CHOO + O <=> CH2CHO + O2  # Reaction 554
+- equation: CH2CHOO + O <=> CH2CHO + o2  # Reaction 554
   rate-constant: {A: 1.6e+13, b: 0.0, Ea: -145.0}
   note: |+
     est CH3OO+H=CH3O+OH
 
-- equation: CH2CHOO + OH <=> CH2CHOH + O2  # Reaction 555
+- equation: CH2CHOO + OH <=> CH2CHOH + o2  # Reaction 555
   rate-constant: {A: 2.0e+15, b: -0.6, Ea: 0.0}
   note: |+
-    est CH3OO+O=CH3O+O2
+    est CH3OO+O=CH3O+o2
 
 - equation: CH2CHOO + OH <=> CH2CHO + HO2  # Reaction 556
   rate-constant: {A: 4.0e+11, b: 0.6, Ea: 0.0}
   note: |+
-    est CH3OO+OH=CH3OH+O2
+    est CH3OO+OH=CH3OH+o2
 
-- equation: CH2CHOO + HO2 <=> CH2CHOOH + O2  # Reaction 557
+- equation: CH2CHOO + HO2 <=> CH2CHOOH + o2  # Reaction 557
   rate-constant: {A: 4.5e+11, b: 0.0, Ea: -1391.0}
   note: |+
     est H3OO+OH=CH3O+HO2
@@ -7574,7 +7574,7 @@ reactions:
   note: |+
     da Silva, G. J. Phys. Chem. A 115 (2011) 191-197.
 
-- equation: OCHCHO + O2 <=> OCHCO + HO2  # Reaction 574
+- equation: OCHCHO + o2 <=> OCHCO + HO2  # Reaction 574
   rate-constant: {A: 2.4e+05, b: 2.5, Ea: 3.6461e+04}
   note: |+
     est CH2O+HO2
@@ -7588,7 +7588,7 @@ reactions:
   - {P: 1.0 atm, A: 4.1e+14, b: 0.0, Ea: 8765.0}
   - {P: 100.0 atm, A: 1.1e+14, b: 0.133, Ea: 1.014e+04}
   note: |
-    est CH2O+O2
+    est CH2O+o2
     1.0 atm
 - equation: OCHCO <=> H + CO + CO  # Reaction 576
   type: pressure-dependent-Arrhenius
@@ -7600,7 +7600,7 @@ reactions:
   note: |
     kinf                                1.1E14  0.133   10140 !
     1 atm
-- equation: OCHCO + O2 <=> CO + CO2 + OH  # Reaction 577
+- equation: OCHCO + o2 <=> CO + CO2 + OH  # Reaction 577
   type: pressure-dependent-Arrhenius
   rate-constants:
   - {P: 0.01 atm, A: 1.6e+14, b: 0.0, Ea: 1540.0}
@@ -7668,12 +7668,12 @@ reactions:
   note: |+
     P. Marshall, P. Glarborg, Proc. Combust. Inst. 35 (2015) 153-160.
 
-- equation: HOCO + HO2 <=> HOCHO + O2  # Reaction 588
+- equation: HOCO + HO2 <=> HOCHO + o2  # Reaction 588
   rate-constant: {A: 4.0e+11, b: 0.0, Ea: 0.0}
   note: |+
     P. Marshall, P. Glarborg, Proc. Combust. Inst. 35 (2015) 153-160.
 
-- equation: HOCHO + O2 <=> OCHO + HO2  # Reaction 589
+- equation: HOCHO + o2 <=> OCHO + HO2  # Reaction 589
   rate-constant: {A: 3.0e+13, b: 0.0, Ea: 6.3e+04}
   note: |
     H.G. Yu, G. Poggi, J.S. Francisco, J.T. Muckerman, J. Chem. Phys. 129 (2008) 214307.
@@ -7682,7 +7682,7 @@ reactions:
   note: |+
     P. Marshall, P. Glarborg, Proc. Combust. Inst. 35 (2015) 153-160.
 
-- equation: OCHO + O2 <=> CO2 + HO2  # Reaction 591
+- equation: OCHO + o2 <=> CO2 + HO2  # Reaction 591
   rate-constant: {A: 5.0e+13, b: 0.0, Ea: 0.0}
   note: |+
     P. Marshall, P. Glarborg, Proc. Combust. Inst. 35 (2015) 153-160.
@@ -7709,7 +7709,7 @@ reactions:
   note: |
     Zador J Fernandes RX Georgievskii Y Meloni G Taatjes CA Miller JA Proc Combust Inst 2009 32 271-277
     1 atm
-- equation: HOCH2CH2OO + HO2 => CH2OOH + CH2OH + O2  # Reaction 594
+- equation: HOCH2CH2OO + HO2 => CH2OOH + CH2OH + o2  # Reaction 594
   rate-constant: {A: 2.5e+11, b: 0.0, Ea: -1490.0}
   note: |+
     Zador J Fernandes RX Georgievskii Y Meloni G Taatjes CA Miller JA Proc Combust Inst 2009 32 271-277
@@ -7717,7 +7717,7 @@ reactions:
 - equation: HOCH2CH2OO + CH2O => CH2OOH + CH2OH + HCO  # Reaction 595
   rate-constant: {A: 4.1e+04, b: 2.5, Ea: 1.0206e+04}
   note: |+
-    HOCH2CH2OO+HO2=HOCH2CH2OOH+O2        2.5E11   0.000   -1490 ! 
+    HOCH2CH2OO+HO2=HOCH2CH2OOH+o2        2.5E11   0.000   -1490 ! 
      est CH3OO+HO2 (CK no 4 products)
 
 - equation: HOCH2CH2OO + C2H4 => CH2O + CH2OH + CH3CHO  # Reaction 596
@@ -7796,7 +7796,7 @@ reactions:
     Adamson JD Farhat SK Morter CL Glass GP Curl RF Philips LF JPC 98:5665 1994
     Duan X Page M JCP 102:6121-6127 1995
 
-- equation: NH2 + HO2 <=> NH3 + O2  # Reaction 607
+- equation: NH2 + HO2 <=> NH3 + o2  # Reaction 607
   rate-constant: {A: 1.7e+04, b: 1.55, Ea: 2027.0}
   note: |+
     SJ Klippenstein LB Harding B Ruscic R Sivaramakrishnan NK Srinivasan M-C Su JV Michael JPCA 113 (2009) 10241-10259.  
@@ -7824,12 +7824,12 @@ reactions:
   note: |+
     Sumathi R, Peyerimhoff SD. Chem Phys Lett 1996;263:742-748.
 
-- equation: NH2 + O2 <=> H2NO + O  # Reaction 612
+- equation: NH2 + o2 <=> H2NO + O  # Reaction 612
   rate-constant: {A: 2.6e+11, b: 0.4872, Ea: 2.905e+04}
   note: |+
     Sumathi R, Peyerimhoff SD. Chem Phys Lett 1996;263:742-748.
 
-- equation: NH2 + O2 <=> HNO + OH  # Reaction 613
+- equation: NH2 + o2 <=> HNO + OH  # Reaction 613
   rate-constant: {A: 0.029, b: 3.764, Ea: 1.8185e+04}
   note: |+
     SJ Klippenstein LB Harding P Glarborg JA Miller CF 158 (2011) 774-789.
@@ -7902,12 +7902,12 @@ reactions:
   note: |+
     SJ Klippenstein LB Harding B Ruscic R Sivaramakrishnan NK Srinivasan M-C Su JV Michael JPCA 113 (2009) 10241-10259.  
 
-- equation: NH + O2 <=> HNO + O  # Reaction 627
+- equation: NH + o2 <=> HNO + O  # Reaction 627
   rate-constant: {A: 2.4e+13, b: 0.0, Ea: 1.385e+04}
   note: |+
     SJ Klippenstein LB Harding B Ruscic R Sivaramakrishnan NK Srinivasan M-C Su JV Michael JPCA 113 (2009) 10241-10259.  
 
-- equation: NH + O2 <=> NO + OH  # Reaction 628
+- equation: NH + o2 <=> NO + OH  # Reaction 628
   rate-constant: {A: 9.9e+10, b: 0.0, Ea: 1530.0}
   note: |+
     Baulch DL Bowman CT Cobos CJ Cox RA Just Th Kerr JA Pilling MJ Stocker D Troe J Tsang W Walker RW Warnatz J JPCRD 34:757-1397 2005
@@ -7951,7 +7951,7 @@ reactions:
   note: |+
     Harrison JA Whyte AR Phillips LF CPL 129:346 1986
 
-- equation: N + O2 <=> NO + O  # Reaction 637
+- equation: N + o2 <=> NO + O  # Reaction 637
   rate-constant: {A: 6.4e+09, b: 1.0, Ea: 6280.0}
   note: |+
     Flower WL Hanson RK Kruger CH CST 15:115 1977
@@ -7994,7 +7994,7 @@ reactions:
   note: |+
     SJ Klippenstein LB Harding P Glarborg JA Miller CF 158 (2011) 774-789.
 
-- equation: NNH + O2 <=> N2 + HO2  # Reaction 645
+- equation: NNH + o2 <=> N2 + HO2  # Reaction 645
   rate-constant: {A: 5.6e+14, b: -0.385, Ea: -13.0}
   note: |+
     JAM est
@@ -8122,7 +8122,7 @@ reactions:
   note: |+
     Sun F DeSain JD Scott G Hung PY Thompson RI Glass GP Curl RF JPCA 105:6121-6128 2001
 
-- equation: H2NO + O2 <=> HNO + HO2  # Reaction 669
+- equation: H2NO + o2 <=> HNO + HO2  # Reaction 669
   rate-constant: {A: 230.0, b: 2.994, Ea: 1.65e+04}
   note: |+
     Dean AM Bozzelli JW (Gardiner WC) Gas Phase Combustion Chemistry, Springer 2000
@@ -8131,7 +8131,7 @@ reactions:
   rate-constant: {A: 3.0e+12, b: 0.0, Ea: 1000.0}
   note: |2+
      see feature article 
-    H2NO+O2=HNO+HO2                      2.3E02   2.994   18900 ! 
+    H2NO+o2=HNO+HO2                      2.3E02   2.994   18900 ! 
      Y. Song, H. Hashemi, J.M. Christensen, C. Zou, P. Marshall, P. Glarborg, Fuel 181 (2016) 358-365.
 
 - equation: H2NO + NO <=> HNO + HNO  # Reaction 671
@@ -8181,12 +8181,12 @@ reactions:
   note: |+
     Dean AM Bozzelli JW (Gardiner WC) Gas Phase Combustion Chemistry, Springer 2000
 
-- equation: HNOH + HO2 <=> NH2OH + O2  # Reaction 680
+- equation: HNOH + HO2 <=> NH2OH + o2  # Reaction 680
   rate-constant: {A: 2.9e+04, b: 2.69, Ea: -1600.0}
   note: |+
     Dean AM Bozzelli JW (Gardiner WC) Gas Phase Combustion Chemistry, Springer 2000
 
-- equation: HNOH + O2 <=> HNO + HO2  # Reaction 681
+- equation: HNOH + o2 <=> HNO + HO2  # Reaction 681
   rate-constant: {A: 3.0e+12, b: 0.0, Ea: 2.5e+04}
   note: |+
     Dean AM Bozzelli JW (Gardiner WC) Gas Phase Combustion Chemistry, Springer 2000
@@ -8234,7 +8234,7 @@ reactions:
   note: |
     MT Nguyen S Zhang J Peeters TN TRuong MT Nguyen Chem Phys Lett 2004 388 94-99
     #170205 
-- equation: HNO + O2 <=> HO2 + NO  # Reaction 689
+- equation: HNO + o2 <=> HO2 + NO  # Reaction 689
   rate-constant: {A: 2.0e+13, b: 0.0, Ea: 1.6e+04}
   note: |+
     SH Mousavipour SS Asemani J phys Chem A 2015 119 5553-5565
@@ -8272,22 +8272,22 @@ reactions:
     Allen MT Yetter RA Dryer FL CF 109:449 1997
     Yarwood G Sutherland JW Wickramaaratchi MA Klemm RB JPC 95:8771 1991 (AR)
 
-- equation: NO2 + O <=> NO + O2  # Reaction 695
+- equation: NO2 + O <=> NO + o2  # Reaction 695
   rate-constant: {A: 1.1e+14, b: -0.52, Ea: 0.0}
   note: |+
     Ko T Fontijn A JPC 95:3984-3987 1991
 
-- equation: NO2 + HO2 <=> HONO + O2  # Reaction 696
+- equation: NO2 + HO2 <=> HONO + o2  # Reaction 696
   rate-constant: {A: 1.9, b: 3.32, Ea: 3044.0}
   note: |+
     Bemand PP Clyne MAA Watson RT JCSFT2 70:564-576 1974
 
-- equation: NO2 + HO2 <=> HNO2 + O2  # Reaction 697
+- equation: NO2 + HO2 <=> HNO2 + o2  # Reaction 697
   rate-constant: {A: 19.0, b: 3.26, Ea: 4983.0}
   note: |+
     CL Rasmussen J Hansen P Marshall P Glarborg IJCK 40, 454-480 (2008)
 
-- equation: NO2 + NO2 <=> NO + NO + O2  # Reaction 698
+- equation: NO2 + NO2 <=> NO + NO + o2  # Reaction 698
   rate-constant: {A: 4.5e+12, b: 0.0, Ea: 2.7599e+04}
   note: |+
     CL Rasmussen J Hansen P Marshall P Glarborg IJCK 40, 454-480 (2008)
@@ -8383,7 +8383,7 @@ reactions:
   note: |+
     Hahn J Luther K Troe J PCCP 2:5098 2000
 
-- equation: NO3 + O <=> NO2 + O2  # Reaction 715
+- equation: NO3 + O <=> NO2 + o2  # Reaction 715
   rate-constant: {A: 1.0e+13, b: 0.0, Ea: 0.0}
   note: |+
     Becker E Rahman MM Schindler RN BBPC 96:776 1992
@@ -8394,12 +8394,12 @@ reactions:
   note: |+
     Atkinson R Baulch DL Cox RA Hampson RF Kerr JA Troe J JPC Ref Data 1992, 21, 1125–1568.
 
-- equation: NO3 + HO2 <=> NO2 + O2 + OH  # Reaction 717
+- equation: NO3 + HO2 <=> NO2 + o2 + OH  # Reaction 717
   rate-constant: {A: 1.5e+12, b: 0.0, Ea: 0.0}
   note: |+
     Atkinson R Baulch DL Cox RA Hampson RF Kerr JA Troe J JPC Ref Data 1992, 21, 1125–1568.
 
-- equation: NO3 + NO2 <=> NO + NO2 + O2  # Reaction 718
+- equation: NO3 + NO2 <=> NO + NO2 + o2  # Reaction 718
   rate-constant: {A: 5.0e+10, b: 0.0, Ea: 2940.0}
   note: |+
     Becker E Rahman MM Schindler RN BBPC 96:776 1992
@@ -8438,7 +8438,7 @@ reactions:
   type: falloff
   low-P-rate-constant: {A: 6.0e+14, b: 0.0, Ea: 5.7444e+04}
   high-P-rate-constant: {A: 9.9e+10, b: 0.0, Ea: 5.7901e+04}
-  efficiencies: {N2: 1.7, O2: 1.4, H2O: 12.0}
+  efficiencies: {N2: 1.7, o2: 1.4, H2O: 12.0}
   note: |+
     Lamb JJ Mozurkewich M Benson SW JPC 88:6441-6448 1984
 
@@ -8454,7 +8454,7 @@ reactions:
   note: |+
     SJ Klippenstein LB Harding P Glarborg JA Miller CF 158 (2011) 774-789.
 
-- equation: N2O + O <=> N2 + O2  # Reaction 727
+- equation: N2O + O <=> N2 + o2  # Reaction 727
   rate-constant: {A: 9.2e+13, b: 0.0, Ea: 2.7679e+04}
   note: |+
     Meagher NE Anderson WR JPCA 104:6013-6031 2000
@@ -8623,7 +8623,7 @@ reactions:
   note: |+
     JAM est
 
-- equation: N2H3 + HO2 <=> N2H4 + O2  # Reaction 756
+- equation: N2H3 + HO2 <=> N2H4 + o2  # Reaction 756
   rate-constant: {A: 9.2e+05, b: 1.94, Ea: 2126.0}
   note: |+
     Dean AM Bozzelli JW (Gardiner WC) Gas Phase Combustion Chemistry, Springer 2000
@@ -8745,7 +8745,7 @@ reactions:
   note: |+
     Dean AM Bozzelli JW (Gardiner WC) Gas Phase Combustion Chemistry, Springer 2000
 
-- equation: H2NN + O2 <=> NH2 + NO2  # Reaction 779
+- equation: H2NN + o2 <=> NH2 + NO2  # Reaction 779
   rate-constant: {A: 1.5e+12, b: 0.0, Ea: 5961.0}
   note: |+
     Dean AM Bozzelli JW (Gardiner WC) Gas Phase Combustion Chemistry, Springer 2000
@@ -8758,7 +8758,7 @@ reactions:
 - equation: HCN + M <=> H + CN + M  # Reaction 781
   type: three-body
   rate-constant: {A: 3.4e+35, b: -5.13, Ea: 1.33e+05}
-  efficiencies: {N2: 0.0, O2: 1.5, H2O: 10.0}
+  efficiencies: {N2: 0.0, o2: 1.5, H2O: 10.0}
   note: |+
     Dean AM Bozzelli JW (Gardiner WC) Gas Phase Combustion Chemistry, Springer 2000
     ************************************************************************
@@ -8816,7 +8816,7 @@ reactions:
   note: |+
     Miller JA Bowman CT PECS 15:287 1989
 
-- equation: HCN + O2 <=> CN + HO2  # Reaction 792
+- equation: HCN + o2 <=> CN + HO2  # Reaction 792
   rate-constant: {A: 3.0e+13, b: 0.0, Ea: 7.51e+04}
   note: |+
     Miller JA Bowman CT PECS 15:287 1989
@@ -8859,13 +8859,13 @@ reactions:
   note: |+
     Cobos CJ React Kinet Catal Lett 57:43-47 1996
 
-- equation: CN + O2 <=> NCO + O  # Reaction 800
+- equation: CN + o2 <=> NCO + O  # Reaction 800
   rate-constant: {A: 5.8e+12, b: 0.0, Ea: -417.0}
   note: |+
     Wooldridge ST Hanson RK Bowman CT IJCK 1996;28:245–58
     Decker, B.K.; Macdonald, R.G. J. Phys. Chem. A 107 9137-9146 2003
 
-- equation: CN + O2 <=> NO + CO  # Reaction 801
+- equation: CN + o2 <=> NO + CO  # Reaction 801
   rate-constant: {A: 1.4e+12, b: 0.0, Ea: -417.0}
   note: |+
     Baulch DL Bowman CT Cobos CJ Cox RA Just Th Kerr JA Pilling MJ Stocker D Troe J Tsang W Walker RW Warnatz J JPCRD 34:757-1397 2005
@@ -8965,7 +8965,7 @@ reactions:
     Wooldridge ST Hanson RK Bowman CT IJCK 28:361-372 1995
     D Sengupta MT Nguyen J. Chem. Phys. 106 (1997) 9703-9707: NH2+CO2 channel negligible
 
-- equation: HNCO + O2 <=> HNO + CO2  # Reaction 819
+- equation: HNCO + o2 <=> HNO + CO2  # Reaction 819
   rate-constant: {A: 2.0e+13, b: 0.0, Ea: 5.89e+04}
   note: |+
     JAM est
@@ -9099,12 +9099,12 @@ reactions:
   note: |+
     Dean AM Bozzelli JW (Gardiner WC) Gas Phase Combustion Chemistry, Springer 2000
 
-- equation: NCO + HO2 <=> HNCO + O2  # Reaction 842
+- equation: NCO + HO2 <=> HNCO + o2  # Reaction 842
   rate-constant: {A: 2.0e+13, b: 0.0, Ea: 0.0}
   note: |+
     Dean AM Bozzelli JW (Gardiner WC) Gas Phase Combustion Chemistry, Springer 2000
 
-- equation: NCO + O2 <=> NO + CO2  # Reaction 843
+- equation: NCO + o2 <=> NO + CO2  # Reaction 843
   rate-constant: {A: 2.0e+12, b: 0.0, Ea: 2.0e+04}
   note: |+
     est
@@ -9971,7 +9971,7 @@ reactions:
     S.J. Klippenstein, M. Pfeifle, A.W. Jasper, P. Glarborg, “Theory and Modeling of Relevance to Prompt-NO Formation at High Pressure”, 
     Combust. Flame, submitted (2017).
     1 atm
-- equation: NCN + O2 <=> NCO + NO  # Reaction 974
+- equation: NCN + o2 <=> NCO + NO  # Reaction 974
   rate-constant: {A: 1.3e+12, b: 0.0, Ea: 2.3167e+04}
   note: |+
     S.J. Klippenstein, M. Pfeifle, A.W. Jasper, P. Glarborg, “Theory and Modeling of Relevance to Prompt-NO Formation at High Pressure”, 
@@ -10015,7 +10015,7 @@ reactions:
   rate-constant: {A: 1.0e+05, b: 2.48, Ea: -1887.0}
   note: |
     S. Xu and M. C. Lin, Proc. Combust. Inst. 2009, 32, 99–106.
-- equation: HNCN + O2 <=> NCN + HO2  # Reaction 982
+- equation: HNCN + o2 <=> NCN + HO2  # Reaction 982
   rate-constant: {A: 1.3e+08, b: 1.28, Ea: 2.42e+04}
   note: |
     S. Xu and M. C. Lin, J. Phys. Chem. A, 2007, 111, 6730–6740.
@@ -10200,7 +10200,7 @@ reactions:
   note: |+
     Dean AM Bozzelli JW (Gardiner WC) Gas Phase Combustion Chemistry, Springer 2000
 
-- equation: CH2NO + O2 <=> CH2O + NO2  # Reaction 1010
+- equation: CH2NO + o2 <=> CH2O + NO2  # Reaction 1010
   rate-constant: {A: 1.1e+23, b: -3.29, Ea: 3895.0}
   note: |
     Dean AM Bozzelli JW (Gardiner WC) Gas Phase Combustion Chemistry, Springer 2000
@@ -10276,7 +10276,7 @@ reactions:
     est CH3NO+OH 
 
 
-- equation: C2H5NO + O2 => C2H4 + NO + HO2  # Reaction 1023
+- equation: C2H5NO + o2 => C2H4 + NO + HO2  # Reaction 1023
   rate-constant: {A: 7.3e+05, b: 2.5, Ea: 4.916e+04}
   note: |+
     J Giménez-López MU Alzueta CL Rasmussen P Marshall P Glarborg; PCI 33 (2011) 449-457
@@ -10287,7 +10287,7 @@ reactions:
   rate-constant: {A: 2.0e+13, b: 0.0, Ea: 2.2e+04}
   note: |+
     J Giménez-López MU Alzueta CL Rasmussen P Marshall P Glarborg; PCI 33 (2011) 449-457
-    est C2H6+O2 CH2CH2NO not stable
+    est C2H6+o2 CH2CH2NO not stable
 
 
 - equation: CH2CHNO + H <=> CHCHNO + H2  # Reaction 1025
@@ -10386,7 +10386,7 @@ reactions:
     Glarborg P Bendtsen AB Miller JA IJCK 31:591-602 1999
     JAM est
 
-- equation: CH3NO2 + O2 <=> CH2NO2 + HO2  # Reaction 1039
+- equation: CH3NO2 + o2 <=> CH2NO2 + HO2  # Reaction 1039
   rate-constant: {A: 2.0e+13, b: 0.0, Ea: 5.7e+04}
   note: |+
     Glarborg P Bendtsen AB Miller JA IJCK 31:591-602 1999
@@ -10396,7 +10396,7 @@ reactions:
   rate-constant: {A: 0.55, b: 4.0, Ea: 8300.0}
   note: |+
     Glarborg P Bendtsen AB Miller JA IJCK 31:591-602 1999
-    est A factor as CH3OH+O2, Ea = endothermicity
+    est A factor as CH3OH+o2, Ea = endothermicity
 
 - equation: CH3NO2 + CH3O <=> CH2NO2 + CH3OH  # Reaction 1041
   rate-constant: {A: 3.0e+11, b: 0.0, Ea: 7000.0}
@@ -10549,7 +10549,7 @@ reactions:
     est C2H6+HO2
 
 
-- equation: C2H5NO2 + O2 <=> CH2CH2NO2 + HO2  # Reaction 1063
+- equation: C2H5NO2 + o2 <=> CH2CH2NO2 + HO2  # Reaction 1063
   rate-constant: {A: 7.3e+05, b: 2.5, Ea: 4.916e+04}
   note: |+
     K Zhang L Zhang M Xie LI Ye F Zhang P Glarborg F Qi; Proc Combust Inst 34 (2013) 617-624
@@ -10560,7 +10560,7 @@ reactions:
   rate-constant: {A: 220.0, b: 3.18, Ea: 9622.0}
   note: |+
     K Zhang L Zhang M Xie LI Ye F Zhang P Glarborg F Qi; Proc Combust Inst 34 (2013) 617-624
-    est C2H6+O2
+    est C2H6+o2
 
 
 - equation: C2H5NO2 + CH3 <=> CH3CHNO2 + CH4  # Reaction 1065
@@ -10802,11 +10802,11 @@ reactions:
   note: |+
     Dean AM Bozzelli JW (Gardiner WC) Gas Phase Combustion Chemistry, Springer 2000
 
-- equation: CH2NH2 + O2 <=> CH2NH + HO2  # Reaction 1103
+- equation: CH2NH2 + o2 <=> CH2NH + HO2  # Reaction 1103
   rate-constant: {A: 1.0e+22, b: -3.09, Ea: 6756.0}
   note: |2+
      Dean AM Bozzelli JW (Gardiner WC) Gas Phase Combustion Chemistry, Springer 2000
-    CH2NH2+O2=NH2CH2O+O                   6.0E18  -1.590   30192 ! 
+    CH2NH2+o2=NH2CH2O+O                   6.0E18  -1.590   30192 ! 
      Dean AM Bozzelli JW (Gardiner WC) Gas Phase Combustion Chemistry, Springer 2000
 
 - equation: CH2NH2 + CH3 <=> C2H5 + NH2  # Reaction 1104
@@ -10931,7 +10931,7 @@ reactions:
   note: |
     Dean AM Bozzelli JW (Gardiner WC) Gas Phase Combustion Chemistry, Springer 2000
     1 atm 
-- equation: H2CN + O2 <=> CH2O + NO  # Reaction 1126
+- equation: H2CN + o2 <=> CH2O + NO  # Reaction 1126
   rate-constant: {A: 3.0e+12, b: 0.0, Ea: 5961.0}
   note: |+
     Dean AM Bozzelli JW (Gardiner WC) Gas Phase Combustion Chemistry, Springer 2000
@@ -11143,7 +11143,7 @@ reactions:
     A Lucassen K Zhang J Warkentin K Moshammer P Glarborg P Marshall K Kohse-Höinghaus, CF 159 (2012) 2254-2279.
     est n-c3h7 
 
-- equation: CH2CH2NH2 + O2 <=> CH2CHNH2 + HO2  # Reaction 1163
+- equation: CH2CH2NH2 + o2 <=> CH2CHNH2 + HO2  # Reaction 1163
   rate-constant: {A: 3.7e+16, b: -1.63, Ea: 3418.0}
   note: |+
     A Lucassen K Zhang J Warkentin K Moshammer P Glarborg P Marshall K Kohse-Höinghaus, CF 159 (2012) 2254-2279.
@@ -11224,7 +11224,7 @@ reactions:
     A Lucassen K Zhang J Warkentin K Moshammer P Glarborg P Marshall K Kohse-Höinghaus, CF 159 (2012) 2254-2279.
     est i-c3h7
 
-- equation: CH3CHNH2 + O2 <=> CH2CHNH2 + HO2  # Reaction 1176
+- equation: CH3CHNH2 + o2 <=> CH2CHNH2 + HO2  # Reaction 1176
   rate-constant: {A: 6.7e+20, b: -3.02, Ea: 2504.0}
   note: |+
     A Lucassen K Zhang J Warkentin K Moshammer P Glarborg P Marshall K Kohse-Höinghaus, CF 159 (2012) 2254-2279.
@@ -11526,7 +11526,7 @@ reactions:
     A Lucassen K Zhang J Warkentin K Moshammer P Glarborg P Marshall K Kohse-Höinghaus, CF 159 (2012) 2254-2279.
     est c2h3+o
 
-- equation: CHCHNH2 + O2 <=> OCHCHO + NH2  # Reaction 1224
+- equation: CHCHNH2 + o2 <=> OCHCHO + NH2  # Reaction 1224
   rate-constant: {A: 4.0e+12, b: 0.0, Ea: 0.0}
   note: |+
     A Lucassen K Zhang J Warkentin K Moshammer P Glarborg P Marshall K Kohse-Höinghaus, CF 159 (2012) 2254-2279.
@@ -11567,7 +11567,7 @@ reactions:
     A Lucassen K Zhang J Warkentin K Moshammer P Glarborg P Marshall K Kohse-Höinghaus, CF 159 (2012) 2254-2279.
     est c2h3+o
 
-- equation: CH2CNH2 + O2 <=> OCHCHO + NH2  # Reaction 1230
+- equation: CH2CNH2 + o2 <=> OCHCHO + NH2  # Reaction 1230
   rate-constant: {A: 4.0e+12, b: 0.0, Ea: 0.0}
   note: |+
     A Lucassen K Zhang J Warkentin K Moshammer P Glarborg P Marshall K Kohse-Höinghaus, CF 159 (2012) 2254-2279.
@@ -11615,7 +11615,7 @@ reactions:
     A Lucassen K Zhang J Warkentin K Moshammer P Glarborg P Marshall K Kohse-Höinghaus, CF 159 (2012) 2254-2279.
     est ch2cho+oh
 
-- equation: CH2CHNH + O2 <=> CH2O + CO + NH2  # Reaction 1238
+- equation: CH2CHNH + o2 <=> CH2O + CO + NH2  # Reaction 1238
   rate-constant: {A: 5.7e+17, b: -1.757, Ea: 1.1067e+04}
   note: |+
     A Lucassen K Zhang J Warkentin K Moshammer P Glarborg P Marshall K Kohse-Höinghaus, CF 159 (2012) 2254-2279.
@@ -11681,7 +11681,7 @@ reactions:
     A Lucassen K Zhang J Warkentin K Moshammer P Glarborg P Marshall K Kohse-Höinghaus, CF 159 (2012) 2254-2279.
     est ch3co+oh
 
-- equation: CH3CNH + O2 <=> CH2O + CO + NH2  # Reaction 1249
+- equation: CH3CNH + o2 <=> CH2O + CO + NH2  # Reaction 1249
   rate-constant: {A: 1.9e+12, b: 0.0, Ea: 0.0}
   note: |+
     A Lucassen K Zhang J Warkentin K Moshammer P Glarborg P Marshall K Kohse-Höinghaus, CF 159 (2012) 2254-2279.
@@ -11885,7 +11885,7 @@ reactions:
     A Lucassen K Zhang J Warkentin K Moshammer P Glarborg P Marshall K Kohse-Höinghaus, CF 159 (2012) 2254-2279.
     est 
 
-- equation: CH2CHN + O2 <=> CH2O + HNCO  # Reaction 1283
+- equation: CH2CHN + o2 <=> CH2O + HNCO  # Reaction 1283
   rate-constant: {A: 1.0e+12, b: 0.0, Ea: 0.0}
   note: |+
     A Lucassen K Zhang J Warkentin K Moshammer P Glarborg P Marshall K Kohse-Höinghaus, CF 159 (2012) 2254-2279.
@@ -11986,19 +11986,19 @@ reactions:
     A Lucassen K Zhang J Warkentin K Moshammer P Glarborg P Marshall K Kohse-Höinghaus, CF 159 (2012) 2254-2279.
     est hcco+o
 
-- equation: CHCNH + O2 <=> HNCO + HCO  # Reaction 1300
+- equation: CHCNH + o2 <=> HNCO + HCO  # Reaction 1300
   rate-constant: {A: 4.9e+12, b: -0.142, Ea: 1150.0}
   note: |+
     A Lucassen K Zhang J Warkentin K Moshammer P Glarborg P Marshall K Kohse-Höinghaus, CF 159 (2012) 2254-2279.
     est hcco+oh
 
-- equation: CHCNH + O2 <=> HNC + CO + OH  # Reaction 1301
+- equation: CHCNH + o2 <=> HNC + CO + OH  # Reaction 1301
   rate-constant: {A: 1.6e+11, b: -0.02, Ea: 1020.0}
   note: |+
     A Lucassen K Zhang J Warkentin K Moshammer P Glarborg P Marshall K Kohse-Höinghaus, CF 159 (2012) 2254-2279.
     est hcco+o2
 
-- equation: CHCNH + O2 <=> HNC + HCO + O  # Reaction 1302
+- equation: CHCNH + o2 <=> HNC + HCO + O  # Reaction 1302
   rate-constant: {A: 220.0, b: 2.69, Ea: 3540.0}
   note: |+
     A Lucassen K Zhang J Warkentin K Moshammer P Glarborg P Marshall K Kohse-Höinghaus, CF 159 (2012) 2254-2279.
@@ -12237,7 +12237,7 @@ reactions:
     A Lucassen K Zhang J Warkentin K Moshammer P Glarborg P Marshall K Kohse-Höinghaus, CF 159 (2012) 2254-2279.
     est 
 
-- equation: CH3NCH3 + O2 <=> CH3NO + CH3O  # Reaction 1341
+- equation: CH3NCH3 + o2 <=> CH3NO + CH3O  # Reaction 1341
   rate-constant: {A: 1.0e+09, b: 1.0, Ea: 6000.0}
   note: |+
     A Lucassen K Zhang J Warkentin K Moshammer P Glarborg P Marshall K Kohse-Höinghaus, CF 159 (2012) 2254-2279.

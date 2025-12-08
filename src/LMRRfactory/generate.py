@@ -212,13 +212,13 @@ class makeYAML:
                 if c>0 and col['efficiency']['b']==0 and col['efficiency']['Ea']==0:
                     troe_efficiencies[col['name']]=col['efficiency']['A'] ## WHY ARE WE USING TROE EFFICIENCIES HERE
         for name, val in troe_efficiencies.items():
-            comp = self.species_dict[name]
+            comp = self.species_dict[name.upper()]
             # Check if N2 is the reference collider instead of Ar
             if comp=={'Ar': 1} and val!=0 and val !=1:
                 is_M_N2 = True
                 divisor = 1/val
         for name, val in troe_efficiencies.items():
-            comp = self.species_dict[name]
+            comp = self.species_dict[name.upper()]
             if is_M_N2 and comp=={'N': 2} and val!=0 and val !=1:
                 is_M_N2 = False #just treat as if Ar is reference since case is ambiguous
                 print(f"> Warning: {mech_rxn} has both Ar and N2 as non-unity colliders! Please fix.")
@@ -246,7 +246,7 @@ class makeYAML:
                     
             # Add troe efficiencies that haven't already been given a value
             for name, val in troe_efficiencies.items():
-                comp = self.species_dict[name]
+                comp = self.species_dict[name.upper()]
                 already_given = comp in colliderNames
                 if not already_given and not comp=={'N': 2}: #ignores the redundant n2=1 entry
                     colliders.append({
@@ -254,7 +254,7 @@ class makeYAML:
                         'efficiency': {'A':val,'b':0,'Ea':0 },
                         'note': 'present work',
                     })
-                    colliderNames.append(self.species_dict[name])
+                    colliderNames.append(self.species_dict[name.upper()])
             if generic:
                 for col in self.defaults['generic-colliders']:
                     already_given = col['composition'] in colliderNames
@@ -275,7 +275,7 @@ class makeYAML:
                         colliders.append(newCol)
             # Add troe efficiencies that haven't already been given a value
             for name, val in troe_efficiencies.items():
-                comp = self.species_dict[name]
+                comp = self.species_dict[name.upper()]
                 # already_given = any(col['name'] == name for col in colliders)
                 already_given = comp in colliderNames
                 if not already_given and not comp=={'Ar': 1}:
@@ -352,7 +352,7 @@ class makeYAML:
                 yaml_str = yaml.dump(newRxn, sort_keys=False)
                 newRxn_obj = ct.Reaction.from_yaml(yaml_str,self.mech_obj)
                 newReactions.append(newRxn_obj)
-                print(f"{mech_rxn} {dict(self.mech_pes[i])} converted to LMR-R with {param_type} parameters. generic={genericBool},blendRxn={str(blendRxn)}")
+                print(f"{mech_rxn} {dict(self.mech_pes[i])} converted to LMR-R with {param_type} parameters.")
             else: # just append it as-is
                 d = mech_rxn.input_data
                 if 'note' in d and re.fullmatch(r'\n+', d['note']):
