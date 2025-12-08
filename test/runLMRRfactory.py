@@ -7,7 +7,7 @@ args = parser.parse_args()
 
 allPdep = 'True'
 allPLOG = 'True'
-date = 'Oct08'
+date = 'Dec08'
 
 models = {
     # 'testmech': 'test/data/test_mech.yaml',
@@ -20,12 +20,12 @@ models = {
     }
 
 for m in models.keys():
-    # LMRRfactory.makeYAML(mechInput=models[m],
-    #                     outputPath=f"test/outputs/{date}")
-    # if allPdep == 'True':
-    #     LMRRfactory.makeYAML(mechInput=models[m],
-    #                         outputPath=f"test/outputs/{date}",
-    #                         allPdep=True)
     LMRRfactory.makeYAML(mechInput=models[m],
-                         colliderInput='test/testinput.yaml',
                         outputPath=f"test/outputs/{date}")
+    if allPdep == 'True':
+        LMRRfactory.makeYAML(mechInput=models[m],
+                            outputPath=f"test/outputs/{date}",
+                            allPdep=True)
+    # LMRRfactory.makeYAML(mechInput=models[m],
+    #                      colliderInput='test/testinput.yaml',
+    #                     outputPath=f"test/outputs/{date}",allPdep=True)

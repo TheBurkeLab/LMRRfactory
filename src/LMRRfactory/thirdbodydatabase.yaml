@@ -388,7 +388,8 @@ reactions:
     note: Jasper-2022
   - name: H2
     composition: {H: 2}
-    efficiency: [3.69,3.07,1.71]
+    # efficiency: [3.69,3.07,1.71]
+    efficiency: [13.69,13.07,11.71]
     temperatures: [300,1000,2000]
     note: Jasper-2022
   - name: CO2
