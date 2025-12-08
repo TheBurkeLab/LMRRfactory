@@ -14,7 +14,7 @@ def compare(rxn,collider):
         R = 1.987 # cal/molK
         return A * T**beta * np.exp(-Ea / (R * T))
     eps=False
-    defaults = loadYAML("/home/pjs/LMRRfactory/src/LMRRfactory/testdefaults.yaml")
+    defaults = loadYAML("/home/pjs/LMRRfactory/test/data/testdefaults.yaml")
     for default_rxn in defaults['reactions']:
         if default_rxn['name']==rxn['equation']:
             for default_col in default_rxn['colliders']:
@@ -44,9 +44,12 @@ def compare(rxn,collider):
         os.makedirs(f"test/outputs/{date}/{datafile}",exist_ok=True)
         plt.savefig(f"test/outputs/{date}/{datafile}/comparison_{rxn['equation']}_{collider['name']}.png")
 
-date='Oct06'
-datapath = "/home/pjs/LMRRfactory/test/data/"
-datafile = "klippenstein-CNF2018-original_LMRR_Feb14"
+# date='Oct06'
+# datapath = "/home/pjs/LMRRfactory/test/data/"
+# datafile = "klippenstein-CNF2018-original_LMRR_Feb14"
+date='Dec08'
+datapath = f"/home/pjs/LMRRfactory/test/outputs/{date}/"
+datafile = "klippenstein-CNF2018-original_LMRR"
 # datafile = "klippenstein-CNF2018-original_LMRR_Oct06"
 data = loadYAML(datapath+datafile+".yaml")
 for rxn in data['reactions']:
