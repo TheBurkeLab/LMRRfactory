@@ -225,7 +225,7 @@ class makeYAML:
             if comp=={'Ar': 1} and val==0 :
                 print(f"> Warning: {mech_rxn} has Ar assumed as reference collider, since params cannot be scaled by the Ar=0 value provided. Please fix.")
 
-        citeStr='M=' # collider citations appended to here
+        citeStr='Bath gas: ' # collider citations appended to here
 
         if is_M_N2:
             citeStr += "N2. Citations: "
