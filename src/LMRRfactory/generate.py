@@ -225,10 +225,10 @@ class makeYAML:
             if comp=={'Ar': 1} and val==0 :
                 print(f"> Warning: {mech_rxn} has Ar assumed as reference collider, since params cannot be scaled by the Ar=0 value provided. Please fix.")
 
-        citeStr='Reference collider (M): ' # collider citations appended to here
+        citeStr='M=' # collider citations appended to here
 
         if is_M_N2:
-            citeStr += "N2. Citations: "
+            citeStr += "N2\nCitations: "
             if blend_rxn:
                 for col in blend_rxn['colliders']:
                     if col['composition']=={'N': 2}:
@@ -274,7 +274,7 @@ class makeYAML:
                             # 'note': col['note']
                         })
         else:
-            citeStr += "AR. Citations: "
+            citeStr += "AR\nCitations: "
             if blend_rxn:
                 # Make reaction-specific colliders wrt Ar and append to collider list 
                 for col in blend_rxn['colliders']:
@@ -365,7 +365,7 @@ class makeYAML:
                 }
                 newRxn['note'] = citeStr
                 if 'note' in d and not re.fullmatch(r'\n+', d['note']):
-                    newRxn['note'] = d['note'] + "\n" + citeStr
+                    newRxn['note'] = d['note'] + " " + citeStr
                 else:
                     newRxn['note'] = citeStr
                 yaml_str = yaml.dump(newRxn, sort_keys=False)
