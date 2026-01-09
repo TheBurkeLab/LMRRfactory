@@ -200,7 +200,6 @@ class makeYAML:
         colliderNames=[]
         is_M_N2 = False
         is_M_X = False
-        ar_troe_eff = None
         troe_efficiencies={}
         if mech_rxn.reaction_type == 'falloff-Troe':
             troe_efficiencies= mech_rxn.input_data.get('efficiencies', {})
@@ -213,18 +212,44 @@ class makeYAML:
             for c, col in enumerate(mech_rxn.input_data.get('colliders', {})):
                 if c>0 and col['efficiency']['b']==0 and col['efficiency']['Ea']==0:
                     troe_efficiencies[col['name']]=col['efficiency']['A'] ## WHY ARE WE USING TROE EFFICIENCIES HERE
+        # troe_dict = troe_efficiencies.items()
+        counter=0
+        for name, val in troe_efficiencies.items():
+            comp = self.species_dict[name.upper()]
+            if comp=={'Ar': 1} and val != 0 and val != 1:
+                counter+=1
+                break
+            if comp=={'Ar': 1} and val==0 :
+                print(f"> Warning: {mech_rxn} has Ar assumed as reference collider, since params cannot be scaled by the Ar=0 value provided. Please fix.")
+        if counter == 1:
+            for name, val in troe_efficiencies.items():
+                comp = self.species_dict[name.upper()]
+                if comp=={'N': 2} and val != 0 and val != 1:
+                    counter+=1
+                    break
+
+        #algorithm to add:
+        #if (+AR), then take that reaction and put that as a k(T,P) entry under that corresponding collider
+        # also need a way to infer what the third body efficiency would be by dividing the low-pressure limit rate constant of itself versus that of the base rxn
+
+        # When there is a reaction that is not (+M) but species-specific, e.g. (+AR), do not give it an LMRR implementation. Just leave it alone. 
+
+
+        if counter==1:
+            is_M_N2 = True
+        elif counter==2:
+            is_M_X = True
+        
         for name, val in troe_efficiencies.items():
             comp = self.species_dict[name.upper()]
             # Check if N2 is the reference collider instead of Ar
-            if comp=={'Ar': 1} and val!=0 and val !=1:
-                is_M_N2 = True
+            if is_M_N2 or is_M_X:
                 divisor = 1/val
-                ar_troe_eff = val
         for name, val in troe_efficiencies.items():
             comp = self.species_dict[name.upper()]
             if is_M_N2 and comp=={'N': 2} and val!=0 and val !=1:
-                is_M_N2 = False
-                is_M_X = True
+                is_M_N2 = False #just treat as if Ar is reference since case is ambiguous
+                print(f"> Warning: {mech_rxn} has both Ar and N2 as non-unity colliders! Please fix.")
             if comp=={'Ar': 1} and val==0 :
                 print(f"> Warning: {mech_rxn} has Ar assumed as reference collider, since params cannot be scaled by the Ar=0 value provided. Please fix.")
 
@@ -275,40 +300,6 @@ class makeYAML:
                             'name': colName,
                             'efficiency': {'A': col['efficiency']/divisor,'b':0,'Ea':0},
                             # 'note': col['note']
-                        })
-        elif is_M_X:
-            citeStr += "X. Citations: "
-            if blend_rxn:
-                for col in blend_rxn['colliders']:
-                    if col['composition'] in list(self.species_dict.values()):
-                        newCol = copy.deepcopy(col)
-                        fitted = self._arrheniusFit(newCol['temperatures'], newCol['efficiency'])
-                        fitted['A'] = fitted['A'] / ar_troe_eff
-                        newCol['efficiency'] = fitted
-                        citeStr += f"{newCol['name']}: {newCol['note']}; "
-                        colliderNames.append(newCol['composition'])
-                        colliders.append(newCol)
-            # Add troe efficiencies that haven't already been given a value
-            for name, val in troe_efficiencies.items():
-                comp = self.species_dict[name.upper()]
-                already_given = comp in colliderNames
-                if not already_given:
-                    colName = next(k for k, v in self.species_dict.items() if v == comp)
-                    citeStr += f"{colName}: present work; "
-                    colliderNames.append(comp)
-                    colliders.append({
-                        'name': colName,
-                        'efficiency': {'A':val,'b':0,'Ea':0 },
-                    })
-            if generic:
-                for col in self.defaults['generic-colliders']:
-                    already_given = col['composition'] in colliderNames
-                    if col['composition'] in list(self.species_dict.values()) and not already_given:
-                        colName = next(k for k, v in self.species_dict.items() if v == col['composition'])
-                        citeStr += f"{colName}: {col['note']}; "
-                        colliders.append({
-                            'name': colName,
-                            'efficiency': {'A': col['efficiency']/ar_troe_eff,'b':0,'Ea':0},
                         })
         else:
             citeStr += "AR. Citations: "
@@ -378,9 +369,6 @@ class makeYAML:
                     d['high-P-rate-constant']=dict(d['high-P-rate-constant'])
                 colliderM = {'name': 'M'}
                 colliderM.update(dict(d))
-            # Leave reactions with explicitly-defined bath gases (e.g., (+AR)) in original format
-            if pDep and '(+' in mech_rxn.equation and '(+M)' not in mech_rxn.equation:
-                pDep = False
             if pDep and (self.mech_pes[i] in blendRxnNames or self.allPdep):
                 genericBool = True if self.allPdep else False
                 blendRxn = None

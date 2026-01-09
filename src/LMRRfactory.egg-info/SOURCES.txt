@@ -2,6 +2,7 @@ README.md
 pyproject.toml
 src/LMRRfactory/__init__.py
 src/LMRRfactory/generate.py
+src/LMRRfactory/generate_exp.py
 src/LMRRfactory/thirdbodydatabase.yaml
 src/LMRRfactory.egg-info/PKG-INFO
 src/LMRRfactory.egg-info/SOURCES.txt
