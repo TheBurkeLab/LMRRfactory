@@ -224,7 +224,11 @@ class makeYAML:
                 print(f"> Warning: {mech_rxn} has both Ar and N2 as non-unity colliders! Please fix.")
             if comp=={'Ar': 1} and val==0 :
                 print(f"> Warning: {mech_rxn} has Ar assumed as reference collider, since params cannot be scaled by the Ar=0 value provided. Please fix.")
+
+        citeStr='Reference collider (M): ' # collider citations appended to here
+
         if is_M_N2:
+            citeStr += "N2. Citations: "
             if blend_rxn:
                 for col in blend_rxn['colliders']:
                     if col['composition']=={'N': 2}:
@@ -241,6 +245,7 @@ class makeYAML:
                         k_i = self._arrheniusFit(col['temperatures'],col['efficiency'])
                     if k_i:
                         newCol['efficiency']=self._rescaleArrhenius(k_ref,k_i)
+                        citeStr += f"{newCol['name']} (ab initio): {newCol['note']}; "
                         colliderNames.append(newCol['composition'])
                         colliders.append(newCol)
                     
@@ -249,55 +254,66 @@ class makeYAML:
                 comp = self.species_dict[name.upper()]
                 already_given = comp in colliderNames
                 if not already_given and not comp=={'N': 2}: #ignores the redundant n2=1 entry
-                    colliders.append({
-                        'name': next(k for k, v in self.species_dict.items() if v == comp),
-                        'efficiency': {'A':val,'b':0,'Ea':0 },
-                        'note': 'present work',
-                    })
+                    colName = next(k for k, v in self.species_dict.items() if v == comp)
+                    citeStr += f"{colName} (Troe): present work; "
                     colliderNames.append(self.species_dict[name.upper()])
+                    colliders.append({
+                        'name': colName,
+                        'efficiency': {'A':val,'b':0,'Ea':0 },
+                        # 'note': 'present work',
+                    })
             if generic:
                 for col in self.defaults['generic-colliders']:
                     already_given = col['composition'] in colliderNames
                     if col['composition'] in list(self.species_dict.values()) and not already_given and not col['composition']=={'N': 2}:
+                        colName = next(k for k, v in self.species_dict.items() if v == col['composition'])
+                        citeStr += f"{colName} (generic): {col['note']}; "
                         colliders.append({
-                            'name': next(k for k, v in self.species_dict.items() if v == col['composition']),
+                            'name': colName,
                             'efficiency': {'A': col['efficiency']/divisor,'b':0,'Ea':0},
-                            'note': col['note']
+                            # 'note': col['note']
                         })
         else:
+            citeStr += "AR. Citations: "
             if blend_rxn:
                 # Make reaction-specific colliders wrt Ar and append to collider list 
                 for col in blend_rxn['colliders']:
                     if col['composition'] in list(self.species_dict.values()):
                         newCol = copy.deepcopy(col)
                         newCol['efficiency']=self._arrheniusFit(newCol['temperatures'], newCol['efficiency'])
+                        citeStr += f"{newCol['name']} (ab initio): {newCol['note']}; "
                         colliderNames.append(newCol['composition'])
                         colliders.append(newCol)
+
             # Add troe efficiencies that haven't already been given a value
             for name, val in troe_efficiencies.items():
                 comp = self.species_dict[name.upper()]
                 # already_given = any(col['name'] == name for col in colliders)
                 already_given = comp in colliderNames
                 if not already_given and not comp=={'Ar': 1}:
+                    colName = next(k for k, v in self.species_dict.items() if v == comp)
+                    citeStr += f"{colName} (Troe): present work; "
                     colliders.append({
-                        'name': next(k for k, v in self.species_dict.items() if v == comp),
+                        'name': colName,
                         'efficiency': {'A':val,'b':0,'Ea':0 },
-                        'note': 'present work',
+                        # 'note': 'present work',
                     })
                     colliderNames.append(comp)
             if generic:
                 for col in self.defaults['generic-colliders']:
                     already_given = col['composition'] in colliderNames
                     if col['composition'] in list(self.species_dict.values()) and not already_given and not col['composition']=={'Ar': 1}:
+                        colName = next(k for k, v in self.species_dict.items() if v == col['composition'])
+                        citeStr += f"{colName} (generic): {col['note']}; "
                         colliders.append({
-                            'name': next(k for k, v in self.species_dict.items() if v == col['composition']),
+                            'name': colName,
                             'efficiency': {'A': col['efficiency'],'b':0,'Ea':0},
-                            'note': col['note']
+                            # 'note': col['note']
                         })
         # for col in colliders:
         #     col.pop('composition',None)
         #     col.pop('temperatures', None)
-        return colliders
+        return colliders, citeStr
 
     def _zippedMech(self):
         
@@ -338,17 +354,18 @@ class makeYAML:
                     param_type = "generic"
                 elif blendRxn and genericBool:
                     param_type = "ab initio and generic"
-                colliders = self._colliders(mech_rxn,blend_rxn=blendRxn, generic=genericBool)
+                colliders, citeStr = self._colliders(mech_rxn,blend_rxn=blendRxn, generic=genericBool)
                 d = self._to_builtin(mech_rxn.input_data)
                 newRxn = {
                     'equation': mech_rxn.equation,
                     **({'duplicate': True} if d.get('duplicate') else {}),
                     **({'units': d['units']} if d.get('units') else {}),
                     'type': 'linear-Burke',
-                    'colliders': [colliderM] + colliders
+                    'colliders': [colliderM] + colliders,
                 }
                 if 'note' in d and re.fullmatch(r'\n+', d['note']):
                     newRxn['note'] = ''
+                newRxn['note'] = citeStr + "\n" + newRxn['note']
                 yaml_str = yaml.dump(newRxn, sort_keys=False)
                 newRxn_obj = ct.Reaction.from_yaml(yaml_str,self.mech_obj)
                 newReactions.append(newRxn_obj)
