@@ -245,7 +245,7 @@ class makeYAML:
                         k_i = self._arrheniusFit(col['temperatures'],col['efficiency'])
                     if k_i:
                         newCol['efficiency']=self._rescaleArrhenius(k_ref,k_i)
-                        citeStr += f"{newCol['name']} (ab initio): {newCol['note']}; "
+                        citeStr += f"{newCol['name']}: {newCol['note']}; "
                         colliderNames.append(newCol['composition'])
                         colliders.append(newCol)
                     
@@ -255,7 +255,7 @@ class makeYAML:
                 already_given = comp in colliderNames
                 if not already_given and not comp=={'N': 2}: #ignores the redundant n2=1 entry
                     colName = next(k for k, v in self.species_dict.items() if v == comp)
-                    citeStr += f"{colName} (Troe): present work; "
+                    citeStr += f"{colName}: present work; "
                     colliderNames.append(self.species_dict[name.upper()])
                     colliders.append({
                         'name': colName,
@@ -267,7 +267,7 @@ class makeYAML:
                     already_given = col['composition'] in colliderNames
                     if col['composition'] in list(self.species_dict.values()) and not already_given and not col['composition']=={'N': 2}:
                         colName = next(k for k, v in self.species_dict.items() if v == col['composition'])
-                        citeStr += f"{colName} (generic): {col['note']}; "
+                        citeStr += f"{colName}: {col['note']}; "
                         colliders.append({
                             'name': colName,
                             'efficiency': {'A': col['efficiency']/divisor,'b':0,'Ea':0},
@@ -281,7 +281,7 @@ class makeYAML:
                     if col['composition'] in list(self.species_dict.values()):
                         newCol = copy.deepcopy(col)
                         newCol['efficiency']=self._arrheniusFit(newCol['temperatures'], newCol['efficiency'])
-                        citeStr += f"{newCol['name']} (ab initio): {newCol['note']}; "
+                        citeStr += f"{newCol['name']}: {newCol['note']}; "
                         colliderNames.append(newCol['composition'])
                         colliders.append(newCol)
 
@@ -292,7 +292,7 @@ class makeYAML:
                 already_given = comp in colliderNames
                 if not already_given and not comp=={'Ar': 1}:
                     colName = next(k for k, v in self.species_dict.items() if v == comp)
-                    citeStr += f"{colName} (Troe): present work; "
+                    citeStr += f"{colName}: present work; "
                     colliders.append({
                         'name': colName,
                         'efficiency': {'A':val,'b':0,'Ea':0 },
@@ -304,7 +304,7 @@ class makeYAML:
                     already_given = col['composition'] in colliderNames
                     if col['composition'] in list(self.species_dict.values()) and not already_given and not col['composition']=={'Ar': 1}:
                         colName = next(k for k, v in self.species_dict.items() if v == col['composition'])
-                        citeStr += f"{colName} (generic): {col['note']}; "
+                        citeStr += f"{colName}: {col['note']}; "
                         colliders.append({
                             'name': colName,
                             'efficiency': {'A': col['efficiency'],'b':0,'Ea':0},
