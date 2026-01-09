@@ -363,9 +363,11 @@ class makeYAML:
                     'type': 'linear-Burke',
                     'colliders': [colliderM] + colliders,
                 }
-                if 'note' in d and re.fullmatch(r'\n+', d['note']):
-                    newRxn['note'] = ''
-                newRxn['note'] = citeStr + "\n" + newRxn['note']
+                newRxn['note'] = citeStr
+                if 'note' in d and not re.fullmatch(r'\n+', d['note']):
+                    newRxn['note'] = d['note'] + "\n" + citeStr
+                else:
+                    newRxn['note'] = citeStr
                 yaml_str = yaml.dump(newRxn, sort_keys=False)
                 newRxn_obj = ct.Reaction.from_yaml(yaml_str,self.mech_obj)
                 newReactions.append(newRxn_obj)
