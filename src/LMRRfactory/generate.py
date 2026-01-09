@@ -228,7 +228,7 @@ class makeYAML:
         citeStr='M=' # collider citations appended to here
 
         if is_M_N2:
-            citeStr += "N2\nCitations: "
+            citeStr += "N2. Citations: "
             if blend_rxn:
                 for col in blend_rxn['colliders']:
                     if col['composition']=={'N': 2}:
@@ -274,7 +274,7 @@ class makeYAML:
                             # 'note': col['note']
                         })
         else:
-            citeStr += "AR\nCitations: "
+            citeStr += "AR. Citations: "
             if blend_rxn:
                 # Make reaction-specific colliders wrt Ar and append to collider list 
                 for col in blend_rxn['colliders']:
@@ -363,11 +363,11 @@ class makeYAML:
                     'type': 'linear-Burke',
                     'colliders': [colliderM] + colliders,
                 }
-                newRxn['note'] = citeStr
                 if 'note' in d and not re.fullmatch(r'\n+', d['note']):
                     newRxn['note'] = d['note'] + " " + citeStr
                 else:
                     newRxn['note'] = citeStr
+                newRxn['note']=newRxn['note'][:-1] + "."
                 yaml_str = yaml.dump(newRxn, sort_keys=False)
                 newRxn_obj = ct.Reaction.from_yaml(yaml_str,self.mech_obj)
                 newReactions.append(newRxn_obj)
