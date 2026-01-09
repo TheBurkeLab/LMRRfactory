@@ -367,7 +367,7 @@ class makeYAML:
                     newRxn['note'] = d['note'] + " " + citeStr
                 else:
                     newRxn['note'] = citeStr
-                newRxn['note']=newRxn['note'][:-1] + "."
+                newRxn['note']=newRxn['note'][:-2] + "."
                 yaml_str = yaml.dump(newRxn, sort_keys=False)
                 newRxn_obj = ct.Reaction.from_yaml(yaml_str,self.mech_obj)
                 newReactions.append(newRxn_obj)
