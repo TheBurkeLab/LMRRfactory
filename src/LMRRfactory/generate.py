@@ -14,7 +14,7 @@ import io
 warnings.filterwarnings("ignore")
 
 class makeYAML:
-    def __init__(self,mechInput, colliderInput=None, outputPath=".", allPdep=False):
+    def __init__(self,mechInput, colliderInput=None, outputPath=".", allPdep=False, reaction=None):
         self.T_ls = None
         self.P_ls = None
         self.n_P= None
@@ -29,6 +29,7 @@ class makeYAML:
         self.allPdep = False # option to apply generic 3b-effs to all p-dep rxns in mech
         self.input = self._loadYAML(colliderInput) if colliderInput else None
         self.mechInput = mechInput
+        self.reaction = reaction
         os.makedirs(outputPath,exist_ok=True)
         self.foutName = f"{outputPath}/{os.path.basename(self.mechInput).replace(".yaml","_LMRR")}"
         if allPdep:
@@ -47,11 +48,13 @@ class makeYAML:
         # Blend the user inputs and remaining collider defaults into a single YAML
         self.blend = self._blendedInput()
         # Sub the colliders into their corresponding reactions in the input mechanism
+        self.skipSave = False
         self.output = self._zippedMech()
         # self.validate()
-        self._saveYAML()
-        print(f"LMR-R mechanism successfully generated and stored at "
-            f"{self.foutName}.yaml")
+        if not self.skipSave:
+            self._saveYAML()
+            print(f"New mechanism generated and stored at "
+                f"{self.foutName}.yaml")
 
     def _normalizedKeys(self):
         def capitalize(dict):
@@ -117,11 +120,8 @@ class makeYAML:
                 newData['reactions'].append(defaultRxn)
         self.defaults=newData
 
-    
-
     def _blendedInput(self):
         blendData = {'reactions': []}
-        
         # first fill it with all of the default reactions and colliders (which have valid species)
         for defaultRxn in self.defaults['reactions']:
             newCollList = []
@@ -204,15 +204,10 @@ class makeYAML:
         troe_efficiencies={}
         if mech_rxn.reaction_type == 'falloff-Troe':
             troe_efficiencies= mech_rxn.input_data.get('efficiencies', {})
-            # for sp_name in list(troe_efficiencies_raw.keys()):
-            #     # [disregard] make the keys the compositions instead of species names
-            #     troe_efficiencies[sp_name] = troe_efficiencies_raw[sp_name]
         elif mech_rxn.reaction_type == 'three-body-linear-Burke': #case where we've used the linear Burke format so that Troe params can be used alongside a PLOG 
-            # for c, col in enumerate(mech_rxn.input_data.get('colliders', {})):
-            #     if col['name'].upper() == 'AR':
             for c, col in enumerate(mech_rxn.input_data.get('colliders', {})):
                 if c>0 and col['efficiency']['b']==0 and col['efficiency']['Ea']==0:
-                    troe_efficiencies[col['name']]=col['efficiency']['A'] ## WHY ARE WE USING TROE EFFICIENCIES HERE
+                    troe_efficiencies[col['name']]=col['efficiency']['A']
         for name, val in troe_efficiencies.items():
             comp = self.species_dict[name.upper()]
             # Check if N2 is the reference collider instead of Ar
@@ -227,9 +222,7 @@ class makeYAML:
                 is_M_X = True
             if comp=={'Ar': 1} and val==0 :
                 print(f"> Warning: {mech_rxn} has Ar assumed as reference collider, since params cannot be scaled by the Ar=0 value provided. Please fix.")
-
         citeStr='Bath gas: ' # collider citations appended to here
-
         if is_M_N2:
             citeStr += "N2. Citations: "
             if blend_rxn:
@@ -251,7 +244,6 @@ class makeYAML:
                         citeStr += f"{newCol['name']}: {newCol['note']}; "
                         colliderNames.append(newCol['composition'])
                         colliders.append(newCol)
-                    
             # Add troe efficiencies that haven't already been given a value
             for name, val in troe_efficiencies.items():
                 comp = self.species_dict[name.upper()]
@@ -321,7 +313,6 @@ class makeYAML:
                         citeStr += f"{newCol['name']}: {newCol['note']}; "
                         colliderNames.append(newCol['composition'])
                         colliders.append(newCol)
-
             # Add troe efficiencies that haven't already been given a value
             for name, val in troe_efficiencies.items():
                 comp = self.species_dict[name.upper()]
@@ -347,76 +338,99 @@ class makeYAML:
                             'efficiency': {'A': col['efficiency'],'b':0,'Ea':0},
                             # 'note': col['note']
                         })
-        # for col in colliders:
-        #     col.pop('composition',None)
-        #     col.pop('temperatures', None)
         return colliders, citeStr
 
     def _zippedMech(self):
-        
         newReactions = []
         blendRxnNames = [rxn['pes'] for rxn in self.blend['reactions']]
+        user_rxn_equation = None
+        if self.reaction is not None:
+            user_rxn = {
+                "equation": self.reaction,
+                "rate-constant": {"A": 1.0, "b": 0.0, "Ea": 0.0}
+            }
+            user_rxn_obj = ct.Reaction.from_yaml(yaml.dump(user_rxn, sort_keys=False), self.mech_obj)
+            user_rxn_equation = user_rxn_obj.equation
         for i, mech_rxn in enumerate(self.mech_obj.reactions()):
-            pDep = False
-            # Create the M-collider entry for the pressure-dependent reactions
-            if mech_rxn.reaction_type in ['falloff-Troe','three-body-pressure-dependent-Arrhenius','pressure-dependent-Arrhenius','Chebyshev','three-body-linear-Burke']:     
-                pDep = True
-                if mech_rxn.reaction_type == 'three-body-linear-Burke':
-                    d = self._to_builtin(mech_rxn.input_data['colliders'][0]) #use the pdep format given for collider M when rebuilding the reaction
-                    d.pop("name")
-                else:
-                    d = self._to_builtin(mech_rxn.input_data)
-                    d.pop("equation")
-                    d.pop("efficiencies",None) #only applies to Troe reactions
-                d.pop("duplicate", None)
-                d.pop("units", None)
-                if d.get('Troe'):
-                    d['Troe']=dict(d['Troe'])
-                if d.get('low-P-rate-constant'):
-                    d['low-P-rate-constant']=dict(d['low-P-rate-constant'])
-                if d.get('high-P-rate-constant'):
-                    d['high-P-rate-constant']=dict(d['high-P-rate-constant'])
-                colliderM = {'name': 'M'}
-                colliderM.update(dict(d))
-            # Leave reactions with explicitly-defined bath gases (e.g., (+AR)) in original format
-            if pDep and '(+' in mech_rxn.equation and '(+M)' not in mech_rxn.equation:
+            applyLMRR=False
+            if self.reaction is not None:
+                if user_rxn_equation == mech_rxn.equation:
+                    self.foutName = f"{self.foutName}_{user_rxn_obj.equation}"
+                    applyLMRR=True
+                else: # just append it as-is
+                    d = mech_rxn.input_data
+                    if 'note' in d and re.fullmatch(r'\n+', d['note']):
+                        mech_rxn.update_user_data({'note': ''})
+                    newReactions.append(mech_rxn)
+            else:
+                applyLMRR = True
+            if applyLMRR:
                 pDep = False
-            if pDep and (self.mech_pes[i] in blendRxnNames or self.allPdep):
-                genericBool = True if self.allPdep else False
-                blendRxn = None
-                if self.mech_pes[i] in blendRxnNames:
-                    # rxn is specifically covered either in defaults or user input
-                    idx = blendRxnNames.index(self.mech_pes[i])
-                    blendRxn = self.blend['reactions'][idx]
-                if blendRxn and not genericBool:
-                    param_type = "ab initio"
-                elif genericBool and not blendRxn:
-                    param_type = "generic"
-                elif blendRxn and genericBool:
-                    param_type = "ab initio and generic"
-                colliders, citeStr = self._colliders(mech_rxn,blend_rxn=blendRxn, generic=genericBool)
-                d = self._to_builtin(mech_rxn.input_data)
-                newRxn = {
-                    'equation': mech_rxn.equation,
-                    **({'duplicate': True} if d.get('duplicate') else {}),
-                    **({'units': d['units']} if d.get('units') else {}),
-                    'type': 'linear-Burke',
-                    'colliders': [colliderM] + colliders,
-                }
-                if 'note' in d and not re.fullmatch(r'\n+', d['note']):
-                    newRxn['note'] = d['note'] + " " + citeStr
-                else:
-                    newRxn['note'] = citeStr
-                newRxn['note']=newRxn['note'][:-2] + "."
-                yaml_str = yaml.dump(newRxn, sort_keys=False)
-                newRxn_obj = ct.Reaction.from_yaml(yaml_str,self.mech_obj)
-                newReactions.append(newRxn_obj)
-                print(f"{mech_rxn} {dict(self.mech_pes[i])} converted to LMR-R with {param_type} parameters.")
-            else: # just append it as-is
-                d = mech_rxn.input_data
-                if 'note' in d and re.fullmatch(r'\n+', d['note']):
-                    mech_rxn.update_user_data({'note': ''})
-                newReactions.append(mech_rxn)
+                # Create the M-collider entry for the pressure-dependent reactions
+                if mech_rxn.reaction_type in ['falloff-Troe','three-body-pressure-dependent-Arrhenius','pressure-dependent-Arrhenius','Chebyshev','three-body-linear-Burke']:     
+                    pDep = True
+                    if mech_rxn.reaction_type == 'three-body-linear-Burke':
+                        d = self._to_builtin(mech_rxn.input_data['colliders'][0]) #use the pdep format given for collider M when rebuilding the reaction
+                        d.pop("name")
+                    else:
+                        d = self._to_builtin(mech_rxn.input_data)
+                        d.pop("equation")
+                        d.pop("efficiencies",None) #only applies to Troe reactions
+                    d.pop("duplicate", None)
+                    d.pop("units", None)
+                    if d.get('Troe'):
+                        d['Troe']=dict(d['Troe'])
+                    if d.get('low-P-rate-constant'):
+                        d['low-P-rate-constant']=dict(d['low-P-rate-constant'])
+                    if d.get('high-P-rate-constant'):
+                        d['high-P-rate-constant']=dict(d['high-P-rate-constant'])
+                    colliderM = {'name': 'M'}
+                    colliderM.update(dict(d))
+                # Leave reactions with explicitly-defined bath gases (e.g., (+AR)) in original format
+                if pDep and '(+' in mech_rxn.equation and '(+M)' not in mech_rxn.equation:
+                    pDep = False
+                if pDep and (self.mech_pes[i] in blendRxnNames or self.allPdep):
+                    genericBool = True if self.allPdep else False
+                    blendRxn = None
+                    if self.mech_pes[i] in blendRxnNames:
+                        # rxn is specifically covered either in defaults or user input
+                        idx = blendRxnNames.index(self.mech_pes[i])
+                        blendRxn = self.blend['reactions'][idx]
+                    if blendRxn and not genericBool:
+                        param_type = "ab initio"
+                    elif genericBool and not blendRxn:
+                        param_type = "generic"
+                    elif blendRxn and genericBool:
+                        param_type = "ab initio and generic"
+                    colliders, citeStr = self._colliders(mech_rxn,blend_rxn=blendRxn, generic=genericBool)
+                    d = self._to_builtin(mech_rxn.input_data)
+                    newRxn = {
+                        'equation': mech_rxn.equation,
+                        **({'duplicate': True} if d.get('duplicate') else {}),
+                        **({'units': d['units']} if d.get('units') else {}),
+                        'type': 'linear-Burke',
+                        'colliders': [colliderM] + colliders,
+                    }
+                    if 'note' in d and not re.fullmatch(r'\n+', d['note']):
+                        newRxn['note'] = d['note'] + " " + citeStr
+                    else:
+                        newRxn['note'] = citeStr
+                    newRxn['note']=newRxn['note'][:-2] + "."
+                    yaml_str = yaml.dump(newRxn, sort_keys=False)
+                    newRxn_obj = ct.Reaction.from_yaml(yaml_str,self.mech_obj)
+                    newReactions.append(newRxn_obj)
+                    print(f"{mech_rxn} {dict(self.mech_pes[i])} converted to LMR-R with {param_type} parameters.")
+                else: # just append it as-is
+                    d = mech_rxn.input_data
+                    if 'note' in d and re.fullmatch(r'\n+', d['note']):
+                        mech_rxn.update_user_data({'note': ''})
+                    newReactions.append(mech_rxn)
+                    if self.reaction is not None:
+                        self.skipSave = True
+                        if not self.allPdep:
+                            print(f"User-provided reaction could not be converted using ab initio parameters. Try enabling generic parameters ('allPdep=True') and rerunning.")
+                        else:
+                            print(f"User-provided reaction could not be converted.")
         output_data = {
             'thermo': self.mech_obj.thermo_model,
             'kinetics': self.mech_obj.kinetics_model,
