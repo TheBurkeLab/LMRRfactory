@@ -173,7 +173,9 @@ class makeYAML:
                             blendRxn['colliders'] = newColliders
                             # blendRxn['colliders'] = inputRxn['colliders']
                     else:
-                        if all(col['composition'] in list(self.species_dict.values()) for col in inputRxn['colliders']):
+                        inputRxn['colliders'] = [col for col in inputRxn['colliders']
+                                                 if col['composition'] in list(self.species_dict.values())]
+                        if inputRxn['colliders']:
                             blendData['reactions'].append(inputRxn)
         return blendData
 
