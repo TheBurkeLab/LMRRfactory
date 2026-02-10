@@ -71,6 +71,26 @@ class makeYAML:
                 inputRxn['reference-collider'] = inputRxn['reference-collider'].upper()
                 inputRxn['pes'] = capitalize(inputRxn['pes'])
 
+    def _normalizedUserRxn(self):
+        s = self.reaction
+        s = s.strip()
+        # LaTeX subscripts
+        s = re.sub(r"\$_\{(\d+)\}\$", r"\1", s)
+        s = re.sub(r"\$_(\d+)\$", r"\1", s)
+        s = s.replace("$", "")
+        # Replace (+X) with placeholder
+        thirdBodies = []
+        def _thirdBody(m):
+            thirdBodies.append(m.group(1))
+            return "(+M)"
+        s = re.sub(r"\(\s*\+([A-Za-z0-9_]+)\s*\)", _thirdBody, s)
+        s = re.sub(r"\s*(<=>|=>|=)\s*", f" = ", s)
+        # Plus spacing (safe now)
+        s = re.sub(r"\s*\+\s*", " + ", s)
+        s = re.sub(r"\s+", " ", s).strip()
+        self.reaction = s
+
+
     def _lookForPdep(self):
         if not any(
             reaction.reaction_type in ['falloff-Troe','pressure-dependent-Arrhenius', 'Chebyshev', 'three-body-linear-Burke']
@@ -345,6 +365,9 @@ class makeYAML:
         blendRxnNames = [rxn['pes'] for rxn in self.blend['reactions']]
         user_rxn_equation = None
         if self.reaction is not None:
+            print(self.reaction)
+            self._normalizedUserRxn()
+            print(self.reaction)
             user_rxn = {
                 "equation": self.reaction,
                 "rate-constant": {"A": 1.0, "b": 0.0, "Ea": 0.0}
