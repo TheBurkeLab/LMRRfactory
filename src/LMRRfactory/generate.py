@@ -73,35 +73,22 @@ class makeYAML:
 
     def _normalizedUserRxn(self):
         s = self.reaction.strip()
-
-        # LaTeX subscripts: $_{2}$ or $_2$ -> 2
+        arrow_match = re.search(r"(<=>|=>|<=|=)", s)
+        arrow = arrow_match.group(1) if arrow_match else "="
         s = re.sub(r"\$_\{(\d+)\}\$", r"\1", s)
         s = re.sub(r"\$_(\d+)\$", r"\1", s)
         s = s.replace("$", "")
-
-        # Normalize ANY (+X) token to canonical "(+X)" (remove internal spaces)
         s = re.sub(r"\(\s*\+\s*([A-Za-z0-9_]+)\s*\)", r"(+\1)", s)
-
-        # Ensure a space before a third-body token when attached to a species: H(+M) -> H (+M)
         s = re.sub(r"(?<=\w)\(\+([A-Za-z0-9_]+)\)", r" (+\1)", s)
-
-        # Protect third-body tokens so '+' spacing doesn't break them
-        s = s.replace("(+M)", "__TB_M__")
-        # (Optional) if you want to protect other colliders too:
-        s = re.sub(r"\(\+([A-Za-z0-9_]+)\)", lambda m: f"__TB_{m.group(1)}__", s)
-
-        # Arrow normalization (you chose "=" as your internal canonical)
-        s = re.sub(r"\s*(<=>|=>|=)\s*", " = ", s)
-
-        # Normalize plus spacing (safe now, third-body tokens are protected)
+        s = re.sub(
+            r"\(\+([A-Za-z0-9_]+)\)",
+            lambda m: f"__TB_{m.group(1)}__",
+            s
+        )
+        s = re.sub(r"\s*(<=>|=>|<=|=)\s*", f" {arrow} ", s)
         s = re.sub(r"\s*\+\s*", " + ", s)
-
-        # Restore third-body tokens back to "(+X)"
         s = re.sub(r"__TB_([A-Za-z0-9_]+)__", r"(+\1)", s)
-
-        # Final whitespace cleanup
         s = re.sub(r"\s+", " ", s).strip()
-
         self.reaction = s
 
 
