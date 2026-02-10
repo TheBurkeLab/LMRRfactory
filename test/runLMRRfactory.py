@@ -29,7 +29,7 @@ for m in models.keys():
     # LMRRfactory.makeYAML(mechInput=models[m],
     #                     outputPath=f"test/outputs/{date}",reaction='NH2 + H (+AR) <=> NH3 (+AR)')
     LMRRfactory.makeYAML(mechInput=models[m],
-                        outputPath=f"test/outputs/{date}",reaction='HOCO (+M) <=> CO2 + H (+M)')
+                        outputPath=f"test/outputs/{date}",reaction='C$_2$H$_2$+H(+M)=C$_2$H$_3$(+M)')
     # LMRRfactory.makeYAML(mechInput=models[m],
     #                     outputPath=f"test/outputs/{date}",reaction='H + O2 (+M) <=> HO2 (+M)') 
     if allPdep == 'True':
@@ -42,8 +42,10 @@ for m in models.keys():
         #                     outputPath=f"test/outputs/{date}",allPdep=True,reaction='NH2 + H (+M) <=> NH3 (+M)')
         # LMRRfactory.makeYAML(mechInput=models[m],
         #                     outputPath=f"test/outputs/{date}",allPdep=True,reaction='NH2 + H (+AR) <=> NH3 (+AR)')
+        # LMRRfactory.makeYAML(mechInput=models[m],
+        #                     outputPath=f"test/outputs/{date}",allPdep=True,reaction='HOCO (+M) <=> CO2 + H (+M)')
         LMRRfactory.makeYAML(mechInput=models[m],
-                            outputPath=f"test/outputs/{date}",allPdep=True,reaction='HOCO (+M) <=> CO2 + H (+M)')
+                            outputPath=f"test/outputs/{date}",allPdep=True,reaction='C$_2$H$_2$+H(+M)=C$_2$H$_3$(+M)')
         # LMRRfactory.makeYAML(mechInput=models[m],
         #                 outputPath=f"test/outputs/{date}",allPdep=True,reaction='H + O2 (+M) <=> HO2 (+M)') 
     # LMRRfactory.makeYAML(mechInput=models[m],
