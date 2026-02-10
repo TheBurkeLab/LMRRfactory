@@ -89,7 +89,7 @@ class makeYAML:
         s = re.sub(r"\s*\+\s*", " + ", s)
         s = re.sub(r"__TB_([A-Za-z0-9_]+)__", r"(+\1)", s)
         s = re.sub(r"\s+", " ", s).strip()
-        self.reaction = s
+        return s
 
 
     def _lookForPdep(self):
@@ -366,11 +366,8 @@ class makeYAML:
         blendRxnNames = [rxn['pes'] for rxn in self.blend['reactions']]
         user_rxn_equation = None
         if self.reaction is not None:
-            print(self.reaction)
-            self._normalizedUserRxn()
-            print(self.reaction)
             user_rxn = {
-                "equation": self.reaction,
+                "equation": self._normalizedUserRxn(),
                 "rate-constant": {"A": 1.0, "b": 0.0, "Ea": 0.0}
             }
             user_rxn_obj = ct.Reaction.from_yaml(yaml.dump(user_rxn, sort_keys=False), self.mech_obj)
@@ -379,7 +376,7 @@ class makeYAML:
             applyLMRR=False
             if self.reaction is not None:
                 if user_rxn_equation == mech_rxn.equation:
-                    self.foutName = f"{self.foutName}_{user_rxn_obj.equation}"
+                    self.foutName = f"{self.foutName}_{self.reaction}"
                     applyLMRR=True
                 else: # just append it as-is
                     d = mech_rxn.input_data
