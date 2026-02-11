@@ -483,6 +483,7 @@ class makeYAML:
     def _saveYAML(self):
         fName = f"{self.foutName}.yaml"
         self.output.write_yaml(filename=fName, units=self.units)
+
         # Resave it to remove formatting inconsistencies
         mech = self._loadYAML(fName)
         # Prevent 'NO' from being misinterpreted as bool in species list
@@ -514,11 +515,31 @@ class makeYAML:
                     "NO" if str(key).lower() == "false" else key: effs[key]
                     for key in effs
                 }
-        with open(fName, 'w') as outfile:
-            yaml.safe_dump(copy.deepcopy(mech), outfile,
-            default_flow_style=None,
-            sort_keys=False)
-       
+        # Save and validate; automatically mark undeclared duplicate reactions
+        for _attempt in range(10):
+            with open(fName, 'w') as outfile:
+                yaml.safe_dump(copy.deepcopy(mech), outfile,
+                    default_flow_style=None,
+                    sort_keys=False)
+            try:
+                ct.Solution(fName)
+                break
+            except ct.CanteraError as e:
+                err_msg = str(e)
+                if 'undeclared duplicate' not in err_msg.lower():
+                    raise
+                rxn_numbers = set()
+                for line in err_msg.split('\n'):
+                    m = re.match(r'\s*Reaction\s+(\d+)', line)
+                    if m:
+                        rxn_numbers.add(int(m.group(1)) - 1)  # Convert to 0-indexed
+                if not rxn_numbers:
+                    raise
+                for idx in rxn_numbers:
+                    if idx < len(mech['reactions']):
+                        mech['reactions'][idx]['duplicate'] = True
+                        print(f"  Marked reaction {idx + 1} as duplicate: "
+                              f"{mech['reactions'][idx]['equation']}")
 
 ## VALIDATION OF INTERNAL DBASE
 # All temp/eps pairs must be of matching length
