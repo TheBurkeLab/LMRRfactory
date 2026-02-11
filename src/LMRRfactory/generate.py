@@ -65,6 +65,12 @@ class makeYAML:
                 for col in inputRxn['colliders']:
                     col['composition'] = capitalize(col['composition'])
                 inputRxn['reference-collider'] = inputRxn['reference-collider'].upper()
+                if inputRxn['reference-collider'] != 'AR':
+                    raise ValueError(
+                        f"Reference collider '{inputRxn['reference-collider']}' in collider input "
+                        f"reaction '{inputRxn['name']}' is not supported. Only parameters scaled "
+                        f"with respect to AR as the reference collider are allowed in the collider "
+                        f"input file.")
                 inputRxn['pes'] = capitalize(inputRxn['pes'])
 
     def _normalizedUserRxn(self):
