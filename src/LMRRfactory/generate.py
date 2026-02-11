@@ -246,6 +246,7 @@ class makeYAML:
                 is_M_X = True
             if comp == {'Ar': 1} and val == 0:
                 print(f"> Warning: {mech_rxn} has Ar assumed as reference collider, since params cannot be scaled by the Ar=0 value provided. Please fix.")
+        zero_eff_compositions = [self.species_dict[name.upper()] for name, val in troe_efficiencies.items() if val == 0]
         citeStr='Bath gas: ' # collider citations appended to here
         if is_M_N2:
             citeStr += "N2. Citations: "
@@ -264,6 +265,8 @@ class makeYAML:
                     elif newCol['composition'] in list(self.species_dict.values()):
                         k_i = self._arrheniusFit(col['temperatures'],col['efficiency'])
                     if k_i:
+                        if newCol['composition'] in zero_eff_compositions:
+                            continue
                         newCol['efficiency'] = self._rescaleArrhenius(k_ref, k_i)
                         citeStr += f"{newCol['name']}: {newCol['note']}; "
                         colliderNames.append(newCol['composition'])
@@ -284,7 +287,7 @@ class makeYAML:
             if generic:
                 for col in self.defaults['generic-colliders']:
                     already_given = col['composition'] in colliderNames
-                    if col['composition'] in list(self.species_dict.values()) and not already_given and col['composition'] != {'N': 2}:
+                    if col['composition'] in list(self.species_dict.values()) and not already_given and col['composition'] != {'N': 2} and col['composition'] not in zero_eff_compositions:
                         colName = next(k for k, v in self.species_dict.items() if v == col['composition'])
                         citeStr += f"{colName}: {col['note']}; "
                         colliders.append({
@@ -295,7 +298,7 @@ class makeYAML:
             citeStr += "X. Citations: "
             if blend_rxn:
                 for col in blend_rxn['colliders']:
-                    if col['composition'] in list(self.species_dict.values()):
+                    if col['composition'] in list(self.species_dict.values()) and col['composition'] not in zero_eff_compositions:
                         newCol = copy.deepcopy(col)
                         fitted = self._arrheniusFit(newCol['temperatures'], newCol['efficiency'])
                         fitted['A'] = fitted['A'] / ar_troe_eff
@@ -318,7 +321,7 @@ class makeYAML:
             if generic:
                 for col in self.defaults['generic-colliders']:
                     already_given = col['composition'] in colliderNames
-                    if col['composition'] in list(self.species_dict.values()) and not already_given:
+                    if col['composition'] in list(self.species_dict.values()) and not already_given and col['composition'] not in zero_eff_compositions:
                         colName = next(k for k, v in self.species_dict.items() if v == col['composition'])
                         citeStr += f"{colName}: {col['note']}; "
                         colliders.append({
@@ -328,9 +331,9 @@ class makeYAML:
         else:
             citeStr += "AR. Citations: "
             if blend_rxn:
-                # Make reaction-specific colliders wrt Ar and append to collider list 
+                # Make reaction-specific colliders wrt Ar and append to collider list
                 for col in blend_rxn['colliders']:
-                    if col['composition'] in list(self.species_dict.values()):
+                    if col['composition'] in list(self.species_dict.values()) and col['composition'] not in zero_eff_compositions:
                         newCol = copy.deepcopy(col)
                         newCol['efficiency']=self._arrheniusFit(newCol['temperatures'], newCol['efficiency'])
                         citeStr += f"{newCol['name']}: {newCol['note']}; "
@@ -353,7 +356,7 @@ class makeYAML:
             if generic:
                 for col in self.defaults['generic-colliders']:
                     already_given = col['composition'] in colliderNames
-                    if col['composition'] in list(self.species_dict.values()) and not already_given and col['composition'] != {'Ar': 1}:
+                    if col['composition'] in list(self.species_dict.values()) and not already_given and col['composition'] != {'Ar': 1} and col['composition'] not in zero_eff_compositions:
                         colName = next(k for k, v in self.species_dict.items() if v == col['composition'])
                         citeStr += f"{colName}: {col['note']}; "
                         colliders.append({
