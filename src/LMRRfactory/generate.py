@@ -505,6 +505,8 @@ class makeYAML:
                         yaml.safe_dump(copy.deepcopy(mech), outfile,
                         default_flow_style=None,
                         sort_keys=False)
+                else:
+                    break
     
     def _saveYAML(self):
         fName = f"{self.foutName}.yaml"
@@ -540,8 +542,8 @@ class makeYAML:
                     "NO" if str(key).lower() == "false" else key: effs[key]
                     for key in effs
                 }
-        self._fixDuplicates(fName, mech)
         with open(fName, 'w') as outfile:
             yaml.safe_dump(copy.deepcopy(mech), outfile,
                 default_flow_style=None,
                 sort_keys=False)
+        self._fixDuplicates(fName, mech)
