@@ -488,19 +488,20 @@ class makeYAML:
             with contextlib.redirect_stderr(stderr_buffer):
                 ct.Solution(fName)
                 error_msg = stderr_buffer.getvalue()
-                if not (error_msg and 'undeclared duplicate' in error_msg.lower()):
-                    break
-                rxn_numbers = set()
-                for line in error_msg.split('\n'):
-                    m = re.match(r'\s*Reaction\s+(\d+)', line)
-                    if m:
-                        rxn_numbers.add(int(m.group(1)) - 1)
-                if rxn_numbers:
-                    for idx in rxn_numbers:
-                        if idx < len(mech['reactions']):
-                            mech['reactions'][idx]['duplicate'] = True
-                            print(f"  Marked reaction {idx + 1} as duplicate: "
-                                f"{mech['reactions'][idx]['equation']}")
+                # if not (error_msg and 'undeclared duplicate' in error_msg.lower()):
+                #     break
+                if error_msg and 'undeclared duplicate' in error_msg.lower():
+                    rxn_numbers = set()
+                    for line in error_msg.split('\n'):
+                        m = re.match(r'\s*Reaction\s+(\d+)', line)
+                        if m:
+                            rxn_numbers.add(int(m.group(1)) - 1)
+                    if rxn_numbers:
+                        for idx in rxn_numbers:
+                            if idx < len(mech['reactions']):
+                                mech['reactions'][idx]['duplicate'] = True
+                                print(f"  Marked reaction {idx + 1} as duplicate: "
+                                    f"{mech['reactions'][idx]['equation']}")
                 with open(fName, 'w') as outfile:
                     yaml.safe_dump(copy.deepcopy(mech), outfile,
                     default_flow_style=None,
