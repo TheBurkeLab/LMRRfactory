@@ -7,7 +7,7 @@ import os
 import io
 from importlib.resources import files
 import cantera as ct
-import warnings
+# import warnings
 import contextlib
 
 # warnings.filterwarnings("ignore")
@@ -488,9 +488,6 @@ class makeYAML:
             with contextlib.redirect_stderr(stderr_buffer):
                 ct.Solution(fName)
                 error_msg = stderr_buffer.getvalue()
-                print(error_msg)
-                # if not (error_msg and 'undeclared duplicate' in error_msg.lower()):
-                #     break
                 if not (error_msg and 'undeclared duplicate' in error_msg.lower()):
                     break
                 rxn_numbers = set()
@@ -504,10 +501,10 @@ class makeYAML:
                             mech['reactions'][idx]['duplicate'] = True
                             print(f"  Marked reaction {idx + 1} as duplicate: "
                                 f"{mech['reactions'][idx]['equation']}")
-                with open(fName, 'w') as outfile:
-                    yaml.safe_dump(copy.deepcopy(mech), outfile,
-                    default_flow_style=None,
-                    sort_keys=False)
+                    with open(fName, 'w') as outfile:
+                        yaml.safe_dump(copy.deepcopy(mech), outfile,
+                            default_flow_style=None,
+                            sort_keys=False)
     
     def _saveYAML(self):
         fName = f"{self.foutName}.yaml"
@@ -534,7 +531,6 @@ class makeYAML:
                 for col in reaction['colliders']:
                     if str(col['name']).lower() == "false":
                         col['name']="NO"
-
         # Prevent 'NO' from being misinterpreted as bool in colliders list for LMRR rxns
         for reaction in mech['reactions']:
             effs = reaction.get('efficiencies')
