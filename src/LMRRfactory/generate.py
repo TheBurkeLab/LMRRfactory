@@ -499,7 +499,7 @@ class makeYAML:
                     for idx in rxn_numbers:
                         if idx < len(mech['reactions']):
                             mech['reactions'][idx]['duplicate'] = True
-                            print(f"  Marked reaction {idx + 1} as duplicate: "
+                            print(f" > Marked reaction {idx + 1} as duplicate: "
                                 f"{mech['reactions'][idx]['equation']}")
                     with open(fName, 'w') as outfile:
                         yaml.safe_dump(copy.deepcopy(mech), outfile,
