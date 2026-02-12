@@ -501,10 +501,10 @@ class makeYAML:
                             mech['reactions'][idx]['duplicate'] = True
                             print(f"  Marked reaction {idx + 1} as duplicate: "
                                 f"{mech['reactions'][idx]['equation']}")
-                with open(fName, 'w') as outfile:
-                    yaml.safe_dump(copy.deepcopy(mech), outfile,
-                    default_flow_style=None,
-                    sort_keys=False)
+                    with open(fName, 'w') as outfile:
+                        yaml.safe_dump(copy.deepcopy(mech), outfile,
+                        default_flow_style=None,
+                        sort_keys=False)
     
     def _saveYAML(self):
         fName = f"{self.foutName}.yaml"
@@ -541,3 +541,7 @@ class makeYAML:
                     for key in effs
                 }
         self._fixDuplicates(fName, mech)
+        with open(fName, 'w') as outfile:
+            yaml.safe_dump(copy.deepcopy(mech), outfile,
+                default_flow_style=None,
+                sort_keys=False)
