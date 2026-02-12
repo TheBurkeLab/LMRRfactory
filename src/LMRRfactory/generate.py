@@ -13,7 +13,7 @@ import contextlib
 # warnings.filterwarnings("ignore")
 
 class makeYAML:
-    def __init__(self, mechInput, colliderInput=None, outputPath=".", allPdep=False, reaction=None):
+    def __init__(self, mechInput, colliderInput=None, outputPath=".", allPdep=False, reaction=None, collider=None):
         self.T_ls = None
         self.P_ls = None
         self.n_P = None
@@ -29,6 +29,9 @@ class makeYAML:
         self.input = self._loadYAML(colliderInput) if colliderInput else None
         self.mechInput = mechInput
         self.reaction = reaction
+        self.collider = collider
+        if collider and not reaction:
+            raise ValueError("The 'collider' option requires 'reaction' to also be specified.")
         os.makedirs(outputPath, exist_ok=True)
         self.foutName = f"{outputPath}/{os.path.basename(self.mechInput).replace('.yaml', '_LMRR')}"
         if allPdep:
@@ -393,6 +396,8 @@ class makeYAML:
             if self.reaction is not None:
                 if user_rxn_equation == mech_rxn.equation:
                     self.foutName = f"{self.foutName}_{self.reaction}"
+                    if self.collider:
+                        self.foutName = f"{self.foutName}_{self.collider}"
                     applyLMRR = True
                 else: # just append it as-is
                     d = mech_rxn.input_data
@@ -440,6 +445,24 @@ class makeYAML:
                     elif blendRxn and genericBool:
                         param_type = "ab initio and generic"
                     colliders, citeStr = self._colliders(mech_rxn, blend_rxn=blendRxn, generic=genericBool)
+                    if self.collider is not None:
+                        collider_upper = self.collider.upper()
+                        filtered = [c for c in colliders if c['name'].upper() == collider_upper]
+                        if filtered:
+                            colliders = filtered
+                        else:
+                            ref_match = re.match(r'Bath gas:\s*(\w+)\.', citeStr)
+                            ref_name = ref_match.group(1).upper() if ref_match else 'AR'
+                            if collider_upper == ref_name:
+                                colliders = []
+                            else:
+                                available = [c['name'] for c in colliders]
+                                available.append(f"{ref_name} (reference collider)")
+                                print(f"Collider '{self.collider}' not found for this reaction. "
+                                      f"Available colliders: {', '.join(available)}")
+                                self.skipSave = True
+                                newReactions.append(mech_rxn)
+                                continue
                     d = self._to_builtin(mech_rxn.input_data)
                     newRxn = {
                         'equation': mech_rxn.equation,
