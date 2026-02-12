@@ -10,7 +10,7 @@ import cantera as ct
 import warnings
 import contextlib
 
-warnings.filterwarnings("ignore")
+# warnings.filterwarnings("ignore")
 
 class makeYAML:
     def __init__(self, mechInput, colliderInput=None, outputPath=".", allPdep=False, reaction=None):
