@@ -448,21 +448,24 @@ class makeYAML:
                     if self.collider is not None:
                         collider_upper = self.collider.upper()
                         filtered = [c for c in colliders if c['name'].upper() == collider_upper]
+                        ref_match = re.match(r'Bath gas:\s*(\w+)\.', citeStr)
+                        ref_name = ref_match.group(1).upper() if ref_match else 'AR'
+                        bath_prefix = ref_match.group(0) if ref_match else 'Bath gas: AR.'
                         if filtered:
                             colliders = filtered
+                            col_cite = re.search(rf'{re.escape(filtered[0]["name"])}:\s*[^;]+;', citeStr)
+                            citeStr = f"{bath_prefix} Citations: {col_cite.group(0)} " if col_cite else f"{bath_prefix} "
+                        elif collider_upper == ref_name:
+                            colliders = []
+                            citeStr = f"{bath_prefix} "
                         else:
-                            ref_match = re.match(r'Bath gas:\s*(\w+)\.', citeStr)
-                            ref_name = ref_match.group(1).upper() if ref_match else 'AR'
-                            if collider_upper == ref_name:
-                                colliders = []
-                            else:
-                                available = [c['name'] for c in colliders]
-                                available.append(f"{ref_name} (reference collider)")
-                                print(f"Collider '{self.collider}' not found for this reaction. "
-                                      f"Available colliders: {', '.join(available)}")
-                                self.skipSave = True
-                                newReactions.append(mech_rxn)
-                                continue
+                            available = [c['name'] for c in colliders]
+                            available.append(f"{ref_name} (reference collider)")
+                            print(f"Collider '{self.collider}' not found for this reaction. "
+                                  f"Available colliders: {', '.join(available)}")
+                            self.skipSave = True
+                            newReactions.append(mech_rxn)
+                            continue
                     d = self._to_builtin(mech_rxn.input_data)
                     newRxn = {
                         'equation': mech_rxn.equation,
