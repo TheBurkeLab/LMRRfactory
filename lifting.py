@@ -114,6 +114,8 @@ squats={
     "Jan 6 2026":5*5*230,
     "Jan 12 2026":5*5*235,
     "Feb 2 2026":5*5*240,
+    "Feb 10 2026":5*5*235,
+    "Feb 16 2026":5*5*240,
     }
 squats5x5={
     "Feb 2 2024":(5*5*205)/25,
@@ -133,6 +135,8 @@ squats5x5={
     "Jan 6 2026":5*5*230/25,
     "Jan 12 2026":5*5*235/25,
     "Feb 2 2026":5*5*240/25,
+    "Feb 10 2026":5*5*235/25,
+    "Feb 16 2026":5*5*240/25,
     }
 
 bench={
@@ -216,6 +220,7 @@ bench={
     "Jan 27 2026":5*5*185,
     "Jan 30 2026":5*5*190,
     "Feb 06 2026":5*5*185,
+    "Feb 14 2026":5*5*195,
     }
 bench5x5={
     "Feb 7 2024":(5*5*135)/25,
@@ -245,6 +250,8 @@ bench5x5={
     "Jan 27 2026":5*5*185/25,
     "Jan 30 2026":5*5*190/25,
     "Feb 06 2026":5*5*185/25,
+    "Feb 14 2026":5*5*195/25,
+    "Feb 21 2026":5*5*195/25,
     }
 
 ohp={
@@ -331,6 +338,7 @@ ohp={
     "Jan 17 2026":5*5*95,
     "Jan 27 2026":5*5*95,
     "Jan 31 2026":5*5*100,
+    "Feb 16 2026":5*5*105,
     }
 ohp5x5={
     "Feb 27 2024":(5*5*75)/25, #doctored this number a bit
@@ -350,6 +358,7 @@ ohp5x5={
     "Jan 17 2026":5*5*95/25,
     "Jan 27 2026":5*5*95/25,
     "Jan 31 2026":5*5*100/25,
+    "Feb 16 2026":5*5*105/25,
     }
 
 deadlifts={
@@ -489,6 +498,8 @@ row={
     "Jan 14 2026":5*5*160,
     "Jan 22 2026":5*5*165,
     "Jan 28 2026":5*5*170,
+    "Feb 14 2026":5*5*170,
+    "Feb 18 2026":5*5*175,
     }
 row5x5={
     "Feb 14 2024":(5*5*130)/25, #doctored this number a bit
@@ -517,6 +528,8 @@ row5x5={
     "Jan 14 2026":5*5*160/25,
     "Jan 22 2026":5*5*165/25,
     "Jan 28 2026":5*5*170/25,
+    "Feb 14 2026":5*5*170/25,
+    "Feb 18 2026":5*5*175/25,
     }
 
 dips={
@@ -717,6 +730,56 @@ bodyweight={
     "Jan 31 2026":158,
     }
 
+legextension15x3={
+    "Dec 8 2025": 15*3*110/45,
+    "Dec 15 2025": 15*3*125/45,
+    "Jan 6 2026": 15*3*130/45,
+    "Jan 19 2026": 15*3*135/45,
+    "Feb 2 2026": 15*3*140/45,
+    "Feb 10 2026": 15*3*150/45,
+    "Feb 16 2026": 15*3*155/45,
+    }
+
+hamstringcurl15x3={
+    "Dec 8 2025": 15*3*90/45,
+    "Dec 15 2025": 15*3*100/45,
+    "Jan 12 2026": 15*3*115/45,
+    }
+
+# lateralraise15x3={
+#     "Dec 8 2025": 15*3*15/45, #fake number, but approx equivalent strength
+#     "Dec 25 2025": 15*3*20/45,
+#     "Jan 31 2026": 15*3*24/45,
+#     }
+
+cablecrunch15x3={
+    "Dec 16 2025": 15*3*85/45,
+    "Jan 7 2026": 15*3*90/45,
+    "Jan 11 2026": 15*3*95/45,
+    "Jan 15 2026": 15*3*100/45,
+    "Jan 29 2026": 15*3*105/45,
+    "Jan 31 2026": 15*3*110/45,
+    "Feb 1 2026": 15*3*115/45,
+    "Feb 3 2026": 15*3*120/45,
+    }
+
+shrugs10x3={
+    "Dec 9 2025": 10*3*120/30,
+    "Dec 16 2025": 10*3*130/30,
+    "Dec 22 2025": 10*3*150/30,
+    "Jan 20 2026": 10*3*160/30,
+    }
+rowmachine10x3={
+    "Dec 3 2025": 10*3*110/30,
+    "Dec 10 2025": 10*3*115/30,
+    "Dec 17 2025": 10*3*120/30,
+    "Jan 14 2026": 10*3*125/30,
+    "Jan 22 2026": 10*3*130/30,
+    "Jan 28 2026": 10*3*135/30,
+    "Jan 28 2026": 10*3*135/30,
+    "Feb 18 2026": 10*3*145/30,
+    }
+
 xrange=[3+365*9,170+365*11]
 colours=['#2ca02c','#d62728','#1f77b4','#9467bd','#ff7f0e','#7f7f7f','#9e9ac8','#17becf','#8c564b']
 
@@ -821,13 +884,25 @@ plt.show()
 f, ax = plt.subplots(1, 1, figsize=(12, 9))
 plt.subplots_adjust(hspace=0.7)
 xrange=[19+365*9,70+365*11]
-colours=['#2ca02c','#d62728','#1f77b4','#9467bd','#ff7f0e','#7f7f7f','#9e9ac8','#17becf','#8c564b']
-ax.plot(date_nums(squats5x5.keys()),squats5x5.values(),label='squat',color=colours[0])
-ax.plot(date_nums(deadlifts5x5.keys()),deadlifts5x5.values(),label='deadlifts',color=colours[1])
-ax.plot(date_nums(bench5x5.keys()),bench5x5.values(),label='bench',color=colours[2])
-ax.plot(date_nums(row5x5.keys()),row5x5.values(),label='row',color=colours[3])
-ax.plot(date_nums(ohp5x5.keys()),ohp5x5.values(),label='ohp',color=colours[4])
-ax.plot(date_nums(bodyweight.keys()),bodyweight.values(),label='bodyweight',color=colours[5])
+# colours=['#2ca02c','#d62728','#1f77b4','#9467bd','#ff7f0e','#7f7f7f','#9e9ac8','#17becf','#8c564b']
+colours = [
+    '#2ca02c', '#d62728', '#1f77b4', '#9467bd', '#ff7f0e',
+    '#7f7f7f', '#9e9ac8', '#17becf', '#8c564b',
+    '#e377c2', '#c49c94', '#aec7e8', '#ff9896', '#98df8a',
+    '#bcbd22'
+]
+ax.plot(date_nums(squats5x5.keys()),squats5x5.values(),label='squat 5x5',color=colours[0])
+ax.plot(date_nums(deadlifts5x5.keys()),deadlifts5x5.values(),label='deadlift 3x5',color=colours[1])
+ax.plot(date_nums(bench5x5.keys()),bench5x5.values(),label='bench 5x5',color=colours[2])
+ax.plot(date_nums(row5x5.keys()),row5x5.values(),label='row 5x5',color=colours[3])
+ax.plot(date_nums(ohp5x5.keys()),ohp5x5.values(),label='ohp 5x5',color=colours[4])
+ax.plot(date_nums(legextension15x3.keys()),legextension15x3.values(),label='leg ext. 3x15',color=colours[6])
+ax.plot(date_nums(hamstringcurl15x3.keys()),hamstringcurl15x3.values(),label='ham. curl 3x15',color=colours[7])
+# ax.plot(date_nums(lateralraise15x3.keys()),lateralraise15x3.values(),label='lateral raise',color=colours[8])
+ax.plot(date_nums(cablecrunch15x3.keys()),cablecrunch15x3.values(),label='crunch 3x15',color=colours[9])
+ax.plot(date_nums(shrugs10x3.keys()),shrugs10x3.values(),label='shrug 3x10',color=colours[10])
+ax.plot(date_nums(rowmachine10x3.keys()),rowmachine10x3.values(),label='row mach. 3x10',color=colours[11])
+ax.plot(date_nums(bodyweight.keys()),bodyweight.values(),label='bw',color=colours[5])
 ax.axvline(x=365, linestyle='--', linewidth=1, color='grey')
 ax.axvline(x=365*2, linestyle='--', linewidth=1, color='grey')
 ax.axvline(x=365*3, linestyle='--', linewidth=1, color='grey')
@@ -840,22 +915,35 @@ ax.axvline(x=365*9, linestyle='--', linewidth=1, color='grey')
 ax.axvline(x=365*10, linestyle='--', linewidth=1, color='grey')
 ax.axvline(x=365*11, linestyle='--', linewidth=1, color='grey')
 ax.set_ylabel("[lb]")
+ax.set_xlabel("Days since Jan 1, 2015")
 # ax.legend(loc="lower right")
 ax.legend(loc="upper center",frameon=False,ncol=6)
 if 'xrange' in locals() or 'xrange' in globals():
     ax.set_xlim(xrange)
-ax.set_title("Weight lifted for 5x5 reps")
+ax.set_title("Weight lifted for reps")
 ax.grid(True)
 for x, y in zip(date_nums(squats5x5.keys()), squats5x5.values()):
-    ax.annotate(int(y), (x, y), textcoords="offset points", xytext=(0,-10), ha='center', fontsize=8,color=colours[0])
+    ax.annotate(int(y), (x, y), textcoords="offset points", xytext=(0,-10), ha='center', fontsize=6,color=colours[0])
 for x, y in zip(date_nums(deadlifts5x5.keys()), deadlifts5x5.values()):
-    ax.annotate(int(y), (x, y), textcoords="offset points", xytext=(0,10), ha='center', fontsize=8,color=colours[1])
+    ax.annotate(int(y), (x, y), textcoords="offset points", xytext=(0,10), ha='center', fontsize=6,color=colours[1])
 for x, y in zip(date_nums(bench5x5.keys()), bench5x5.values()):
-    ax.annotate(int(y), (x, y), textcoords="offset points", xytext=(0,10), ha='center', fontsize=8,color=colours[2])
+    ax.annotate(int(y), (x, y), textcoords="offset points", xytext=(0,10), ha='center', fontsize=6,color=colours[2])
 for x, y in zip(date_nums(row5x5.keys()), row5x5.values()):
-    ax.annotate(int(y), (x, y), textcoords="offset points", xytext=(0,-10), ha='center', fontsize=8,color=colours[3])
+    ax.annotate(int(y), (x, y), textcoords="offset points", xytext=(0,-10), ha='center', fontsize=6,color=colours[3])
 for x, y in zip(date_nums(ohp5x5.keys()), ohp5x5.values()):
-    ax.annotate(int(y), (x, y), textcoords="offset points", xytext=(0,10), ha='center', fontsize=8,color=colours[4])
+    ax.annotate(int(y), (x, y), textcoords="offset points", xytext=(0,10), ha='center', fontsize=6,color=colours[4])
+for x, y in zip(date_nums(legextension15x3.keys()), legextension15x3.values()):
+    ax.annotate(int(y), (x, y), textcoords="offset points", xytext=(0,10), ha='center', fontsize=6,color=colours[6])
+for x, y in zip(date_nums(hamstringcurl15x3.keys()), hamstringcurl15x3.values()):
+    ax.annotate(int(y), (x, y), textcoords="offset points", xytext=(0,10), ha='center', fontsize=6,color=colours[7])
+# for x, y in zip(date_nums(lateralraise15x3.keys()), lateralraise15x3.values()):
+#     ax.annotate(int(y), (x, y), textcoords="offset points", xytext=(0,10), ha='center', fontsize=6,color=colours[8])
+for x, y in zip(date_nums(cablecrunch15x3.keys()), cablecrunch15x3.values()):
+    ax.annotate(int(y), (x, y), textcoords="offset points", xytext=(0,10), ha='center', fontsize=6,color=colours[9])
+for x, y in zip(date_nums(shrugs10x3.keys()), shrugs10x3.values()):
+    ax.annotate(int(y), (x, y), textcoords="offset points", xytext=(0,10), ha='center', fontsize=6,color=colours[10])
+for x, y in zip(date_nums(rowmachine10x3.keys()), rowmachine10x3.values()):
+    ax.annotate(int(y), (x, y), textcoords="offset points", xytext=(0,10), ha='center', fontsize=6,color=colours[11])
 for x, y in zip(date_nums(bodyweight.keys()), bodyweight.values()):
-    ax.annotate(int(y), (x, y), textcoords="offset points", xytext=(0,10), ha='center', fontsize=8,color=colours[5])
+    ax.annotate(int(y), (x, y), textcoords="offset points", xytext=(0,10), ha='center', fontsize=6,color=colours[5])
 plt.savefig("lifting.png")

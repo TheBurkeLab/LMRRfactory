@@ -379,7 +379,7 @@ class makeYAML:
             mech_species = {s.upper() for s in self.mech_obj.species_names}
             eq_no_tb = re.sub(r'\(\+\w+\)', '', normalized_eq)
             tokens = re.split(r'\s*(?:<=>|=>|<=|=|\+)\s*', eq_no_tb)
-            eq_species = [t.strip() for t in tokens if t.strip()]
+            eq_species = [re.sub(r'^\d+\s*', '', t).strip() for t in tokens if t.strip()]
             missing = [s for s in eq_species if s.upper() not in mech_species]
             if missing:
                 raise ValueError(
