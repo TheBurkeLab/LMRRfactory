@@ -391,13 +391,13 @@ class makeYAML:
             }
             user_rxn_obj = ct.Reaction.from_yaml(yaml.dump(user_rxn, sort_keys=False), self.mech_obj)
             user_rxn_equation = user_rxn_obj.equation
+            self.foutName = f"{self.foutName}_{self.reaction}"
+            if self.collider:
+                self.foutName = f"{self.foutName}_{self.collider}"
         for i, mech_rxn in enumerate(self.mech_obj.reactions()):
             applyLMRR = False
             if self.reaction is not None:
                 if user_rxn_equation == mech_rxn.equation:
-                    self.foutName = f"{self.foutName}_{self.reaction}"
-                    if self.collider:
-                        self.foutName = f"{self.foutName}_{self.collider}"
                     applyLMRR = True
                 else: # just append it as-is
                     d = mech_rxn.input_data
