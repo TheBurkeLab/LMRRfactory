@@ -1,3 +1,11 @@
+"""
+LMRRfactory.generate
+====================
+
+Core module for applying the Linear Burke Rate to Cantera-formatted YAML files. This reaction rate format enables the use of the "linear mixture rule at reduced pressure" (LMR-R) and third-body efficiencies in eligible pressure-dependent reactions.
+reactions.
+"""
+
 import yaml
 import numpy as np
 import copy
@@ -505,10 +513,22 @@ class makeYAML:
         return ct.Solution(**output_data)
 
     def _loadYAML(self, fName):
+        """Load and parse a YAML file, returning its contents as a Python object.
+
+        Parameters
+        ----------
+        fName : str
+            Path to the YAML file to read.
+
+        Returns
+        -------
+        object
+            The parsed YAML content (typically a ``dict``).
+        """
         with open(fName) as f:
             return yaml.safe_load(f)
         
-    def _fixDuplicates(self,fName,mech):
+    def _fixDuplicates(self, fName, mech):
         for _attempt in range(10):
             stderr_buffer = io.StringIO()
             with contextlib.redirect_stderr(stderr_buffer):
