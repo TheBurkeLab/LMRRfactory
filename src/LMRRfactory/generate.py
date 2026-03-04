@@ -454,7 +454,10 @@ class makeYAML:
                         param_type = "ab initio and generic"
                     colliders, citeStr = self._colliders(mech_rxn, blend_rxn=blendRxn, generic=genericBool)
                     if self.collider is not None:
-                        collider_upper = self.collider.upper()
+                        collider_norm = re.sub(r"\$_\{(\d+)\}\$", r"\1", self.collider)
+                        collider_norm = re.sub(r"\$_(\d+)\$", r"\1", collider_norm)
+                        collider_norm = collider_norm.replace("$", "")
+                        collider_upper = collider_norm.upper()
                         filtered = [c for c in colliders if c['name'].upper() == collider_upper]
                         ref_match = re.match(r'Bath gas:\s*(\w+)\.', citeStr)
                         ref_name = ref_match.group(1).upper() if ref_match else 'AR'
