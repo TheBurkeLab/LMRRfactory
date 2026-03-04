@@ -109,7 +109,7 @@ class makeYAML:
 
     def _lookForPdep(self):
         if not any(
-            reaction.reaction_type in ['falloff-Troe','pressure-dependent-Arrhenius', 'Chebyshev', 'three-body-linear-Burke']
+            reaction.reaction_type in ['falloff-Troe', 'pressure-dependent-Arrhenius', 'Chebyshev', 'three-body-linear-Burke']
             for reaction in self.mech_obj.reactions()
         ):
             raise ValueError("No pressure-dependent reactions found in mechanism."
@@ -402,6 +402,8 @@ class makeYAML:
             self.foutName = f"{self.foutName}_{self.reaction}"
             if self.collider:
                 self.foutName = f"{self.foutName}_{self.collider}"
+        any_pDep_match = False
+        any_pDep_converted = False
         for i, mech_rxn in enumerate(self.mech_obj.reactions()):
             applyLMRR = False
             if self.reaction is not None:
@@ -439,6 +441,8 @@ class makeYAML:
                 # Leave reactions with explicitly-defined bath gases (e.g., (+AR)) in original format
                 if pDep and '(+' in mech_rxn.equation and '(+M)' not in mech_rxn.equation:
                     pDep = False
+                if pDep:
+                    any_pDep_match = True
                 if pDep and (self.mech_pes[i] in blendRxnNames or self.allPdep):
                     genericBool = self.allPdep
                     blendRxn = None
@@ -493,18 +497,22 @@ class makeYAML:
                     yaml_str = yaml.dump(newRxn, sort_keys=False)
                     newRxn_obj = ct.Reaction.from_yaml(yaml_str, self.mech_obj)
                     newReactions.append(newRxn_obj)
+                    any_pDep_converted = True
                     print(f"{mech_rxn} {dict(self.mech_pes[i])} converted to LMR-R with {param_type} parameters.")
                 else: # just append it as-is
                     d = mech_rxn.input_data
                     if 'note' in d and re.fullmatch(r'\n+', d['note']):
                         mech_rxn.update_user_data({'note': ''})
                     newReactions.append(mech_rxn)
-                    if self.reaction is not None:
-                        self.skipSave = True
-                        if not self.allPdep:
-                            print(f"User-provided reaction could not be converted using ab initio parameters. Try enabling generic parameters ('allPdep=True') and rerunning.")
-                        else:
-                            print(f"User-provided reaction could not be converted.")
+        if self.reaction is not None and not any_pDep_converted:
+            self.skipSave = True
+            if any_pDep_match:
+                if not self.allPdep:
+                    print(f"User-provided reaction could not be converted using ab initio parameters. Try enabling generic parameters ('allPdep=True') and rerunning.")
+                else:
+                    print(f"User-provided reaction could not be converted.")
+            else:
+                print(f"User-provided reaction is not pressure-dependent and does not require LMR-R conversion.")
         output_data = {
             'thermo': self.mech_obj.thermo_model,
             'kinetics': self.mech_obj.kinetics_model,
