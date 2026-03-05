@@ -239,7 +239,7 @@ class makeYAML:
         is_M_X = False
         ar_troe_eff = None
         troe_efficiencies = {}
-        if mech_rxn.reaction_type == 'falloff-Troe':
+        if mech_rxn.reaction_type in ['falloff-Troe', 'falloff-Lindemann']:
             troe_efficiencies = mech_rxn.input_data.get('efficiencies', {})
         elif mech_rxn.reaction_type == 'three-body-linear-Burke':
             for c, col in enumerate(mech_rxn.input_data.get('colliders', {})):
@@ -419,7 +419,7 @@ class makeYAML:
             if applyLMRR:
                 pDep = False
                 # Create the M-collider entry for the pressure-dependent reactions
-                if mech_rxn.reaction_type in ['falloff-Troe', 'three-body-pressure-dependent-Arrhenius', 'pressure-dependent-Arrhenius', 'Chebyshev', 'three-body-linear-Burke']:
+                if mech_rxn.reaction_type in ['falloff-Troe', 'falloff-Lindemann', 'three-body-pressure-dependent-Arrhenius', 'pressure-dependent-Arrhenius', 'Chebyshev', 'three-body-linear-Burke']:
                     pDep = True
                     if mech_rxn.reaction_type == 'three-body-linear-Burke':
                         d = self._to_builtin(mech_rxn.input_data['colliders'][0]) #use the pdep format given for collider M when rebuilding the reaction
@@ -430,6 +430,8 @@ class makeYAML:
                         d.pop("efficiencies", None)
                     d.pop("duplicate", None)
                     d.pop("units", None)
+                    if mech_rxn.reaction_type == 'falloff-Lindemann':
+                        d['Troe'] = {'A': 1.0, 'T3': 1.0e-30, 'T1': 1.0e+30, 'T2': 1.0e+30}
                     if d.get('Troe'):
                         d['Troe'] = dict(d['Troe'])
                     if d.get('low-P-rate-constant'):
@@ -562,7 +564,40 @@ class makeYAML:
                         yaml.safe_dump(copy.deepcopy(mech), outfile,
                             default_flow_style=None,
                             sort_keys=False)
-    
+
+    # def _fixDuplicates(self, fName, mech):
+    #     for _attempt in range(10):
+    #         stderr_buffer = io.StringIO()
+    #         with contextlib.redirect_stderr(stderr_buffer):
+    #             ct.Solution(fName)
+    #             error_msg = stderr_buffer.getvalue()
+    #             if not (error_msg and 'undeclared duplicate' in error_msg.lower()):
+    #                 break
+    #             explicit_species = None
+    #             m_idx = None
+    #             for line in error_msg.split('\n'):
+    #                 match = re.search(r'Reaction\s+(\d+).*?\(\+\s*(?!M\b)([A-Za-z]\w*)\s*\)', line)
+    #                 if match:
+    #                     m_idx = int(match.group(1)) - 1
+    #                     explicit_species = match.group(2)
+    #             print(explicit_species)
+    #             print(m_idx)
+    #             if explicit_species:
+    #                 m_rxn = mech['reactions'][m_idx]
+    #                 colliders = m_rxn.get('colliders')
+    #                 print(colliders)
+    #                 if colliders:
+    #                     for col in colliders:
+    #                         if col['name'] == explicit_species:
+    #                             col['efficiency'] = {'A': 0, 'b': 0, 'Ea': 0}
+    #                             print(f" > Set efficiency to 0 for {col['name']} in "
+    #                                     f"{m_rxn['equation']}, as explicit third-body duplicate "
+    #                                     f"reaction exists.")
+    #                 with open(fName, 'w') as outfile:
+    #                     yaml.safe_dump(copy.deepcopy(mech), outfile,
+    #                         default_flow_style=None,
+    #                         sort_keys=False)
+
     def _saveYAML(self):
         fName = f"{self.foutName}.yaml"
         self.output.write_yaml(filename=fName, units=self.units)
