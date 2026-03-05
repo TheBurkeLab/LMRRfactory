@@ -239,7 +239,7 @@ class makeYAML:
         is_M_X = False
         ar_troe_eff = None
         troe_efficiencies = {}
-        if mech_rxn.reaction_type == 'falloff-Troe':
+        if mech_rxn.reaction_type in ['falloff-Troe', 'falloff-Lindemann']:
             troe_efficiencies = mech_rxn.input_data.get('efficiencies', {})
         elif mech_rxn.reaction_type == 'three-body-linear-Burke':
             for c, col in enumerate(mech_rxn.input_data.get('colliders', {})):
@@ -419,7 +419,7 @@ class makeYAML:
             if applyLMRR:
                 pDep = False
                 # Create the M-collider entry for the pressure-dependent reactions
-                if mech_rxn.reaction_type in ['falloff-Troe', 'three-body-pressure-dependent-Arrhenius', 'pressure-dependent-Arrhenius', 'Chebyshev', 'three-body-linear-Burke']:
+                if mech_rxn.reaction_type in ['falloff-Troe', 'falloff-Lindemann', 'three-body-pressure-dependent-Arrhenius', 'pressure-dependent-Arrhenius', 'Chebyshev', 'three-body-linear-Burke']:
                     pDep = True
                     if mech_rxn.reaction_type == 'three-body-linear-Burke':
                         d = self._to_builtin(mech_rxn.input_data['colliders'][0]) #use the pdep format given for collider M when rebuilding the reaction
@@ -430,6 +430,8 @@ class makeYAML:
                         d.pop("efficiencies", None)
                     d.pop("duplicate", None)
                     d.pop("units", None)
+                    if mech_rxn.reaction_type == 'falloff-Lindemann':
+                        d['Troe'] = {'A': 1.0, 'T3': 1.0e-30, 'T1': 1.0e+30, 'T2': 1.0e+30}
                     if d.get('Troe'):
                         d['Troe'] = dict(d['Troe'])
                     if d.get('low-P-rate-constant'):
