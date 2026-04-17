@@ -205,7 +205,15 @@ generic-colliders: # AR is always reference collider
 - name: N2H4
   composition: {N: 2, H: 4}
   efficiency: 4.0
-  note: Shrestha-2018
+  note: Shrestha-2021
+- name: SO2
+  composition: {S: 1, O: 2}
+  efficiency: 10.0
+  note: Veillet-2026
+- name: H2S
+  composition: {H: 2, S: 1}
+  efficiency: 1.88
+  note: Veillet-2026
 
 reactions:
 - name: H2O (+M)
