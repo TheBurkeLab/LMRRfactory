@@ -298,15 +298,28 @@ class makeYAML:
                         # 'note': 'present work',
                     })
             if generic:
+                already_given_names = {c['name'].upper() for c in colliders}
                 for col in self.defaults['generic-colliders']:
-                    already_given = col['composition'] in colliderNames
-                    if col['composition'] in list(self.species_dict.values()) and not already_given and col['composition'] != {'N': 2} and col['composition'] not in zero_eff_compositions:
-                        colName = next(k for k, v in self.species_dict.items() if v == col['composition'])
-                        citeStr += f"{colName}: {col['note']}; "
-                        colliders.append({
-                            'name': colName,
-                            'efficiency': {'A': col['efficiency'] / divisor, 'b': 0, 'Ea': 0},
-                        })
+                    col_name_upper = col['name'].upper()
+                    if col_name_upper in self.species_dict:
+                        comp = self.species_dict[col_name_upper]
+                        already_given = col_name_upper in already_given_names
+                        if not already_given and comp != {'N': 2} and comp not in zero_eff_compositions:
+                            citeStr += f"{col_name_upper}: {col['note']}; "
+                            already_given_names.add(col_name_upper)
+                            colliders.append({
+                                'name': col_name_upper,
+                                'efficiency': {'A': col['efficiency'] / divisor, 'b': 0, 'Ea': 0},
+                            })
+                    elif col['composition'] in list(self.species_dict.values()):
+                        already_given = col['composition'] in colliderNames
+                        if not already_given and col['composition'] != {'N': 2} and col['composition'] not in zero_eff_compositions:
+                            colName = next(k for k, v in self.species_dict.items() if v == col['composition'])
+                            citeStr += f"{colName}: {col['note']}; "
+                            colliders.append({
+                                'name': colName,
+                                'efficiency': {'A': col['efficiency'] / divisor, 'b': 0, 'Ea': 0},
+                            })
         elif is_M_X:
             citeStr += "X. Citations: "
             if blend_rxn:
@@ -332,15 +345,28 @@ class makeYAML:
                         'efficiency': {'A': val, 'b': 0, 'Ea': 0},
                     })
             if generic:
+                already_given_names = {c['name'].upper() for c in colliders}
                 for col in self.defaults['generic-colliders']:
-                    already_given = col['composition'] in colliderNames
-                    if col['composition'] in list(self.species_dict.values()) and not already_given and col['composition'] not in zero_eff_compositions:
-                        colName = next(k for k, v in self.species_dict.items() if v == col['composition'])
-                        citeStr += f"{colName}: {col['note']}; "
-                        colliders.append({
-                            'name': colName,
-                            'efficiency': {'A': col['efficiency'] / ar_troe_eff, 'b': 0, 'Ea': 0},
-                        })
+                    col_name_upper = col['name'].upper()
+                    if col_name_upper in self.species_dict:
+                        comp = self.species_dict[col_name_upper]
+                        already_given = col_name_upper in already_given_names
+                        if not already_given and comp not in zero_eff_compositions:
+                            citeStr += f"{col_name_upper}: {col['note']}; "
+                            already_given_names.add(col_name_upper)
+                            colliders.append({
+                                'name': col_name_upper,
+                                'efficiency': {'A': col['efficiency'] / ar_troe_eff, 'b': 0, 'Ea': 0},
+                            })
+                    elif col['composition'] in list(self.species_dict.values()):
+                        already_given = col['composition'] in colliderNames
+                        if not already_given and col['composition'] not in zero_eff_compositions:
+                            colName = next(k for k, v in self.species_dict.items() if v == col['composition'])
+                            citeStr += f"{colName}: {col['note']}; "
+                            colliders.append({
+                                'name': colName,
+                                'efficiency': {'A': col['efficiency'] / ar_troe_eff, 'b': 0, 'Ea': 0},
+                            })
         else:
             citeStr += "AR. Citations: "
             if blend_rxn:
@@ -367,15 +393,28 @@ class makeYAML:
                     })
                     colliderNames.append(comp)
             if generic:
+                already_given_names = {c['name'].upper() for c in colliders}
                 for col in self.defaults['generic-colliders']:
-                    already_given = col['composition'] in colliderNames
-                    if col['composition'] in list(self.species_dict.values()) and not already_given and col['composition'] != {'Ar': 1} and col['composition'] not in zero_eff_compositions:
-                        colName = next(k for k, v in self.species_dict.items() if v == col['composition'])
-                        citeStr += f"{colName}: {col['note']}; "
-                        colliders.append({
-                            'name': colName,
-                            'efficiency': {'A': col['efficiency'], 'b': 0, 'Ea': 0},
-                        })
+                    col_name_upper = col['name'].upper()
+                    if col_name_upper in self.species_dict:
+                        comp = self.species_dict[col_name_upper]
+                        already_given = col_name_upper in already_given_names
+                        if not already_given and comp != {'Ar': 1} and comp not in zero_eff_compositions:
+                            citeStr += f"{col_name_upper}: {col['note']}; "
+                            already_given_names.add(col_name_upper)
+                            colliders.append({
+                                'name': col_name_upper,
+                                'efficiency': {'A': col['efficiency'], 'b': 0, 'Ea': 0},
+                            })
+                    elif col['composition'] in list(self.species_dict.values()):
+                        already_given = col['composition'] in colliderNames
+                        if not already_given and col['composition'] != {'Ar': 1} and col['composition'] not in zero_eff_compositions:
+                            colName = next(k for k, v in self.species_dict.items() if v == col['composition'])
+                            citeStr += f"{colName}: {col['note']}; "
+                            colliders.append({
+                                'name': colName,
+                                'efficiency': {'A': col['efficiency'], 'b': 0, 'Ea': 0},
+                            })
         return colliders, citeStr
 
     def _zippedMech(self):
