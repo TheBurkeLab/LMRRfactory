@@ -126,7 +126,7 @@ generic-colliders: # AR is always reference collider
   composition: {C: 1, F: 4}
   efficiency: 6
   note: Cornell-2024 (generic)
-- name: NO
+- name: 'NO'
   composition: {N: 1, O: 1}
   efficiency: 3
   note: Zhang-2017 (generic)
