@@ -34,7 +34,6 @@ If you use this tool, please cite:
 @misc{LMRRfactory,
   author = {Singal,  Patrick J. and Burke,  Michael P.},
   title = {LMRRfactory: A Software Toolkit and Database for Implementing Mixture Rules at Scale},
-  year = {2025},
   howpublished = {https://github.com/TheBurkeLab/LMRRfactory},
   doi = {10.5281/ZENODO.14649194},
 }
