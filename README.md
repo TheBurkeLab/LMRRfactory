@@ -34,11 +34,11 @@ If you use this tool, please cite:
 
 ```bibtex
 @misc{LMRRfactory,
-  author = {Singal, Patrick J. and Burke, Michael P.},
+  author = {Singal,  Patrick J. and Burke,  Michael P.},
   title = {LMRRfactory: A Software Toolkit and Database for Implementing Mixture Rules at Scale},
-  year = {2025},
+  year = {2026},
   howpublished = {https://github.com/TheBurkeLab/LMRRfactory},
-  doi = {10.5281/zenodo.14649195}
+  doi = {10.5281/ZENODO.14649194},
 }
 ```
 
